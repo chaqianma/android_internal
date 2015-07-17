@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 /**
  * Created by zhangxd on 2015/7/17.
  */
-public class CustomAlertDialog
+public class JDAlertDialog
 {
 
     private static final String mPrompt="提示";
@@ -21,6 +21,6 @@ public class CustomAlertDialog
 
     public static void showAlertDialog(Context context,String title,String msg, DialogInterface.OnClickListener onclient)
     {
-        new AlertDialog.Builder(context).setTitle(title).setMessage(msg).setPositiveButton(mSure,onclient).create().show();
+        new AlertDialog.Builder(context).setTitle(title).setMessage(msg).setPositiveButton(mSure, onclient).create().show();
     }
 }

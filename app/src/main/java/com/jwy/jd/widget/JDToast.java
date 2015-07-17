@@ -4,7 +4,8 @@ import android.content.Context;
 import android.widget.Toast;
 
 /**
- * Created by zhangxd on 2015/7/15.   系统提示
+ * Created by zhangxd on 2015/7/15
+ * 绯荤粺鎻愮ず
  */
 public class JDToast {
     public static Toast toast=null;

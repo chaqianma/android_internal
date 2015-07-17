@@ -14,7 +14,7 @@ import com.jwy.jd.common.HttpRequestURL;
 import com.jwy.jd.utils.JDHttpResponseHandler;
 import com.jwy.jd.utils.ResponseHandler;
 import com.jwy.jd.utils.SharedPreferencesUtil;
-import com.jwy.jd.widget.CustomAlertDialog;
+import com.jwy.jd.widget.JDAlertDialog;
 import com.jwy.jd.widget.JDToast;
 
 import java.util.HashMap;
@@ -85,7 +85,7 @@ public class LoginActivity extends Activity {
                             LoginActivity.this.finish();
                         }else
                         {
-                            CustomAlertDialog.showAlertDialog(LoginActivity.this,"所登录用户为非进调人员",null);
+                            JDAlertDialog.showAlertDialog(LoginActivity.this, "所登录用户为非进调人员", null);
                         }
                     }
                 }

@@ -2,15 +2,13 @@ package com.jwy.jd.widget;
 
 import android.content.Context;
 
-import com.jwy.jd.widget.CustomProgressDialog;
-
 /**
  * Created by zhangxd on 2015/7/15.
- * Õ¯¬Á«Î«ÛÃ· æøÚ
+ * ÁΩëÁªúËØ∑Ê±ÇÊèêÁ§∫Ê°Ü
  */
 
 public class JDProgress {
-    private static CustomProgressDialog dialog = null;
+    private static JDProgressDialog dialog = null;
 
     public static void show(Context context)
     {
@@ -21,7 +19,7 @@ public class JDProgress {
         if (context == null) return;
         if (dialog != null)
             dialog.dismiss();
-        dialog = new CustomProgressDialog(context, strMsg);
+        dialog = new JDProgressDialog(context, strMsg);
         dialog.show();
     }
 
