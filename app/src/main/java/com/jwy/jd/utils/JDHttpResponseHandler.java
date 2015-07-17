@@ -52,7 +52,7 @@ public  class JDHttpResponseHandler extends AsyncHttpResponseHandler {
 
     @Override
     public void onSuccess(int i, Header[] headers, byte[] bytes) {
-        //添加Header
+        //锟斤拷锟紿eader
         if(isLogin)
         {
             int length=headers.length;
@@ -77,7 +77,7 @@ public  class JDHttpResponseHandler extends AsyncHttpResponseHandler {
     }
     @Override
     public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-        JDToast.showShortText(context, "获取信息出错");
+        JDToast.showShortText(context, "璇锋眰鍑洪敊");
         JDProgress.dismiss();
     }
 }
