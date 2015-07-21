@@ -7,18 +7,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
-import android.widget.TabWidget;
-
 import com.jwy.jd.R;
+import com.jwy.jd.common.AppData;
+import com.jwy.jd.model.LocationInfo;
 import com.jwy.jd.utils.LocationUtil;
+import com.jwy.jd.utils.SharedPreferencesUtil;
 import com.jwy.jd.widget.JDToast;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-
+import com.jwy.jd.common.Constants;
+@SuppressWarnings("depa")
 public class MainActivity extends ActivityGroup {
     @InjectView(R.id.tabhost)
     TabHost mTabHost;
@@ -33,8 +33,6 @@ public class MainActivity extends ActivityGroup {
         setContentView(R.layout.activity_main_back);
         ButterKnife.inject(this);
         mTabHost.setup(getLocalActivityManager());
-        TabWidget tabWidget = mTabHost.getTabWidget();
-        tabWidget.setStripEnabled(false);
         addTabIntent();
         mTabHost.setCurrentTab(0);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -96,11 +94,20 @@ public class MainActivity extends ActivityGroup {
         }
     }
 
+    //Handler to get something
     private Handler mHandler=new Handler()
     {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            switch (msg.what)
+            {
+                case Constants.GETLOCATION:
+                    LocationInfo locationInfo=AppData.getInstance().getLocationInfo();
+                    SharedPreferencesUtil.setShareString(getApplicationContext(),Constants.CITYTAG,locationInfo.getCity());
+                    break;
+                default:break;
+            }
         }
     };
 }

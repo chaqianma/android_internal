@@ -9,7 +9,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.jwy.jd.R;
+import com.jwy.jd.app.JDApplication;
 import com.jwy.jd.common.AppData;
+import com.jwy.jd.common.Constants;
 import com.jwy.jd.model.UserInfo;
 import com.jwy.jd.utils.HttpClientUtil;
 import com.jwy.jd.common.HttpRequestURL;
@@ -33,16 +35,13 @@ import cn.jpush.android.api.TagAliasCallback;
  * Created by zhangxd on 2015/7/15.
  * 登陆
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends Activity {
     @InjectView(R.id.tv_username)
     TextView tv_username;
     @InjectView(R.id.tv_password)
     TextView tv_password;
     @InjectView(R.id.cb_remember)
     CheckBox cb_remember;
-    private static final String USER_NAME = "USERNAME";
-    private static final String PASSWORD = "PASSWORD";
-    private static final int MSG_SET_ALIAS = 1001;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +49,7 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.inject(this);
         //tv_username.setText("13913999601");
         //tv_password.setText("password");
-        initData();
-    }
 
-    private void initData() {
-        this.tv_username.setText(SharedPreferencesUtil.getShareString(LoginActivity.this, USER_NAME));
-        this.tv_password.setText(SharedPreferencesUtil.getShareString(LoginActivity.this, PASSWORD));
     }
 
     @OnClick(R.id.btn_submit)
@@ -82,11 +76,11 @@ public class LoginActivity extends BaseActivity {
                         if (userInfo.getUserType().equals("0")) {
                             AppData.getInstance().setUserInfo(userInfo);
                             if (cb_remember.isChecked()) {
-                                SharedPreferencesUtil.setShareString(LoginActivity.this, USER_NAME, username);
-                                SharedPreferencesUtil.setShareString(LoginActivity.this, PASSWORD, password);
+                                SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.USERNAME, username);
+                                SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.PASSWORD, password);
                             }
                             //设置别名
-                            mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, userInfo.getMobile()));
+                            ((JDApplication)getApplication()).setAlias(userInfo.getMobile());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
@@ -101,33 +95,4 @@ public class LoginActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
-    //Handler to setAlias
-   private final android.os.Handler mHandler=new android.os.Handler()
-   {
-       @Override
-       public void handleMessage(android.os.Message msg) {
-           super.handleMessage(msg);
-           switch (msg.what)
-           {
-               case MSG_SET_ALIAS:
-                   JPushInterface.setAliasAndTags(getApplicationContext(), (String) msg.obj, null, mAliasCallback);
-                   break;
-           }
-       }
-   };
-
-    // AliasCallback
-    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
-        @Override
-        public void gotResult(int code, String alias, Set<String> tags) {
-            switch (code) {
-                case 0:
-                    break;
-                case 6002:
-                    break;
-                default:
-            }
-        }
-    };
 }

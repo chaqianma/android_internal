@@ -20,7 +20,13 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     /** 获取CrashHandler实例 ,单例模式 */
-    public synchronized static CrashHandler getInstance() {
+    public static CrashHandler getInstance() {
+        if (mInstance == null) {
+            synchronized (CrashHandler.class) {
+                if (mInstance == null)
+                    mInstance = new CrashHandler();
+            }
+        }
         return mInstance;
     }
 

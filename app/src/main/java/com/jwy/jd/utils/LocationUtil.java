@@ -69,7 +69,7 @@ public class LocationUtil implements Runnable {
                 locationInfo.setProvince(location.getProvince());
             }
             AppData.getInstance().setLocationInfo(locationInfo);
-            mHandler.sendMessage(mHandler.obtainMessage(Constants.GETLOCATION,locationInfo));
+            mHandler.sendMessage(mHandler.obtainMessage(Constants.GETLOCATION,null));
             unRegisterLocationListener();
             mLocationClient.stop();
         }

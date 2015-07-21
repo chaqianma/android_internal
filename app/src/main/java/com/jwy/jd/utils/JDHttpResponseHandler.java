@@ -77,6 +77,11 @@ public  class JDHttpResponseHandler extends AsyncHttpResponseHandler {
     }
     @Override
     public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+        String errMsg=throwable.getMessage();
+        if(errMsg.contains("out"))
+        {
+
+        }
         JDToast.showShortText(context, "请求出错");
         JDProgress.dismiss();
     }

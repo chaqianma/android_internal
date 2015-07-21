@@ -23,7 +23,7 @@ public class HttpClientUtil {
     }
 
     static {
-        mClient.setTimeout(3 * 1000);
+        mClient.setTimeout(6 * 1000);
     }
 
     public static void get(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
