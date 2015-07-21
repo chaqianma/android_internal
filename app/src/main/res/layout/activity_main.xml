@@ -1,80 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/all_rl"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
-    <TabHost
-        android:id="@+id/tabhost"
+    <RadioGroup
+        android:id="@+id/radiogroup"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="60dip"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
 
-        <LinearLayout
-            android:id="@+id/tab_ll"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+        <RadioButton
+            android:id="@+id/radio_choumeibang"
+            style="@style/main_tab_bottom"
+            android:checked="true"
+            android:drawablePadding="4dp"
+            android:tag="radio_choumeibang"
+            android:text="哈哈1" />
 
-            <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_height="0.0dip"
-                android:layout_weight="1.0">
+        <RadioButton
+            android:id="@+id/radio_hairscan"
+            style="@style/main_tab_bottom"
+            android:drawablePadding="1dp"
+            android:tag="radio_hairscan"
+            android:text="哈哈2" />
 
-                <FrameLayout
-                    android:id="@android:id/tabcontent"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
+        <RadioButton
+            android:id="@+id/radio_discover"
+            style="@style/main_tab_bottom"
+            android:tag="radio_discover"
+            android:text="哈哈3" />
 
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="1.0dip"
-                    android:layout_gravity="bottom"
-                    android:background="#ffe1e1e1" />
-            </FrameLayout>
-
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:visibility="gone" />
-
-            <RadioGroup
-                android:id="@+id/radiogroup"
-                android:layout_width="fill_parent"
-                android:layout_height="60dip"
-                android:layout_gravity="bottom"
-                android:orientation="horizontal"
-                android:paddingTop="4dp">
-
-                <RadioButton
-                    android:id="@+id/radio_choumeibang"
-                    style="@style/main_tab_bottom"
-                    android:checked="true"
-                    android:drawablePadding="4dp"
-                    android:tag="radio_choumeibang"
-                    android:text="哈哈1" />
-
-                <RadioButton
-                    android:id="@+id/radio_hairscan"
-                    style="@style/main_tab_bottom"
-                    android:drawablePadding="1dp"
-                    android:tag="radio_hairscan"
-                    android:text="哈哈2" />
-
-                <RadioButton
-                    android:id="@+id/radio_discover"
-                    style="@style/main_tab_bottom"
-                    android:tag="radio_discover"
-                    android:text="哈哈3" />
-
-                <RadioButton
-                    android:id="@+id/radio_me"
-                    style="@style/main_tab_bottom"
-                    android:drawablePadding="1dp"
-                    android:tag="radio_me"
-                    android:text="哈哈4" />
-            </RadioGroup>
-        </LinearLayout>
-    </TabHost>
-</RelativeLayout>
+        <RadioButton
+            android:id="@+id/radio_me"
+            style="@style/main_tab_bottom"
+            android:drawablePadding="1dp"
+            android:tag="radio_me"
+            android:text="哈哈4" />
+    </RadioGroup>
+</LinearLayout>

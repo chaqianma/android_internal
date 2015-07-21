@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class UserInfo implements Serializable {
     //{"userId":1,"mobile":"13913999601","password":"$2a$10$r0nQQraNY0.aBZKhxdErWeKweXDAjSa5zyrAK8NGgHkd5Os6Tox.O",
-    // "email":null,"name":"»ÆÐ¥Óî","idNumber":"","nameIdVerified":0,"userType":0,"balanceInvestment":8900.0,"balanceGuaranty":1000.0}
+    // "email":null,"name":"é©¬åŒ–è…¾","idNumber":"","nameIdVerified":0,"userType":0,"balanceInvestment":8900.0,"balanceGuaranty":1000.0}
     private String userId=null;
     private String mobile=null;
     private String password=null;

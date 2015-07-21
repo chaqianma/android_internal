@@ -2,17 +2,39 @@ package com.jwy.jd.app;
 
 /**
  * Created by zhangxd on 2015/7/15.
- *
- * ȫ���쳣
+ * 全局异常处理
  */
+
+import android.content.Context;
 
 import java.lang.Thread;
 
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
-
-    public CrashHandler()
+    //系统默认的UncaughtException处理类
+    private Thread.UncaughtExceptionHandler mDefaultHandler;
+    private static CrashHandler mInstance = new CrashHandler();
+    private Context mContext;
+    private CrashHandler()
     {
 
+    }
+
+    /** 获取CrashHandler实例 ,单例模式 */
+    public synchronized static CrashHandler getInstance() {
+        return mInstance;
+    }
+
+    /**
+     * 初始化
+     *
+     * @param context
+     */
+    public void init(Context context) {
+        mContext = context;
+        //获取系统默认的UncaughtException处理器
+        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        //设置该CrashHandler为程序的默认处理器
+        Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
     @Override

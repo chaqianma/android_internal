@@ -52,7 +52,7 @@ public  class JDHttpResponseHandler extends AsyncHttpResponseHandler {
 
     @Override
     public void onSuccess(int i, Header[] headers, byte[] bytes) {
-        //���Header
+        //Header
         if(isLogin)
         {
             int length=headers.length;

@@ -17,12 +17,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/android-async-http-1.4.7.jar')
     compile files('libs/butterknife4.0.1.jar')
-    compile files('libs/butterknife4.0.1.jar')
     compile files('libs/fastjson-1.2.5.jar')
+    compile files('libs/jpush-sdk-release1.7.5.jar')
+    compile files('libs/BaiduLBS_Android.jar')
 }

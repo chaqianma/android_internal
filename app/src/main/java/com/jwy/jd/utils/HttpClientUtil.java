@@ -10,58 +10,44 @@ import java.util.Map;
 
 
 /**
- * Created by zhangxd on 2015/7/14.
- *
- * HTTPÍøÂçÇëÇó
+ * Created by zhangxd on 2015/7/14
+ * HTTPç½‘ç»œè¯·æ±‚
  */
-public class HttpClientUtil{
-    private static final String BASE_URL="http://192.168.1.116:8080/";
+public class HttpClientUtil {
+    private static final String BASE_URL = "http://192.168.199.133:8080/";
     private static AsyncHttpClient mClient = new AsyncHttpClient();
 
-    //Ìí¼Óauth_token
-    public static void setAuthToken(String auth_token)
-    {
-        mClient.addHeader("",auth_token);
+    //è®¾ç½®auth_token
+    public static void setAuthToken(String auth_token) {
+        mClient.addHeader("", auth_token);
     }
 
     static {
-        mClient.setTimeout(2*1000);
+        mClient.setTimeout(3 * 1000);
     }
 
-    public static void get(String url,HashMap<String,Object> argMaps,AsyncHttpResponseHandler responseHandler) {
-
-       if(argMaps!=null && argMaps.size()>0)
-        {
-            RequestParams params=new RequestParams();
-            Iterator iter= argMaps.entrySet().iterator();
-            while (iter.hasNext())
-            {
-                Map.Entry entry=(Map.Entry)iter.next();
-                params.put(entry.getKey().toString(),entry.getValue());
-            }
-            mClient.get(getAbsoluteUrl(url), params, responseHandler);
-        }
+    public static void get(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
+        if (argMaps != null && argMaps.size() > 0)
+            mClient.get(getAbsoluteUrl(url), getRequestParams(argMaps), responseHandler);
         else
-        {
-            mClient.get(getAbsoluteUrl(url),responseHandler);
-        }
+            mClient.get(getAbsoluteUrl(url), responseHandler);
     }
-    public static void post(String url,HashMap<String,Object> argMaps, AsyncHttpResponseHandler responseHandler) {
-        if(argMaps!=null && argMaps.size()>0)
-        {
-            RequestParams params=new RequestParams();
-            Iterator iter= argMaps.entrySet().iterator();
-            while (iter.hasNext())
-            {
-                Map.Entry entry=(Map.Entry)iter.next();
-                params.put(entry.getKey().toString(),entry.getValue());
-            }
-            mClient.post(getAbsoluteUrl(url), params, responseHandler);
-        }
+
+    public static void post(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
+        if (argMaps != null && argMaps.size() > 0)
+            mClient.post(getAbsoluteUrl(url), getRequestParams(argMaps), responseHandler);
         else
-        {
-            mClient.post(getAbsoluteUrl(url),responseHandler);
+            mClient.post(getAbsoluteUrl(url), responseHandler);
+    }
+
+    private static RequestParams getRequestParams(HashMap<String, Object> argMaps) {
+        RequestParams params = new RequestParams();
+        Iterator iterator = argMaps.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            params.put(entry.getKey().toString(), entry.getValue());
         }
+        return params;
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {

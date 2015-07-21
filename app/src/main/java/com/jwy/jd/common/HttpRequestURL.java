@@ -2,7 +2,7 @@ package com.jwy.jd.common;
 
 /**
  * Created by zhangxd on 2015/7/15.
- * 网络请求链接常量
+ * 缃戠粶璇锋眰閾炬帴甯搁噺
  */
 public class HttpRequestURL {
 
