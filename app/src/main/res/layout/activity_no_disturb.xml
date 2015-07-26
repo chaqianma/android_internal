@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/android_layout_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/top" />
+
+    <RelativeLayout
+        android:id="@+id/layout_msg_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <TextView
+            style="@style/SmallTextStyle"
+            android:textSize="22sp"
+            android:layout_marginLeft="6dp"
+            android:text="勿扰模式" />
+
+        <com.chaqianma.jd.widget.SwitchButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:gravity="right"
+            app:frameDrawable="@mipmap/switch_frame"
+            app:sliderDrawable="@drawable/selector_switch_slider"
+            app:stateDrawable="@drawable/selector_switch_state"
+            app:stateMaskDrawable="@mipmap/switch_state_mask"
+            app:withTextInterval="16dp" />
+    </RelativeLayout>
+
+    <View style="@style/ViewLineStyle" />
+
+    <TextView
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/SmallTextStyle"
+        android:text="开启后，在设定时间内收到新消息时不会响铃或震动" />
+
+    <View style="@style/ViewLineStyle" />
+
+    <RelativeLayout
+        android:id="@+id/layout_begin_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <TextView
+            style="@style/SmallTextStyle"
+            android:text="开始时间" />
+
+        <TextView
+            android:id="@+id/tv_begin_time"
+            style="@style/SmallTextStyle"
+            android:layout_marginRight="10dp"
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/android_list_idex"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="9:00"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_end_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <TextView
+            style="@style/SmallTextStyle"
+            android:text="结束时间" />
+
+        <TextView
+            android:id="@+id/tv_end_time"
+            style="@style/SmallTextStyle"
+            android:layout_marginRight="10dp"
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/android_list_idex"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="18:00"/>
+    </RelativeLayout>
+</LinearLayout>

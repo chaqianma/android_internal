@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/android_layout_bg"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_msg_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <ImageView
+            android:id="@+id/setting_icon_01"
+            style="@style/SettingIconStyle"
+            android:src="@mipmap/quickly_order" />
+
+        <TextView
+            style="@style/SmallTextStyle"
+            android:layout_toRightOf="@id/setting_icon_01"
+            android:text="消息提醒" />
+
+        <ImageView
+            style="@style/SettingRightIconStyle"
+            android:src="@mipmap/android_list_idex" />
+    </RelativeLayout>
+
+    <View style="@style/ViewLineStyle" />
+
+    <RelativeLayout
+        android:id="@+id/layout_no_disturb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <ImageView
+            android:id="@+id/setting_icon_02"
+            style="@style/SettingIconStyle"
+            android:src="@mipmap/quickly_order" />
+
+        <TextView
+            style="@style/SmallTextStyle"
+            android:layout_toRightOf="@id/setting_icon_02"
+            android:text="勿扰模式" />
+
+        <ImageView
+            style="@style/SettingRightIconStyle"
+            android:src="@mipmap/android_list_idex" />
+    </RelativeLayout>
+
+    <View style="@style/ViewLineStyle" />
+
+    <RelativeLayout
+        android:id="@+id/layout_update_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <ImageView
+            android:id="@+id/setting_icon_03"
+            style="@style/SettingIconStyle"
+            android:src="@mipmap/quickly_order" />
+
+        <TextView
+            style="@style/SmallTextStyle"
+            android:layout_toRightOf="@id/setting_icon_03"
+            android:text="修改登录密码" />
+
+        <ImageView
+            style="@style/SettingRightIconStyle"
+            android:src="@mipmap/android_list_idex" />
+    </RelativeLayout>
+
+    <View style="@style/ViewLineStyle" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
+
+        <Button
+            android:id="@+id/btn_signout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#0D49FD"
+            android:gravity="center"
+            android:text="退出"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+    </RelativeLayout>
+</LinearLayout>
