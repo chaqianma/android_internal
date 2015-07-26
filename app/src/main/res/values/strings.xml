@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="view_map"><u>查看地图</u></string>
+    <string name="transfer_task"><u>转出尽调任务</u></string>
 </resources>

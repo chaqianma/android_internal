@@ -16,22 +16,23 @@
             android:layout_height="fill_parent"
             android:orientation="vertical">
 
+            <include
+                layout="@layout/top"
+                android:layout_width="match_parent"
+                android:layout_height="60dp" />
+
             <FrameLayout
+                android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
-                android:layout_height="0.0dip"
-                android:layout_weight="1.0">
+                android:layout_weight="1"
+                android:layout_height="0dp" />
 
-                <FrameLayout
-                    android:id="@android:id/tabcontent"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="1.0dip"
+                android:layout_gravity="bottom"
+                android:background="#ffe1e1e1" />
 
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="1.0dip"
-                    android:layout_gravity="bottom"
-                    android:background="#ffe1e1e1" />
-            </FrameLayout>
 
             <TabWidget
                 android:id="@android:id/tabs"
@@ -62,19 +63,6 @@
                     android:drawablePadding="1dp"
                     android:tag="radio_hairscan"
                     android:text="哈哈2" />
-
-                <RadioButton
-                    android:id="@+id/radio_discover"
-                    style="@style/main_tab_bottom"
-                    android:tag="radio_discover"
-                    android:text="哈哈3" />
-
-                <RadioButton
-                    android:id="@+id/radio_me"
-                    style="@style/main_tab_bottom"
-                    android:drawablePadding="1dp"
-                    android:tag="radio_me"
-                    android:text="哈哈4" />
             </RadioGroup>
         </LinearLayout>
     </TabHost>
