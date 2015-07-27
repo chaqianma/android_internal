@@ -62,6 +62,11 @@ public class BorrowApplyFragment extends BaseFragment {
         HttpClientUtil.get(HttpRequestURL.loanApplyUrl, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler<String>() {
             @Override
             public void onSuccess(String buffer) {
+                String cc=buffer;
+                cc=buffer;
+                cc=buffer;
+                cc=buffer;
+                cc=buffer;
 
             }
         }));
