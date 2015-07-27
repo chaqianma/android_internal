@@ -30,7 +30,7 @@ import butterknife.OnClick;
  * Created by zhangxd on 2015/7/15.
  * 登陆
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
     @InjectView(R.id.tv_username)
     TextView tv_username;
     @InjectView(R.id.tv_password)
@@ -44,9 +44,10 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
-        //tv_username.setText("13913999601");
-        //tv_password.setText("password");
+        tv_username.setText("13913999601");
+        tv_password.setText("password");
         mUUID = JDAppUtil.getUniqueId(LoginActivity.this);
+        setTopBarState("登录",false);
     }
 
     @OnClick(R.id.btn_submit)
@@ -65,7 +66,7 @@ public class LoginActivity extends Activity {
             HashMap<String, Object> argMap = new HashMap<String, Object>();
             argMap.put("mobile", username);
             argMap.put("password", password);
-            argMap.put("userType", "1");
+            //argMap.put("userType", "1");
             argMap.put("uuid", mUUID);
             HttpClientUtil.post(HttpRequestURL.LoginUrl, argMap, new JDHttpResponseHandler(LoginActivity.this, new ResponseHandler<UserInfo>() {
                 @Override
@@ -73,12 +74,13 @@ public class LoginActivity extends Activity {
                     if (userInfo != null) {
                         if (userInfo.getUserType().equals(Constants.USERTYPE)) {
                             AppData.getInstance().setUserInfo(userInfo);
+                            SharedPreferencesUtil.setShareBoolean(LoginActivity.this,Constants.REMEMBERPASSWORD,cb_remember.isChecked());
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.USERNAME, username);
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.PASSWORD, password);
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.UUID, mUUID);
                             //设置别名
                             ((JDApplication) getApplication()).setAlias(userInfo.getMobile());
-                            Intent intent = new Intent(LoginActivity.this, MainActivity_bak.class);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             LoginActivity.this.finish();

@@ -40,7 +40,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity_bak"
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme">
             <!-- <intent-filter>
@@ -50,10 +50,13 @@
         </activity>
 
         <activity
-            android:name=".activity.BaiduMapActivity"
+            android:name=".activity.InitActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -70,14 +73,20 @@
             android:name=".activity.NodisturbActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
             android:name=".activity.UpdatePasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent_theme" />
+
+        <activity
+            android:name=".activity.StaffActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent_theme" />
+
+        <activity
+            android:name=".activity.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme" />
 

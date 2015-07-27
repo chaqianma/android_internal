@@ -2,28 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@mipmap/android_layout_bg">
 
-    <View
+    <include layout="@layout/top"/>
+    <!--<View
         android:layout_width="match_parent"
         android:layout_height="60dip"
-        android:background="@color/login_view_color"/>
+        android:background="@color/login_view_color"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:layout_marginLeft="8dip"
         android:layout_marginRight="8dip">
-        <TextView
+      <!--  <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名"/>
+            style="@style/SmallTextStyle"
+            android:text="用户名"/>-->
 
         <EditText
             android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"/>
+            android:drawableLeft="@mipmap/icon_account"/>
     </LinearLayout>
 
     <LinearLayout
@@ -32,17 +36,18 @@
         android:layout_marginLeft="8dip"
         android:layout_marginRight="8dip"
         android:layout_marginTop="6dip">
-        <TextView
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="密码"/>
+            style="@style/SmallTextStyle"
+            android:text="密    码"/>-->
 
         <EditText
             android:id="@+id/tv_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:layout_marginLeft="10dip"/>
+            android:drawableLeft="@mipmap/icon_password"/>
     </LinearLayout>
 
     <CheckBox
@@ -50,14 +55,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="记住密码"
+        style="@style/SmallTextStyle"
+        android:layout_marginLeft="8dp"
         android:checked="true"/>
 
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
         android:text="提交"/>
 
 </LinearLayout>

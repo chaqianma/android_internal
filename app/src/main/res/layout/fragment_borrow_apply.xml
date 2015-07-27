@@ -2,173 +2,189 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="8dp">
+    android:background="@mipmap/android_layout_bg"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="待处理ID" />
+            style="@style/SmallTextStyle"
+            android:layout_marginLeft="15dp"
+            android:text="待处理ID:"
+            android:textSize="@dimen/large_text_size" />
 
         <TextView
             android:id="@+id/tv_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            style="@style/SmallTextStyle"
+            android:text="487372"
+            android:textSize="@dimen/large_text_size" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@drawable/background_corners"
+        android:orientation="vertical"
+        android:padding="1dp">
 
-        <TextView
-            android:id="@+id/tv_name_tag"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="姓名"/>
+            android:layout_margin="6dp">
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:layout_toRightOf="@id/tv_name_tag" />
+            <TextView
+                android:id="@+id/tv_name_tag"
+                style="@style/SmallTextStyle"
+                android:layout_marginLeft="2dp"
+                android:text="姓名" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_toRightOf="@id/tv_name_tag" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_telephone"
+                    style="@style/SmallTextStyle"
+                    android:layout_gravity="center"
+                    android:text="13913999601" />
+
+                <ImageView
+                    android:id="@+id/img_telephone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_clear_input" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View style="@style/ViewLineStyle" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
+            android:layout_margin="6dp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_telephone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                style="@style/SmallTextStyle"
+                android:layout_marginLeft="2dp"
+                android:text="借款金额" />
 
-            <ImageView
-                android:id="@+id/img_telephone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/icon_clear_input" />
+            <TextView
+                android:id="@+id/tv_money"
+                style="@style/SmallTextStyle"
+                android:text="10" />
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="万" />
         </LinearLayout>
-    </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <View style="@style/ViewLineStyle" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="借款金额" />
+            android:layout_margin="6dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_money"
-            android:layout_width="wrap_content"
+            <TextView
+                style="@style/SmallTextStyle"
+                android:layout_marginLeft="2dp"
+                android:text="借款期限" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                style="@style/SmallTextStyle"
+                android:text="10" />
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="月" />
+        </LinearLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="10" />
+            android:layout_margin="6dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_addressTag"
+                style="@style/SmallTextStyle"
+                android:layout_marginLeft="2dp"
+                android:text="地址" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                style="@style/SmallTextStyle"
+                android:layout_toRightOf="@id/tv_addressTag"
+                android:text="10" />
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:textColor="#0A57DB"
+                android:text="@string/view_map" />
+        </RelativeLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="万" />
-    </LinearLayout>
+            android:layout_margin="6dp"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <TextView
+                style="@style/SmallTextStyle"
+                android:layout_marginLeft="2dp"
+                android:text="申请时间" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="借款期限" />
+            <TextView
+                android:id="@+id/tv_apply_time"
+                style="@style/SmallTextStyle"
+                android:layout_marginLeft="2dp"
+                android:text="10" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="10" />
+        <View style="@style/ViewLineStyle" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="月" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="地址" />
-
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="10" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="@string/view_map" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="申请时间" />
-
-        <TextView
-            android:id="@+id/tv_apply_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="10" />
-    </LinearLayout>
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <Button
-            android:id="@+id/btn_borrow"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#0D49FD"
-            android:gravity="center"
-            android:text="开始尽调"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true"
-            android:textSize="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/transfer_task"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/btn_borrow"/>
-    </RelativeLayout>
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_borrow"
+                style="@style/MatchParentButtonStyle"
+                android:text="开始尽调" />
+
+            <TextView
+                android:id="@+id/tv_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/btn_borrow"
+                android:layout_marginTop="18dp"
+                android:text="@string/transfer_task"
+                android:textColor="#0A57DB" />
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

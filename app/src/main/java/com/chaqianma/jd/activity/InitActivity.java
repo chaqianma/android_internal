@@ -31,7 +31,7 @@ public class InitActivity extends Activity {
         if (username.length() > 0 && password.length() > 0) {
             try {
                 HashMap<String, Object> argMap = new HashMap<String, Object>();
-                argMap.put("mobile222", username);
+                argMap.put("mobile", username);
                 argMap.put("password", password);
                 argMap.put("userType","1");
                 argMap.put("uuid", uuid);
@@ -39,7 +39,7 @@ public class InitActivity extends Activity {
                     @Override
                     public void onSuccess(UserInfo userInfo) {
                         if (userInfo != null) {
-                            //理因为1
+                            //理应为1
                             if (userInfo.getUserType().equals("0")) {
                                 AppData.getInstance().setUserInfo(userInfo);
                                 //设置别名

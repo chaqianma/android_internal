@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.AppData;
@@ -29,6 +32,10 @@ public class MainActivity extends ActivityGroup {
     TabHost mTabHost;
     @InjectView(R.id.radiogroup)
     RadioGroup mRadioGroup;
+    @InjectView(R.id.top_title)
+    TextView top_title;
+    @InjectView(R.id.top_back_btn)
+    LinearLayout top_back_btn;
     private Timer timer = new Timer();
     private boolean isBack = false;
 
@@ -44,13 +51,14 @@ public class MainActivity extends ActivityGroup {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.radio_choumeibang:
+                    case R.id.radio_msg:
+                        top_title.setText("首页");
                         mTabHost.setCurrentTab(0);
                         break;
-                    case R.id.radio_hairscan:
+                    case R.id.radio_setup:
+                        top_title.setText("设置");
                         mTabHost.setCurrentTab(1);
                         break;
-
                     default:
                         break;
                 }
@@ -58,12 +66,22 @@ public class MainActivity extends ActivityGroup {
         });
         LocationUtil locationUtil = new LocationUtil(getApplicationContext(), mHandler);
         locationUtil.run();
+        top_title.setText("首页");
+        top_back_btn.setVisibility(View.GONE);
     }
 
     private void addTabIntent() {
         try {
-
+            this.mTabHost.addTab(buildTabSpec("tab1","0",new Intent(this,StaffActivity.class)));
+            this.mTabHost.addTab(buildTabSpec("tab2","1",new Intent(this,SettingActivity.class)));
         } catch (Exception e) {
+            String sss="111";
+            sss="111";
+            sss="111";
+            sss="111";
+            sss="111";
+            sss="111";
+            sss="111";
         }
     }
 

@@ -2,19 +2,24 @@ package com.chaqianma.jd.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chaqianma.jd.R;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by zhangxd on 2015/7/17.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements View.OnClickListener {
+    protected iBackPressedListener ibackPressedListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +37,50 @@ public class BaseActivity extends Activity {
         JPushInterface.onPause(this);
     }
 
-    public void setTitle(Context context,String title)
-    {
-        View view=((BaseActivity)context).findViewById(R.id.top_title);
-        if(view!=null)
-        {
-            ((TextView)view).setText(title);
+    public void setTopBarState(String title) {
+        setTopBarState(title, false, false);
+    }
+
+    public void setTopBarState(String title, boolean isShowBackBtn) {
+        setTopBarState(title, isShowBackBtn, false);
+    }
+
+    public void setTopBarState(String title, final boolean isShowBackBtn, boolean isShowRightBtn) {
+        View tv_title = findViewById(R.id.top_title);
+        if (tv_title != null)
+            ((TextView) tv_title).setText(title);
+        View top_back_btn = findViewById(R.id.top_back_btn);
+        if (top_back_btn != null) {
+            top_back_btn.setVisibility(isShowBackBtn ? View.VISIBLE : View.GONE);
+            if (isShowBackBtn) {
+                top_back_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BaseActivity.this.finish();
+                    }
+                });
+            }
         }
+        View top_right_btn = findViewById(R.id.top_right_btn);
+        if (top_right_btn != null) {
+            top_right_btn.setVisibility(isShowRightBtn ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    //启动Intent
+    protected void startActivity(Context context, Class<?> dataType) {
+        Intent intent = new Intent();
+        intent.setClass(context, dataType);
+        startActivity(intent);
+    }
+
+
+    protected interface iBackPressedListener {
+        void onBackPressed();
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

@@ -3,82 +3,90 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="8dp">
+    android:background="@mipmap/android_layout_bg"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/top" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="5dp">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            style="@style/SmallTextStyle"
             android:text="新消息提醒通知" />
 
         <com.chaqianma.jd.widget.SwitchButton
             android:id="@+id/switch_notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:gravity="right"
             app:frameDrawable="@mipmap/switch_frame"
             app:sliderDrawable="@drawable/selector_switch_slider"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@mipmap/switch_state_mask"
-            app:withTextInterval="16dp"/>
-    </LinearLayout>
+            app:withTextInterval="16dp" />
+    </RelativeLayout>
+
+    <View style="@style/ViewLineStyle" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="开启后,收到消息将以声音或震动方式提醒"/>
+        style="@style/SmallTextStyle"
+        android:text="开启后,收到消息将以声音或震动方式提醒"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp" />
 
-    <LinearLayout
+    <View style="@style/ViewLineStyle" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="5dp">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="声音"/>
+            style="@style/SmallTextStyle"
+            android:text="声音" />
 
         <com.chaqianma.jd.widget.SwitchButton
             android:id="@+id/switch_sound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:gravity="right"
             app:frameDrawable="@mipmap/switch_frame"
             app:sliderDrawable="@drawable/selector_switch_slider"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@mipmap/switch_state_mask"
-            app:withTextInterval="16dp"/>
-    </LinearLayout>
+            app:withTextInterval="16dp" />
+    </RelativeLayout>
 
-    <LinearLayout
+    <View style="@style/ViewLineStyle" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="5dp">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="震动"/>
+            style="@style/SmallTextStyle"
+            android:text="震动" />
 
         <com.chaqianma.jd.widget.SwitchButton
             android:id="@+id/switch_shake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:gravity="right"
             app:frameDrawable="@mipmap/switch_frame"
             app:sliderDrawable="@drawable/selector_switch_slider"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@mipmap/switch_state_mask"
-            app:withTextInterval="16dp"/>
+            app:withTextInterval="16dp" />
+    </RelativeLayout>
 
-    </LinearLayout>
 </LinearLayout>
