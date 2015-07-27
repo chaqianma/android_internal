@@ -16,9 +16,11 @@ import java.util.Map;
  */
 public class HttpClientUtil {
     private static AsyncHttpClient mClient = new AsyncHttpClient();
+
     //设置auth_token
     public static void setAuthToken(String auth_token) {
         mClient.addHeader(Constants.HEADERTAG, auth_token);
+
     }
 
     static {
@@ -39,6 +41,13 @@ public class HttpClientUtil {
             mClient.post(getAbsoluteUrl(url), responseHandler);
     }
 
+    public static void put(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
+        if (argMaps != null && argMaps.size() > 0)
+            mClient.put(getAbsoluteUrl(url), getRequestParams(argMaps), responseHandler);
+        else
+            mClient.put(getAbsoluteUrl(url), responseHandler);
+    }
+
     private static RequestParams getRequestParams(HashMap<String, Object> argMaps) {
         RequestParams params = new RequestParams();
         Iterator iterator = argMaps.entrySet().iterator();
@@ -50,7 +59,7 @@ public class HttpClientUtil {
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
-        String url=Constants.BASEURL.concat(relativeUrl);
+        String url = Constants.BASEURL.concat(relativeUrl);
         return Constants.BASEURL.concat(relativeUrl);
     }
 }

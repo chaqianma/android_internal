@@ -75,13 +75,6 @@ public class MainActivity extends ActivityGroup {
             this.mTabHost.addTab(buildTabSpec("tab1","0",new Intent(this,StaffActivity.class)));
             this.mTabHost.addTab(buildTabSpec("tab2","1",new Intent(this,SettingActivity.class)));
         } catch (Exception e) {
-            String sss="111";
-            sss="111";
-            sss="111";
-            sss="111";
-            sss="111";
-            sss="111";
-            sss="111";
         }
     }
 

@@ -80,6 +80,8 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
     public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
         try {
             String errMsg=new String(bytes);
+            if(dataType==null)
+                dataType=Class.forName(ErrorInfo.class.getName());
             ErrorInfo errorInfo = (ErrorInfo) JSON.parseObject(new String(bytes), dataType);
             if (errorInfo != null) {
                 JDToast.showShortText(context, errorInfo.getMessage());

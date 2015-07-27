@@ -3,6 +3,8 @@ package com.chaqianma.jd.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.chaqianma.jd.common.Constants;
+
 /**
  * Created by zhangxd on 2015/7/16.
  * SharedPreferences操作
@@ -59,5 +61,13 @@ public class SharedPreferencesUtil {
     {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
         return settings.getInt(strKey, 0);
+    }
+
+    //保存用记名与密码
+    public static void saveUserAndPassword(Context context, String username, String password) {
+        if (SharedPreferencesUtil.getShareBoolean(context, Constants.REMEMBERPASSWORD)) {
+            SharedPreferencesUtil.setShareString(context, Constants.USERNAME, username);
+            SharedPreferencesUtil.setShareString(context, Constants.PASSWORD, password);
+        }
     }
 }

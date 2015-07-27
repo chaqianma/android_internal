@@ -1,5 +1,7 @@
 package com.chaqianma.jd.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.MainActivity;
 import com.chaqianma.jd.activity.MainActivity_bak;
+import com.chaqianma.jd.common.Constants;
 
 /**
  * Created by zhangxd on 2015/7/21.
@@ -43,5 +46,21 @@ public class BaseFragment extends Fragment {
             MainActivity_bak activity=(MainActivity_bak)fragmentActivity;
             activity.setShowFragment(fragmentTag,isAddToBackStack);
         }
+    }
+
+    protected void startActivity(Class<?> toClass)
+    {
+        startActivity(toClass,null);
+    }
+
+    protected  void startActivity(Class<?> toClass,Bundle bundle)
+    {
+        Intent intent=new Intent();
+        intent.setClass(getActivity(), toClass);
+        if(bundle!=null)
+        {
+            intent.putExtra(Constants.TOVALUEKEY,bundle);
+        }
+        startActivity(intent);
     }
 }

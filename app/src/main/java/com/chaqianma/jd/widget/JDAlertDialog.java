@@ -8,25 +8,30 @@ import android.view.View;
 /**
  * Created by zhangxd on 2015/7/17.
  */
-public class JDAlertDialog
-{
+public class JDAlertDialog {
 
-    private static final String mPrompt="提示";
-    private static final String mSure="确定";
-    private static final String mCancel="取消";
+    private static final String mPrompt = "提示";
+    private static final String mSure = "确定";
+    private static final String mCancel = "取消";
 
-    public static void showAlertDialog(Context context,String msg, DialogInterface.OnClickListener onclient)
-    {
+    public static void showAlertDialog(Context context, String msg, DialogInterface.OnClickListener onclient) {
         showAlertDialog(context, mPrompt, msg, onclient);
     }
 
-    public static void showAlertDialog(Context context,String title,String msg, DialogInterface.OnClickListener onclient)
-    {
+    public static void showAlertDialog(Context context, String title, String msg, DialogInterface.OnClickListener onclient) {
         new AlertDialog.Builder(context).setTitle(title).setMessage(msg).setPositiveButton(mSure, onclient).create().show();
     }
 
-    public static void showAlertDialog(Context context,String title,View view, DialogInterface.OnClickListener onclient)
-    {
+    public static void showAlertDialog(Context context,String msg, DialogInterface.OnClickListener sureListener, DialogInterface.OnClickListener cancelListener) {
+        new AlertDialog.Builder(context).
+                setTitle(mPrompt).
+                setMessage(msg).
+                setPositiveButton(mSure, sureListener)
+                .setNegativeButton(mCancel, cancelListener).
+                create().show();
+    }
+
+    public static void showAlertDialog(Context context, String title, View view, DialogInterface.OnClickListener onclient) {
         new AlertDialog.Builder(context).setTitle(title).setView(view).
                 setPositiveButton(mSure, onclient)
                 .setCancelable(true)

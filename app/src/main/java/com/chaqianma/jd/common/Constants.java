@@ -46,6 +46,12 @@ public class Constants {
     public static final String SETTING="SETTING";
     //尽调申请
     public static final String BORROWAPPLY="BORROWAPPLY";
+    //传值KEY
+    public static final String TOVALUEKEY="TOVALUEKEY";
+    //借款人姓名
+    public static final String BORROWNAME="BORROWNAME";
+    //位置
+    public static final String LOCATION="LOCATION";
     //拼音code
     public static int[] characterValue = new int[] {-20319, -20317, -20304, -20295, -20292, -20283, -20265, -20257, -20242, -20230, -20051, -20036, -20032,
             -20026, -20002, -19990, -19986, -19982, -19976, -19805, -19784, -19775, -19774, -19763, -19756, -19751, -19746, -19741, -19739, -19728,

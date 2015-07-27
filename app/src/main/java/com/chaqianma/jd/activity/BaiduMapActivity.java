@@ -39,21 +39,43 @@ public class BaiduMapActivity extends BaseActivity {
     private BaiduMap mBaiduMap = null;
     boolean isFirstLoc = true;// 是否首次定位
     private BitmapDescriptor mIconMaker = null;
-    private LocationUtil mLocationUtil=null;
+    private LocationUtil mLocationUtil = null;
+    private double mLatitude = .0d;
+    private double mLongitude = .0d;
+    private String borrowName = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_baidu_map);
         ButterKnife.inject(this);
+        Bundle bundle = getIntent().getBundleExtra(Constants.TOVALUEKEY);
+        if (bundle != null) {
+            String location = bundle.getString(Constants.LOCATION);
+            borrowName = bundle.getString(Constants.BORROWNAME);
+            if (location != null && location.length() > 0 && location.indexOf(",") >= 0) {
+                try {
+                    String [] arrs=location.split(",");
+                    //经度
+                    mLatitude = Double.parseDouble(arrs[1]);
+                    //纬度
+                    mLongitude = Double.parseDouble(arrs[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         initMap();
+        addOverlay();
+        setTopBarState("待处理尽调", true);
     }
 
     private void initMap() {
         mBaiduMap = mMapView.getMap();
         mBaiduMap.setMyLocationEnabled(true);
         mIconMaker = BitmapDescriptorFactory.fromResource(R.mipmap.maker);
-        mLocationUtil=new LocationUtil(BaiduMapActivity.this, mHandler, "bd09ll");
-        mLocationUtil.run();
+        //mLocationUtil = new LocationUtil(BaiduMapActivity.this, mHandler, "bd09ll");
+        //mLocationUtil.run();
     }
 
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -62,8 +84,8 @@ public class BaiduMapActivity extends BaseActivity {
             switch (msg.what) {
                 case Constants.GETLOCATION:
                     LocationInfo locationInfo = AppData.getInstance().getLocationInfo();
-                    if (locationInfo != null &&isFirstLoc) {
-                        isFirstLoc=false;
+                    if (locationInfo != null && isFirstLoc) {
+                        isFirstLoc = false;
                         addOverlay(locationInfo);
                     }
                     break;
@@ -73,17 +95,17 @@ public class BaiduMapActivity extends BaseActivity {
         }
     };
 
-    public void addOverlay(LocationInfo locationInfo) {
+    public void addOverlay() {
         mBaiduMap.clear();
         // 位置
-        // latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-        LatLng  latLng = new LatLng(32.142425, 118.996925);
+        LatLng  latLng = new LatLng(mLatitude,mLongitude);
+        //LatLng latLng = new LatLng(32.142425, 118.996925);
         // 图标
-        OverlayOptions overlayOptions  = new MarkerOptions().position(latLng)
+        OverlayOptions overlayOptions = new MarkerOptions().position(latLng)
                 .icon(mIconMaker).zIndex(5);
-        Marker marker  = (Marker) (mBaiduMap.addOverlay(overlayOptions));
+        Marker marker = (Marker) (mBaiduMap.addOverlay(overlayOptions));
         Bundle bundle = new Bundle();
-        bundle.putSerializable("info", "zxd");
+        bundle.putSerializable("info",borrowName);
         marker.setExtraInfo(bundle);
         // 将地图移到到最后一个经纬度位置
         MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(latLng);
@@ -91,7 +113,25 @@ public class BaiduMapActivity extends BaseActivity {
         mBaiduMap.setOnMarkerClickListener(new MyMarkerClickListener());
     }
 
-    private class MyMarkerClickListener implements  BaiduMap.OnMarkerClickListener {
+    public void addOverlay(LocationInfo locationInfo) {
+        mBaiduMap.clear();
+        // 位置
+        // latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+        LatLng latLng = new LatLng(32.142425, 118.996925);
+        // 图标
+        OverlayOptions overlayOptions = new MarkerOptions().position(latLng)
+                .icon(mIconMaker).zIndex(5);
+        Marker marker = (Marker) (mBaiduMap.addOverlay(overlayOptions));
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("info",borrowName);
+        marker.setExtraInfo(bundle);
+        // 将地图移到到最后一个经纬度位置
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(latLng);
+        mBaiduMap.setMapStatus(u);
+        mBaiduMap.setOnMarkerClickListener(new MyMarkerClickListener());
+    }
+
+    private class MyMarkerClickListener implements BaiduMap.OnMarkerClickListener {
         @Override
         public boolean onMarkerClick(final Marker marker) {
             // 获得marker中的数据
@@ -138,7 +178,7 @@ public class BaiduMapActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         // 退出时销毁定位
-        if (mLocationUtil!=null)
+        if (mLocationUtil != null)
             mLocationUtil.stop();
         // 关闭定位图层
         mBaiduMap.setMyLocationEnabled(false);

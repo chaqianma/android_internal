@@ -73,14 +73,14 @@ public class UpdatePasswordActivity extends BaseActivity {
         argMaps.put("newPassword", new_password);
         try {
 
-            HttpClientUtil.post(HttpRequestURL.updatePasswordUrl, argMaps, new JDHttpResponseHandler(UpdatePasswordActivity.this, new ResponseHandler<String>() {
+            HttpClientUtil.post(HttpRequestURL.updatePasswordUrl, argMaps, new JDHttpResponseHandler(UpdatePasswordActivity.this, new ResponseHandler() {
                 @Override
-                public void onSuccess(String buffer) {
+                public void onSuccess(Object o) {
                     JDToast.showLongText(UpdatePasswordActivity.this, "修改密码成功");
                     //保存用户名与密码
-                    JDAppUtil.saveUserAndPassword(UpdatePasswordActivity.this, AppData.getInstance().getUserInfo().getMobile(),new_password);
+                    SharedPreferencesUtil.saveUserAndPassword(UpdatePasswordActivity.this, AppData.getInstance().getUserInfo().getMobile(),new_password);
                 }
-            }, Class.forName(ErrorInfo.class.getName())));
+            },Class.forName(ErrorInfo.class.getName())));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -9,6 +9,10 @@ import android.widget.Button;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.StaffActivity;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.common.HttpRequestURL;
+import com.chaqianma.jd.utils.HttpClientUtil;
+import com.chaqianma.jd.utils.JDHttpResponseHandler;
+import com.chaqianma.jd.utils.ResponseHandler;
 
 /**
  * Created by zhangxd on 2015/7/24.
@@ -24,13 +28,23 @@ public class StaffStateFragment extends BaseFragment {
         btn_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StaffActivity staffActivity=((StaffActivity) getActivity());
-                staffActivity.showFragment(staffActivity.borrowApplyFragment);
+                changeUserState();
             }
         });
         return view;
     }
 
+
+    private void changeUserState()
+    {
+        HttpClientUtil.put(HttpRequestURL.changeStateUrl,null,new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+            @Override
+            public void onSuccess(Object o) {
+                StaffActivity staffActivity=((StaffActivity) getActivity());
+                staffActivity.showFragment(staffActivity.borrowApplyFragment);
+            }
+        }));
+    }
 
 
     public static StaffStateFragment newInstance()

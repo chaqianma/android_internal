@@ -12,4 +12,8 @@ public class HttpRequestURL {
     public static final String loanApplyUrl="api/borrow/dealing";
     //修改密码
     public static final String updatePasswordUrl="api/user/changepassword";
+    //尽调员转出尽调
+    public static final String transformUrl="api/borrow/transform";
+    //更换尽调员状态
+    public static final String changeStateUrl="api/user/isbusy/update";
 }
