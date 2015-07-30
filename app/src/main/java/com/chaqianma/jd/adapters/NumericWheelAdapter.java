@@ -1,11 +1,11 @@
 package com.chaqianma.jd.adapters;
 
-import com.chaqianma.jd.widget.WheelView;
+import com.chaqianma.jd.widget.WheelViewTime;
 
 /**
  * Created by zhangxd on 2015/7/26.
  */
-public class NumericWheelAdapter implements WheelView.WheelAdapter {
+public class NumericWheelAdapter implements WheelViewTime.WheelAdapter {
     /** The default min value */
     public static final int DEFAULT_MAX_VALUE = 9;
 

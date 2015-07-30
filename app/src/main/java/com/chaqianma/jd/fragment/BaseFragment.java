@@ -50,7 +50,18 @@ public class BaseFragment extends Fragment {
 
     protected void startActivity(Class<?> toClass)
     {
-        startActivity(toClass,null);
+        startActivity(toClass,"");
+    }
+
+    protected  void startActivity(Class<?> toClass,String value)
+    {
+        Intent intent=new Intent();
+        intent.setClass(getActivity(), toClass);
+        if(value!=null && value.length()>0)
+        {
+            intent.putExtra(Constants.TOVALUEKEY,value);
+        }
+        startActivity(intent);
     }
 
     protected  void startActivity(Class<?> toClass,Bundle bundle)

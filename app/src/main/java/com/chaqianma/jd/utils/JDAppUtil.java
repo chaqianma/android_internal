@@ -5,10 +5,15 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.widget.JDToast;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -60,9 +65,71 @@ public class JDAppUtil {
     /*
     * 拨打电话
     * */
-    public static void onCallPhone(Context context,String mobile)
-    {
+    public static void onCallPhone(Context context, String mobile) {
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mobile));
         context.startActivity(intent);
+    }
+
+    /*
+    * 判断是否存在SDK卡
+    * */
+    public static boolean isHasSDKCard(Context context)    {
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            JDToast.showShortText(context, "内存卡不存在");
+            return false;
+        }
+        return true;
+    }
+
+
+
+    /*
+    * 添加显示动画
+    * */
+    public static void addShowAction(View view) {
+        TranslateAnimation mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mShowAction.setDuration(500);
+        view.startAnimation(mShowAction);
+        view.setVisibility(View.VISIBLE);
+    }
+
+    /*
+   * 添加隐藏动画
+   * */
+    public static void addHiddenAction(View view) {
+        TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f);
+        mHiddenAction.setDuration(500);
+        mHiddenAction.setAnimationListener(new MyAnimationListener(view,false));
+        view.startAnimation(mHiddenAction);
+    }
+
+    private static class MyAnimationListener implements Animation.AnimationListener {
+        private View mView = null;
+        private boolean mIsShow = false;
+
+        public MyAnimationListener(View view, boolean isShow) {
+            this.mView = view;
+            this.mIsShow = isShow;
+        }
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            mView.setVisibility(mIsShow ? View.VISIBLE : View.GONE);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
     }
 }

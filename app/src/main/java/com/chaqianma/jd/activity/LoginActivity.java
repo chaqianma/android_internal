@@ -44,7 +44,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
-        tv_username.setText("13913999601");
+        tv_username.setText("15651782303");
         tv_password.setText("password");
         mUUID = JDAppUtil.getUniqueId(LoginActivity.this);
         setTopBarState("登录",false);
@@ -80,7 +80,7 @@ public class LoginActivity extends BaseActivity {
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.UUID, mUUID);
                             //设置别名
                             ((JDApplication) getApplication()).setAlias(userInfo.getMobile());
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, InvestigateDetailActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             LoginActivity.this.finish();

@@ -15,5 +15,6 @@
     <!-- 首页Gallery高度 -->
     <dimen name="index_gallery_height">120dp</dimen>
     <!-- 首页Gallery高度 -->
+    <dimen name="img_item_width">65dp</dimen>
 
 </resources>

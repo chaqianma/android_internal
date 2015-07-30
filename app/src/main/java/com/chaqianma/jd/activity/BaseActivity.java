@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.common.Constants;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -35,6 +36,11 @@ public class BaseActivity extends Activity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
         JPushInterface.onPause(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     public void setTopBarState(String title) {
@@ -74,6 +80,32 @@ public class BaseActivity extends Activity implements View.OnClickListener {
         startActivity(intent);
     }
 
+    protected void startActivity(Class<?> toClass)
+    {
+        startActivity(toClass, "");
+    }
+
+    protected  void startActivity(Class<?> toClass,String value)
+    {
+        Intent intent=new Intent();
+        intent.setClass(BaseActivity.this, toClass);
+        if(value!=null && value.length()>0)
+        {
+            intent.putExtra(Constants.TOVALUEKEY, value);
+        }
+        startActivity(intent);
+    }
+
+    protected  void startActivity(Class<?> toClass,Bundle bundle)
+    {
+        Intent intent=new Intent();
+        intent.setClass(BaseActivity.this, toClass);
+        if(bundle!=null)
+        {
+            intent.putExtra(Constants.TOVALUEKEY,bundle);
+        }
+        startActivity(intent);
+    }
 
     protected interface iBackPressedListener {
         void onBackPressed();

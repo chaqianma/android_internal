@@ -80,6 +80,5 @@ public class MainActivity_bak extends FragmentActivity implements BottomFragment
 
         if (borrowApplyFragment != null)
             fragmentTransaction.hide(borrowApplyFragment);
-
     }
 }

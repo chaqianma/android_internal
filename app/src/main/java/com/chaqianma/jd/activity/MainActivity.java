@@ -36,9 +36,6 @@ public class MainActivity extends ActivityGroup {
     TextView top_title;
     @InjectView(R.id.top_back_btn)
     LinearLayout top_back_btn;
-    private Timer timer = new Timer();
-    private boolean isBack = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,8 +69,9 @@ public class MainActivity extends ActivityGroup {
 
     private void addTabIntent() {
         try {
-            this.mTabHost.addTab(buildTabSpec("tab1","0",new Intent(this,StaffActivity.class)));
+            this.mTabHost.addTab(buildTabSpec("tab1","0",new Intent(this,StaffActivity_bak.class)));
             this.mTabHost.addTab(buildTabSpec("tab2","1",new Intent(this,SettingActivity.class)));
+            this.mTabHost.addTab(buildTabSpec("tab2","1",new Intent(this,BorrowApplyActivity.class)));
         } catch (Exception e) {
         }
     }
@@ -83,23 +81,7 @@ public class MainActivity extends ActivityGroup {
         return this.mTabHost.newTabSpec(tag).setIndicator(m).setContent(content);
     }
 
-    @Override
-    public void onBackPressed() {
-        timer.cancel();
-        if (isBack) {
-            super.onBackPressed();
-        } else {
-            isBack = true;
 
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    isBack = false;
-                }
-            }, 5 * 1000);
-            JDToast.showShortText(MainActivity.this, "再按一次退出系统");
-        }
-    }
 
     //Handler to get something
     private Handler mHandler = new Handler() {

@@ -1,24 +1,13 @@
 package com.chaqianma.jd.activity;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
 import android.widget.TextView;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.SwitchButton;
-import com.chaqianma.jd.widget.WheelView;
 import com.chaqianma.jd.widget.WheelViewDialog;
-
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

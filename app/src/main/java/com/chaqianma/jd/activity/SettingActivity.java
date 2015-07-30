@@ -6,6 +6,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.widget.JDToast;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -14,7 +19,8 @@ import butterknife.OnClick;
  * Created by zhangxd on 2015/7/27.
  */
 public class SettingActivity extends BaseActivity {
-
+    private Timer timer = new Timer();
+    private boolean isBack = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,5 +70,21 @@ public class SettingActivity extends BaseActivity {
     void onSignout()
     {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isBack) {
+            super.onBackPressed();
+        } else {
+            isBack = true;
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isBack = false;
+                }
+            }, 5 * 1000);
+            JDToast.showShortText(SettingActivity.this, "再按一次退出系统");
+        }
     }
 }

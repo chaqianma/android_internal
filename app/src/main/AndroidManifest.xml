@@ -35,6 +35,10 @@
     <!--电话权限-->
     <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
 
+    <!--拍照权限-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
         android:name=".app.JDApplication"
         android:allowBackup="true"
@@ -45,20 +49,16 @@
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme">
-            <!-- <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>-->
         </activity>
 
         <activity
             android:name=".activity.InitActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>-->
         </activity>
 
         <activity
@@ -68,6 +68,17 @@
 
         <activity
             android:name=".activity.MsgnotifyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent_theme" />
+
+
+        <activity
+            android:name=".activity.StaffActivity_bak"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent_theme" />
+
+        <activity
+            android:name=".activity.BorrowApplyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme" />
 
@@ -95,6 +106,16 @@
             android:name=".activity.BaiduMapActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme" />
+
+        <activity
+            android:name=".activity.InvestigateDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent_theme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!--极光Start-->
         <!-- Required SDK核心功能-->
         <activity

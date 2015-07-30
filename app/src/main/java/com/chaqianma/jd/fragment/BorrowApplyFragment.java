@@ -6,11 +6,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.BaiduMapActivity;
+import com.chaqianma.jd.activity.InvestigateDetailActivity;
+import com.chaqianma.jd.activity.MainActivity;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
@@ -57,7 +68,8 @@ public class BorrowApplyFragment extends BaseFragment {
 
     @InjectView(R.id.tv_check)
     TextView tv_check;
-
+    @InjectView(R.id.btn_borrow)
+    Button btn_borrow;
     private String mLocation = null;
 
     @OnClick(R.id.tv_view_map)
@@ -100,8 +112,9 @@ public class BorrowApplyFragment extends BaseFragment {
                         tv_money.setText(borrowRequestInfo.getAmount());
                         tv_date.setText(borrowRequestInfo.getLength());
                         tv_purpose.setText(borrowRequestInfo.getBorrowPurpose());
-                        tv_address.setText(borrowRequestInfo.getLocation());
                         mLocation = borrowRequestInfo.getLocation();
+                        mLocation = "118.996925,32.142425";
+                        getUserLocation(mLocation);
                         tv_apply_time.setText(JDAppUtil.getStrDateTime(borrowRequestInfo.getDateline()));
                         //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
                         if (borrowRequestInfo.getStatus().equals("1")) {
@@ -126,6 +139,7 @@ public class BorrowApplyFragment extends BaseFragment {
                         } else {
                             tv_check.setVisibility(View.GONE);
                         }
+                        AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
                     }
                 }
             }, Class.forName(BorrowRequestInfo.class.getName())));
@@ -135,14 +149,60 @@ public class BorrowApplyFragment extends BaseFragment {
     }
 
     private void transformTask() {
-        HashMap<String,Object> argMaps=new HashMap<String, Object>();
-        argMaps.put("borrowRequestId",tv_id.getText().toString());
         HttpClientUtil.put(HttpRequestURL.transformUrl, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
                 JDToast.showShortText(getActivity(), "任务转出成功");
+                btn_borrow.setEnabled(false);
             }
         }));
+    }
+
+    @OnClick(R.id.btn_borrow)
+    void onBeginCheck() {
+        HttpClientUtil.put(HttpRequestURL.beginCheckUrl, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+            @Override
+            public void onSuccess(Object o) {
+                startActivity(InvestigateDetailActivity.class);
+            }
+        }));
+    }
+
+    //获取用户的地址
+    public void getUserLocation(String location) {
+        if (location != null && location.length() > 0 && location.indexOf(",") >= 0) {
+            try {
+                String [] arrs=location.split(",");
+                //经度 纬度
+                LatLng latLng = new LatLng( Double.parseDouble(arrs[1]), Double.parseDouble(arrs[0]));
+                GeoCoder geoCoder = GeoCoder.newInstance();
+                OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
+                    // 反地理编码查询结果回调函数
+                    @Override
+                    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+                        if (result == null
+                                || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                            // 没有检测到结果
+                        }
+                        tv_address.setText(result.getAddress());
+                    }
+                    // 地理编码查询结果回调函数
+                    @Override
+                    public void onGetGeoCodeResult(GeoCodeResult result) {
+                        if (result == null
+                                || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                            // 没有检测到结果
+                        }
+                    }
+                };
+                // 设置地理编码检索监听者
+                geoCoder.setOnGetGeoCodeResultListener(listener);
+                geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static BorrowApplyFragment newInstance() {

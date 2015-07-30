@@ -31,16 +31,15 @@ public class InitActivity extends Activity {
         if (username.length() > 0 && password.length() > 0) {
             try {
                 HashMap<String, Object> argMap = new HashMap<String, Object>();
-                argMap.put("mobile", username);
-                argMap.put("password", password);
-                argMap.put("userType","1");
+                argMap.put("mobile", "15651782303");
+                argMap.put("password", "password");
+                //argMap.put("userType","1");
                 argMap.put("uuid", uuid);
                 HttpClientUtil.post(HttpRequestURL.LoginUrl, argMap, new JDHttpResponseHandler(InitActivity.this, new ResponseHandler<UserInfo>() {
                     @Override
                     public void onSuccess(UserInfo userInfo) {
                         if (userInfo != null) {
-                            //理应为1
-                            if (userInfo.getUserType().equals("0")) {
+                            if (userInfo.getUserType().equals("1")) {
                                 AppData.getInstance().setUserInfo(userInfo);
                                 //设置别名
                                 ((JDApplication) getApplication()).setAlias(userInfo.getMobile());

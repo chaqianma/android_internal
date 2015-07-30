@@ -8,8 +8,6 @@ public class Constants {
     public static final boolean DEBUG=false;
     //尽调员身份类型 userType
     public static final String  USERTYPE="1";
-    //请求URL 192.168.199.112
-    public static final String BASEURL= "http://192.168.199.223:8080/";
     //Header设置
     public static final String  HEADERTAG="X-AUTH-TOKEN";
     //用户名标签
@@ -20,6 +18,8 @@ public class Constants {
     public static final String REMEMBERPASSWORD="REMEMBERPASSWORD";
     //UUID
     public static final String UUID="UUID";
+    //文件存放目录
+    public static final String FILEDIR="chaqianma";
     //极光设置别名
     public static final int MSG_SET_ALIAS=1000;
     //位置标签
@@ -52,6 +52,8 @@ public class Constants {
     public static final String BORROWNAME="BORROWNAME";
     //位置
     public static final String LOCATION="LOCATION";
+    //个人信息
+    public static final String USER_BASE_INFO="user_base_info";
     //拼音code
     public static int[] characterValue = new int[] {-20319, -20317, -20304, -20295, -20292, -20283, -20265, -20257, -20242, -20230, -20051, -20036, -20032,
             -20026, -20002, -19990, -19986, -19982, -19976, -19805, -19784, -19775, -19774, -19763, -19756, -19751, -19746, -19741, -19739, -19728,

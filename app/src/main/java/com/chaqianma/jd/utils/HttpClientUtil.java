@@ -1,12 +1,27 @@
 package com.chaqianma.jd.utils;
 
+import android.content.Context;
+
+import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.common.HttpRequestURL;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
@@ -20,7 +35,7 @@ public class HttpClientUtil {
     //设置auth_token
     public static void setAuthToken(String auth_token) {
         mClient.addHeader(Constants.HEADERTAG, auth_token);
-
+        AppData.getInstance().setHeader(auth_token);
     }
 
     static {
@@ -41,10 +56,29 @@ public class HttpClientUtil {
             mClient.post(getAbsoluteUrl(url), responseHandler);
     }
 
+    public static void post(Context context, String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
+        if (entity != null)
+            mClient.post(context, getAbsoluteUrl(url), entity,null, responseHandler);
+    }
+
+
     public static void put(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
+        //Content-Type: "application/x-www-form-urlencoded; charset=UTF-8"
         if (argMaps != null && argMaps.size() > 0)
             mClient.put(getAbsoluteUrl(url), getRequestParams(argMaps), responseHandler);
         else
+            mClient.put(getAbsoluteUrl(url), responseHandler);
+    }
+
+    public static void put(Context context, String url, List<NameValuePair> formparams, AsyncHttpResponseHandler responseHandler) {
+        if (formparams != null && formparams.size() > 0) {
+            try {
+                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, HTTP.UTF_8);
+                mClient.put(context, getAbsoluteUrl(url), entity, null, responseHandler);
+            } catch (Exception e) {
+
+            }
+        } else
             mClient.put(getAbsoluteUrl(url), responseHandler);
     }
 
@@ -59,7 +93,7 @@ public class HttpClientUtil {
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
-        String url = Constants.BASEURL.concat(relativeUrl);
-        return Constants.BASEURL.concat(relativeUrl);
+        String sss=HttpRequestURL.BASEURL.concat(relativeUrl);
+        return HttpRequestURL.BASEURL.concat(relativeUrl);
     }
 }

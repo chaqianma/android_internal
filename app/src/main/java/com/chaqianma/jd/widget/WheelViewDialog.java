@@ -11,9 +11,6 @@ import com.chaqianma.jd.adapters.NumericWheelAdapter;
 
 import java.util.Calendar;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
 /**
  * Created by zhangxd on 2015/7/26
  * <p/>
@@ -21,8 +18,8 @@ import butterknife.InjectView;
  */
 public class WheelViewDialog extends Dialog {
     private Context mContext = null;
-    private WheelView hour_picker = null;
-    private WheelView min_picker = null;
+    private WheelViewTime hour_picker = null;
+    private WheelViewTime min_picker = null;
     private boolean timeScrolled = false;
     private boolean timeChanged = true;
     private IChangValueListener iChangValueListener;
@@ -39,12 +36,12 @@ public class WheelViewDialog extends Dialog {
         setContentView(R.layout.time_picker);
         setCancelable(true);
 
-        hour_picker = (WheelView) findViewById(R.id.hour_picker);
+        hour_picker = (WheelViewTime) findViewById(R.id.hour_picker);
         hour_picker.setAdapter(new NumericWheelAdapter(0, 23));
         hour_picker.setLabel("时");
         hour_picker.setCyclic(true);
 
-        min_picker = (WheelView) findViewById(R.id.min_picker);
+        min_picker = (WheelViewTime) findViewById(R.id.min_picker);
         min_picker.setAdapter(new NumericWheelAdapter(0, 59, "%02d"));
         min_picker.setLabel("分");
         min_picker.setCyclic(true);
@@ -66,32 +63,32 @@ public class WheelViewDialog extends Dialog {
         window.setWindowAnimations(R.style.AniDialogStyle);
     }
 
-    private void addChangingListener(final WheelView wheel) {
-        wheel.addChangingListener(new WheelView.OnWheelChangedListener() {
-            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+    private void addChangingListener(final WheelViewTime wheel) {
+        wheel.addChangingListener(new WheelViewTime.OnWheelChangedListener() {
+            public void onChanged(WheelViewTime wheel, int oldValue, int newValue) {
                 if(iChangValueListener!=null)
                     iChangValueListener.ChangingValue( String.format("%02d", hour_picker.getCurrentItem()) + ":" + String.format("%02d", min_picker.getCurrentItem()));
             }
         });
     }
 
-    private void addChangingListener(final WheelView wheel, final String label) {
-        wheel.addChangingListener(new WheelView.OnWheelChangedListener() {
-            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+    private void addChangingListener(final WheelViewTime wheel, final String label) {
+        wheel.addChangingListener(new WheelViewTime.OnWheelChangedListener() {
+            public void onChanged(WheelViewTime wheel, int oldValue, int newValue) {
                 wheel.setLabel(newValue != 1 ? label + "s" : label);
             }
         });
     }
 
-    private void addScrollListener(final WheelView wheel) {
-        wheel.addScrollingListener(new WheelView.OnWheelScrollListener() {
+    private void addScrollListener(final WheelViewTime wheel) {
+        wheel.addScrollingListener(new WheelViewTime.OnWheelScrollListener() {
             @Override
-            public void onScrollingStarted(WheelView wheel) {
+            public void onScrollingStarted(WheelViewTime wheel) {
                 timeScrolled = true;
             }
 
             @Override
-            public void onScrollingFinished(WheelView wheel) {
+            public void onScrollingFinished(WheelViewTime wheel) {
                 timeScrolled = false;
                 timeChanged = true;
                 timeChanged = false;

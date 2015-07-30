@@ -1,5 +1,6 @@
 package com.chaqianma.jd.common;
 
+import com.chaqianma.jd.model.BorrowRequestInfo;
 import com.chaqianma.jd.model.LocationInfo;
 import com.chaqianma.jd.model.UserInfo;
 
@@ -11,6 +12,13 @@ public class AppData {
     private UserInfo userInfo = null;
 
     private LocationInfo locationInfo = null;
+
+    private BorrowRequestInfo borrowRequestInfo=null;
+
+
+
+    private String header=null;
+
 
     private AppData() {
     }
@@ -40,4 +48,22 @@ public class AppData {
     public void setLocationInfo(LocationInfo locationInfo) {
         this.locationInfo = locationInfo;
     }
+
+
+    public BorrowRequestInfo getBorrowRequestInfo() {
+        return borrowRequestInfo;
+    }
+
+    public void setBorrowRequestInfo(BorrowRequestInfo borrowRequestInfo) {
+        this.borrowRequestInfo = borrowRequestInfo;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
 }

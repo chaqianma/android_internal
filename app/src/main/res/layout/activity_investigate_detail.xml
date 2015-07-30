@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/top" />
+
+
+    <RelativeLayout
+        android:id="@+id/hair_topic_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#E1DBE0"
+        android:paddingBottom="10.0dip"
+        android:paddingTop="15.0dip">
+
+        <RadioGroup
+            android:id="@+id/radiogroup_check"
+            android:layout_width="fill_parent"
+            android:layout_height="35.0dip"
+            android:layout_marginBottom="7.5dip"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_person"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="@drawable/radio_left_selector"
+                android:textColor="@drawable/radio_focuse_text_selector"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="个人信息"
+                android:textSize="15.0sp" />
+
+            <RadioButton
+                android:id="@+id/radio_company"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="@drawable/radio_middle_selector"
+                android:textColor="@drawable/radio_focuse_text_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="企业信息"
+                android:textSize="15.0sp" />
+
+            <RadioButton
+                android:id="@+id/radio_asset"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="@drawable/radio_middle_selector"
+                android:textColor="@drawable/radio_focuse_text_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="个人资产"
+                android:textSize="15.0sp" />
+
+            <RadioButton
+                android:id="@+id/radio_relation"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:background="@drawable/radio_right_selector"
+                android:textColor="@drawable/radio_focuse_text_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="社会关系"
+                android:textSize="15.0sp" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/hair_topic_layout" />
+</LinearLayout>
+
+
