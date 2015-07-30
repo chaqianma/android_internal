@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_company_3"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--第三家公司-->
+
+    <RelativeLayout
+        android:id="@+id/layout_update_password"
+        style="@style/RelativeLayoutStyle">
+
+        <TextView
+            style="@style/SmallTextStyle"
+            android:text="企业3："
+            android:textSize="@dimen/large_text_size" />
+
+    </RelativeLayout>
+
+    <View style="@style/ViewLineStyle" />
+
+    <LinearLayout
+        style="@style/LinearLayoutStyle"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical">
+
+        <RelativeLayout style="@style/RelativeLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="企业类型：" />
+
+            <Spinner
+                android:id="@+id/sp_company_type_3"
+                style="@style/SettingRightIconStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/company_type"
+                android:spinnerMode="dialog"></Spinner>
+
+        </RelativeLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <LinearLayout
+            style="@style/LinearLayoutStyle"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="营业执照：" />
+
+            <LinearLayout
+
+                style="@style/LinearLayoutStyle"
+                android:orientation="horizontal">
+
+                <com.chaqianma.jd.widget.ImageGridView
+                    android:id="@+id/gv_business_license_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_centerVertical="true"
+                    android:background="#ffffff"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="5dp"
+                    android:listSelector="#ffffff"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <LinearLayout
+            style="@style/LinearLayoutStyle"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="税务登记：" />
+
+            <LinearLayout
+
+                style="@style/LinearLayoutStyle"
+                android:orientation="horizontal">
+
+                <com.chaqianma.jd.widget.ImageGridView
+                    android:id="@+id/gv_tax_registration_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_centerVertical="true"
+                    android:background="#ffffff"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="5dp"
+                    android:listSelector="#ffffff"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <View style="@style/ViewLineStyle" />
+
+        <LinearLayout
+            style="@style/LinearLayoutStyle"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="企业代码证：" />
+
+            <LinearLayout
+
+                style="@style/LinearLayoutStyle"
+                android:orientation="horizontal">
+
+                <com.chaqianma.jd.widget.ImageGridView
+                    android:id="@+id/gv_company_code_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_centerVertical="true"
+                    android:background="#ffffff"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="5dp"
+                    android:listSelector="#ffffff"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <LinearLayout
+            style="@style/LinearLayoutStyle"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="其它证件：" />
+
+            <LinearLayout
+
+                style="@style/LinearLayoutStyle"
+                android:orientation="horizontal">
+
+                <com.chaqianma.jd.widget.ImageGridView
+                    android:id="@+id/gv_other_card_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_centerVertical="true"
+                    android:background="#ffffff"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="5dp"
+                    android:listSelector="#ffffff"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <RelativeLayout style="@style/RelativeLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="经营场所：" />
+
+            <Spinner
+                android:id="@+id/sp_business_premises_3"
+                style="@style/SettingRightIconStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/business_premises"
+                android:spinnerMode="dialog" />
+
+        </RelativeLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <LinearLayout
+            style="@style/LinearLayoutStyle"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="房产证/合同：" />
+
+            <LinearLayout
+
+                style="@style/LinearLayoutStyle"
+                android:orientation="horizontal">
+
+                <com.chaqianma.jd.widget.ImageGridView
+                    android:id="@+id/gv_house_card_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_centerVertical="true"
+                    android:background="#ffffff"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="5dp"
+                    android:listSelector="#ffffff"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <LinearLayout
+            style="@style/LinearLayoutStyle"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="土地证：" />
+
+            <LinearLayout
+
+                style="@style/LinearLayoutStyle"
+                android:orientation="horizontal">
+
+                <com.chaqianma.jd.widget.ImageGridView
+                    android:id="@+id/gv_land_card_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_centerVertical="true"
+                    android:background="#ffffff"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="5dp"
+                    android:listSelector="#ffffff"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <RelativeLayout style="@style/RelativeLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="对应企业：" />
+
+            <Spinner
+                android:id="@+id/sp_some_company_3"
+                style="@style/SettingRightIconStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/some_company" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

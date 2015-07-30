@@ -3,16 +3,11 @@ package com.chaqianma.jd.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
-
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.widget.JDToast;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**

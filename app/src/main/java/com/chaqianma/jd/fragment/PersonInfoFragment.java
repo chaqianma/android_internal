@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -101,6 +102,8 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     GridView gv_sound;
     @InjectView(R.id.gv_mark)
     GridView gv_mark;
+    @InjectView(R.id.btn_name_auth)
+    Button btn_name_auth;
     private PhotoPopup mPopup;
     private ViewPagerPopup mViewPagerPopup;
     //获取SDK中的图片
@@ -298,15 +301,23 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
         }));
     }
 
-    @OnClick(R.id.img_name_auth)
+    @OnClick(R.id.btn_name_auth)
     void onRealNameAuth(View v) {
+        btn_name_auth.setText("认证中。。。");
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair("name", "张晓东"));
         formparams.add(new BasicNameValuePair("idNumber", "320623198512222351"));
         HttpClientUtil.put(getActivity(), HttpRequestURL.realNameAuthenticationUrl, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
+                btn_name_auth.setText("认证成功");
                 JDToast.showLongText(getActivity(), "实名认证成功");
+            }
+
+            @Override
+            public void onFailure(String data) {
+                super.onFailure(data);
+                btn_name_auth.setText("认验失败");
             }
         }));
     }

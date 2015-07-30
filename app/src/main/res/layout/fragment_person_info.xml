@@ -47,11 +47,17 @@
                     style="@style/SmallTextStyle"
                     android:layout_toRightOf="@id/tv_name_tag" />
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/img_name_auth"
                     style="@style/SettingRightIconStyle"
                     android:layout_marginRight="20dp"
-                    android:src="@mipmap/icon_authentication" />
+                    android:src="@mipmap/icon_authentication" />-->
+
+                <Button
+                    android:id="@+id/btn_name_auth"
+                    style="@style/SettingRightIconStyle"
+                    android:background="@color/btn_bg_color"
+                    android:text="实名认证"/>
 
             </RelativeLayout>
 
