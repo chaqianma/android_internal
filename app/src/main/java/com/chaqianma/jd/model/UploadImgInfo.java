@@ -12,7 +12,7 @@ package com.chaqianma.jd.model;
 public class UploadImgInfo {
     private int id;
     //图片id
-    private String imgId = null;
+    private String fileId = null;
     //图片类型
     private String imgType = null;
     //图片名称
@@ -34,7 +34,7 @@ public class UploadImgInfo {
     //对应的表单名
     private String parentTableName = null;
 
-    private String parentId=null;
+    private String parentId = null;
 
     public String getImgName() {
         return imgName;
@@ -52,12 +52,12 @@ public class UploadImgInfo {
         this.imgType = imgType;
     }
 
-    public String getImgId() {
-        return imgId;
+    public String getFileId() {
+        return fileId;
     }
 
-    public void setImgId(String imgId) {
-        this.imgId = imgId;
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
     }
 
     public String getSmallImgPath() {

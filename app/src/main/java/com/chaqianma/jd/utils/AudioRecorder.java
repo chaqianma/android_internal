@@ -56,6 +56,13 @@ public class AudioRecorder {
         recorder.release();
     }
 
+    public void cancel()throws IOException{
+        recorder.stop();
+        File file=new File(this.path);
+        if(file.exists())
+            file.delete();
+    }
+
     public double getAmplitude() {
         if (recorder != null) {
             return (recorder.getMaxAmplitude());

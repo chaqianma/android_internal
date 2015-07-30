@@ -56,6 +56,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -140,7 +141,8 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     private String smallImgPath = null;
     //大图
     private String bigImgPath = null;
-    private Dialog soundDialog = null;
+    //BorrowRequest
+    private String mBorrowRequestId = "18";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -158,10 +160,15 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
         mViewPagerPopup.setViewPagerDialogListener(this);
         initRadioGroup();
         initView();
+        initImgDir();
+        getPersonalInfo();
         return view;
     }
 
 
+    /*
+    * 初始化RadioGroup
+    * */
     private void initRadioGroup() {
         //结婚
         radioGroup_marry.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -208,14 +215,10 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
         if (borrowRequestInfo != null) {
             mImgDirPath = mImgDirPath + "/" + borrowRequestInfo.getBorrowRequestId();
             File file = new File(mImgDirPath);
-            if (!file.exists())
+            if (!file.getParentFile().exists()) {
                 file.mkdirs();
+            }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     /*
@@ -279,6 +282,22 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
         }
     }
 
+    private void getPersonalInfo() {
+        if (AppData.getInstance().getBorrowRequestInfo() != null)
+            mBorrowRequestId = AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId();
+        String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.PERSONALINFO + "/" + mBorrowRequestId;
+        HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler<String>() {
+            @Override
+            public void onSuccess(String buffer) {
+                String sss = "ssss";
+                sss = "ssss";
+                sss = "ssss";
+                sss = "ssss";
+                sss = "ssss";
+            }
+        }));
+    }
+
     @OnClick(R.id.img_name_auth)
     void onRealNameAuth(View v) {
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -320,8 +339,8 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
 
     //删除图片
     @Override
-    public void onDeletePhoto() {
-
+    public void onDeletePhoto(UploadFileType fileType, int delIdx) {
+        refreshData();
     }
 
     @Override
@@ -412,13 +431,10 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
 
     //得到图片地址
     private String getFilePath(boolean isBigImgPath, String randomName) {
-        String borrowRequestId = "1";
-        if (AppData.getInstance().getBorrowRequestInfo() != null)
-            borrowRequestId = AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId();
         String path = fileType.getValue() + "_" + randomName + ".jpg";
         if (!isBigImgPath)
             path = "thumb_" + path;
-        return mImgDirPath + "/" + borrowRequestId + "/" + path;
+        return mImgDirPath + "/" + mBorrowRequestId + "/" + path;
     }
 
     //保存图片
@@ -485,17 +501,7 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
                 @Override
                 public void onSuccess(DownImgInfo downImgInfo) {
                     imgInfo.setImgStatus(ImageUploadStatus.SUCCESS.getValue());//成功
-                    if (fileType == UploadFileType.CARD) {
-                        cardImgsAdapter.refreshData();
-                    } else if (fileType == UploadFileType.MARRY) {
-                        marryImgsAdapter.refreshData();
-                    } else if (fileType == UploadFileType.SOUND) {
-                        //soundAdapter
-                    } else if (fileType == UploadFileType.REMARK) {
-                        remarkImgsAdapter.refreshData();
-                    } else {
-
-                    }
+                    refreshData();
                 }
 
                 @Override
@@ -513,6 +519,21 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
             }, Class.forName(DownImgInfo.class.getName())));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    //刷新数据源
+    private void refreshData() {
+        if (fileType == UploadFileType.CARD) {
+            cardImgsAdapter.refreshData();
+        } else if (fileType == UploadFileType.MARRY) {
+            marryImgsAdapter.refreshData();
+        } else if (fileType == UploadFileType.SOUND) {
+            //soundAdapter
+        } else if (fileType == UploadFileType.REMARK) {
+            remarkImgsAdapter.refreshData();
+        } else {
+
         }
     }
 }

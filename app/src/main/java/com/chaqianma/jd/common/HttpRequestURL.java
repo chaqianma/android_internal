@@ -24,5 +24,7 @@ public class HttpRequestURL {
     //上传图片
     public static final String uploadImgUrl="api/file/upload";
     //个人信息查询路径
-    public static final String personalInfoUrl="api/borrrow/details";
+    public static final String personalInfoUrl="api/borrow/dd/details";
+    //删除文件
+    public static final String deleteFileUrl="api/file/delete/";
 }

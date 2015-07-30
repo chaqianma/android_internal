@@ -5,12 +5,42 @@
     android:layout_gravity="center"
     android:background="@mipmap/record_bg"
     android:gravity="center"
+    android:orientation="vertical"
     android:padding="20dp">
 
     <ImageView
         android:id="@+id/dialog_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/record_animate_01" />
+        android:src="@drawable/record_animate_01" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="录音中。。。。" />
+
+
+    <RelativeLayout
+        style="@style/LinearLayoutStyle"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/img_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="6dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_img_success" />
+
+        <ImageView
+            android:id="@+id/img_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="6dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_img_delete" />
+    </RelativeLayout>
 </LinearLayout>

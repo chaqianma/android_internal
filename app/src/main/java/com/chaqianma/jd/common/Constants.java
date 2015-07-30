@@ -52,8 +52,10 @@ public class Constants {
     public static final String BORROWNAME="BORROWNAME";
     //位置
     public static final String LOCATION="LOCATION";
-    //个人信息
+    //个人信息表
     public static final String USER_BASE_INFO="user_base_info";
+    //个人信息标签
+    public static final String PERSONALINFO="personalInfo";
     //拼音code
     public static int[] characterValue = new int[] {-20319, -20317, -20304, -20295, -20292, -20283, -20265, -20257, -20242, -20230, -20051, -20036, -20032,
             -20026, -20002, -19990, -19986, -19982, -19976, -19805, -19784, -19775, -19774, -19763, -19756, -19751, -19746, -19741, -19739, -19728,

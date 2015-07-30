@@ -58,7 +58,7 @@ public class HttpClientUtil {
 
     public static void post(Context context, String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
         if (entity != null)
-            mClient.post(context, getAbsoluteUrl(url), entity,null, responseHandler);
+            mClient.post(context, getAbsoluteUrl(url), entity, null, responseHandler);
     }
 
 
@@ -82,18 +82,27 @@ public class HttpClientUtil {
             mClient.put(getAbsoluteUrl(url), responseHandler);
     }
 
+    public static void delete(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
+        if (argMaps != null && argMaps.size() > 0)
+            mClient.delete(getAbsoluteUrl(url), getRequestParams(argMaps), responseHandler);
+        else
+            mClient.delete(getAbsoluteUrl(url), responseHandler);
+    }
+
     private static RequestParams getRequestParams(HashMap<String, Object> argMaps) {
         RequestParams params = new RequestParams();
         Iterator iterator = argMaps.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
+            String ss=entry.getKey().toString();
+            String val=entry.getValue().toString();
             params.put(entry.getKey().toString(), entry.getValue());
         }
         return params;
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
-        String sss=HttpRequestURL.BASEURL.concat(relativeUrl);
+        String sss = HttpRequestURL.BASEURL.concat(relativeUrl);
         return HttpRequestURL.BASEURL.concat(relativeUrl);
     }
 }
