@@ -12,12 +12,12 @@ import java.io.IOException;
 public class AudioRecorder {
     private static int SAMPLE_RATE_IN_HZ = 8000;
 
-    final MediaRecorder recorder = new MediaRecorder();
+    MediaRecorder recorder = new MediaRecorder();
     final String path;
 
     public AudioRecorder(String path) {
         //this.path = sanitizePath(path);
-        this.path=path;
+        this.path = path;
     }
 
     private String sanitizePath(String path) {
@@ -56,10 +56,12 @@ public class AudioRecorder {
         recorder.release();
     }
 
-    public void cancel()throws IOException{
+    public void cancel() throws IOException {
         recorder.stop();
-        File file=new File(this.path);
-        if(file.exists())
+        recorder.release();
+        recorder = null;
+        File file = new File(this.path);
+        if (file.exists())
             file.delete();
     }
 

@@ -18,7 +18,6 @@ import com.chaqianma.jd.common.Constants;
  * Created by zhangxd on 2015/7/21.
  */
 public class BaseFragment extends Fragment {
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,7 +1,9 @@
 package com.chaqianma.jd.adapters;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +12,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.chaqianma.jd.R;
-import com.chaqianma.jd.model.ImageUploadStatus;
-import com.chaqianma.jd.model.UploadImgInfo;
+import com.chaqianma.jd.model.UploadStatus;
+import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.utils.ImageUtil;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -23,22 +28,22 @@ import java.util.List;
  */
 public class ImgsGridViewAdapter extends BaseAdapter {
 
-    private List<UploadImgInfo> mUploadImgInfoList = null;
+    private List<UploadFileInfo> mUploadImgInfoList = null;
     private Context mContext = null;
 
     private iOnClickImgListener mIonClickImgListener;
 
     public interface iOnClickImgListener {
-        void onImgClick(List<UploadImgInfo> uploadImgInfoList,int idx);
+        void onImgClick(List<UploadFileInfo> uploadImgInfoList,int idx);
     }
 
-    public ImgsGridViewAdapter(Context context, List<UploadImgInfo> uploadImgInfoList) {
+    public ImgsGridViewAdapter(Context context, List<UploadFileInfo> uploadImgInfoList) {
         this.mContext = context;
         this.mUploadImgInfoList = uploadImgInfoList;
     }
 
     //设置数据源
-    public void setUploadImgInfoList(List<UploadImgInfo> uploadImgInfoList) {
+    public void setUploadImgInfoList(List<UploadFileInfo> uploadImgInfoList) {
         this.mUploadImgInfoList = uploadImgInfoList;
     }
 
@@ -93,9 +98,9 @@ public class ImgsGridViewAdapter extends BaseAdapter {
             holderView.imageView = (ImageView) convertView.findViewById(R.id.img_main);
             holderView.img_fail = (ImageView) convertView.findViewById(R.id.img_fail);
             holderView.img_success = (ImageView) convertView.findViewById(R.id.img_success);
-            final UploadImgInfo imgInfo = mUploadImgInfoList.get(position);
+            final UploadFileInfo imgInfo = mUploadImgInfoList.get(position);
             if(!imgInfo.isDefault()) {
-                if (imgInfo.getImgStatus() == ImageUploadStatus.SUCCESS.getValue()) {
+                if (imgInfo.getStatus() == UploadStatus.SUCCESS.getValue()) {
                     holderView.img_fail.setVisibility(View.GONE);
                     holderView.img_success.setVisibility(View.VISIBLE);
                 } else {
@@ -116,7 +121,7 @@ public class ImgsGridViewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class ShowImgAsyncTask extends AsyncTask<UploadImgInfo, Integer, Bitmap> {
+    private class ShowImgAsyncTask extends AsyncTask<UploadFileInfo, Integer, Bitmap> {
         private ImageView imageView;
 
         public ShowImgAsyncTask(ImageView imageView) {
@@ -133,18 +138,25 @@ public class ImgsGridViewAdapter extends BaseAdapter {
         }
 
         @Override
-        protected Bitmap doInBackground(UploadImgInfo... params) {
+        protected Bitmap doInBackground(UploadFileInfo... params) {
             if (params.length > 0) {
-                UploadImgInfo imgInfo = params[0];
-                if (imgInfo.iServer()) {
-                    //服务器上图片
+                UploadFileInfo fileInfo = params[0];
+                if (fileInfo.iServer()) {
+                    //服务器上图片 获取流
+                    try {
+                        return BitmapFactory.decodeFile(fileInfo.getBigImgPath());
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        return null;
+                    }
                 } else {
-                    if (imgInfo.isDefault()) {
+                    if (fileInfo.isDefault()) {
                         //默认图片
                         return null;
                     } else {
                         //本地图片
-                        return ImageUtil.getImageThumbnail(imgInfo.getSmallImgPath(), 80, 80);
+                        return ImageUtil.getImageThumbnail(fileInfo.getSmallImgPath(), 80, 80);
                     }
                 }
             }

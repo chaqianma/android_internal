@@ -2,7 +2,6 @@ package com.chaqianma.jd.widget;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import com.chaqianma.jd.R;
 import com.chaqianma.jd.adapters.ImagePagerAdapter;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.UploadFileType;
-import com.chaqianma.jd.model.UploadImgInfo;
+import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
@@ -31,7 +30,7 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
     private Context mContext;
     private OnViewPagerDialogListener listener;
     private ViewPager mPhotoViewPager;
-    private List<UploadImgInfo> mUploadImgInfoList = null;
+    private List<UploadFileInfo> mUploadImgInfoList = null;
     private ImagePagerAdapter mImagePagerAdapter = null;
 
     public ViewPagerPopup(Context context) {
@@ -60,7 +59,7 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
     }
 
     //设置数据源
-    public void setUploadImgList(List<UploadImgInfo> uploadImgInfoList, int idx) {
+    public void setUploadImgList(List<UploadFileInfo> uploadImgInfoList, int idx) {
         this.mUploadImgInfoList = uploadImgInfoList;
         mImagePagerAdapter.setUploadedImgList(uploadImgInfoList);
         mImagePagerAdapter.refreshData();
@@ -87,7 +86,7 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
                     final int curIdx=mPhotoViewPager.getCurrentItem();
                     if(curIdx>=mUploadImgInfoList.size())
                         return;
-                    final UploadImgInfo uploadImgInfo = mUploadImgInfoList.get(curIdx);
+                    final UploadFileInfo uploadImgInfo = mUploadImgInfoList.get(curIdx);
                     if (mUploadImgInfoList.size() == 0 && uploadImgInfo.isDefault()) {
                         JDToast.showLongText(mContext, "该张是默认图片，不能删除,有时间把默认排除");
                         this.dismiss();

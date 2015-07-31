@@ -15,10 +15,12 @@
         android:src="@drawable/record_animate_01" />
 
     <TextView
+        android:id="@+id/tv_record_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:text="录音中。。。。" />
+        android:text="录音中..." />
 
 
     <RelativeLayout
@@ -32,7 +34,9 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="6dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/icon_img_success" />
+            android:src="@mipmap/icon_img_success"
+
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/img_cancel"
@@ -42,5 +46,14 @@
             android:layout_marginRight="6dp"
             android:scaleType="fitXY"
             android:src="@mipmap/icon_img_delete" />
+
+        <ImageView
+            android:id="@+id/img_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_img_delete" />
+
     </RelativeLayout>
 </LinearLayout>

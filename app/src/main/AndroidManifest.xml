@@ -55,7 +55,10 @@
             android:name=".activity.InitActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -108,10 +111,7 @@
             android:name=".activity.InvestigateDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <!--极光Start-->
         <!-- Required SDK核心功能-->

@@ -1,8 +1,10 @@
 package com.chaqianma.jd.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -10,6 +12,7 @@ import com.chaqianma.jd.R;
 import com.chaqianma.jd.app.JDApplication;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.model.BorrowRequestInfo;
 import com.chaqianma.jd.model.UserInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.common.HttpRequestURL;
@@ -47,7 +50,7 @@ public class LoginActivity extends BaseActivity {
         tv_username.setText("15651782303");
         tv_password.setText("password");
         mUUID = JDAppUtil.getUniqueId(LoginActivity.this);
-        setTopBarState("登录",false);
+        setTopBarState("登录", false);
     }
 
     @OnClick(R.id.btn_submit)
@@ -74,22 +77,46 @@ public class LoginActivity extends BaseActivity {
                     if (userInfo != null) {
                         if (userInfo.getUserType().equals(Constants.USERTYPE)) {
                             AppData.getInstance().setUserInfo(userInfo);
-                            SharedPreferencesUtil.setShareBoolean(LoginActivity.this,Constants.REMEMBERPASSWORD,cb_remember.isChecked());
+                            SharedPreferencesUtil.setShareBoolean(LoginActivity.this, Constants.REMEMBERPASSWORD, cb_remember.isChecked());
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.USERNAME, username);
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.PASSWORD, password);
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.UUID, mUUID);
                             //设置别名
                             ((JDApplication) getApplication()).setAlias(userInfo.getMobile());
-                            Intent intent = new Intent(LoginActivity.this, InvestigateDetailActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            LoginActivity.this.finish();
+                            //再调用查看任务接口。。。不知为何要这么设计
+                            getBorrowRequest();
                         } else {
                             JDAlertDialog.showAlertDialog(LoginActivity.this, "所登录用户为非进调人员", null);
                         }
                     }
                 }
             }, Class.forName(UserInfo.class.getName()), true));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //查看是否有任务
+    private void getBorrowRequest() {
+        try {
+            HttpClientUtil.get(HttpRequestURL.loanApplyUrl, null, new JDHttpResponseHandler(LoginActivity.this, new ResponseHandler<BorrowRequestInfo>() {
+                @Override
+                public void onSuccess(BorrowRequestInfo borrowRequestInfo) {
+                    if (borrowRequestInfo != null) {
+                        String borrowRequestId = borrowRequestInfo.getBorrowRequestId();
+                        String name = borrowRequestInfo.getName();
+                        if (borrowRequestId != null && borrowRequestId.length() > 0
+                                && name != null && name.length() > 0) {
+                            AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
+                        }
+                    }
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    LoginActivity.this.finish();
+                }
+            }, Class.forName(BorrowRequestInfo.class.getName())));
         } catch (Exception e) {
             e.printStackTrace();
         }

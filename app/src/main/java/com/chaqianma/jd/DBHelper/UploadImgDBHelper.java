@@ -2,7 +2,7 @@ package com.chaqianma.jd.DBHelper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import com.chaqianma.jd.model.UploadImgInfo;
+import com.chaqianma.jd.model.UploadFileInfo;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -63,7 +63,7 @@ public class UploadImgDBHelper {
     /**
      * 插入数据
      */
-    public boolean insert(final Context context, UploadImgInfo imgInfo) {
+    public boolean insert(final Context context, UploadFileInfo imgInfo) {
         if (imgInfo == null) {
             return false;
         }
@@ -82,8 +82,8 @@ public class UploadImgDBHelper {
     /**
      * 获取所有数据
      */
-    public List<UploadImgInfo> getAllUploadItem(final Context context, String sortKey) {
-        List<UploadImgInfo> listItems = new ArrayList<UploadImgInfo>();
+    public List<UploadFileInfo> getAllUploadItem(final Context context, String sortKey) {
+        List<UploadFileInfo> listItems = new ArrayList<UploadFileInfo>();
         iniUloadDBhelper(context);
         synchronized (Lockobj) {
             Cursor cursor = null;
@@ -107,8 +107,8 @@ public class UploadImgDBHelper {
     }
 
 
-    public List<UploadImgInfo> query(final Context context, String[] queryKeys, String[] queryValues, String sortKey) {
-        List<UploadImgInfo> listItems = new ArrayList<UploadImgInfo>();
+    public List<UploadFileInfo> query(final Context context, String[] queryKeys, String[] queryValues, String sortKey) {
+        List<UploadFileInfo> listItems = new ArrayList<UploadFileInfo>();
         iniUloadDBhelper(context);
         synchronized (Lockobj) {
             Cursor cursor = null;
@@ -134,12 +134,12 @@ public class UploadImgDBHelper {
     /**
      * 解析本地文件
      * */
-    private List<UploadImgInfo> fillUploadItem(Cursor cursor) {
-        List<UploadImgInfo> listItems = new ArrayList<UploadImgInfo>();
+    private List<UploadFileInfo> fillUploadItem(Cursor cursor) {
+        List<UploadFileInfo> listItems = new ArrayList<UploadFileInfo>();
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
-                UploadImgInfo uploadImgItem = new UploadImgInfo();
+                UploadFileInfo uploadImgItem = new UploadFileInfo();
                 uploadImgItem.setId(cursor.getInt(cursor.getColumnIndex(ImageTable._ID)));
                 uploadImgItem.setBorrowRequestId(cursor.getString(cursor.getColumnIndex(ImageTable.BORROW_REQUESTID)));
                 uploadImgItem.setImgType(cursor.getString(cursor.getColumnIndex(ImageTable.IMGTYPE)));

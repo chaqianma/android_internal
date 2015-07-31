@@ -17,22 +17,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <include layout="@layout/layout_social_relation_1" />
 
-            <include layout="@layout/layout_company_1" />
+            <include layout="@layout/layout_social_relation_2" />
 
+            <include layout="@layout/layout_social_relation_3" />
 
-            <ViewStub
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout="@layout/layout_company_2"
-                android:inflatedId="@+id/company_2"
-                android:id="@+id/stub_import"/>
+            <include layout="@layout/layout_social_relation_4" />
 
-          <!--  <include layout="@layout/layout_company_2" />
-
-            <include layout="@layout/layout_company_3" />-->
-
-            <View style="@style/ViewLineStyle" />
+            <include layout="@layout/layout_social_relation_5" />
 
             <LinearLayout
                 style="@style/LinearLayoutStyle"
@@ -43,11 +36,29 @@
                     android:text="备注" />
 
                 <EditText
+                    android:id="@+id/et_mark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left|top"
                     android:inputType="textMultiLine"
                     android:minLines="6" />
+
+                <LinearLayout
+                    style="@style/LinearLayoutStyle"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SmallTextStyle"
+                        android:text="录音" />
+
+                    <EditText
+                        android:id="@+id/et_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|top"
+                        android:inputType="textMultiLine"
+                        android:minLines="6" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

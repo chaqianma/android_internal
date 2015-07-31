@@ -5,7 +5,6 @@ package com.chaqianma.jd.fragment;
  */
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -16,13 +15,13 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -34,13 +33,14 @@ import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.BorrowRequestInfo;
 import com.chaqianma.jd.model.DownImgInfo;
-import com.chaqianma.jd.model.ImageUploadStatus;
-import com.chaqianma.jd.model.SoundInfo;
+import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.model.UploadFileType;
-import com.chaqianma.jd.model.UploadImgInfo;
+import com.chaqianma.jd.model.UploadFileInfo;
+import com.chaqianma.jd.model.CustomerBaseInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
+import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
@@ -57,7 +57,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -78,6 +77,10 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     LinearLayout layout_card;
     @InjectView(R.id.rg_registered_residence)
     RadioGroup radioGroup_registered;
+    @InjectView(R.id.radio_native)
+    RadioButton radio_native;
+    @InjectView(R.id.radio_nonlocal)
+    RadioButton radio_nonlocal;
     @InjectView(R.id.layout_come_date)
     LinearLayout layout_come_date;
     @InjectView(R.id.tv_card_id)
@@ -88,12 +91,28 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     TextView tv_mobile;
     @InjectView(R.id.rg_sex)
     RadioGroup rg_sex;
+    @InjectView(R.id.radio_man)
+    RadioButton radio_man;
+    @InjectView(R.id.radio_woman)
+    RadioButton radio_woman;
+    @InjectView(R.id.radio_single)
+    RadioButton radio_single;
+    @InjectView(R.id.radio_married)
+    RadioButton radio_married;
+    @InjectView(R.id.radio_divorce)
+    RadioButton radio_divorce;
     @InjectView(R.id.et_children_count)
     EditText et_children_count;
-    @InjectView(R.id.et_come_date)
-    EditText et_come_date;
+    @InjectView(R.id.tv_come_date)
+    TextView tv_come_date;
     @InjectView(R.id.rg_agriculture)
     RadioGroup rg_agriculture;
+    @InjectView(R.id.radio_yes)
+    RadioButton radio_yes;
+    @InjectView(R.id.radio_no)
+    RadioButton radio_no;
+    @InjectView(R.id.et_mark)
+    EditText et_mark;
     @InjectView(R.id.gv_card_imgs)
     GridView gv_card_imgs;
     @InjectView(R.id.gv_marry_imgs)
@@ -121,7 +140,7 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     //临时图片放置
     private String mImgTempPath = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR + "/" + "temp.jpg";
     //图片文件夹路径
-    private String mImgDirPath = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR + "/";
+    private String mImgDirPath = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR;//+ "/"
     //身份证数据源
     private ImgsGridViewAdapter cardImgsAdapter = null;
     //结婚证/离婚证
@@ -131,13 +150,13 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     //备注数据源
     private ImgsGridViewAdapter remarkImgsAdapter = null;
     //身份证图片集合
-    private List<UploadImgInfo> cardUploadImgInfoList = null;
+    private List<UploadFileInfo> cardUploadImgInfoList = null;
     //结婚证/离婚证集合
-    private List<UploadImgInfo> marryUploadImgInfoList = null;
+    private List<UploadFileInfo> marryUploadImgInfoList = null;
     //录音集合
-    private List<SoundInfo> soundInfoList = null;
+    private List<UploadFileInfo> soundInfoList = null;
     //备注集合
-    private List<UploadImgInfo> remarkUploadImgInfoList = null;
+    private List<UploadFileInfo> remarkUploadImgInfoList = null;
     //1 身份证  2 结婚证/离婚证  3 备注
     private UploadFileType fileType = UploadFileType.CARD;
     //小图
@@ -145,7 +164,9 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     //大图
     private String bigImgPath = null;
     //BorrowRequest
-    private String mBorrowRequestId = "18";
+    private String mBorrowRequestId;
+    //上传文件所用的Id
+    private String mParentId = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,13 +178,14 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_person_info, container, false);
         ButterKnife.inject(this, view);
+
         mPopup = new PhotoPopup(getActivity());
         mPopup.setDialogListener(this);
         mViewPagerPopup = new ViewPagerPopup(getActivity());
         mViewPagerPopup.setViewPagerDialogListener(this);
+        initImgDir();
         initRadioGroup();
         initView();
-        initImgDir();
         getPersonalInfo();
         return view;
     }
@@ -214,9 +236,9 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     * 初始化图片文件夹
     * */
     private void initImgDir() {
-        BorrowRequestInfo borrowRequestInfo = AppData.getInstance().getBorrowRequestInfo();
-        if (borrowRequestInfo != null) {
-            mImgDirPath = mImgDirPath + "/" + borrowRequestInfo.getBorrowRequestId();
+        if (AppData.getInstance().getBorrowRequestInfo() != null) {
+            mBorrowRequestId = AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId();
+            mImgDirPath = mImgDirPath + "/" + mBorrowRequestId;
             File file = new File(mImgDirPath);
             if (!file.getParentFile().exists()) {
                 file.mkdirs();
@@ -229,10 +251,10 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
         * */
     private void initImagesList() {
         fileType = UploadFileType.NONE;
-        cardUploadImgInfoList = new ArrayList<UploadImgInfo>();
-        marryUploadImgInfoList = new ArrayList<UploadImgInfo>();
-        soundInfoList = new ArrayList<SoundInfo>();
-        remarkUploadImgInfoList = new ArrayList<UploadImgInfo>();
+        cardUploadImgInfoList = new ArrayList<UploadFileInfo>();
+        marryUploadImgInfoList = new ArrayList<UploadFileInfo>();
+        soundInfoList = new ArrayList<UploadFileInfo>();
+        remarkUploadImgInfoList = new ArrayList<UploadFileInfo>();
     }
 
     /*
@@ -241,9 +263,9 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     private void initView() {
         {
             //身份证
-            UploadImgInfo imgInfo = new UploadImgInfo();
+            UploadFileInfo imgInfo = new UploadFileInfo();
             imgInfo.setIsDefault(true);
-            imgInfo.setImgIsServer(false);
+            imgInfo.setiServer(false);
             imgInfo.setFileType(UploadFileType.CARD.getValue());
             cardUploadImgInfoList.add(imgInfo);
             cardImgsAdapter = new ImgsGridViewAdapter(getActivity(), cardUploadImgInfoList);
@@ -253,10 +275,10 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
 
         {
             //结婚证/离婚证
-            UploadImgInfo imgInfo = new UploadImgInfo();
+            UploadFileInfo imgInfo = new UploadFileInfo();
             imgInfo.setIsDefault(true);
             imgInfo.setFileType(UploadFileType.MARRY.getValue());
-            imgInfo.setImgIsServer(false);
+            imgInfo.setiServer(false);
             marryUploadImgInfoList.add(imgInfo);
             marryImgsAdapter = new ImgsGridViewAdapter(getActivity(), marryUploadImgInfoList);
             gv_marry_imgs.setAdapter(marryImgsAdapter);
@@ -264,49 +286,98 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
 
         {
             //录音
-            SoundInfo soundInfo = new SoundInfo();
+            UploadFileInfo soundInfo = new UploadFileInfo();
             soundInfo.setIsDefault(true);
             soundInfo.setFileType(UploadFileType.SOUND.getValue());
-            soundInfo.setImgIsServer(false);
+            soundInfo.setiServer(false);
             soundInfoList.add(soundInfo);
-            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList);
+            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList, mParentId);
             gv_sound.setAdapter(soundAdapter);
         }
 
         {
             //备注
-            UploadImgInfo imgInfo = new UploadImgInfo();
+            UploadFileInfo imgInfo = new UploadFileInfo();
             imgInfo.setIsDefault(true);
             imgInfo.setFileType(UploadFileType.REMARK.getValue());
-            imgInfo.setImgIsServer(false);
+            imgInfo.setiServer(false);
             remarkUploadImgInfoList.add(imgInfo);
             remarkImgsAdapter = new ImgsGridViewAdapter(getActivity(), remarkUploadImgInfoList);
             gv_mark.setAdapter(marryImgsAdapter);
         }
     }
 
+    //获取客户基本信息
     private void getPersonalInfo() {
-        if (AppData.getInstance().getBorrowRequestInfo() != null)
-            mBorrowRequestId = AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId();
         String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.PERSONALINFO + "/" + mBorrowRequestId;
-        HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler<String>() {
-            @Override
-            public void onSuccess(String buffer) {
-                String sss = "ssss";
-                sss = "ssss";
-                sss = "ssss";
-                sss = "ssss";
-                sss = "ssss";
-            }
-        }));
+        try {
+            HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler<CustomerBaseInfo>() {
+                @Override
+                public void onSuccess(CustomerBaseInfo customerBaseInfo) {
+                    if (customerBaseInfo != null) {
+                        mParentId = customerBaseInfo.getId();
+                        tv_name.setText(customerBaseInfo.getName());
+                        tv_mobile.setText(customerBaseInfo.getMobile());
+                        if (customerBaseInfo.getGender() != null) {
+                            if (customerBaseInfo.getGender().equals("1"))
+                                radio_man.setChecked(true);
+                            else
+                                radio_woman.setChecked(true);
+                        }
+                        //已婚，离异
+                        if (customerBaseInfo.getMaritalStatus() != null) {
+                            String marital_status = customerBaseInfo.getMaritalStatus();
+                            if (marital_status.equals("1")) {
+                                radio_single.setChecked(true);
+                                et_children_count.setVisibility(View.GONE);
+                            } else if (marital_status.equals("2")) {
+                                radio_married.setChecked(true);
+                                et_children_count.setVisibility(View.VISIBLE);
+                                et_children_count.setText(customerBaseInfo.getCountChildren());
+                            } else {
+                                radio_divorce.setChecked(true);
+                                et_children_count.setVisibility(View.VISIBLE);
+                                et_children_count.setText(customerBaseInfo.getCountChildren());
+                            }
+                        }
+                        //户口 本地  外地 household_type
+
+                        if (customerBaseInfo.getHouseholdType() != null) {
+                            if (customerBaseInfo.getHouseholdType().equals("1")) {
+                                layout_come_date.setVisibility(View.GONE);
+                                radio_native.setChecked(true);
+                            } else {
+                                layout_come_date.setVisibility(View.VISIBLE);
+                                radio_nonlocal.setChecked(true);
+                                //来本地日期
+                                tv_come_date.setText(JDAppUtil.getTimeToStr(customerBaseInfo.getComeLocalTime()));
+                            }
+                        }
+                        //是否是农业户口
+                        if (customerBaseInfo.getIsAgriculturalHousehold() != null) {
+                            if (customerBaseInfo.getIsAgriculturalHousehold().equals("1"))
+                                radio_yes.setChecked(true);
+                            else
+                                radio_no.setChecked(true);
+                        }
+                        //备注
+                        et_mark.setText(customerBaseInfo.getRemark());
+                        //初始化服务端图片
+                        initServerFile(customerBaseInfo.getFileList());
+                    }
+                }
+            }, Class.forName(CustomerBaseInfo.class.getName())));
+        } catch (Exception e) {
+
+        }
     }
 
     @OnClick(R.id.btn_name_auth)
     void onRealNameAuth(View v) {
         btn_name_auth.setText("认证中。。。");
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair("name", "张晓东"));
-        formparams.add(new BasicNameValuePair("idNumber", "320623198512222351"));
+        formparams.add(new BasicNameValuePair("name", "倪美华"));
+        formparams.add(new BasicNameValuePair("idNumber", "320623198610022361"));
         HttpClientUtil.put(getActivity(), HttpRequestURL.realNameAuthenticationUrl, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
@@ -318,6 +389,82 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
             public void onFailure(String data) {
                 super.onFailure(data);
                 btn_name_auth.setText("认验失败");
+            }
+        }));
+    }
+
+    /*
+    *获取服务器文件信息
+     */
+    private void initServerFile(List<UploadFileInfo> fileInfoList) {
+        if (fileInfoList != null && fileInfoList.size() > 0) {
+            for (UploadFileInfo uploadFileInfo : fileInfoList) {
+                uploadFileInfo.setiServer(true);
+                uploadFileInfo.setIsDefault(false);
+                uploadFileInfo.setBorrowRequestId(mBorrowRequestId);
+                getServerFile(uploadFileInfo);
+            }
+        }
+    }
+
+    /*
+    * 得到服务器文件
+    * */
+    private void getServerFile(UploadFileInfo fileInfo) {
+        String filePath = getSaveFilePath(fileInfo);
+        fileInfo.setBigImgPath(filePath);
+        HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
+            @Override
+            public void onSuccess(UploadFileInfo uploadFileInfo) {
+                uploadFileInfo.setiServer(true);
+                uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
+                String fileExt = uploadFileInfo.getFileExt();
+                if (fileExt.equals("amr")) {
+                    soundInfoList.add(0, uploadFileInfo);
+                } else if (fileExt.equals("jpg")) {
+                    //1.身份证  2 结婚证/离婚证  3 备注 图片
+                    switch (uploadFileInfo.getFileType()) {
+                        case 1:
+                            cardUploadImgInfoList.add(0, uploadFileInfo);
+                            cardImgsAdapter.notifyDataSetChanged();
+                            break;
+                        case 2:
+                            marryUploadImgInfoList.add(0, uploadFileInfo);
+                            marryImgsAdapter.notifyDataSetChanged();
+                            break;
+                        case 3:
+                            uploadFileInfo.setFileType(UploadFileType.REMARK.getValue());
+                            remarkUploadImgInfoList.add(0, uploadFileInfo);
+                            remarkImgsAdapter.notifyDataSetChanged();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(UploadFileInfo uploadFileInfo) {
+                super.onFailure(uploadFileInfo);
+                uploadFileInfo.setiServer(false);
+                uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                switch (uploadFileInfo.getFileType()) {
+                    case 1:
+                        cardUploadImgInfoList.add(0, uploadFileInfo);
+                        cardImgsAdapter.notifyDataSetChanged();
+                        break;
+                    case 2:
+                        marryUploadImgInfoList.add(0, uploadFileInfo);
+                        marryImgsAdapter.notifyDataSetChanged();
+                        break;
+                    case 3:
+                        uploadFileInfo.setFileType(UploadFileType.REMARK.getValue());
+                        remarkUploadImgInfoList.add(0, uploadFileInfo);
+                        remarkImgsAdapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        break;
+                }
             }
         }));
     }
@@ -360,9 +507,9 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     }
 
     @Override
-    public void onImgClick(List<UploadImgInfo> uploadImgInfoList, int idx) {
+    public void onImgClick(List<UploadFileInfo> uploadImgInfoList, int idx) {
         if (idx < uploadImgInfoList.size()) {
-            UploadImgInfo imgInfo = uploadImgInfoList.get(idx);
+            UploadFileInfo imgInfo = uploadImgInfoList.get(idx);
             fileType = UploadFileType.valueOf(imgInfo.getFileType());
             if (imgInfo.isDefault()) {
                 mPopup.showAtLocation(linear_container, Gravity.BOTTOM, 0, 0);
@@ -440,12 +587,17 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     }
 
 
+    //得到保存图片地址
+    private String getSaveFilePath(UploadFileInfo uploadFileInfo) {
+        return mImgDirPath + "/" + uploadFileInfo.getFileType() + "_" + System.currentTimeMillis() + "." + uploadFileInfo.getFileExt();
+    }
+
     //得到图片地址
     private String getFilePath(boolean isBigImgPath, String randomName) {
         String path = fileType.getValue() + "_" + randomName + ".jpg";
         if (!isBigImgPath)
             path = "thumb_" + path;
-        return mImgDirPath + "/" + mBorrowRequestId + "/" + path;
+        return mImgDirPath + "/" + path;
     }
 
     //保存图片
@@ -467,8 +619,8 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
                 ImageUtil.saveBitmapFile(smallImgPath, bitmap);
                 bitmap.recycle();
             }
-            UploadImgInfo imgInfo = new UploadImgInfo();
-            imgInfo.setImgIsServer(false);
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setiServer(false);
             imgInfo.setBigImgPath(bigImgPath);
             imgInfo.setSmallImgPath(smallImgPath);
             imgInfo.setParentTableName(Constants.USER_BASE_INFO);
@@ -497,7 +649,7 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     };
 
     //上传图片
-    private void uploadImg(final UploadImgInfo imgInfo) {
+    private void uploadImg(final UploadFileInfo imgInfo) {
         try {
             MultipartEntityBuilder entity = MultipartEntityBuilder.create();
             ContentBody fileBody = new FileBody(new File(imgInfo.getBigImgPath()));
@@ -507,17 +659,17 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
                 ftype -= 1;
             entity.addPart("fileType", new StringBody("" + ftype, ContentType.DEFAULT_TEXT));
             entity.addPart("parentTableName", new StringBody(imgInfo.getParentTableName(), ContentType.DEFAULT_TEXT));
-            entity.addPart("parentId", new StringBody("1", ContentType.DEFAULT_TEXT));
+            entity.addPart("parentId", new StringBody(mParentId, ContentType.DEFAULT_TEXT));
             HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, entity.build(), new JDHttpResponseHandler(getActivity(), new ResponseHandler<DownImgInfo>() {
                 @Override
                 public void onSuccess(DownImgInfo downImgInfo) {
-                    imgInfo.setImgStatus(ImageUploadStatus.SUCCESS.getValue());//成功
+                    imgInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功
                     refreshData();
                 }
 
                 @Override
                 public void onFailure(String data) {
-                    imgInfo.setImgStatus(ImageUploadStatus.FAILURE.getValue());//失败
+                    imgInfo.setStatus(UploadStatus.FAILURE.getValue());//失败
                     if (fileType == UploadFileType.CARD) {
 
                         cardImgsAdapter.notifyDataSetChanged();
@@ -531,6 +683,14 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //刷新整个数据源
+    private void refreshAllData() {
+        cardImgsAdapter.refreshData();
+        marryImgsAdapter.refreshData();
+        //soundAdapter
+        remarkImgsAdapter.refreshData();
     }
 
     //刷新数据源

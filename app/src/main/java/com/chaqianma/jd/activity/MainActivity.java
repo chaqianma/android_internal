@@ -36,12 +36,15 @@ public class MainActivity extends ActivityGroup {
     TextView top_title;
     @InjectView(R.id.top_back_btn)
     LinearLayout top_back_btn;
+    private boolean mIsHasTask = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_back);
         ButterKnife.inject(this);
         mTabHost.setup(getLocalActivityManager());
+        mIsHasTask = (AppData.getInstance().getBorrowRequestInfo() != null);
         addTabIntent();
         mTabHost.setCurrentTab(0);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -69,9 +72,12 @@ public class MainActivity extends ActivityGroup {
 
     private void addTabIntent() {
         try {
-            this.mTabHost.addTab(buildTabSpec("tab1","0",new Intent(this,StaffActivity_bak.class)));
-            this.mTabHost.addTab(buildTabSpec("tab2","1",new Intent(this,SettingActivity.class)));
-            this.mTabHost.addTab(buildTabSpec("tab2","1",new Intent(this,BorrowApplyActivity.class)));
+            if (mIsHasTask)
+                this.mTabHost.addTab(buildTabSpec("tab1", "0", new Intent(this, BorrowApplyActivity.class)));
+            else
+                this.mTabHost.addTab(buildTabSpec("tab1", "0", new Intent(this, StaffActivity_bak.class)));
+            this.mTabHost.addTab(buildTabSpec("tab2", "1", new Intent(this, SettingActivity.class)));
+
         } catch (Exception e) {
         }
     }
@@ -80,7 +86,6 @@ public class MainActivity extends ActivityGroup {
                                          final Intent content) {
         return this.mTabHost.newTabSpec(tag).setIndicator(m).setContent(content);
     }
-
 
 
     //Handler to get something

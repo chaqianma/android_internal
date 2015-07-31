@@ -28,6 +28,7 @@ public class InitActivity extends Activity {
         String username = SharedPreferencesUtil.getShareString(InitActivity.this, Constants.USERNAME);
         String password = SharedPreferencesUtil.getShareString(InitActivity.this, Constants.PASSWORD);
         String uuid=SharedPreferencesUtil.getShareString(InitActivity.this,Constants.UUID);
+        username="";
         if (username.length() > 0 && password.length() > 0) {
             try {
                 HashMap<String, Object> argMap = new HashMap<String, Object>();
@@ -43,7 +44,7 @@ public class InitActivity extends Activity {
                                 AppData.getInstance().setUserInfo(userInfo);
                                 //设置别名
                                 ((JDApplication) getApplication()).setAlias(userInfo.getMobile());
-                                Intent intent = new Intent(getApplicationContext(), InvestigateDetailActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             } else {

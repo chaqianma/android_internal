@@ -255,11 +255,12 @@
                         style="@style/SmallTextStyle"
                         android:text="来本地日期：" />
 
-                    <EditText
-                        android:id="@+id/et_come_date"
+                    <TextView
+                        android:id="@+id/tv_come_date"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1" />
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="选择日期"/>
                 </LinearLayout>
 
                 <LinearLayout style="@style/LinearLayoutStyle">
@@ -300,6 +301,7 @@
                     android:text="备注" />
 
                 <EditText
+                    android:id="@+id/et_mark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left|top"

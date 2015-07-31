@@ -6,7 +6,7 @@ package com.chaqianma.jd.common;
  */
 public class HttpRequestURL {
     //请求URL 192.168.199.112
-    public static final String BASEURL= "http://192.168.199.223:8080/";
+    public static final String BASEURL= "http://192.168.199.102:8080/";
     //登录 POST
     public static final String LoginUrl="api/user/login";
     //尽调申请(贷款)
@@ -25,6 +25,8 @@ public class HttpRequestURL {
     public static final String uploadImgUrl="api/file/upload";
     //个人信息查询路径
     public static final String personalInfoUrl="api/borrow/dd/details";
+    //下载
+    public static final String downLoadFileUrl="api/file/download/";
     //删除文件
     public static final String deleteFileUrl="api/file/delete/";
 }

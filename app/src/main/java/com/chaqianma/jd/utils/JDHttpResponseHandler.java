@@ -1,6 +1,7 @@
 package com.chaqianma.jd.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.chaqianma.jd.model.ErrorInfo;
@@ -66,6 +67,8 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
             }
         }
         if (bytes != null && bytes.length > 0) {
+            Log.i("zxd:info",new String(bytes));
+            String sss=new String(bytes);
             if (dataType == null)
                 handler.onSuccess(new String(bytes));
             else

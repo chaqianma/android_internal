@@ -1,4 +1,5 @@
 package com.chaqianma.jd.utils;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,17 +25,19 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
+
 /**
  * Created by zhangxd on 2015/7/28.
  */
 public class ImageUtil {
     /**
      * 把图片转成圆角
+     *
      * @param bitmap
-     * @param angle 图角角度 建议0~90
+     * @param angle  图角角度 建议0~90
      * @return
      */
-    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap,float angle) {
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float angle) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
@@ -51,6 +54,7 @@ public class ImageUtil {
         canvas.drawBitmap(bitmap, rect, rect, paint);
         return output;
     }
+
     /**
      * 处理图片 放大、缩小到合适位置
      *
@@ -65,16 +69,20 @@ public class ImageUtil {
         Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         return newBitmap;
     }
-    /**旋转图片
+
+    /**
+     * 旋转图片
+     *
      * @param source
-     * @return*/
-    public static Bitmap changeRoate(Bitmap source,boolean isHeadCamera) {
-        int orientation=90;
-        Bitmap bMapRotate=null;
-        if(source.getHeight() < source.getWidth()){
+     * @return
+     */
+    public static Bitmap changeRoate(Bitmap source, boolean isHeadCamera) {
+        int orientation = 90;
+        Bitmap bMapRotate = null;
+        if (source.getHeight() < source.getWidth()) {
             orientation = 90;
-            if(isHeadCamera)
-                orientation=-90;
+            if (isHeadCamera)
+                orientation = -90;
         } else {
             orientation = 0;
         }
@@ -88,6 +96,7 @@ public class ImageUtil {
         }
         return bMapRotate;
     }
+
     /**
      * 获取图片路径
      */
@@ -104,18 +113,20 @@ public class ImageUtil {
             return value;
         }
     }
+
     /**
      * 读取本地的图片得到缩略图，如图片需要旋转则旋转。
+     *
      * @param path
      * @param width
      * @param height
      * @return
      */
-    public static  Bitmap getLocalThumbImg(String path,float width,float height,String imageType){
+    public static Bitmap getLocalThumbImg(String path, float width, float height, String imageType) {
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
         //开始读入图片，此时把options.inJustDecodeBounds 设回true了
         newOpts.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(path,newOpts);//此时返回bm为空
+        Bitmap bitmap = BitmapFactory.decodeFile(path, newOpts);//此时返回bm为空
         newOpts.inJustDecodeBounds = false;
         int w = newOpts.outWidth;
         int h = newOpts.outHeight;
@@ -131,31 +142,33 @@ public class ImageUtil {
         newOpts.inSampleSize = be;//设置缩放比例
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         bitmap = BitmapFactory.decodeFile(path, newOpts);
-        bitmap = compressImage(bitmap,100,imageType);//压缩好比例大小后再进行质量压缩
+        bitmap = compressImage(bitmap, 100, imageType);//压缩好比例大小后再进行质量压缩
         int degree = readPictureDegree(path);
         bitmap = rotaingImageView(degree, bitmap);
         return bitmap;
     }
+
     /**
      * 图片质量压缩
+     *
      * @param image
-     * @size 图片大小（kb）
      * @return
+     * @size 图片大小（kb）
      */
-    public static Bitmap compressImage(Bitmap image, int size,String imageType) {
-        try{
+    public static Bitmap compressImage(Bitmap image, int size, String imageType) {
+        try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            if(imageType.equalsIgnoreCase("png")) {
+            if (imageType.equalsIgnoreCase("png")) {
                 image.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            }else {
+            } else {
                 image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
             }
             int options = 100;
-            while ( baos.toByteArray().length / 1024 > size) {	//循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            while (baos.toByteArray().length / 1024 > size) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
                 baos.reset();//重置baos即清空baos
-                if(imageType.equalsIgnoreCase("png")) {
+                if (imageType.equalsIgnoreCase("png")) {
                     image.compress(Bitmap.CompressFormat.PNG, options, baos);
-                }else {
+                } else {
                     image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
                 }
                 options -= 10;//每次都减少10
@@ -163,15 +176,15 @@ public class ImageUtil {
             ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
             Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
             return bitmap;
-        }catch(Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
+
     /**
      * 读取图片属性：旋转的角度
      *
-     * @param path
-     *            图片绝对路径
+     * @param path 图片绝对路径
      * @return degree旋转的角度
      */
     public static int readPictureDegree(String path) {
@@ -197,14 +210,16 @@ public class ImageUtil {
         }
         return degree;
     }
+
     /**
      * 旋转图片
+     *
      * @param angle
      * @param bitmap
      * @return Bitmap
      */
     public static Bitmap rotaingImageView(int angle, Bitmap bitmap) {
-        if(bitmap == null)
+        if (bitmap == null)
             return null;
         // 旋转图片 动作
         Matrix matrix = new Matrix();
@@ -214,6 +229,7 @@ public class ImageUtil {
                 bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         return resizedBitmap;
     }
+
     /**
      * 获取适应屏幕大小的图
      */
@@ -237,9 +253,8 @@ public class ImageUtil {
     /*
     * 获取缩略图
     * */
-    public static Bitmap getImageThumbnail(String imgPath)
-    {
-       return getImageThumbnail(imgPath,80,80);
+    public static Bitmap getImageThumbnail(String imgPath) {
+        return getImageThumbnail(imgPath, 80, 80);
     }
 
     /*
@@ -277,8 +292,9 @@ public class ImageUtil {
 
     /**
      * 保存图片Bitmap到本地
-     * @param	tbFilePath	缩略图地址
-     * @param	bitmap	位图
+     *
+     * @param    tbFilePath    缩略图地址
+     * @param    bitmap    位图
      */
     public static void saveBitmapFile(String imgPath, Bitmap bitmap) {
         File file = new File(imgPath);
@@ -299,11 +315,13 @@ public class ImageUtil {
             e.printStackTrace();
         }
     }
+
     //dp to px
     public static float dip2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return dipValue * scale + 0.5f;
     }
+
     // 缩放图片
     public static Bitmap proportionZoom(String imgPath, int maxSquare) {
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -326,7 +344,6 @@ public class ImageUtil {
         // 得到新的图片
         Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
                 true);
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         newbm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());

@@ -7,6 +7,7 @@ import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.HttpEntity;
@@ -94,8 +95,6 @@ public class HttpClientUtil {
         Iterator iterator = argMaps.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            String ss=entry.getKey().toString();
-            String val=entry.getValue().toString();
             params.put(entry.getKey().toString(), entry.getValue());
         }
         return params;

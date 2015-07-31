@@ -58,7 +58,7 @@
                     android:drawablePadding="4dp"
                     android:drawableTop="@drawable/selector_radio_msg"
                     android:tag="radio_choumeibang"
-                    android:text="消息" />
+                    android:text="首页" />
 
                 <RadioButton
                     android:id="@+id/radio_setup"

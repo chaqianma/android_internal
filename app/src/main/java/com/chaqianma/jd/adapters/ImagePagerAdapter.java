@@ -3,7 +3,7 @@ import android.graphics.BitmapFactory;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.graphics.Bitmap;
-import com.chaqianma.jd.model.UploadImgInfo;
+import com.chaqianma.jd.model.UploadFileInfo;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import java.util.List;
@@ -16,18 +16,18 @@ import uk.co.senab.photoview.PhotoView;
  */
 public class ImagePagerAdapter extends PagerAdapter {
 
-    private List<UploadImgInfo> uploadedImgList;
+    private List<UploadFileInfo> uploadedImgList;
 
     public ImagePagerAdapter() {
 
     }
 
-    public ImagePagerAdapter(List<UploadImgInfo> uploadedImgList) {
+    public ImagePagerAdapter(List<UploadFileInfo> uploadedImgList) {
         this.uploadedImgList = uploadedImgList;
     }
 
     //设置数据源
-    public void setUploadedImgList(List<UploadImgInfo> uploadedImgList)
+    public void setUploadedImgList(List<UploadFileInfo> uploadedImgList)
     {
         this.uploadedImgList=uploadedImgList;
     }
@@ -48,7 +48,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     @Override
     public View instantiateItem(ViewGroup container, int position) {
         PhotoView photoView = new PhotoView(container.getContext());
-        UploadImgInfo uploadImgItem = uploadedImgList.get(position);
+        UploadFileInfo uploadImgItem = uploadedImgList.get(position);
         String imgPath = uploadImgItem.getBigImgPath();
         if (imgPath!=null && imgPath.length()>0) {
             Bitmap img = BitmapFactory.decodeFile(imgPath);

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/layout_company_2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout style="@style/RelativeLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="社会关系："
+                android:textSize="@dimen/large_text_size" />
+
+        </RelativeLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <LinearLayout
+            style="@style/LinearLayoutStyle"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical">
+
+            <RelativeLayout style="@style/RelativeLayoutStyle">
+
+                <TextView
+                    style="@style/SmallTextStyle"
+                    android:text="关系类型：" />
+
+                <Spinner
+                    android:id="@+id/sp_relation_type_2"
+                    style="@style/SettingRightIconStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/company_type"
+                    android:spinnerMode="dialog"></Spinner>
+
+            </RelativeLayout>
+
+            <View style="@style/ViewLineStyle" />
+
+            <LinearLayout
+                style="@style/LinearLayoutStyle"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SmallTextStyle"
+                    android:text="关系人身份证件：" />
+
+                <LinearLayout
+
+                    style="@style/LinearLayoutStyle"
+                    android:orientation="horizontal">
+
+                    <com.chaqianma.jd.widget.ImageGridView
+                        android:id="@+id/gv_relation_card_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:background="#ffffff"
+                        android:columnWidth="80dp"
+                        android:gravity="center"
+                        android:horizontalSpacing="5dp"
+                        android:listSelector="#ffffff"
+                        android:numColumns="auto_fit"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View style="@style/ViewLineStyle" />
+        </LinearLayout>
+    </LinearLayout>
+</merge>

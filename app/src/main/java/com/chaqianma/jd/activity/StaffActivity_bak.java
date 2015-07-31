@@ -8,12 +8,15 @@ import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
+import com.chaqianma.jd.widget.JDToast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,6 +28,9 @@ import butterknife.OnClick;
 public class StaffActivity_bak extends BaseActivity {
     @InjectView(R.id.btn_state)
     Button btn_state;
+    private Timer timer = new Timer();
+    private boolean isBack = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +39,8 @@ public class StaffActivity_bak extends BaseActivity {
     }
 
     @OnClick(R.id.btn_state)
-     void changeUserState() {
-        btn_state.setText("忙碌");
-        /*try {
+    void changeUserState() {
+        try {
             List<NameValuePair> formparams = new ArrayList<NameValuePair>();
             formparams.add(new BasicNameValuePair("isBusy", "1"));
             HttpClientUtil.put(StaffActivity_bak.this, HttpRequestURL.changeStateUrl, formparams, new JDHttpResponseHandler(StaffActivity_bak.this, new ResponseHandler() {
@@ -45,6 +50,22 @@ public class StaffActivity_bak extends BaseActivity {
                 }
             }));
         } catch (Exception e) {
-        }*/
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isBack) {
+            super.onBackPressed();
+        } else {
+            isBack = true;
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isBack = false;
+                }
+            }, 5 * 1000);
+            JDToast.showShortText(StaffActivity_bak.this, "再按一次退出系统");
+        }
     }
 }

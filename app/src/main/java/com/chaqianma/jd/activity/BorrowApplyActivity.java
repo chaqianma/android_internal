@@ -27,13 +27,16 @@ import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
  * Created by zhangxd on 2015/7/24.
- *
+ * <p/>
  * 尽调主页面
  */
 public class BorrowApplyActivity extends BaseActivity {
@@ -53,12 +56,15 @@ public class BorrowApplyActivity extends BaseActivity {
     TextView tv_address;
     @InjectView(R.id.tv_apply_time)
     TextView tv_apply_time;
-
     @InjectView(R.id.tv_check)
     TextView tv_check;
     @InjectView(R.id.btn_borrow)
     Button btn_borrow;
+    private Timer timer = new Timer();
+    private boolean isBack = false;
     private String mLocation = null;
+    //是否需要请求服务端
+    private boolean isShouldRequest = true;
 
     @OnClick(R.id.tv_view_map)
     void onViewMap(View v) {
@@ -80,54 +86,73 @@ public class BorrowApplyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_borrow_apply);
         ButterKnife.inject(this);
-        initData();
+        if (AppData.getInstance().getBorrowRequestInfo() == null) {
+            getBorrowRequestInfo();
+        } else {
+            initData(AppData.getInstance().getBorrowRequestInfo());
+        }
     }
 
-    private void initData() {
+    /*
+    * 获取数据
+    * */
+    private void getBorrowRequestInfo() {
         try {
             HttpClientUtil.get(HttpRequestURL.loanApplyUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler<BorrowRequestInfo>() {
                 @Override
                 public void onSuccess(BorrowRequestInfo borrowRequestInfo) {
-                    if (borrowRequestInfo != null) {
-                        tv_id.setText(borrowRequestInfo.getBorrowRequestId());
-                        tv_name.setText(borrowRequestInfo.getName());
-                        tv_telephone.setText(borrowRequestInfo.getMobile());
-                        tv_money.setText(borrowRequestInfo.getAmount());
-                        tv_date.setText(borrowRequestInfo.getLength());
-                        tv_purpose.setText(borrowRequestInfo.getBorrowPurpose());
-                        mLocation = borrowRequestInfo.getLocation();
-                        mLocation = "118.996925,32.142425";
-                        getUserLocation(mLocation);
-                        tv_apply_time.setText(JDAppUtil.getStrDateTime(borrowRequestInfo.getDateline()));
-                        //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
-                        if (borrowRequestInfo.getStatus().equals("1")) {
-                            tv_check.setVisibility(View.VISIBLE);
-                            tv_check.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    JDAlertDialog.showAlertDialog(BorrowApplyActivity.this, "确定转出尽调任务？", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            transformTask();
-                                        }
-                                    }, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            dialog.cancel();
-                                        }
-                                    });
-                                }
-                            });
-                        } else {
-                            tv_check.setVisibility(View.GONE);
-                        }
-                        AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
-                    }
+                    initData(borrowRequestInfo);
                 }
             }, Class.forName(BorrowRequestInfo.class.getName())));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /*
+    * 初始化数据
+    * */
+    private void initData(BorrowRequestInfo borrowRequestInfo) {
+        if (borrowRequestInfo != null) {
+            tv_id.setText(borrowRequestInfo.getBorrowRequestId());
+            tv_name.setText(borrowRequestInfo.getName());
+            tv_telephone.setText(borrowRequestInfo.getMobile());
+            tv_money.setText(borrowRequestInfo.getAmount());
+            tv_date.setText(borrowRequestInfo.getLength());
+            tv_purpose.setText(borrowRequestInfo.getBorrowPurpose());
+            mLocation = borrowRequestInfo.getLocation();
+            mLocation = "118.996925,32.142425";
+            getUserLocation(mLocation);
+            tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
+            //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
+            if (borrowRequestInfo.getStatus().equals("1")) {
+                tv_check.setVisibility(View.VISIBLE);
+                tv_check.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        JDAlertDialog.showAlertDialog(BorrowApplyActivity.this, "确定转出尽调任务？", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                transformTask();
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                dialog.cancel();
+                            }
+                        });
+                    }
+                });
+            } else {
+                tv_check.setVisibility(View.GONE);
+            }
+            btn_borrow.setText("开始尽调");
+            if (borrowRequestInfo.getStatus().equals("2")) {
+                isShouldRequest = false;
+                btn_borrow.setText("进入尽调");
+            }
+            AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
         }
     }
 
@@ -141,23 +166,36 @@ public class BorrowApplyActivity extends BaseActivity {
         }));
     }
 
+    private boolean isCanClickOnce = false;
+
     @OnClick(R.id.btn_borrow)
     void onBeginCheck() {
-        HttpClientUtil.put(HttpRequestURL.beginCheckUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {
-            @Override
-            public void onSuccess(Object o) {
+        JDToast.showLongText(BorrowApplyActivity.this, "借款页面加载页面有点慢，请等待！！！");
+        if (!isCanClickOnce) {
+            isCanClickOnce = true;
+            if (!isShouldRequest) {
                 startActivity(InvestigateDetailActivity.class);
+            } else {
+                HttpClientUtil.put(HttpRequestURL.beginCheckUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        startActivity(InvestigateDetailActivity.class);
+                        isCanClickOnce=false;
+                    }
+                }));
             }
-        }));
+        } else {
+            JDToast.showLongText(BorrowApplyActivity.this, "不要点了，借款页面加载页面有点慢，请等待！！！");
+        }
     }
 
     //获取用户的地址
     public void getUserLocation(String location) {
         if (location != null && location.length() > 0 && location.indexOf(",") >= 0) {
             try {
-                String [] arrs=location.split(",");
+                String[] arrs = location.split(",");
                 //经度 纬度
-                LatLng latLng = new LatLng( Double.parseDouble(arrs[1]), Double.parseDouble(arrs[0]));
+                LatLng latLng = new LatLng(Double.parseDouble(arrs[1]), Double.parseDouble(arrs[0]));
                 GeoCoder geoCoder = GeoCoder.newInstance();
                 OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
                     // 反地理编码查询结果回调函数
@@ -169,6 +207,7 @@ public class BorrowApplyActivity extends BaseActivity {
                         }
                         tv_address.setText(result.getAddress());
                     }
+
                     // 地理编码查询结果回调函数
                     @Override
                     public void onGetGeoCodeResult(GeoCodeResult result) {
@@ -185,6 +224,22 @@ public class BorrowApplyActivity extends BaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isBack) {
+            super.onBackPressed();
+        } else {
+            isBack = true;
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isBack = false;
+                }
+            }, 5 * 1000);
+            JDToast.showShortText(BorrowApplyActivity.this, "再按一次退出系统");
         }
     }
 }

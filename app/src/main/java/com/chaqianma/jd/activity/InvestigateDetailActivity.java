@@ -19,6 +19,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.adapters.InvestigateDetailFragmentAdapter;
+import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 
 import org.w3c.dom.Text;
@@ -39,6 +40,8 @@ public class InvestigateDetailActivity extends FragmentActivity {
     ViewPager mViewPager;
     @InjectView(R.id.top_title)
     TextView top_title;
+    public String mBorrowRequestId="18";
+
     private InvestigateDetailFragmentAdapter mAdapter = null;
 
     @Override
@@ -46,6 +49,9 @@ public class InvestigateDetailActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investigate_detail);
         ButterKnife.inject(this);
+        mViewPager.setOffscreenPageLimit(4);
+        if (AppData.getInstance().getBorrowRequestInfo() != null)
+            mBorrowRequestId = AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId();
         top_title.setText("尽调详情");
         mAdapter = new InvestigateDetailFragmentAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);

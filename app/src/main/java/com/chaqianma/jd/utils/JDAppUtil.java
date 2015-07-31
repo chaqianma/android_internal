@@ -73,14 +73,28 @@ public class JDAppUtil {
     /*
     * 判断是否存在SDK卡
     * */
-    public static boolean isHasSDKCard(Context context)    {
+    public static boolean isHasSDKCard(Context context) {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             JDToast.showShortText(context, "内存卡不存在");
             return false;
         }
         return true;
     }
-
+    /*
+    *  转换时间
+    * */
+    public static String getTimeToStr(String timestamp) {
+        String date = "";
+        try {
+            if (timestamp != null) {
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
+                Timestamp now = new Timestamp(Long.parseLong(timestamp));
+                date = df.format(now);
+            }
+        } catch (Exception e) {
+        }
+        return date;
+    }
 
 
     /*
@@ -104,7 +118,7 @@ public class JDAppUtil {
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 0.0f);
         mHiddenAction.setDuration(500);
-        mHiddenAction.setAnimationListener(new MyAnimationListener(view,false));
+        mHiddenAction.setAnimationListener(new MyAnimationListener(view, false));
         view.startAnimation(mHiddenAction);
     }
 

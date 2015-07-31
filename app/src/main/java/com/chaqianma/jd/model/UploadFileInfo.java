@@ -9,7 +9,8 @@ package com.chaqianma.jd.model;
  * parentTableName //关联记录表名 个人信息 user_base_info 企业信息 business_info
  * parentId 关联记录ID
  */
-public class UploadImgInfo {
+public class UploadFileInfo {
+
     private int id;
     //图片id
     private String fileId = null;
@@ -28,13 +29,17 @@ public class UploadImgInfo {
     //是否是默认图片
     private boolean isDefault = false;
     // -1 本地  0 上传中  1 成功  2 失败
-    private int imgStatus = -1;
+    private int status = -1;
     //请求id
     private String borrowRequestId = null;
     //对应的表单名
     private String parentTableName = null;
 
+    private String dateline = null;
+    private String fileExt = null;
+    private String userId = null;
     private String parentId = null;
+
 
     public String getImgName() {
         return imgName;
@@ -96,20 +101,16 @@ public class UploadImgInfo {
         return iServer;
     }
 
-    public void setImgIsServer(boolean imgIsServer) {
+    public void setiServer(boolean imgIsServer) {
         this.iServer = imgIsServer;
     }
 
-    public void setiServer(boolean iServer) {
-        this.iServer = iServer;
+    public int getStatus() {
+        return status;
     }
 
-    public int getImgStatus() {
-        return imgStatus;
-    }
-
-    public void setImgStatus(int imgStatus) {
-        this.imgStatus = imgStatus;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getBorrowRequestId() {
@@ -142,5 +143,30 @@ public class UploadImgInfo {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+
+    public String getDateline() {
+        return dateline;
+    }
+
+    public void setDateline(String dateline) {
+        this.dateline = dateline;
+    }
+
+    public String getFileExt() {
+        return fileExt;
+    }
+
+    public void setFileExt(String fileExt) {
+        this.fileExt = fileExt;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
