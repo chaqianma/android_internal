@@ -18,6 +18,7 @@ import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -78,16 +79,45 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
         this.listener = listener;
     }
 
+    /*
+    * 删除图片
+    * */
+    private void deleteFile(UploadFileInfo fileInfo) {
+        try {
+            File bigfile = new File(fileInfo.getBigImgPath());
+            if (bigfile.exists())
+                bigfile.delete();
+            File smallfile = new File(fileInfo.getSmallImgPath());
+            if (smallfile.exists())
+                smallfile.delete();
+        } catch (Exception e) {
+
+        }
+    }
+
+    /*
+    * 如果只有默认图片。。。即关闭PopUp
+    * */
+    private void isDefaultImgdismissPopUp() {
+        if (mUploadImgInfoList.size() == 1 && mUploadImgInfoList.get(0).isDefault()) {
+            dismiss();
+        } else {
+            mImagePagerAdapter.notifyDataSetChanged();
+            //listener.onDeletePhoto(UploadFileType.valueOf(uploadImgInfo.getFileType()), curIdx);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_delete:
                 try {
-                    final int curIdx=mPhotoViewPager.getCurrentItem();
-                    if(curIdx>=mUploadImgInfoList.size())
+                    final int curIdx = mPhotoViewPager.getCurrentItem();
+                    if (curIdx >= mUploadImgInfoList.size())
                         return;
                     final UploadFileInfo uploadImgInfo = mUploadImgInfoList.get(curIdx);
-                    if (mUploadImgInfoList.size() == 0 && uploadImgInfo.isDefault()) {
+                    //判断是否只有一张图片 并且是默认的
+                    if (mUploadImgInfoList.size() == 1 && uploadImgInfo.isDefault()) {
                         JDToast.showLongText(mContext, "该张是默认图片，不能删除,有时间把默认排除");
                         this.dismiss();
                         return;
@@ -96,21 +126,28 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
                         JDAlertDialog.showAlertDialog(mContext, "确定要删除吗？", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mUploadImgInfoList.remove(uploadImgInfo);
-                                //删除图片
-                                HashMap<String, Object> argMaps = new HashMap<String, Object>();
-                                argMaps.put("delete", uploadImgInfo.getFileId());
-                                HttpClientUtil.delete(HttpRequestURL.deleteFileUrl+uploadImgInfo.getFileId(),null, new JDHttpResponseHandler(mContext, new ResponseHandler() {
-                                    @Override
-                                    public void onSuccess(Object o) {
-                                        JDToast.showLongText(mContext, "图片删除成功");
-                                    }
-                                }));
-                                if(mUploadImgInfoList.size()==0) {
-                                    ViewPagerPopup.this.dismiss();
-                                }else{
-                                    mImagePagerAdapter.notifyDataSetChanged();
-                                    listener.onDeletePhoto(UploadFileType.valueOf(uploadImgInfo.getFileType()), curIdx);
+                                if (uploadImgInfo.iServer()) {
+                                    //去服务端删除
+                                    HttpClientUtil.delete(HttpRequestURL.deleteFileUrl + uploadImgInfo.getFileId(), null, new JDHttpResponseHandler(mContext, new ResponseHandler() {
+                                        @Override
+                                        public void onSuccess(Object o) {
+                                            JDToast.showLongText(mContext, "图片删除成功");
+                                            mUploadImgInfoList.remove(uploadImgInfo);
+                                            deleteFile(uploadImgInfo);
+                                            isDefaultImgdismissPopUp();
+                                        }
+
+                                        @Override
+                                        public void onFailure(String data) {
+                                            super.onFailure(data);
+                                            JDToast.showLongText(mContext, "图片删除出错");
+                                        }
+                                    }));
+                                } else {
+                                    //本地删除
+                                    mUploadImgInfoList.remove(uploadImgInfo);
+                                    deleteFile(uploadImgInfo);
+                                    isDefaultImgdismissPopUp();
                                 }
                             }
                         }, new DialogInterface.OnClickListener() {

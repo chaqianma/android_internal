@@ -1,7 +1,9 @@
 package com.chaqianma.jd.fragment;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,9 +35,11 @@ import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
+import com.chaqianma.jd.utils.JDBinaryResponseHandler;
 import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
+import com.chaqianma.jd.widget.JDToast;
 
 import org.apache.http.NameValuePair;
 
@@ -220,7 +224,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     private void addCompany() {
         //第二家企业
         if (!isCompany2Show) {
-            isCompany2Show=true;
+            isCompany2Show = true;
             View view = ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
             initControlView(true);
             initGridViewData(true);
@@ -232,7 +236,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         } else {
             //添加第三家企业
             if (!isCompany3Show) {
-                isCompany3Show=true;
+                isCompany3Show = true;
                 View view = ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
                 initControlView(false);
                 initGridViewData(false);
@@ -597,25 +601,16 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                         companyInfo.setIsValid(true);
                                         switch (i) {
                                             case 0:
-                                                sp_business_premises_1.setSelection(0);
-                                                sp_company_type_1.setSelection(1);
-                                                sp_some_company_1.setSelection(1);
                                                 et_remark.setText(companyInfo.getRemark());
                                                 initServerFile(companyInfo.getFileList());
                                                 break;
                                             case 1:
                                                 addCompany();
-                                                sp_business_premises_2.setSelection(0);
-                                                sp_company_type_2.setSelection(1);
-                                                sp_some_company_2.setSelection(1);
                                                 //下载图片
                                                 initServerFile(companyInfo.getFileList());
                                                 break;
                                             case 2:
                                                 addCompany();
-                                                sp_business_premises_3.setSelection(0);
-                                                sp_company_type_3.setSelection(1);
-                                                sp_some_company_3.setSelection(1);
                                                 //下载图片
                                                 initServerFile(companyInfo.getFileList());
                                                 break;
@@ -753,15 +748,45 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_SDK_IMGS:
-                    if (data != null) {
-
+                    if (data != null && data.getData() != null) {
+                        Uri imgUri = data.getData();
+                        ContentResolver resolver = getActivity().getContentResolver();
+                        String[] pojo = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = null;
+                        try {
+                            cursor = resolver.query(imgUri, pojo, null, null, null);
+                            if (cursor != null && cursor.getCount() > 0) {
+                                int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                                cursor.moveToFirst();
+                                mHandler.post(new ImgRunable(cursor.getString(colunm_index)));
+                            } else {
+                                JDToast.showLongText(getActivity(), "请选择有效的图片文件夹");
+                            }
+                        } catch (IllegalArgumentException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } finally {
+                            if (cursor != null) {
+                                cursor.close();
+                            }
+                        }
                     }
                     break;
                 case REQUEST_TAKE_PHOTO:
                     mHandler.post(mRunnable);
                     break;
+                default:
+                    break;
             }
         }
+    }
+
+
+    /*
+    * 提交数据
+    * */
+    public void saveDataSubmit() {
+
     }
 
     /*
@@ -861,6 +886,47 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
     }
 
+    /*
+    * 先这么写吧。。。 图片处理 到时与下面的整合起来
+    * */
+
+    private class ImgRunable implements Runnable {
+        private String imgPath = null;
+
+        public ImgRunable(String imgPath) {
+            this.imgPath = imgPath;
+        }
+
+        @Override
+        public void run() {
+            String random = System.currentTimeMillis() + "";
+            String smallImgPath = getFilePath(random, fileType.getValue(), false);
+            String bigImgPath = getFilePath(random, fileType.getValue(), true);
+            //存放大图
+            Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
+            if (proportionBM != null) {
+                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
+                proportionBM.recycle();
+            }
+            //存放小图
+            Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 80, 80, "jpg");
+            if (bitmap != null) {
+                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
+                bitmap.recycle();
+            }
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setiServer(false);
+            imgInfo.setBigImgPath(bigImgPath);
+            imgInfo.setSmallImgPath(smallImgPath);
+            imgInfo.setParentTableName(Constants.BUSINESS_INFO);
+            imgInfo.setIdxTag(selCompanyIdxTag);
+            imgInfo.setFileType(fileType.getValue());
+            //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
+            addGridViewData(imgInfo);
+            uploadImg(imgInfo);
+        }
+    }
+
     //保存图片
     private Runnable mRunnable = new Runnable() {
         @Override
@@ -893,13 +959,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         }
     };
 
-    /*
-    * 修改内容
-    * */
-    private void updateBusinessInfo() {
-        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        // HttpClientUtil.put(getActivity(),null,);
-    }
 
     //上传图片
     private void uploadImg(final UploadFileInfo fileInfo) {

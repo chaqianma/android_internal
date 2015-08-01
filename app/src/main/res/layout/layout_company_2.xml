@@ -256,8 +256,7 @@
                 android:id="@+id/sp_some_company_2"
                 style="@style/SettingRightIconStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/some_company" />
+                android:layout_height="wrap_content" />
 
         </RelativeLayout>
 
