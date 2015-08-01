@@ -40,6 +40,7 @@ public class UploadFileInfo {
     private String userId = null;
     private String parentId = null;
 
+    private int idxTag;
 
     public String getImgName() {
         return imgName;
@@ -169,4 +170,13 @@ public class UploadFileInfo {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public int getIdxTag() {
+        return idxTag;
+    }
+
+    public void setIdxTag(int idxTag) {
+        this.idxTag = idxTag;
+    }
+
 }

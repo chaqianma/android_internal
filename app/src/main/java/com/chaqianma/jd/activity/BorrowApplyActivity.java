@@ -170,7 +170,7 @@ public class BorrowApplyActivity extends BaseActivity {
 
     @OnClick(R.id.btn_borrow)
     void onBeginCheck() {
-        JDToast.showLongText(BorrowApplyActivity.this, "借款页面加载页面有点慢，请等待！！！");
+        JDToast.showLongText(BorrowApplyActivity.this, "借款页面加载布局有点慢，请等待！！！");
         if (!isCanClickOnce) {
             isCanClickOnce = true;
             if (!isShouldRequest) {

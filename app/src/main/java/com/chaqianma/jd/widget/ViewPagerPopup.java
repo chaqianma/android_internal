@@ -100,7 +100,7 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
                                 //删除图片
                                 HashMap<String, Object> argMaps = new HashMap<String, Object>();
                                 argMaps.put("delete", uploadImgInfo.getFileId());
-                                HttpClientUtil.delete(HttpRequestURL.deleteFileUrl, argMaps, new JDHttpResponseHandler(mContext, new ResponseHandler() {
+                                HttpClientUtil.delete(HttpRequestURL.deleteFileUrl+uploadImgInfo.getFileId(),null, new JDHttpResponseHandler(mContext, new ResponseHandler() {
                                     @Override
                                     public void onSuccess(Object o) {
                                         JDToast.showLongText(mContext, "图片删除成功");

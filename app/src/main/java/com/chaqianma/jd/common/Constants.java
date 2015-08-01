@@ -1,69 +1,77 @@
 package com.chaqianma.jd.common;
 
+import android.os.Environment;
+
 /**
  * Created by zhangxd on 2015/7/15.
  */
 public class Constants {
     //DEBUG模式
-    public static final boolean DEBUG=false;
+    public static final boolean DEBUG = false;
     //尽调员身份类型 userType
-    public static final String  USERTYPE="1";
+    public static final String USERTYPE = "1";
     //Header设置
-    public static final String  HEADERTAG="X-AUTH-TOKEN";
+    public static final String HEADERTAG = "X-AUTH-TOKEN";
     //用户名标签
-    public static final String USERNAME="USER_NAME";
+    public static final String USERNAME = "USER_NAME";
     //密码标签
-    public static final String PASSWORD="PASSWORD";
+    public static final String PASSWORD = "PASSWORD";
     //记住密码
-    public static final String REMEMBERPASSWORD="REMEMBERPASSWORD";
+    public static final String REMEMBERPASSWORD = "REMEMBERPASSWORD";
     //UUID
-    public static final String UUID="UUID";
+    public static final String UUID = "UUID";
     //文件存放目录
-    public static final String FILEDIR="chaqianma";
+    public static final String FILEDIR = "chaqianma";
+    //临时图片放置
+    public static final String TEMPPATH = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR + "/" + "temp.jpg";
+    //图片文件夹路径
+    public static final String DIRPATH = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR;//+ "/"
     //极光设置别名
-    public static final int MSG_SET_ALIAS=1000;
+    public static final int MSG_SET_ALIAS = 1000;
     //位置标签
-    public static final int GETLOCATION=1001;
+    public static final int GETLOCATION = 1001;
     //城市保存标签
-    public static final String CITYTAG="CITY";
+    public static final String CITYTAG = "CITY";
     //底部按钮选中标识
-    public static final String CHECKEDID="CHECKEDID";
+    public static final String CHECKEDID = "CHECKEDID";
     //消息通知提醒
-    public static final String MSGNOTIFY="MSGNOTIFY";
+    public static final String MSGNOTIFY = "MSGNOTIFY";
     //声音
-    public static final String MSGSOUND="MSGSOUND";
+    public static final String MSGSOUND = "MSGSOUND";
     //震动
-    public static final String MSGSHAKE="MSGSHAKE";
+    public static final String MSGSHAKE = "MSGSHAKE";
     //勿扰模式
-    public static final String NODISTURB="NODISTURB";
+    public static final String NODISTURB = "NODISTURB";
     //勿扰模式 ---开始时间
-    public static final String NODISTURB_BEGINTIME="NODISTURB_BEGINTIME";
+    public static final String NODISTURB_BEGINTIME = "NODISTURB_BEGINTIME";
     //勿扰模式 ---结束时间
-    public static final String NODISTURB_ENDTIME="NODISTURB_ENDTIME";
+    public static final String NODISTURB_ENDTIME = "NODISTURB_ENDTIME";
     //员工fragment
-    public static final String STAFFSTATE="STAFFSTATE";
+    public static final String STAFFSTATE = "STAFFSTATE";
     //设置fragment
-    public static final String SETTING="SETTING";
+    public static final String SETTING = "SETTING";
     //尽调申请
-    public static final String BORROWAPPLY="BORROWAPPLY";
+    public static final String BORROWAPPLY = "BORROWAPPLY";
     //传值KEY
-    public static final String TOVALUEKEY="TOVALUEKEY";
+    public static final String TOVALUEKEY = "TOVALUEKEY";
     //借款人姓名
-    public static final String BORROWNAME="BORROWNAME";
+    public static final String BORROWNAME = "BORROWNAME";
     //位置
-    public static final String LOCATION="LOCATION";
-    //个人信息表
-    public static final String USER_BASE_INFO="user_base_info";
+    public static final String LOCATION = "LOCATION";
+    //个人信息表  --上传文件
+    public static final String USER_BASE_INFO = "user_base_info";
+    //企业信息    --上传文件
+    public static final String BUSINESS_INFO="BUSINESS_INFO";
     //个人信息标签
-    public static final String PERSONALINFO="personalinfo";
+    public static final String PERSONALINFO = "personalinfo";
     //企业信息标签
-    public static final String BUSINESSINFO="businessinfo";
+    public static final String BUSINESSINFO = "businessinfo";
     //个人资产
-    public static final String PERSONALASSETSINFO="personalassetsinfo";
+    public static final String PERSONALASSETSINFO = "personalassetsinfo";
     //社会关系
-    public static final String CONTACTINFO="contactinfo";
+    public static final String CONTACTINFO = "contactinfo";
     //拼音code
-    public static int[] characterValue = new int[] {-20319, -20317, -20304, -20295, -20292, -20283, -20265, -20257, -20242, -20230, -20051, -20036, -20032,
+    public static int[] characterValue = new int[]{-20319, -20317, -20304, -20295, -20292, -20283, -20265, -20257, -20242, -20230, -20051, -20036, -20032,
             -20026, -20002, -19990, -19986, -19982, -19976, -19805, -19784, -19775, -19774, -19763, -19756, -19751, -19746, -19741, -19739, -19728,
             -19725, -19715, -19540, -19531, -19525, -19515, -19500, -19484, -19479, -19467, -19289, -19288, -19281, -19275, -19270, -19263, -19261,
             -19249, -19243, -19242, -19238, -19235, -19227, -19224, -19218, -19212, -19038, -19023, -19018, -19006, -19003, -18996, -18977, -18961,
@@ -88,7 +96,7 @@ public class Constants {
             -10838, -10832, -10815, -10800, -10790, -10780, -10764, -10587, -10544, -10533, -10519, -10331, -10329, -10328, -10322, -10315, -10309,
             -10307, -10296, -10281, -10274, -10270, -10262, -10260, -10256, -10254};
     //拼音Buffer
-    public static String[] characterBuffer = new String[] {"a", "ai", "an", "ang", "ao", "ba", "bai", "ban", "bang", "bao", "bei", "ben", "beng", "bi", "bian",
+    public static String[] characterBuffer = new String[]{"a", "ai", "an", "ang", "ao", "ba", "bai", "ban", "bang", "bao", "bei", "ben", "beng", "bi", "bian",
             "biao", "bie", "bin", "bing", "bo", "bu", "ca", "cai", "can", "cang", "cao", "ce", "ceng", "cha", "chai", "chan", "chang", "chao", "che",
             "chen", "cheng", "chi", "chong", "chou", "chu", "chuai", "chuan", "chuang", "chui", "chun", "chuo", "ci", "cong", "cou", "cu", "cuan",
             "cui", "cun", "cuo", "da", "dai", "dan", "dang", "dao", "de", "deng", "di", "dian", "diao", "die", "ding", "diu", "dong", "dou", "du",

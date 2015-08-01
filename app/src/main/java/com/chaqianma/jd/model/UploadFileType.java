@@ -13,7 +13,8 @@ package com.chaqianma.jd.model;
 *
  */
 public enum UploadFileType {
-    NONE(0),CARD(1), MARRY(2), SOUND(3),REMARK(4);
+    NONE(0), CARD(1), MARRY(2), SOUND(3), REMARK(4),
+    YY(4), SW(5), QYDM(6), QT(7), FC(8), TD(9);
     private int index;
 
     private UploadFileType(int index) {
@@ -24,29 +25,55 @@ public enum UploadFileType {
         return index;
     }
 
-    public static UploadFileType valueOf(int value)
-    {
-        UploadFileType fileType=UploadFileType.NONE;
-        switch (value)
-        {
+    public static UploadFileType valueOf(int value) {
+        UploadFileType fileType = UploadFileType.NONE;
+        switch (value) {
             case 0:
-
                 break;
             case 1:
-                fileType=UploadFileType.CARD;
+                fileType = UploadFileType.CARD;
                 break;
             case 2:
-                fileType=UploadFileType.MARRY;
+                fileType = UploadFileType.MARRY;
                 break;
             case 3:
-                fileType=UploadFileType.SOUND;
+                fileType = UploadFileType.SOUND;
                 break;
             case 4:
-                fileType=UploadFileType.REMARK;
+                fileType = UploadFileType.REMARK;
                 break;
-            default:break;
+            default:
+                break;
         }
-        return  fileType;
+        return fileType;
+    }
+
+    // YY(4), SW(5), QYDM(6), QT(7), FC(8), TD(9);
+    public static UploadFileType valueOfName(int value) {
+        UploadFileType fileType = UploadFileType.NONE;
+        switch (value) {
+            case 4:
+                fileType = UploadFileType.YY;
+                break;
+            case 5:
+                fileType = UploadFileType.SW;
+                break;
+            case 6:
+                fileType = UploadFileType.QYDM;
+                break;
+            case 7:
+                fileType = UploadFileType.QT;
+                break;
+            case 8:
+                fileType = UploadFileType.FC;
+                break;
+            case 9:
+                fileType = UploadFileType.TD;
+                break;
+            default:
+                break;
+        }
+        return fileType;
     }
 }
 

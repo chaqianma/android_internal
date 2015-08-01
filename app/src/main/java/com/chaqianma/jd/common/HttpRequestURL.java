@@ -29,4 +29,6 @@ public class HttpRequestURL {
     public static final String downLoadFileUrl="api/file/download/";
     //删除文件
     public static final String deleteFileUrl="api/file/delete/";
+    //修改企业信息
+    public static final String updateBusinessInfoUrl="api/borrow/dd/businessinfo/update/";
 }

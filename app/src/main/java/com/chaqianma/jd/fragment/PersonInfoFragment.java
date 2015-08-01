@@ -67,8 +67,7 @@ import butterknife.OnClick;
 /**
  * Created by zhangxd on 2015/7/28.
  */
-public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDialogListener,
-        ViewPagerPopup.OnViewPagerDialogListener, ImgsGridViewAdapter.iOnClickImgListener, SoundGridViewAdapter.iOnClickSoundListener {
+public class PersonInfoFragment extends BaseFragment {
     @InjectView(R.id.linear_container)
     LinearLayout linear_container;
     @InjectView(R.id.rg_marry)
@@ -125,10 +124,6 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     Button btn_name_auth;
     private PhotoPopup mPopup;
     private ViewPagerPopup mViewPagerPopup;
-    //获取SDK中的图片
-    private static final int REQUEST_SDK_IMGS = 1001;
-    //拍照
-    private static final int REQUEST_TAKE_PHOTO = 1002;
     //刷新GridView 身份证
     private static final int CARD = 1003;
     //刷新GridView 结婚证/离婚证
@@ -573,12 +568,6 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
         }
     };
 
-
-    //得到保存图片地址
-    private String getSaveFilePath(UploadFileInfo uploadFileInfo) {
-        return mImgDirPath + "/" + uploadFileInfo.getFileType() + "_" + System.currentTimeMillis() + "." + uploadFileInfo.getFileExt();
-    }
-
     //得到图片地址
     private String getFilePath(boolean isBigImgPath, String randomName) {
         String path = fileType.getValue() + "_" + randomName + ".jpg";
@@ -636,27 +625,19 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
     };
 
     //上传图片
-    private void uploadImg(final UploadFileInfo imgInfo) {
+    private void uploadImg(final UploadFileInfo fileInfo) {
         try {
-            MultipartEntityBuilder entity = MultipartEntityBuilder.create();
-            ContentBody fileBody = new FileBody(new File(imgInfo.getBigImgPath()));
-            entity.addPart("files", fileBody);
-            int ftype = fileType.getValue();
-            if (ftype == UploadFileType.REMARK.getValue())
-                ftype -= 1;
-            entity.addPart("fileType", new StringBody("" + ftype, ContentType.DEFAULT_TEXT));
-            entity.addPart("parentTableName", new StringBody(imgInfo.getParentTableName(), ContentType.DEFAULT_TEXT));
-            entity.addPart("parentId", new StringBody(mParentId, ContentType.DEFAULT_TEXT));
-            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, entity.build(), new JDHttpResponseHandler(getActivity(), new ResponseHandler<DownImgInfo>() {
+
+            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, mParentId), new JDHttpResponseHandler(getActivity(), new ResponseHandler<DownImgInfo>() {
                 @Override
                 public void onSuccess(DownImgInfo downImgInfo) {
-                    imgInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功
+                    fileInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功
                     refreshData();
                 }
 
                 @Override
                 public void onFailure(String data) {
-                    imgInfo.setStatus(UploadStatus.FAILURE.getValue());//失败
+                    fileInfo.setStatus(UploadStatus.FAILURE.getValue());//失败
                     if (fileType == UploadFileType.CARD) {
 
                         cardImgsAdapter.notifyDataSetChanged();

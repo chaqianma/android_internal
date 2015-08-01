@@ -77,6 +77,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
     public SoundGridViewAdapter(Context context, List<UploadFileInfo> soundInfoList, String parentId) {
         this.mContext = context;
         this.mSoundInfoList = soundInfoList;
+        this.mParentId = parentId;
     }
 
     @Override
@@ -264,7 +265,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                         //删除正在收听的录音
                         mediaPlayer.release();
                         mediaPlayer = null;
-                        if (soundInfo==null)
+                        if (soundInfo == null)
                             return;
                         if (soundInfo.iServer()) {
                             //去服务端删除文件
@@ -367,7 +368,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                 mediaPlayer.stop();
             }
         } catch (Exception e) {
-            String sss = "ssss";
+
         }
         try {
             mediaPlayer.setDataSource(soundInfo.getBigImgPath());
@@ -402,6 +403,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
             tv_record_status.setText("收听中...");
         }
     }
+
     class HolderView {
         ImageView imageView;
     }
