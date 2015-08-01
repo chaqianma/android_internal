@@ -573,19 +573,6 @@ public class PersonInfoFragment extends BaseFragment implements PhotoPopup.OnDia
         }
     };
 
-    private class SaveLocalFile implements Runnable {
-        private UploadFileType fileType;
-
-        public SaveLocalFile(UploadFileType fileType) {
-            this.fileType = fileType;
-        }
-
-        @Override
-        public void run() {
-
-        }
-    }
-
 
     //得到保存图片地址
     private String getSaveFilePath(UploadFileInfo uploadFileInfo) {
