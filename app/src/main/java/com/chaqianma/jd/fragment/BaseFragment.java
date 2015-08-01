@@ -137,10 +137,6 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         ContentBody fileBody = new FileBody(new File(fileInfo.getBigImgPath()));
         entity.addPart("files", fileBody);
         int ftype = fileInfo.getFileType();
-        if (isPerson) {
-            if (ftype == UploadFileType.REMARK.getValue())
-                ftype -= 1;
-        }
         entity.addPart("fileType", new StringBody("" + ftype, ContentType.DEFAULT_TEXT));
         entity.addPart("parentTableName", new StringBody(fileInfo.getParentTableName(), ContentType.DEFAULT_TEXT));
         entity.addPart("parentId", new StringBody(parentId, ContentType.DEFAULT_TEXT));

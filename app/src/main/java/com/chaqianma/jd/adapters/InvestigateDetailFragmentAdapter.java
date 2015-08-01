@@ -11,7 +11,7 @@ import com.chaqianma.jd.fragment.SocialRelationFragment;
 
 /**
  * Created by zhangxd on 2015/7/28.
- * <p>
+ * <p/>
  * 尽调详情Adapter
  */
 public class InvestigateDetailFragmentAdapter extends FragmentPagerAdapter {
@@ -30,21 +30,38 @@ public class InvestigateDetailFragmentAdapter extends FragmentPagerAdapter {
         socialRelationFragment = SocialRelationFragment.newInstance();
     }
 
-    @Override
-    public Fragment getItem(int position) {
-        Fragment fragment=null;
-        switch (position) {
-            case 0:
-                fragment= personInfoFragment;
-                break;
+    public void saveData(int currItemIdx) {
+        switch (currItemIdx) {
             case 1:
-                fragment= companyInfoFragment;
+
                 break;
             case 2:
-                fragment= personalAssetsFragment;
+                companyInfoFragment.saveDataSubmit();
                 break;
             case 3:
-                fragment= socialRelationFragment;
+                break;
+            case 4:
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        Fragment fragment = null;
+        switch (position) {
+            case 0:
+                fragment = personInfoFragment;
+                break;
+            case 1:
+                fragment = companyInfoFragment;
+                break;
+            case 2:
+                fragment = personalAssetsFragment;
+                break;
+            case 3:
+                fragment = socialRelationFragment;
                 break;
             default:
                 break;

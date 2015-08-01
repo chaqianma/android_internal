@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/android_layout_bg"
@@ -18,25 +19,55 @@
             android:orientation="vertical">
 
 
-            <include layout="@layout/layout_asset_house_1" />
+            <include layout="@layout/layout_asset_company_1" />
 
-            <include layout="@layout/layout_asset_house_2" />
+            <ViewStub
+                android:id="@+id/stub_company_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/company_3"
+                android:layout="@layout/layout_asset_company_2" />
 
-            <include layout="@layout/layout_asset_house_3" />
+            <ViewStub
+                android:id="@+id/stub_company_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/company_3"
+                android:layout="@layout/layout_asset_company_2" />
 
             <include layout="@layout/layout_asset_car_1" />
 
-            <include layout="@layout/layout_asset_car_2" />
+            <ViewStub
+                android:id="@+id/stub_car_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/company_3"
+                android:layout="@layout/layout_asset_car_2" />
 
-            <include layout="@layout/layout_asset_car_3" />
+            <ViewStub
+                android:id="@+id/stub_car_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/company_3"
+                android:layout="@layout/layout_asset_car_2" />
 
             <include layout="@layout/layout_asset_house_1" />
 
-            <include layout="@layout/layout_asset_house_2" />
 
-            <include layout="@layout/layout_asset_house_3" />
+            <ViewStub
+                android:id="@+id/stub_house_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/company_3"
+                android:layout="@layout/layout_asset_house_2" />
 
-            <View style="@style/ViewLineStyle" />
+
+            <ViewStub
+                android:id="@+id/stub_house_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/company_3"
+                android:layout="@layout/layout_asset_house_2" />
 
             <LinearLayout
                 style="@style/LinearLayoutStyle"

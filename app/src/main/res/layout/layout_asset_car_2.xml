@@ -90,7 +90,7 @@
                     android:text="对应车辆：" />
 
                 <Spinner
-                    android:id="@+id/sp_card_2"
+                    android:id="@+id/sp_car_2"
                     style="@style/SettingRightIconStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

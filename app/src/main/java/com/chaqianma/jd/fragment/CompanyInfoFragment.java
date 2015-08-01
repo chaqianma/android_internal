@@ -468,6 +468,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_company_info, container, false);
         ButterKnife.inject(this, mView);
+        mBorrowRequestId=getBorrowRequestId();
         //初始化第一家企业
         initOneView();
         getCompanyInfo();
@@ -584,7 +585,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     得到企业信息
     */
     private void getCompanyInfo() {
-        String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.BUSINESSINFO + "/" + getBorrowRequestId();
+        String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.BUSINESSINFO + "/" + mBorrowRequestId;
         try {
             HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
                 @Override
@@ -683,7 +684,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     public void onImgClick(List<UploadFileInfo> uploadImgInfoList, int idx) {
         if (idx < uploadImgInfoList.size()) {
             UploadFileInfo imgInfo = uploadImgInfoList.get(idx);
-            fileType = UploadFileType.valueOfName(imgInfo.getFileType());
+            fileType = UploadFileType.valueOf(imgInfo.getFileType());
             selCompanyIdxTag = imgInfo.getIdxTag();
             if (imgInfo.isDefault()) {
                 mPopup.showAtLocation(linear_container, Gravity.BOTTOM, 0, 0);
@@ -793,7 +794,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     * 往GridView里添加图片
     * */
     private void addGridViewData(UploadFileInfo imgInfo) {
-        UploadFileType fType = UploadFileType.valueOfName(imgInfo.getFileType());
+        UploadFileType fType = UploadFileType.valueOf(imgInfo.getFileType());
         if (fType == UploadFileType.YY) {
             switch (imgInfo.getIdxTag()) {
                 case 0:
@@ -992,7 +993,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     * 刷新数据
     * */
     private void refreshData(UploadFileInfo fileInfo) {
-        UploadFileType fType = UploadFileType.valueOfName(fileInfo.getFileType());
+        UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
         if (fType == UploadFileType.YY) {
             switch (fileInfo.getIdxTag()) {
                 case 0:

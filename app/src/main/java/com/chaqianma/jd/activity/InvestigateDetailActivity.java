@@ -40,7 +40,9 @@ public class InvestigateDetailActivity extends FragmentActivity {
     ViewPager mViewPager;
     @InjectView(R.id.top_title)
     TextView top_title;
-    public String mBorrowRequestId="18";
+    @InjectView(R.id.top_right_btn)
+    ImageView top_right_btn;
+    public String mBorrowRequestId = "18";
 
     private InvestigateDetailFragmentAdapter mAdapter = null;
 
@@ -53,6 +55,7 @@ public class InvestigateDetailActivity extends FragmentActivity {
         if (AppData.getInstance().getBorrowRequestInfo() != null)
             mBorrowRequestId = AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId();
         top_title.setText("尽调详情");
+        top_right_btn.setVisibility(View.VISIBLE);
         mAdapter = new InvestigateDetailFragmentAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -117,12 +120,23 @@ public class InvestigateDetailActivity extends FragmentActivity {
 
     @OnClick(R.id.top_back_btn)
     void onBack(View v) {
-            this.finish();
+        this.finish();
     }
 
 
     @OnClick(R.id.top_right_btn)
     void onSubmit() {
-
+        switch (mViewPager.getCurrentItem()) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+                break;
+        }
     }
 }
