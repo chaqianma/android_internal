@@ -22,4 +22,11 @@
         <item>企业2</item>
         <item>企业3</item>
     </string-array>
+    <string-array name="contact_relation">
+        <item>配偶</item>
+        <item>直系亲属</item>
+        <item>合伙人</item>
+        <item>财务</item>
+        <item>其它</item>
+    </string-array>
 </resources>

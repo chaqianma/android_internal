@@ -174,6 +174,7 @@ public class BorrowApplyActivity extends BaseActivity {
         if (!isCanClickOnce) {
             isCanClickOnce = true;
             if (!isShouldRequest) {
+                isCanClickOnce=false;
                 startActivity(InvestigateDetailActivity.class);
             } else {
                 HttpClientUtil.put(HttpRequestURL.beginCheckUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {

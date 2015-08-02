@@ -468,7 +468,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_company_info, container, false);
         ButterKnife.inject(this, mView);
-        mBorrowRequestId=getBorrowRequestId();
+        mBorrowRequestId = getBorrowRequestId();
         //初始化第一家企业
         initOneView();
         getCompanyInfo();
@@ -596,9 +596,10 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                             if (mCompanyInfoList != null) {
                                 for (int i = 0; i < mCompanyInfoList.size(); i++) {
                                     CompanyInfo companyInfo = mCompanyInfoList.get(i);
-                                    String companyName = companyInfo.getCompanyName();
+                                    if (companyInfo == null)
+                                        continue;
                                     mParentId[i] = companyInfo.getId();
-                                    if (companyName != null && companyName.length() > 0 || (companyInfo.getFileList() != null && companyInfo.getFileList().size() > 0)) {
+                                    if (!JDAppUtil.isEmpty(companyInfo.getCompanyName()) || (companyInfo.getFileList() != null && companyInfo.getFileList().size() > 0)) {
                                         companyInfo.setIsValid(true);
                                         switch (i) {
                                             case 0:
@@ -988,6 +989,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             e.printStackTrace();
         }
     }
+
+
 
     /*
     * 刷新数据

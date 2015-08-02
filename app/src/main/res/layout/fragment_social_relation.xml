@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/android_layout_bg"
@@ -19,13 +20,33 @@
 
             <include layout="@layout/layout_social_relation_1" />
 
-            <include layout="@layout/layout_social_relation_2" />
+            <ViewStub
+                android:id="@+id/stub_social_relation_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/social_relation_2"
+                android:layout="@layout/layout_social_relation_2" />
 
-            <include layout="@layout/layout_social_relation_3" />
+            <ViewStub
+                android:id="@+id/stub_social_relation_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/social_relation_3"
+                android:layout="@layout/layout_social_relation_3" />
 
-            <include layout="@layout/layout_social_relation_4" />
+            <ViewStub
+                android:id="@+id/stub_social_relation_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/social_relation_4"
+                android:layout="@layout/layout_social_relation_4" />
 
-            <include layout="@layout/layout_social_relation_5" />
+            <ViewStub
+                android:id="@+id/stub_social_relation_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/social_relation_5"
+                android:layout="@layout/layout_social_relation_5" />
 
             <LinearLayout
                 style="@style/LinearLayoutStyle"

@@ -503,106 +503,72 @@ public class PersonalAssetsFragment extends BaseFragment {
             HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
                 @Override
                 public void onSuccess(Object o) {
+                    if(o==null)
+                        return;
+                    JSONObject json = JSON.parseObject(o.toString());
                     try {
-                        JSONObject json = JSON.parseObject(o.toString());
-                        try {
-                            List<CompanyInfo> companyInfoList = JSON.parseArray(json.getString("businessInfoList"), CompanyInfo.class);
-                            if (companyInfoList != null) {
-                                int size = companyInfoList.size();
-                                CompanyInfo companyInfo = null;
-                                for (int i = 0; i < size; i++) {
-                                    companyInfo = companyInfoList.get(i);
-                                    mCompanyId[i] = companyInfo.getId();
-                                    int companySize = -1;
-                                    if (companyInfo.getFileList() != null)
-                                        companySize = companyInfo.getFileList().size();
-                                    //判断是否是有效企业 企业名称
-                                    if (companySize > 0 || !JDAppUtil.isEmpty(companyInfo.getCompanyName())) {
+                        List<CompanyInfo> companyInfoList = JSON.parseArray(json.getString("businessInfoList"), CompanyInfo.class);
+                        if (companyInfoList != null) {
+                            int size = companyInfoList.size();
+                            CompanyInfo companyInfo = null;
+                            for (int i = 0; i < size; i++) {
+                                companyInfo = companyInfoList.get(i);
+                                mCompanyId[i] = companyInfo.getId();
+                                int companySize = -1;
+                                if (companyInfo.getFileList() != null)
+                                    companySize = companyInfo.getFileList().size();
+                                //判断是否是有效企业 企业名称
+                                if (companySize > 0 || !JDAppUtil.isEmpty(companyInfo.getCompanyName())) {
 
-                                        switch (i) {
-                                            case 0:
-                                                et_remark.setText(companyInfo.getRemark());
-                                                initServerFile(companyInfo.getFileList());
-                                                break;
-                                            case 1:
-                                                addCompanyIncome();
-                                                initServerFile(companyInfo.getFileList());
-                                                break;
-                                            case 2:
-                                                addCompanyIncome();
-                                                initServerFile(companyInfo.getFileList());
-                                                break;
-                                            default:
-                                                break;
-                                        }
+                                    switch (i) {
+                                        case 0:
+                                            et_remark.setText(companyInfo.getRemark());
+                                            initServerFile(companyInfo.getFileList());
+                                            break;
+                                        case 1:
+                                            addCompanyIncome();
+                                            initServerFile(companyInfo.getFileList());
+                                            break;
+                                        case 2:
+                                            addCompanyIncome();
+                                            initServerFile(companyInfo.getFileList());
+                                            break;
+                                        default:
+                                            break;
                                     }
                                 }
                             }
-                        } catch (Exception e) {
-
                         }
-                        AssetInfo assetInfo = json.getObject("personalAssetsInfo", AssetInfo.class);
-                        if (assetInfo != null) {
-                            try {
-                                if (assetInfo.getPersonalAssetsCarInfoList() != null) {
-                                    //车
-                                    int size = assetInfo.getPersonalAssetsCarInfoList().size();
-                                    CarInfo carInfo = null;
-                                    for (int i = 0; i < size; i++) {
-                                        carInfo = assetInfo.getPersonalAssetsCarInfoList().get(i);
-                                        if (carInfo != null) {
-                                            mCardId[i] = carInfo.getId();
-                                            int carSize = -1;
-                                            if (carInfo.getFileList() != null)
-                                                carSize = carInfo.getFileList().size();
-                                            //根据 车 是否有图片   车牌号码  总价 来判断是否是真实的车
-                                            if (carSize > 0 || !JDAppUtil.isEmpty(carInfo.getSum_price()) || !JDAppUtil.isEmpty(carInfo.getPlate_num())) {
-                                                switch (i) {
-                                                    case 0:
-                                                        initServerFile(carInfo.getFileList());
-                                                        break;
-                                                    case 1:
-                                                        addCar();
-                                                        initServerFile(carInfo.getFileList());
-                                                        break;
-                                                    case 2:
-                                                        addCar();
-                                                        initServerFile(carInfo.getFileList());
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            } catch (Exception e) {
+                    } catch (Exception e) {
 
-                            }
-                            if (assetInfo.getPersonalAssetsHouseInfoList() != null) {
-                                //房
-                                int size = assetInfo.getPersonalAssetsHouseInfoList().size();
-                                HouseInfo houseInfo = null;
+                    }
+                    AssetInfo assetInfo = json.getObject("personalAssetsInfo", AssetInfo.class);
+                    if (assetInfo != null) {
+                        try {
+                            if (assetInfo.getPersonalAssetsCarInfoList() != null) {
+                                //车
+                                int size = assetInfo.getPersonalAssetsCarInfoList().size();
+                                CarInfo carInfo = null;
                                 for (int i = 0; i < size; i++) {
-                                    houseInfo = assetInfo.getPersonalAssetsHouseInfoList().get(i);
-                                    if (houseInfo != null) {
-                                        mHouseId[i] = houseInfo.getId();
-                                        int houseSize = -1;
-                                        if (houseInfo.getFileList() != null)
-                                            houseSize = houseInfo.getFileList().size();
-                                        //根据 房 是否有图片   地址  面积  房产价号 来判断是否是真实的房子
-                                        if (houseSize > 0 || !JDAppUtil.isEmpty(houseInfo.getArea()) || !JDAppUtil.isEmpty(houseInfo.getAddress()) || !JDAppUtil.isEmpty(houseInfo.getDeed_num())) {
+                                    carInfo = assetInfo.getPersonalAssetsCarInfoList().get(i);
+                                    if (carInfo != null) {
+                                        mCardId[i] = carInfo.getId();
+                                        int carSize = -1;
+                                        if (carInfo.getFileList() != null)
+                                            carSize = carInfo.getFileList().size();
+                                        //根据 车 是否有图片   车牌号码  总价 来判断是否是真实的车
+                                        if (carSize > 0 || !JDAppUtil.isEmpty(carInfo.getSum_price()) || !JDAppUtil.isEmpty(carInfo.getPlate_num())) {
                                             switch (i) {
                                                 case 0:
-                                                    initServerFile(houseInfo.getFileList());
+                                                    initServerFile(carInfo.getFileList());
                                                     break;
                                                 case 1:
                                                     addCar();
-                                                    initServerFile(houseInfo.getFileList());
+                                                    initServerFile(carInfo.getFileList());
                                                     break;
                                                 case 2:
                                                     addCar();
-                                                    initServerFile(houseInfo.getFileList());
+                                                    initServerFile(carInfo.getFileList());
                                                     break;
                                                 default:
                                                     break;
@@ -611,10 +577,43 @@ public class PersonalAssetsFragment extends BaseFragment {
                                     }
                                 }
                             }
+                        } catch (Exception e) {
+
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        if (assetInfo.getPersonalAssetsHouseInfoList() != null) {
+                            //房
+                            int size = assetInfo.getPersonalAssetsHouseInfoList().size();
+                            HouseInfo houseInfo = null;
+                            for (int i = 0; i < size; i++) {
+                                houseInfo = assetInfo.getPersonalAssetsHouseInfoList().get(i);
+                                if (houseInfo != null) {
+                                    mHouseId[i] = houseInfo.getId();
+                                    int houseSize = -1;
+                                    if (houseInfo.getFileList() != null)
+                                        houseSize = houseInfo.getFileList().size();
+                                    //根据 房 是否有图片   地址  面积  房产价号 来判断是否是真实的房子
+                                    if (houseSize > 0 || !JDAppUtil.isEmpty(houseInfo.getArea()) || !JDAppUtil.isEmpty(houseInfo.getAddress()) || !JDAppUtil.isEmpty(houseInfo.getDeed_num())) {
+                                        switch (i) {
+                                            case 0:
+                                                initServerFile(houseInfo.getFileList());
+                                                break;
+                                            case 1:
+                                                addCar();
+                                                initServerFile(houseInfo.getFileList());
+                                                break;
+                                            case 2:
+                                                addCar();
+                                                initServerFile(houseInfo.getFileList());
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
+
                 }
             }));
         } catch (Exception e) {
@@ -969,11 +968,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         //SY(10),JY(11),CP(12),XS(13),REMARK(16),SOUND(80)
         if (fType == UploadFileType.SY || fType == UploadFileType.JY) {
             parentId = mCompanyId[fileInfo.getIdxTag()];
-            fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_INFO);
+            fileInfo.setParentTableName(Constants.BUSINESS_INFO);
         } else if (fType == UploadFileType.CP || fType == UploadFileType.XS) {
             parentId = mCardId[fileInfo.getIdxTag()];
             fileInfo.setParentTableName(Constants.PERSONAL_ASSERTS_CAR_INFO);
         } else if (fType == UploadFileType.REMARK || fType == UploadFileType.SOUND) {
+            fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_INFO);
+
         } else if (fType == UploadFileType.FC || fType == UploadFileType.TD) {
             parentId = mHouseId[fileInfo.getIdxTag()];
             fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_HOUSE_INFO);
