@@ -905,29 +905,6 @@ public class PersonalAssetsFragment extends BaseFragment {
         }
     }
 
-    //删除图片
-    @Override
-    public void onDeletePhoto(UploadFileType fileType, int delIdx) {
-        //refreshData();
-    }
-
-    @Override
-    public void onCancel() {
-
-    }
-
-    //开始录音
-    @Override
-    public void onStartRecord() {
-
-    }
-
-    //结束录音
-    @Override
-    public void onStopRecord() {
-
-    }
-
     //保存图片
     private Runnable mRunnable = new Runnable() {
         @Override

@@ -6,4 +6,5 @@
     <color name="bg_board">#FF9900</color>
     <color name="btn_bg_color">#FF9900</color>
     <color name="btn_bg_cancel_color">#ff7a7979</color>
+    <color name="red">#ff0000</color>
 </resources>

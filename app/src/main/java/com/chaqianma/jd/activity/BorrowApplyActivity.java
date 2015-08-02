@@ -27,6 +27,8 @@ import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
+import org.w3c.dom.Text;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -60,6 +62,10 @@ public class BorrowApplyActivity extends BaseActivity {
     TextView tv_check;
     @InjectView(R.id.btn_borrow)
     Button btn_borrow;
+    @InjectView(R.id.tv_office)
+    TextView tv_office;
+    @InjectView(R.id.tv_office_map)
+    TextView tv_office_map;
     private Timer timer = new Timer();
     private boolean isBack = false;
     private String mLocation = null;
@@ -76,6 +82,15 @@ public class BorrowApplyActivity extends BaseActivity {
         startActivity(BaiduMapActivity.class, bundle);
     }
 
+    @OnClick(R.id.tv_office_map)
+    void onViewOfficeMap() {
+        Bundle bundle = new Bundle();
+        mLocation = "118.996925,32.142425";
+        bundle.putString(Constants.LOCATION, mLocation);
+        bundle.putString(Constants.BORROWNAME, tv_name.getText().toString());
+        startActivity(BaiduMapActivity.class, bundle);
+    }
+
     @OnClick(R.id.img_telephone)
     void onCallPhone(View v) {
         JDAppUtil.onCallPhone(BorrowApplyActivity.this, tv_telephone.getText().toString());
@@ -84,7 +99,7 @@ public class BorrowApplyActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_borrow_apply);
+        setContentView(R.layout.activity_borrow_apply);
         ButterKnife.inject(this);
         if (AppData.getInstance().getBorrowRequestInfo() == null) {
             getBorrowRequestInfo();
@@ -122,7 +137,8 @@ public class BorrowApplyActivity extends BaseActivity {
             tv_purpose.setText(borrowRequestInfo.getBorrowPurpose());
             mLocation = borrowRequestInfo.getLocation();
             mLocation = "118.996925,32.142425";
-            getUserLocation(mLocation);
+            getUserLocation(mLocation, false);
+            getUserLocation(mLocation, true);
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
             if (borrowRequestInfo.getStatus().equals("1")) {
@@ -174,14 +190,14 @@ public class BorrowApplyActivity extends BaseActivity {
         if (!isCanClickOnce) {
             isCanClickOnce = true;
             if (!isShouldRequest) {
-                isCanClickOnce=false;
+                isCanClickOnce = false;
                 startActivity(InvestigateDetailActivity.class);
             } else {
                 HttpClientUtil.put(HttpRequestURL.beginCheckUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {
                     @Override
                     public void onSuccess(Object o) {
                         startActivity(InvestigateDetailActivity.class);
-                        isCanClickOnce=false;
+                        isCanClickOnce = false;
                     }
                 }));
             }
@@ -191,7 +207,7 @@ public class BorrowApplyActivity extends BaseActivity {
     }
 
     //获取用户的地址
-    public void getUserLocation(String location) {
+    public void getUserLocation(String location, final boolean isOffice) {
         if (location != null && location.length() > 0 && location.indexOf(",") >= 0) {
             try {
                 String[] arrs = location.split(",");
@@ -206,7 +222,10 @@ public class BorrowApplyActivity extends BaseActivity {
                                 || result.error != SearchResult.ERRORNO.NO_ERROR) {
                             // 没有检测到结果
                         }
-                        tv_address.setText(result.getAddress());
+                        if (isOffice)
+                            tv_office.setText(result.getAddress());
+                        else
+                            tv_address.setText(result.getAddress());
                     }
 
                     // 地理编码查询结果回调函数

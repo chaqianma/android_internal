@@ -41,7 +41,7 @@ import java.util.List;
 public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListener,
         ViewPagerPopup.OnViewPagerDialogListener, ImgsGridViewAdapter.iOnClickImgListener, SoundGridViewAdapter.iOnClickSoundListener {
 
-    private String mBorrowRequestId =null;
+    private String mBorrowRequestId = null;
 
     protected PhotoPopup mPopup;
     protected ViewPagerPopup mViewPagerPopup;
@@ -50,7 +50,8 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
     //拍照
     protected static final int REQUEST_TAKE_PHOTO = 1002;
     //图片存放路径
-    protected  String mImgDirPath=null;
+    protected String mImgDirPath = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,7 +143,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
     * 获取上传文件 entity
     * */
     protected HttpEntity getUploadEntity(UploadFileInfo fileInfo, String parentId) {
-        return getUploadEntity(fileInfo,parentId,true);
+        return getUploadEntity(fileInfo, parentId, true);
     }
 
     /*
@@ -153,6 +154,8 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         ContentBody fileBody = new FileBody(new File(fileInfo.getBigImgPath()));
         entity.addPart("files", fileBody);
         int ftype = fileInfo.getFileType();
+        if (ftype == UploadFileType.SOUND.getValue())
+            ftype = UploadFileType.REMARK.getValue();
         entity.addPart("fileType", new StringBody("" + ftype, ContentType.DEFAULT_TEXT));
         entity.addPart("parentTableName", new StringBody(fileInfo.getParentTableName(), ContentType.DEFAULT_TEXT));
         entity.addPart("parentId", new StringBody(parentId, ContentType.DEFAULT_TEXT));
@@ -174,9 +177,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
 
     //删除图片
     @Override
-    public void onDeletePhoto(UploadFileType fileType, int delIdx) {
-
-
+    public void onDeletePhoto(int ftype,int idxTag) {
     }
 
     @Override

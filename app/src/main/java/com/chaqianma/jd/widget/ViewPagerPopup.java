@@ -33,6 +33,8 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
     private ViewPager mPhotoViewPager;
     private List<UploadFileInfo> mUploadImgInfoList = null;
     private ImagePagerAdapter mImagePagerAdapter = null;
+    private int mFileType = UploadFileType.NONE.getValue();
+    private int mIdxTag = -1;
 
     public ViewPagerPopup(Context context) {
         super(context);
@@ -62,16 +64,23 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
     //设置数据源
     public void setUploadImgList(List<UploadFileInfo> uploadImgInfoList, int idx) {
         this.mUploadImgInfoList = uploadImgInfoList;
-        mImagePagerAdapter.setUploadedImgList(uploadImgInfoList);
-        mImagePagerAdapter.refreshData();
-        mPhotoViewPager.setCurrentItem(idx);
+        if (idx < uploadImgInfoList.size()) {
+            mImagePagerAdapter.setUploadedImgList(uploadImgInfoList);
+            mImagePagerAdapter.refreshData();
+            mPhotoViewPager.setCurrentItem(idx);
+            UploadFileInfo uploadFileInfo = uploadImgInfoList.get(idx);
+            if (uploadFileInfo != null) {
+                mIdxTag = uploadFileInfo.getIdxTag();
+                mFileType = uploadFileInfo.getFileType();
+            }
+        }
     }
 
     /**
      * Dialog按钮回调接口
      */
     public interface OnViewPagerDialogListener {
-        void onDeletePhoto(UploadFileType fileType, int delIdx);
+        void onDeletePhoto(int fType, int idxTag);
     }
 
     //设置监听器
@@ -131,10 +140,12 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
                                     HttpClientUtil.delete(HttpRequestURL.deleteFileUrl + uploadImgInfo.getFileId(), null, new JDHttpResponseHandler(mContext, new ResponseHandler() {
                                         @Override
                                         public void onSuccess(Object o) {
-                                            JDToast.showLongText(mContext, "图片删除成功");
                                             mUploadImgInfoList.remove(uploadImgInfo);
                                             deleteFile(uploadImgInfo);
                                             isDefaultImgdismissPopUp();
+                                            if (listener != null)
+                                                listener.onDeletePhoto(uploadImgInfo.getFileType(),uploadImgInfo.getIdxTag());
+                                            JDToast.showLongText(mContext, "图片删除成功");
                                         }
 
                                         @Override
@@ -148,6 +159,9 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
                                     mUploadImgInfoList.remove(uploadImgInfo);
                                     deleteFile(uploadImgInfo);
                                     isDefaultImgdismissPopUp();
+                                    if (listener != null)
+                                        listener.onDeletePhoto(uploadImgInfo.getFileType(),uploadImgInfo.getIdxTag());
+                                    JDToast.showLongText(mContext, "图片删除成功");
                                 }
                             }
                         }, new DialogInterface.OnClickListener() {

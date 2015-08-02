@@ -5,7 +5,9 @@ package com.chaqianma.jd.fragment;
  */
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -94,6 +96,8 @@ public class PersonInfoFragment extends BaseFragment {
     RadioButton radio_man;
     @InjectView(R.id.radio_woman)
     RadioButton radio_woman;
+    @InjectView(R.id.rg_marry)
+    RadioGroup rg_marry;
     @InjectView(R.id.radio_single)
     RadioButton radio_single;
     @InjectView(R.id.radio_married)
@@ -122,8 +126,6 @@ public class PersonInfoFragment extends BaseFragment {
     GridView gv_mark;
     @InjectView(R.id.btn_name_auth)
     Button btn_name_auth;
-    private PhotoPopup mPopup;
-    private ViewPagerPopup mViewPagerPopup;
     //刷新GridView 身份证
     private static final int CARD = 1003;
     //刷新GridView 结婚证/离婚证
@@ -132,10 +134,6 @@ public class PersonInfoFragment extends BaseFragment {
     private static final int SOUND = 1005;
     //刷新GridView 备注
     private static final int REMARK = 1006;
-    //临时图片放置
-    private String mImgTempPath = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR + "/" + "temp.jpg";
-    //图片文件夹路径
-    private String mImgDirPath = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR;//+ "/"
     //身份证数据源
     private ImgsGridViewAdapter cardImgsAdapter = null;
     //结婚证/离婚证
@@ -152,12 +150,8 @@ public class PersonInfoFragment extends BaseFragment {
     private List<UploadFileInfo> soundInfoList = null;
     //备注集合
     private List<UploadFileInfo> remarkUploadImgInfoList = null;
-    //1 身份证  2 结婚证/离婚证  3 备注
+
     private UploadFileType fileType = UploadFileType.CARD;
-    //小图
-    private String smallImgPath = null;
-    //大图
-    private String bigImgPath = null;
     //上传文件所用的Id
     private String mParentId = null;
 
@@ -171,11 +165,6 @@ public class PersonInfoFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_person_info, container, false);
         ButterKnife.inject(this, view);
-
-        mPopup = new PhotoPopup(getActivity());
-        mPopup.setDialogListener(this);
-        mViewPagerPopup = new ViewPagerPopup(getActivity());
-        mViewPagerPopup.setViewPagerDialogListener(this);
         initRadioGroup();
         initView();
         getPersonalInfo();
@@ -259,6 +248,7 @@ public class PersonInfoFragment extends BaseFragment {
             imgInfo.setiServer(false);
             marryUploadImgInfoList.add(imgInfo);
             marryImgsAdapter = new ImgsGridViewAdapter(getActivity(), marryUploadImgInfoList);
+            marryImgsAdapter.setOnClickImgListener(this);
             gv_marry_imgs.setAdapter(marryImgsAdapter);
         }
 
@@ -281,6 +271,7 @@ public class PersonInfoFragment extends BaseFragment {
             imgInfo.setiServer(false);
             remarkUploadImgInfoList.add(imgInfo);
             remarkImgsAdapter = new ImgsGridViewAdapter(getActivity(), remarkUploadImgInfoList);
+            remarkImgsAdapter.setOnClickImgListener(this);
             gv_mark.setAdapter(marryImgsAdapter);
         }
     }
@@ -310,10 +301,12 @@ public class PersonInfoFragment extends BaseFragment {
                                 et_children_count.setVisibility(View.GONE);
                             } else if (marital_status.equals("2")) {
                                 radio_married.setChecked(true);
+                                marryUploadImgInfoList.get(0).setFileType(UploadFileType.MARRY.getValue());
                                 et_children_count.setVisibility(View.VISIBLE);
                                 et_children_count.setText(customerBaseInfo.getCountChildren());
                             } else {
                                 radio_divorce.setChecked(true);
+                                marryUploadImgInfoList.get(0).setFileType(UploadFileType.SINGLE.getValue());
                                 et_children_count.setVisibility(View.VISIBLE);
                                 et_children_count.setText(customerBaseInfo.getCountChildren());
                             }
@@ -403,30 +396,19 @@ public class PersonInfoFragment extends BaseFragment {
                     //1.身份证  2 离婚证  3 结婚证 16 备注  17 语音
                     UploadFileType fType = UploadFileType.valueOf(uploadFileInfo.getFileType());
                     if (fType == UploadFileType.CARD) {
-
+                        cardUploadImgInfoList.add(0, uploadFileInfo);
+                        cardImgsAdapter.notifyDataSetChanged();
                     } else if (fType == UploadFileType.SINGLE) {
-
+                        marryUploadImgInfoList.add(0, uploadFileInfo);
+                        marryImgsAdapter.notifyDataSetChanged();
                     } else if (fType == UploadFileType.MARRY) {
+                        marryUploadImgInfoList.add(0, uploadFileInfo);
+                        marryImgsAdapter.notifyDataSetChanged();
                     } else if (fType == UploadFileType.REMARK) {
-                    } else if (fType == UploadFileType.SOUND) {
+                        remarkUploadImgInfoList.add(0, uploadFileInfo);
+                        remarkImgsAdapter.notifyDataSetChanged();
+                    } else {
 
-                    }
-                    switch (uploadFileInfo.getFileType()) {
-                        case 1:
-                            cardUploadImgInfoList.add(0, uploadFileInfo);
-                            cardImgsAdapter.notifyDataSetChanged();
-                            break;
-                        case 2:
-                            marryUploadImgInfoList.add(0, uploadFileInfo);
-                            marryImgsAdapter.notifyDataSetChanged();
-                            break;
-                        case 3:
-                            uploadFileInfo.setFileType(UploadFileType.REMARK.getValue());
-                            remarkUploadImgInfoList.add(0, uploadFileInfo);
-                            remarkImgsAdapter.notifyDataSetChanged();
-                            break;
-                        default:
-                            break;
                     }
                 }
             }
@@ -436,7 +418,7 @@ public class PersonInfoFragment extends BaseFragment {
                 super.onFailure(uploadFileInfo);
                 uploadFileInfo.setiServer(false);
                 uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
-                switch (uploadFileInfo.getFileType()) {
+                /*switch (uploadFileInfo.getFileType()) {
                     case 1:
                         cardUploadImgInfoList.add(0, uploadFileInfo);
                         cardImgsAdapter.notifyDataSetChanged();
@@ -452,7 +434,7 @@ public class PersonInfoFragment extends BaseFragment {
                         break;
                     default:
                         break;
-                }
+                }*/
             }
         }));
     }
@@ -474,7 +456,7 @@ public class PersonInfoFragment extends BaseFragment {
     @Override
     public void onTakePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(mImgTempPath);
+        File file = new File(Constants.TEMPPATH);
         if (!file.getParentFile().exists() && !file.mkdirs()) {
 
         } else {
@@ -485,13 +467,17 @@ public class PersonInfoFragment extends BaseFragment {
 
     //删除图片
     @Override
-    public void onDeletePhoto(UploadFileType fileType, int delIdx) {
-        refreshData();
-    }
+    public void onDeletePhoto(int fType, int idxTag) {
+        //刷新数据源
+        if (fType == UploadFileType.CARD.getValue()) {
+            cardImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.MARRY.getValue() || fType == UploadFileType.SINGLE.getValue()) {
+            marryImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.REMARK.getValue()) {
+            remarkImgsAdapter.refreshData();
+        } else {
 
-    @Override
-    public void onCancel() {
-
+        }
     }
 
     @Override
@@ -499,6 +485,13 @@ public class PersonInfoFragment extends BaseFragment {
         if (idx < uploadImgInfoList.size()) {
             UploadFileInfo imgInfo = uploadImgInfoList.get(idx);
             fileType = UploadFileType.valueOf(imgInfo.getFileType());
+            //以选择的radiobutton为准
+            if (fileType == UploadFileType.SINGLE || fileType == UploadFileType.MARRY) {
+                if (radio_divorce.isChecked())
+                    fileType = UploadFileType.SINGLE;
+                else if (radio_married.isChecked())
+                    fileType = UploadFileType.MARRY;
+            }
             if (imgInfo.isDefault()) {
                 mPopup.showAtLocation(linear_container, Gravity.BOTTOM, 0, 0);
             } else {
@@ -508,18 +501,6 @@ public class PersonInfoFragment extends BaseFragment {
         }
     }
 
-    //开始录音
-    @Override
-    public void onStartRecord() {
-
-    }
-
-    //结束录音
-    @Override
-    public void onStopRecord() {
-
-    }
-
     //拍照返回结果 ---------拍照图片 data=null
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -527,14 +508,74 @@ public class PersonInfoFragment extends BaseFragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_SDK_IMGS:
-                    if (data != null) {
-
+                    if (data != null && data.getData() != null) {
+                        Uri imgUri = data.getData();
+                        ContentResolver resolver = getActivity().getContentResolver();
+                        String[] pojo = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = null;
+                        try {
+                            cursor = resolver.query(imgUri, pojo, null, null, null);
+                            if (cursor != null && cursor.getCount() > 0) {
+                                int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                                cursor.moveToFirst();
+                                mHandler.post(new ImgRunable(cursor.getString(colunm_index)));
+                            } else {
+                                JDToast.showLongText(getActivity(), "请选择有效的图片文件夹");
+                            }
+                        } catch (IllegalArgumentException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } finally {
+                            if (cursor != null) {
+                                cursor.close();
+                            }
+                        }
                     }
                     break;
                 case REQUEST_TAKE_PHOTO:
                     mHandler.post(mRunnable);
                     break;
             }
+        }
+    }
+
+    /*
+    * 先这么写吧。。。 图片处理 到时与下面的整合起来
+    * */
+
+    private class ImgRunable implements Runnable {
+        private String imgPath = null;
+
+        public ImgRunable(String imgPath) {
+            this.imgPath = imgPath;
+        }
+
+        @Override
+        public void run() {
+            String random = System.currentTimeMillis() + "";
+            String smallImgPath = getFilePath(random, fileType.getValue(), false);
+            String bigImgPath = getFilePath(random, fileType.getValue(), true);
+            //存放大图
+            Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
+            if (proportionBM != null) {
+                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
+                proportionBM.recycle();
+            }
+            //存放小图
+            Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 80, 80, "jpg");
+            if (bitmap != null) {
+                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
+                bitmap.recycle();
+            }
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setiServer(false);
+            imgInfo.setBigImgPath(bigImgPath);
+            imgInfo.setSmallImgPath(smallImgPath);
+            imgInfo.setParentTableName(Constants.BUSINESS_INFO);
+            imgInfo.setFileType(fileType.getValue());
+            //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
+            addGridViewData(imgInfo);
+            uploadImg(imgInfo);
         }
     }
 
@@ -561,29 +602,21 @@ public class PersonInfoFragment extends BaseFragment {
         }
     };
 
-    //得到图片地址
-    private String getFilePath(boolean isBigImgPath, String randomName) {
-        String path = fileType.getValue() + "_" + randomName + ".jpg";
-        if (!isBigImgPath)
-            path = "thumb_" + path;
-        return mImgDirPath + "/" + path;
-    }
-
     //保存图片
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
             String random = System.currentTimeMillis() + "";
-            smallImgPath = getFilePath(false, random);
-            bigImgPath = getFilePath(true, random);
+            String smallImgPath = getFilePath(random, fileType.getValue(), false);
+            String bigImgPath = getFilePath(random, fileType.getValue(), true);
             //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(mImgTempPath, 1024);
+            Bitmap proportionBM = ImageUtil.proportionZoom(Constants.TEMPPATH, 1024);
             if (proportionBM != null) {
                 ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
                 proportionBM.recycle();
             }
             //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(mImgTempPath, 80, 80, "jpg");
+            Bitmap bitmap = ImageUtil.getLocalThumbImg(Constants.TEMPPATH, 80, 80, "jpg");
             if (bitmap != null) {
                 ImageUtil.saveBitmapFile(smallImgPath, bitmap);
                 bitmap.recycle();
@@ -594,37 +627,43 @@ public class PersonInfoFragment extends BaseFragment {
             imgInfo.setSmallImgPath(smallImgPath);
             imgInfo.setParentTableName(Constants.USER_BASE_INFO);
             imgInfo.setFileType(fileType.getValue());
-            if (fileType == UploadFileType.CARD) {
-                cardUploadImgInfoList.add(0, imgInfo);
-                cardImgsAdapter.setUploadImgInfoList(cardUploadImgInfoList);
-                mHandler.sendMessage(mHandler.obtainMessage(CARD, null));
-                uploadImg(imgInfo);
-            } else if (fileType == UploadFileType.MARRY) {
-                marryUploadImgInfoList.add(0, imgInfo);
-                marryImgsAdapter.setUploadImgInfoList(marryUploadImgInfoList);
-                mHandler.sendMessage(mHandler.obtainMessage(MARRY, null));
-                uploadImg(imgInfo);
-            } else if (fileType == UploadFileType.SOUND) {
-
-            } else if (fileType == UploadFileType.REMARK) {
-                remarkUploadImgInfoList.add(0, imgInfo);
-                remarkImgsAdapter.setUploadImgInfoList(remarkUploadImgInfoList);
-                mHandler.sendMessage(mHandler.obtainMessage(REMARK, null));
-                uploadImg(imgInfo);
-            } else {
-
-            }
+            addGridViewData(imgInfo);
+            uploadImg(imgInfo);
         }
     };
+
+    /*
+    * 添加到GridView
+    * */
+    private void addGridViewData(UploadFileInfo imgInfo) {
+        if (fileType == UploadFileType.CARD) {
+            cardUploadImgInfoList.add(0, imgInfo);
+            mHandler.sendMessage(mHandler.obtainMessage(CARD, null));
+        } else if (fileType == UploadFileType.MARRY || fileType == UploadFileType.SINGLE) {
+            //离婚//结婚
+            marryUploadImgInfoList.add(0, imgInfo);
+            mHandler.sendMessage(mHandler.obtainMessage(MARRY, null));
+        } else if (fileType == UploadFileType.REMARK) {
+            remarkUploadImgInfoList.add(0, imgInfo);
+            mHandler.sendMessage(mHandler.obtainMessage(REMARK, null));
+        } else {
+
+        }
+    }
 
     //上传图片
     private void uploadImg(final UploadFileInfo fileInfo) {
         try {
-
             HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, mParentId), new JDHttpResponseHandler(getActivity(), new ResponseHandler<DownImgInfo>() {
                 @Override
                 public void onSuccess(DownImgInfo downImgInfo) {
                     fileInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功
+                    fileInfo.setFileId(downImgInfo.getFileId());
+                    fileInfo.setiServer(true);
+                    fileInfo.setFileExt(downImgInfo.getFileExt());
+                    fileInfo.setUserId(downImgInfo.getUserId());
+                    fileInfo.setParentTableName(downImgInfo.getParentTableName());
+                    fileInfo.setParentId(downImgInfo.getParentId());
                     refreshData();
                 }
 
@@ -658,10 +697,8 @@ public class PersonInfoFragment extends BaseFragment {
     private void refreshData() {
         if (fileType == UploadFileType.CARD) {
             cardImgsAdapter.refreshData();
-        } else if (fileType == UploadFileType.MARRY) {
+        } else if (fileType == UploadFileType.MARRY || fileType == UploadFileType.SINGLE) {
             marryImgsAdapter.refreshData();
-        } else if (fileType == UploadFileType.SOUND) {
-            //soundAdapter
         } else if (fileType == UploadFileType.REMARK) {
             remarkImgsAdapter.refreshData();
         } else {
