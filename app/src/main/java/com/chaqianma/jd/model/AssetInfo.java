@@ -13,7 +13,7 @@ public class AssetInfo extends ErrorInfo{
     private String id=null;
     private List<CarInfo> personalAssetsCarInfoList=null;
     private List<HouseInfo>personalAssetsHouseInfoList=null;
-
+    private String remark=null;
     public String getBorrowRequestId() {
         return borrowRequestId;
     }
@@ -44,5 +44,13 @@ public class AssetInfo extends ErrorInfo{
 
     public void setPersonalAssetsHouseInfoList(List<HouseInfo> personalAssetsHouseInfoList) {
         this.personalAssetsHouseInfoList = personalAssetsHouseInfoList;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

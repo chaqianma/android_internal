@@ -804,7 +804,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                     mBLList_2.add(0, imgInfo);
                     break;
                 case 2:
-                    mBLList_2.add(0, imgInfo);
+                    mBLList_3.add(0, imgInfo);
                     break;
                 default:
                     break;

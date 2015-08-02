@@ -122,6 +122,12 @@ public class JDAppUtil {
         view.startAnimation(mHiddenAction);
     }
 
+    //判断值是否为空
+    public static boolean isEmpty(String value)
+    {
+        return value==null || value.length()==0;
+    }
+
     private static class MyAnimationListener implements Animation.AnimationListener {
         private View mView = null;
         private boolean mIsShow = false;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
@@ -27,11 +30,13 @@ import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.AssetInfo;
 import com.chaqianma.jd.model.CarInfo;
+import com.chaqianma.jd.model.CompanyInfo;
 import com.chaqianma.jd.model.HouseInfo;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.utils.HttpClientUtil;
+import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
@@ -44,6 +49,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by zhangxd on 2015/7/28.
@@ -66,7 +72,7 @@ public class PersonalAssetsFragment extends BaseFragment {
     GridView gv_license_plate_1;
     @InjectView(R.id.gv_driving_license_1)
     GridView gv_driving_license_1;
-    @InjectView(R.id.sp_card_1)
+    @InjectView(R.id.sp_car_1)
     Spinner sp_car_1;
     @InjectView(R.id.img_house_add)
     ImageView img_house_add;
@@ -76,7 +82,8 @@ public class PersonalAssetsFragment extends BaseFragment {
     GridView gv_land_1;
     @InjectView(R.id.sp_house_1)
     Spinner sp_house_1;
-
+    @InjectView(R.id.et_remark)
+    EditText et_remark;
 
     GridView gv_income_2;
     GridView gv_bill_2;
@@ -173,7 +180,10 @@ public class PersonalAssetsFragment extends BaseFragment {
     private boolean isHouse3Show = false;
 
     private String mBorrowRequestId = null;
-
+    //用于标识选择的是哪个类型
+    private int selIdxTag = -1;
+    //收入
+    private String[] mCompanyId = new String[3];
     //车
     private String[] mCardId = new String[3];
     //房
@@ -197,8 +207,8 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else {
             if (!isIncome3Show) {
                 isIncome3Show = true;
-                initCompanyView(false);
                 View view = ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
+                initCompanyView(false);
                 JDAppUtil.addShowAction(view);
             }
         }
@@ -210,12 +220,14 @@ public class PersonalAssetsFragment extends BaseFragment {
     private void addCar() {
         if (!isCar2Show) {
             isCar2Show = true;
-            ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
+            View view = ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
+            JDAppUtil.addShowAction(view);
             initCarView(true);
         } else {
             if (!isCar3Show) {
                 isCar3Show = true;
-                ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
+                View view = ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
+                JDAppUtil.addShowAction(view);
                 initCarView(false);
             }
         }
@@ -227,16 +239,34 @@ public class PersonalAssetsFragment extends BaseFragment {
     private void addHouse() {
         if (!isHouse2Show) {
             isHouse2Show = true;
-            ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
+            View view = ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
+            JDAppUtil.addShowAction(view);
             initHouseView(true);
         } else {
             if (!isHouse3Show) {
                 isHouse3Show = true;
-                ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
+                View view = ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
+                JDAppUtil.addShowAction(view);
                 initHouseView(false);
             }
         }
     }
+
+    @OnClick(R.id.img_company_asset_add)
+    void addComanyAssetClick() {
+        addCompanyIncome();
+    }
+
+    @OnClick(R.id.img_car_add)
+    void addCarClick() {
+        addCar();
+    }
+
+    @OnClick(R.id.img_house_add)
+    void addHouseClick() {
+        addHouse();
+    }
+
 
     /*
    * 初始企业化组件
@@ -251,7 +281,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             sp_company_2 = (Spinner) mView.findViewById(R.id.sp_company_2);
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.SY.getValue());
@@ -263,7 +293,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.JY.getValue());
@@ -283,7 +313,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(3);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.SY.getValue());
@@ -295,7 +325,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(3);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.JY.getValue());
@@ -321,7 +351,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.CP.getValue());
@@ -333,7 +363,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.XS.getValue());
@@ -353,7 +383,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(3);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.CP.getValue());
@@ -365,7 +395,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(3);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.XS.getValue());
@@ -391,7 +421,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.FC.getValue());
@@ -403,7 +433,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.TD.getValue());
@@ -423,7 +453,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(3);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.FC.getValue());
@@ -435,7 +465,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
+                imgInfo.setIdxTag(3);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.TD.getValue());
@@ -445,10 +475,6 @@ public class PersonalAssetsFragment extends BaseFragment {
                 gv_land_3.setAdapter(mTDAdpter_3);
             }
         }
-    }
-
-    private void initComanyData() {
-
     }
 
     @Override
@@ -479,18 +505,79 @@ public class PersonalAssetsFragment extends BaseFragment {
                 public void onSuccess(Object o) {
                     try {
                         JSONObject json = JSON.parseObject(o.toString());
-                        AssetInfo assetInfo = json.getObject("personalAssetsInfo", AssetInfo.class);
-                        if (assetInfo != null) {
-                            if (assetInfo.getPersonalAssetsCarInfoList() != null) {
-                                //车
-                                int size = assetInfo.getPersonalAssetsCarInfoList().size();
-                                CarInfo carInfo = null;
+                        try {
+                            List<CompanyInfo> companyInfoList = JSON.parseArray(json.getString("businessInfoList"), CompanyInfo.class);
+                            if (companyInfoList != null) {
+                                int size = companyInfoList.size();
+                                CompanyInfo companyInfo = null;
                                 for (int i = 0; i < size; i++) {
-                                    carInfo = assetInfo.getPersonalAssetsCarInfoList().get(i);
-                                    if (carInfo != null) {
-                                        mCardId[i]=carInfo.getId();
+                                    companyInfo = companyInfoList.get(i);
+                                    mCompanyId[i] = companyInfo.getId();
+                                    int companySize = -1;
+                                    if (companyInfo.getFileList() != null)
+                                        companySize = companyInfo.getFileList().size();
+                                    //判断是否是有效企业 企业名称
+                                    if (companySize > 0 || !JDAppUtil.isEmpty(companyInfo.getCompanyName())) {
+
+                                        switch (i) {
+                                            case 0:
+                                                et_remark.setText(companyInfo.getRemark());
+                                                initServerFile(companyInfo.getFileList());
+                                                break;
+                                            case 1:
+                                                addCompanyIncome();
+                                                initServerFile(companyInfo.getFileList());
+                                                break;
+                                            case 2:
+                                                addCompanyIncome();
+                                                initServerFile(companyInfo.getFileList());
+                                                break;
+                                            default:
+                                                break;
+                                        }
                                     }
                                 }
+                            }
+                        } catch (Exception e) {
+
+                        }
+                        AssetInfo assetInfo = json.getObject("personalAssetsInfo", AssetInfo.class);
+                        if (assetInfo != null) {
+                            try {
+                                if (assetInfo.getPersonalAssetsCarInfoList() != null) {
+                                    //车
+                                    int size = assetInfo.getPersonalAssetsCarInfoList().size();
+                                    CarInfo carInfo = null;
+                                    for (int i = 0; i < size; i++) {
+                                        carInfo = assetInfo.getPersonalAssetsCarInfoList().get(i);
+                                        if (carInfo != null) {
+                                            mCardId[i] = carInfo.getId();
+                                            int carSize = -1;
+                                            if (carInfo.getFileList() != null)
+                                                carSize = carInfo.getFileList().size();
+                                            //根据 车 是否有图片   车牌号码  总价 来判断是否是真实的车
+                                            if (carSize > 0 || !JDAppUtil.isEmpty(carInfo.getSum_price()) || !JDAppUtil.isEmpty(carInfo.getPlate_num())) {
+                                                switch (i) {
+                                                    case 0:
+                                                        initServerFile(carInfo.getFileList());
+                                                        break;
+                                                    case 1:
+                                                        addCar();
+                                                        initServerFile(carInfo.getFileList());
+                                                        break;
+                                                    case 2:
+                                                        addCar();
+                                                        initServerFile(carInfo.getFileList());
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+
                             }
                             if (assetInfo.getPersonalAssetsHouseInfoList() != null) {
                                 //房
@@ -499,17 +586,39 @@ public class PersonalAssetsFragment extends BaseFragment {
                                 for (int i = 0; i < size; i++) {
                                     houseInfo = assetInfo.getPersonalAssetsHouseInfoList().get(i);
                                     if (houseInfo != null) {
-                                        mHouseId[i]=houseInfo.getId();
+                                        mHouseId[i] = houseInfo.getId();
+                                        int houseSize = -1;
+                                        if (houseInfo.getFileList() != null)
+                                            houseSize = houseInfo.getFileList().size();
+                                        //根据 房 是否有图片   地址  面积  房产价号 来判断是否是真实的房子
+                                        if (houseSize > 0 || !JDAppUtil.isEmpty(houseInfo.getArea()) || !JDAppUtil.isEmpty(houseInfo.getAddress()) || !JDAppUtil.isEmpty(houseInfo.getDeed_num())) {
+                                            switch (i) {
+                                                case 0:
+                                                    initServerFile(houseInfo.getFileList());
+                                                    break;
+                                                case 1:
+                                                    addCar();
+                                                    initServerFile(houseInfo.getFileList());
+                                                    break;
+                                                case 2:
+                                                    addCar();
+                                                    initServerFile(houseInfo.getFileList());
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
                 }
             }));
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -545,7 +654,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             imgInfo.setIdxTag(0);
             imgInfo.setIsDefault(true);
             imgInfo.setiServer(false);
-            imgInfo.setFileType(UploadFileType.YY.getValue());
+            imgInfo.setFileType(UploadFileType.SY.getValue());
             mSYList_1.add(imgInfo);
             mSYAdapter_1 = new ImgsGridViewAdapter(getActivity(), mSYList_1);
             mSYAdapter_1.setOnClickImgListener(this);
@@ -639,7 +748,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             public void onSuccess(UploadFileInfo uploadFileInfo) {
                 uploadFileInfo.setiServer(true);
                 uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
-                //addGridViewData(uploadFileInfo);
+                addGridViewData(uploadFileInfo);
             }
 
             @Override
@@ -658,17 +767,114 @@ public class PersonalAssetsFragment extends BaseFragment {
             super.handleMessage(msg);
             if (msg.obj != null) {
                 UploadFileInfo imgInfo = (UploadFileInfo) msg.obj;
-                // refreshData(imgInfo);
+                refreshData(imgInfo);
             }
         }
     };
+
+    /*
+   * 往GridView里添加图片
+   * */
+    private void addGridViewData(UploadFileInfo imgInfo) {
+        UploadFileType fType = UploadFileType.valueOf(imgInfo.getFileType());
+        if (fType == UploadFileType.SY) {
+            switch (imgInfo.getIdxTag()) {
+                case 0:
+                    mSYList_1.add(0, imgInfo);
+                    break;
+                case 1:
+                    mSYList_2.add(0, imgInfo);
+                    break;
+                case 2:
+                    mSYList_3.add(0, imgInfo);
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.JY) {
+            switch (imgInfo.getIdxTag()) {
+                case 0:
+                    mJYList_1.add(0, imgInfo);
+                    break;
+                case 1:
+                    mJYList_2.add(0, imgInfo);
+                    break;
+                case 2:
+                    mJYList_3.add(0, imgInfo);
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.CP) {
+            switch (imgInfo.getIdxTag()) {
+                case 0:
+                    mCPList_1.add(0, imgInfo);
+                    break;
+                case 1:
+                    mCPList_2.add(0, imgInfo);
+                    break;
+                case 2:
+                    mCPList_3.add(0, imgInfo);
+                    break;
+                default:
+                    break;
+            }
+
+        } else if (fType == UploadFileType.XS) {
+            switch (imgInfo.getIdxTag()) {
+                case 0:
+                    mXSList_1.add(0, imgInfo);
+                    break;
+                case 1:
+                    mXSList_2.add(0, imgInfo);
+                    break;
+                case 2:
+                    mXSList_3.add(0, imgInfo);
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.FC) {
+            switch (imgInfo.getIdxTag()) {
+                case 0:
+                    mFCList_1.add(0, imgInfo);
+                    break;
+                case 1:
+                    mFCList_2.add(0, imgInfo);
+                    break;
+                case 2:
+                    mFCList_3.add(0, imgInfo);
+                    break;
+                default:
+                    break;
+            }
+
+        } else if (fType == UploadFileType.TD) {
+            switch (imgInfo.getIdxTag()) {
+                case 0:
+                    mTDList_1.add(0, imgInfo);
+                    break;
+                case 1:
+                    mTDList_2.add(0, imgInfo);
+                    break;
+                case 2:
+                    mTDList_3.add(0, imgInfo);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+
+        }
+        mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
+    }
 
     @Override
     public void onImgClick(List<UploadFileInfo> uploadImgInfoList, int idx) {
         if (idx < uploadImgInfoList.size()) {
             UploadFileInfo imgInfo = uploadImgInfoList.get(idx);
-            //fileType = UploadFileType.valueOfName(imgInfo.getFileType());
-            // selCompanyIdxTag = imgInfo.getIdxTag();
+            fileType = UploadFileType.valueOf(imgInfo.getFileType());
+            selIdxTag = imgInfo.getIdxTag();
             if (imgInfo.isDefault()) {
                 mPopup.showAtLocation(linear_container, Gravity.BOTTOM, 0, 0);
             } else {
@@ -723,6 +929,127 @@ public class PersonalAssetsFragment extends BaseFragment {
 
     }
 
+    //保存图片
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            String random = System.currentTimeMillis() + "";
+            String smallImgPath = getFilePath(random, fileType.getValue(), false);
+            String bigImgPath = getFilePath(random, fileType.getValue(), true);
+            //存放大图
+            Bitmap proportionBM = ImageUtil.proportionZoom(Constants.TEMPPATH, 1024);
+            if (proportionBM != null) {
+                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
+                proportionBM.recycle();
+            }
+            //存放小图
+            Bitmap bitmap = ImageUtil.getLocalThumbImg(Constants.TEMPPATH, 80, 80, "jpg");
+            if (bitmap != null) {
+                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
+                bitmap.recycle();
+            }
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setiServer(false);
+            imgInfo.setBigImgPath(bigImgPath);
+            imgInfo.setSmallImgPath(smallImgPath);
+            imgInfo.setIdxTag(selIdxTag);
+            imgInfo.setFileType(fileType.getValue());
+            //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
+            addGridViewData(imgInfo);
+            uploadImg(imgInfo);
+        }
+    };
+
+    /*
+    * 得到上传文件的父id 并设置ParentTableName
+    * */
+    private String getParentIdAndSetParentTableName(UploadFileInfo fileInfo) {
+        String parentId = null;
+        UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
+        //SY(10),JY(11),CP(12),XS(13),REMARK(16),SOUND(80)
+        if (fType == UploadFileType.SY || fType == UploadFileType.JY) {
+            parentId = mCompanyId[fileInfo.getIdxTag()];
+            fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_INFO);
+        } else if (fType == UploadFileType.CP || fType == UploadFileType.XS) {
+            parentId = mCardId[fileInfo.getIdxTag()];
+            fileInfo.setParentTableName(Constants.PERSONAL_ASSERTS_CAR_INFO);
+        } else if (fType == UploadFileType.REMARK || fType == UploadFileType.SOUND) {
+        } else if (fType == UploadFileType.FC || fType == UploadFileType.TD) {
+            parentId = mHouseId[fileInfo.getIdxTag()];
+            fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_HOUSE_INFO);
+        } else {
+
+        }
+        return parentId;
+    }
+
+    //上传图片
+    private void uploadImg(final UploadFileInfo fileInfo) {
+        try {
+            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, getParentIdAndSetParentTableName(fileInfo)), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
+                @Override
+                public void onSuccess(UploadFileInfo downImgInfo) {
+                    fileInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功
+                    fileInfo.setFileId(downImgInfo.getFileId());
+                    fileInfo.setiServer(true);
+                    fileInfo.setFileExt(downImgInfo.getFileExt());
+                    fileInfo.setUserId(downImgInfo.getUserId());
+                    fileInfo.setParentTableName(downImgInfo.getParentTableName());
+                    fileInfo.setParentId(downImgInfo.getParentId());
+                    refreshData(fileInfo);
+                }
+
+                @Override
+                public void onFailure(String data) {
+                    fileInfo.setStatus(UploadStatus.FAILURE.getValue());//失败
+                    refreshData(fileInfo);
+                }
+            }, Class.forName(UploadFileInfo.class.getName())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+/*
+    * 先这么写吧。。。 图片处理 到时与下面的整合起来
+    * */
+
+    private class ImgRunable implements Runnable {
+        private String imgPath = null;
+
+        public ImgRunable(String imgPath) {
+            this.imgPath = imgPath;
+        }
+
+        @Override
+        public void run() {
+            String random = System.currentTimeMillis() + "";
+            String smallImgPath = getFilePath(random, fileType.getValue(), false);
+            String bigImgPath = getFilePath(random, fileType.getValue(), true);
+            //存放大图
+            Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
+            if (proportionBM != null) {
+                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
+                proportionBM.recycle();
+            }
+            //存放小图
+            Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 80, 80, "jpg");
+            if (bitmap != null) {
+                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
+                bitmap.recycle();
+            }
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setiServer(false);
+            imgInfo.setBigImgPath(bigImgPath);
+            imgInfo.setSmallImgPath(smallImgPath);
+            imgInfo.setParentTableName(Constants.BUSINESS_INFO);
+            imgInfo.setIdxTag(selIdxTag);
+            imgInfo.setFileType(fileType.getValue());
+            addGridViewData(imgInfo);
+            uploadImg(imgInfo);
+        }
+    }
+
     /*
     * 拍照回调
     * */
@@ -742,7 +1069,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                             if (cursor != null && cursor.getCount() > 0) {
                                 int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                                 cursor.moveToFirst();
-                                //mHandler.post(new ImgRunable(cursor.getString(colunm_index)));
+                                mHandler.post(new ImgRunable(cursor.getString(colunm_index)));
                             } else {
                                 JDToast.showLongText(getActivity(), "请选择有效的图片文件夹");
                             }
@@ -757,11 +1084,107 @@ public class PersonalAssetsFragment extends BaseFragment {
                     }
                     break;
                 case REQUEST_TAKE_PHOTO:
-                    //mHandler.post(mRunnable);
+                    mHandler.post(mRunnable);
                     break;
                 default:
                     break;
             }
+        }
+    }
+
+    /*
+    * 刷新数据
+    * */
+    private void refreshData(UploadFileInfo fileInfo) {
+        UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
+        if (fType == UploadFileType.SY) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    mSYAdapter_1.refreshData();
+                    break;
+                case 1:
+                    mSYAdapter_2.refreshData();
+                    break;
+                case 2:
+                    mSYAdapter_3.refreshData();
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.JY) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    mJYAdapter_1.refreshData();
+                    break;
+                case 1:
+                    mJYAdapter_2.refreshData();
+                    break;
+                case 2:
+                    mJYAdapter_3.refreshData();
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.CP) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    mCPAdpter_1.refreshData();
+                    break;
+                case 1:
+                    mCPAdpter_2.refreshData();
+                    break;
+                case 2:
+                    mCPAdpter_3.refreshData();
+                    break;
+                default:
+                    break;
+            }
+
+        } else if (fType == UploadFileType.XS) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    mXSAdpter_1.refreshData();
+                    break;
+                case 1:
+                    mXSAdpter_2.refreshData();
+                    break;
+                case 2:
+                    mXSAdpter_3.refreshData();
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.FC) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    mFCAdpter_1.refreshData();
+                    break;
+                case 1:
+                    mFCAdpter_2.refreshData();
+                    break;
+                case 2:
+                    mFCAdpter_3.refreshData();
+                    break;
+                default:
+                    break;
+            }
+
+        } else if (fType == UploadFileType.TD) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    mTDAdpter_1.refreshData();
+                    break;
+                case 1:
+                    mTDAdpter_2.refreshData();
+                    break;
+                case 2:
+                    mTDAdpter_3.refreshData();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+
         }
     }
 

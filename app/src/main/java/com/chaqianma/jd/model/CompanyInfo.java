@@ -12,6 +12,12 @@ public class CompanyInfo  implements Serializable {
     private List<UploadFileInfo> fileList=null;
     private String companyName=null;
     private String remark=null;
+    private String businessLicenceHasNot=null;
+    private String businessStartTime=null;
+    private String businessType=null;
+    private String companySize=null;
+    private String organizationType=null;
+    private String phone=null;
     private boolean isValid=false;  //是否有效
 
     public String getId() {
@@ -60,5 +66,53 @@ public class CompanyInfo  implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getBusinessLicenceHasNot() {
+        return businessLicenceHasNot;
+    }
+
+    public void setBusinessLicenceHasNot(String businessLicenceHasNot) {
+        this.businessLicenceHasNot = businessLicenceHasNot;
+    }
+
+    public String getBusinessStartTime() {
+        return businessStartTime;
+    }
+
+    public void setBusinessStartTime(String businessStartTime) {
+        this.businessStartTime = businessStartTime;
+    }
+
+    public String getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType;
+    }
+
+    public String getCompanySize() {
+        return companySize;
+    }
+
+    public void setCompanySize(String companySize) {
+        this.companySize = companySize;
+    }
+
+    public String getOrganizationType() {
+        return organizationType;
+    }
+
+    public void setOrganizationType(String organizationType) {
+        this.organizationType = organizationType;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

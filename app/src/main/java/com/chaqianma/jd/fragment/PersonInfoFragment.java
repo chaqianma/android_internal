@@ -158,8 +158,6 @@ public class PersonInfoFragment extends BaseFragment {
     private String smallImgPath = null;
     //大图
     private String bigImgPath = null;
-    //BorrowRequest
-    private String mBorrowRequestId;
     //上传文件所用的Id
     private String mParentId = null;
 
@@ -178,7 +176,6 @@ public class PersonInfoFragment extends BaseFragment {
         mPopup.setDialogListener(this);
         mViewPagerPopup = new ViewPagerPopup(getActivity());
         mViewPagerPopup.setViewPagerDialogListener(this);
-        initImgDir();
         initRadioGroup();
         initView();
         getPersonalInfo();
@@ -225,20 +222,6 @@ public class PersonInfoFragment extends BaseFragment {
                 }
             }
         });
-    }
-
-    /*
-    * 初始化图片文件夹
-    * */
-    private void initImgDir() {
-        if (AppData.getInstance().getBorrowRequestInfo() != null) {
-            mBorrowRequestId = AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId();
-            mImgDirPath = mImgDirPath + "/" + mBorrowRequestId;
-            File file = new File(mImgDirPath);
-            if (!file.getParentFile().exists()) {
-                file.mkdirs();
-            }
-        }
     }
 
     /*
@@ -304,7 +287,7 @@ public class PersonInfoFragment extends BaseFragment {
 
     //获取客户基本信息
     private void getPersonalInfo() {
-        String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.PERSONALINFO + "/" + mBorrowRequestId;
+        String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.PERSONALINFO + "/" + getBorrowRequestId();
         try {
             HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler<CustomerBaseInfo>() {
                 @Override
@@ -396,7 +379,7 @@ public class PersonInfoFragment extends BaseFragment {
             for (UploadFileInfo uploadFileInfo : fileInfoList) {
                 uploadFileInfo.setiServer(true);
                 uploadFileInfo.setIsDefault(false);
-                uploadFileInfo.setBorrowRequestId(mBorrowRequestId);
+                uploadFileInfo.setBorrowRequestId(getBorrowRequestId());
                 getServerFile(uploadFileInfo);
             }
         }
@@ -417,7 +400,17 @@ public class PersonInfoFragment extends BaseFragment {
                 if (fileExt.equals("amr")) {
                     soundInfoList.add(0, uploadFileInfo);
                 } else if (fileExt.equals("jpg")) {
-                    //1.身份证  2 结婚证/离婚证  3 备注 图片
+                    //1.身份证  2 离婚证  3 结婚证 16 备注  17 语音
+                    UploadFileType fType = UploadFileType.valueOf(uploadFileInfo.getFileType());
+                    if (fType == UploadFileType.CARD) {
+
+                    } else if (fType == UploadFileType.SINGLE) {
+
+                    } else if (fType == UploadFileType.MARRY) {
+                    } else if (fType == UploadFileType.REMARK) {
+                    } else if (fType == UploadFileType.SOUND) {
+
+                    }
                     switch (uploadFileInfo.getFileType()) {
                         case 1:
                             cardUploadImgInfoList.add(0, uploadFileInfo);

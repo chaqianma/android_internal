@@ -41,7 +41,7 @@ import java.util.List;
 public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListener,
         ViewPagerPopup.OnViewPagerDialogListener, ImgsGridViewAdapter.iOnClickImgListener, SoundGridViewAdapter.iOnClickSoundListener {
 
-    private String mBorrowRequestId = "23";
+    private String mBorrowRequestId =null;
 
     protected PhotoPopup mPopup;
     protected ViewPagerPopup mViewPagerPopup;
@@ -49,10 +49,12 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
     protected static final int REQUEST_SDK_IMGS = 1001;
     //拍照
     protected static final int REQUEST_TAKE_PHOTO = 1002;
-
+    //图片存放路径
+    protected  String mImgDirPath=null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initImgDir();
         mPopup = new PhotoPopup(getActivity());
         mPopup.setDialogListener(this);
         mViewPagerPopup = new ViewPagerPopup(getActivity());
@@ -109,9 +111,23 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         startActivity(intent);
     }
 
+    /*
+    * 初始化图片文件夹
+    * */
+    private void initImgDir() {
+        if (AppData.getInstance().getBorrowRequestInfo() != null) {
+            mBorrowRequestId = AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId();
+            mImgDirPath = Constants.DIRPATH + "/" + getBorrowRequestId();
+            File file = new File(mImgDirPath);
+            if (!file.getParentFile().exists()) {
+                file.mkdirs();
+            }
+        }
+    }
+
     //得到保存图片地址
     protected String getSaveFilePath(UploadFileInfo uploadFileInfo) {
-        return Constants.DIRPATH + "/" + uploadFileInfo.getFileType() + "_" + System.currentTimeMillis() + "." + uploadFileInfo.getFileExt();
+        return mImgDirPath + "/" + uploadFileInfo.getFileType() + "_" + System.currentTimeMillis() + "." + uploadFileInfo.getFileExt();
     }
 
     //得到图片地址
@@ -119,7 +135,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         String path = fileType + "_" + randomName + ".jpg";
         if (!isBigImgPath)
             path = "thumb_" + path;
-        return Constants.DIRPATH + "/" + path;
+        return mImgDirPath + "/" + path;
     }
 
     /*

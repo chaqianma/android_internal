@@ -61,7 +61,13 @@ public class Constants {
     //个人信息表  --上传文件
     public static final String USER_BASE_INFO = "user_base_info";
     //企业信息    --上传文件
-    public static final String BUSINESS_INFO="BUSINESS_INFO";
+    public static final String BUSINESS_INFO="business_info";
+    //个人资产---企业收入
+    public static final String PERSONAL_ASSETS_INFO="personal_assets_info";
+    //个人资产---汽车
+    public static final String PERSONAL_ASSERTS_CAR_INFO="personal_asserts_car_info";
+    //个人资产---房子
+    public static final String PERSONAL_ASSETS_HOUSE_INFO="personal_assets_house_info";
     //个人信息标签
     public static final String PERSONALINFO = "personalinfo";
     //企业信息标签
