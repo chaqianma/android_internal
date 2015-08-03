@@ -80,6 +80,7 @@ public class JDAppUtil {
         }
         return true;
     }
+
     /*
     *  转换时间
     * */
@@ -96,6 +97,21 @@ public class JDAppUtil {
         return date;
     }
 
+    /*
+    * 转换时间 yyyy-MM-dd
+    * */
+    public static String getTimeYMD(String timestamp) {
+        String date = "";
+        try {
+            if (timestamp != null) {
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//定义格式，不显示毫秒
+                Timestamp now = new Timestamp(Long.parseLong(timestamp));
+                date = df.format(now);
+            }
+        } catch (Exception e) {
+        }
+        return date;
+    }
 
     /*
     * 添加显示动画
@@ -123,9 +139,8 @@ public class JDAppUtil {
     }
 
     //判断值是否为空
-    public static boolean isEmpty(String value)
-    {
-        return value==null || value.length()==0;
+    public static boolean isEmpty(String value) {
+        return value == null || value.length() == 0;
     }
 
     private static class MyAnimationListener implements Animation.AnimationListener {

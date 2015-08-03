@@ -177,7 +177,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
 
     //删除图片
     @Override
-    public void onDeletePhoto(int ftype,int idxTag) {
+    public void onDeletePhoto(UploadFileInfo uploadFileInfo) {
     }
 
     @Override

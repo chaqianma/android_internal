@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="view_map"><u>查看地图</u></string>
     <string name="transfer_task"><u>转出尽调任务</u></string>
+    <string name="finish_task"><u>提交尽调报告</u></string>
     <string-array name="company_type">
         <item>有限责任公司</item>
         <item>个体商户</item>
@@ -18,10 +19,23 @@
     </string-array>
 
     <string-array name="some_company">
-        <item>企业1</item>
-        <item>企业2</item>
-        <item>企业3</item>
+        <item>企业a</item>
+        <item>企业b</item>
+        <item>企业c</item>
     </string-array>
+
+    <string-array name="some_car">
+        <item>车辆a</item>
+        <item>车辆b</item>
+        <item>车辆c</item>
+    </string-array>
+
+    <string-array name="some_house">
+        <item>房产a</item>
+        <item>房产b</item>
+        <item>房产c</item>
+    </string-array>
+
     <string-array name="contact_relation">
         <item>配偶</item>
         <item>直系亲属</item>

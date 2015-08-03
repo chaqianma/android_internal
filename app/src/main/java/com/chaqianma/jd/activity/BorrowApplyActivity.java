@@ -24,6 +24,7 @@ import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
+import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
@@ -58,8 +59,10 @@ public class BorrowApplyActivity extends BaseActivity {
     TextView tv_address;
     @InjectView(R.id.tv_apply_time)
     TextView tv_apply_time;
-    @InjectView(R.id.tv_check)
-    TextView tv_check;
+    @InjectView(R.id.tv_begin_task)
+    TextView tv_begin_task;
+    @InjectView(R.id.tv_finish_task)
+    TextView tv_finish_task;
     @InjectView(R.id.btn_borrow)
     Button btn_borrow;
     @InjectView(R.id.tv_office)
@@ -67,10 +70,15 @@ public class BorrowApplyActivity extends BaseActivity {
     @InjectView(R.id.tv_office_map)
     TextView tv_office_map;
     private Timer timer = new Timer();
+    //回退判断
     private boolean isBack = false;
     private String mLocation = null;
     //是否需要请求服务端
     private boolean isShouldRequest = true;
+    //用于点击判断
+    private boolean isCanClickOnce = false;
+    //是否是上个页面回退
+    private boolean isPreBack = false;
 
     @OnClick(R.id.tv_view_map)
     void onViewMap(View v) {
@@ -142,8 +150,8 @@ public class BorrowApplyActivity extends BaseActivity {
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
             if (borrowRequestInfo.getStatus().equals("1")) {
-                tv_check.setVisibility(View.VISIBLE);
-                tv_check.setOnClickListener(new View.OnClickListener() {
+                tv_begin_task.setVisibility(View.VISIBLE);
+                tv_begin_task.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         JDAlertDialog.showAlertDialog(BorrowApplyActivity.this, "确定转出尽调任务？", new DialogInterface.OnClickListener() {
@@ -161,8 +169,26 @@ public class BorrowApplyActivity extends BaseActivity {
                     }
                 });
             } else {
-                tv_check.setVisibility(View.GONE);
+                tv_begin_task.setVisibility(View.GONE);
             }
+
+            /*
+            * 提交尽调任务报告
+            * */
+            tv_finish_task.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HttpClientUtil.put(HttpRequestURL.finishTaskUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {
+                        @Override
+                        public void onSuccess(Object o) {
+                            JDToast.showShortText(BorrowApplyActivity.this, "提交尽调任务报告成功");
+                            btn_borrow.setEnabled(false);
+                        }
+                    }));
+                }
+            });
+
+
             btn_borrow.setText("开始尽调");
             if (borrowRequestInfo.getStatus().equals("2")) {
                 isShouldRequest = false;
@@ -172,6 +198,9 @@ public class BorrowApplyActivity extends BaseActivity {
         }
     }
 
+    /*
+    * 转出任务
+    * */
     private void transformTask() {
         HttpClientUtil.put(HttpRequestURL.transformUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {
             @Override
@@ -182,15 +211,20 @@ public class BorrowApplyActivity extends BaseActivity {
         }));
     }
 
-    private boolean isCanClickOnce = false;
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @OnClick(R.id.btn_borrow)
     void onBeginCheck() {
         JDToast.showLongText(BorrowApplyActivity.this, "借款页面加载布局有点慢，请等待！！！");
+        boolean isFinish = getTaskTag();
         if (!isCanClickOnce) {
             isCanClickOnce = true;
             if (!isShouldRequest) {
                 isCanClickOnce = false;
+                setTaskTag(false);
                 startActivity(InvestigateDetailActivity.class);
             } else {
                 HttpClientUtil.put(HttpRequestURL.beginCheckUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {
@@ -198,6 +232,10 @@ public class BorrowApplyActivity extends BaseActivity {
                     public void onSuccess(Object o) {
                         startActivity(InvestigateDetailActivity.class);
                         isCanClickOnce = false;
+                        setTaskTag(false);
+                        isPreBack = true;
+                        btn_borrow.setText("进入尽调");
+                        isShouldRequest = false;
                     }
                 }));
             }
@@ -206,8 +244,22 @@ public class BorrowApplyActivity extends BaseActivity {
         }
     }
 
+    /*
+    * 获取任务状态
+    * */
+    private boolean getTaskTag() {
+        return SharedPreferencesUtil.getShareBoolean(BorrowApplyActivity.this, Constants.ISTASKFinishTAG);
+    }
+
+    /*
+    * 保存任务状态
+    * */
+    private void setTaskTag(boolean isFinish) {
+        SharedPreferencesUtil.setShareBoolean(BorrowApplyActivity.this, Constants.ISTASKFinishTAG, isFinish);
+    }
+
     //获取用户的地址
-    public void getUserLocation(String location, final boolean isOffice) {
+    private void getUserLocation(String location, final boolean isOffice) {
         if (location != null && location.length() > 0 && location.indexOf(",") >= 0) {
             try {
                 String[] arrs = location.split(",");

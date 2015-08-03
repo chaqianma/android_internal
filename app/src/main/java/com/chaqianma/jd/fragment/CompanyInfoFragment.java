@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -35,19 +34,13 @@ import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
-import com.chaqianma.jd.utils.JDBinaryResponseHandler;
 import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
-
-import org.apache.http.NameValuePair;
-
 import java.io.File;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -339,7 +332,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 imgInfo.setIdxTag(1);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.SW.getValue());
+                imgInfo.setFileType(UploadFileType.QYDM.getValue());
                 mCCList_2.add(imgInfo);
                 mCCAdapter_2 = new ImgsGridViewAdapter(getActivity(), mCCList_2);
                 mCCAdapter_2.setOnClickImgListener(this);
@@ -363,7 +356,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 imgInfo.setIdxTag(1);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.QT.getValue());
+                imgInfo.setFileType(UploadFileType.FC.getValue());
                 mHCList_2.add(imgInfo);
                 mHCAdapter_2 = new ImgsGridViewAdapter(getActivity(), mHCList_2);
                 mHCAdapter_2.setOnClickImgListener(this);
@@ -413,7 +406,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.SW.getValue());
+                imgInfo.setFileType(UploadFileType.QYDM.getValue());
                 mCCList_3.add(imgInfo);
                 mCCAdapter_3 = new ImgsGridViewAdapter(getActivity(), mCCList_3);
                 mCCAdapter_3.setOnClickImgListener(this);
@@ -437,7 +430,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.QT.getValue());
+                imgInfo.setFileType(UploadFileType.FC.getValue());
                 mHCList_3.add(imgInfo);
                 mHCAdapter_3 = new ImgsGridViewAdapter(getActivity(), mHCList_3);
                 mHCAdapter_3.setOnClickImgListener(this);
@@ -537,7 +530,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             imgInfo.setIdxTag(0);
             imgInfo.setIsDefault(true);
             imgInfo.setiServer(false);
-            imgInfo.setFileType(UploadFileType.SW.getValue());
+            imgInfo.setFileType(UploadFileType.QYDM.getValue());
             mCCList_1.add(imgInfo);
             mCCAdapter_1 = new ImgsGridViewAdapter(getActivity(), mCCList_1);
             mCCAdapter_1.setOnClickImgListener(this);
@@ -561,7 +554,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             imgInfo.setIdxTag(0);
             imgInfo.setIsDefault(true);
             imgInfo.setiServer(false);
-            imgInfo.setFileType(UploadFileType.QT.getValue());
+            imgInfo.setFileType(UploadFileType.FC.getValue());
             mHCList_1.add(imgInfo);
             mHCAdapter_1 = new ImgsGridViewAdapter(getActivity(), mHCList_1);
             mHCAdapter_1.setOnClickImgListener(this);
@@ -768,6 +761,13 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
 
     }
 
+    //删除图片
+    @Override
+    public void onDeletePhoto(UploadFileInfo uploadFileInfo) {
+        //刷新数据源
+        refreshData(uploadFileInfo);
+    }
+
     /*
     * 往GridView里添加图片
     * */
@@ -966,8 +966,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             e.printStackTrace();
         }
     }
-
-
 
     /*
     * 刷新数据

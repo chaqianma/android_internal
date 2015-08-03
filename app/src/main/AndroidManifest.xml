@@ -202,7 +202,7 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="98b383e6320332f4360d7b01" />
+            android:value="90dd6e77314877a143e88de8" />
         <!--极光推送end-->
 
         <!---百度地图 Start-->

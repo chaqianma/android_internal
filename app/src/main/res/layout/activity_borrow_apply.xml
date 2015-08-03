@@ -226,15 +226,26 @@
                 style="@style/MatchParentButtonStyle"
                 android:text="开始尽调" />
 
-            <TextView
-                android:id="@+id/tv_check"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/btn_borrow"
-                android:layout_marginTop="18dp"
-                android:text="@string/transfer_task"
-                android:textColor="#0A57DB" />
+                android:layout_below="@id/btn_borrow">
+                <TextView
+                    android:id="@+id/tv_begin_task"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/transfer_task"
+                    android:textColor="#0A57DB" />
+
+                <TextView
+                    android:id="@+id/tv_finish_task"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/finish_task"
+                    android:textColor="#0A57DB" />
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

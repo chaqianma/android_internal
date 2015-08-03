@@ -126,17 +126,6 @@ public class InvestigateDetailActivity extends FragmentActivity {
 
     @OnClick(R.id.top_right_btn)
     void onSubmit() {
-        switch (mViewPager.getCurrentItem()) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            default:
-                break;
-        }
+        mAdapter.saveData(mViewPager.getCurrentItem());
     }
 }

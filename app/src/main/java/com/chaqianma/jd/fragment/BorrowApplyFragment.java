@@ -54,8 +54,8 @@ public class BorrowApplyFragment extends BaseFragment {
     @InjectView(R.id.tv_apply_time)
     TextView tv_apply_time;
 
-    @InjectView(R.id.tv_check)
-    TextView tv_check;
+    @InjectView(R.id.tv_begin_task)
+    TextView tv_begin_task;
     @InjectView(R.id.btn_borrow)
     Button btn_borrow;
     private String mLocation = null;
@@ -106,8 +106,8 @@ public class BorrowApplyFragment extends BaseFragment {
                         tv_apply_time.setText(JDAppUtil.getStrDateTime(borrowRequestInfo.getDateline()));
                         //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
                         if (borrowRequestInfo.getStatus().equals("1")) {
-                            tv_check.setVisibility(View.VISIBLE);
-                            tv_check.setOnClickListener(new View.OnClickListener() {
+                            tv_begin_task.setVisibility(View.VISIBLE);
+                            tv_begin_task.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     JDAlertDialog.showAlertDialog(getActivity(), "确定转出尽调任务？", new DialogInterface.OnClickListener() {
@@ -125,7 +125,7 @@ public class BorrowApplyFragment extends BaseFragment {
                                 }
                             });
                         } else {
-                            tv_check.setVisibility(View.GONE);
+                            tv_begin_task.setVisibility(View.GONE);
                         }
                         AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
                     }
@@ -168,8 +168,7 @@ public class BorrowApplyFragment extends BaseFragment {
                     // 反地理编码查询结果回调函数
                     @Override
                     public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
-                        if (result == null
-                                || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                        if (result == null|| result.error != SearchResult.ERRORNO.NO_ERROR) {
                             // 没有检测到结果
                         }
                         tv_address.setText(result.getAddress());

@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.HttpRequestURL;
+import com.chaqianma.jd.model.UserInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
@@ -30,23 +32,30 @@ public class StaffActivity_bak extends BaseActivity {
     Button btn_state;
     private Timer timer = new Timer();
     private boolean isBack = false;
-
+    private boolean isBusy = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_staff_state);
         ButterKnife.inject(this);
+        btn_state.setText("空闲");
     }
 
     @OnClick(R.id.btn_state)
     void changeUserState() {
         try {
+            UserInfo userInfo = AppData.getInstance().getUserInfo();
+            //忙碌
+            if (userInfo != null && userInfo.getIsBusy().equals("1")) {
+                btn_state.setText("忙碌");
+                isBusy = true;
+            }
             List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-            formparams.add(new BasicNameValuePair("isBusy", "1"));
+            formparams.add(new BasicNameValuePair("isBusy", isBusy ? "0" : "1"));
             HttpClientUtil.put(StaffActivity_bak.this, HttpRequestURL.changeStateUrl, formparams, new JDHttpResponseHandler(StaffActivity_bak.this, new ResponseHandler() {
                 @Override
                 public void onSuccess(Object o) {
-                    btn_state.setText("忙碌");
+                    btn_state.setText(isBusy ? "空闲" : "忙碌");
                 }
             }));
         } catch (Exception e) {

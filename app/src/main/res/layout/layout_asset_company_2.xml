@@ -95,7 +95,7 @@
                 style="@style/SettingRightIconStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:entries="@array/company_type"
+                android:entries="@array/some_company"
                 android:spinnerMode="dialog"></Spinner>
 
         </RelativeLayout>

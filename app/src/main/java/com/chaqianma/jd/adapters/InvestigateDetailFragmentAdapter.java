@@ -32,15 +32,17 @@ public class InvestigateDetailFragmentAdapter extends FragmentPagerAdapter {
 
     public void saveData(int currItemIdx) {
         switch (currItemIdx) {
-            case 1:
-
+            case 0:
+                personInfoFragment.saveDataSubmit();
                 break;
-            case 2:
+            case 1:
                 companyInfoFragment.saveDataSubmit();
                 break;
-            case 3:
+            case 2:
+                personalAssetsFragment.saveDataSubmit();
                 break;
-            case 4:
+            case 3:
+                socialRelationFragment.saveDataSubmit();
                 break;
             default:
                 break;

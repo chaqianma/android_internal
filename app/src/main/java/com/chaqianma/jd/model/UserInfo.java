@@ -18,7 +18,7 @@ public class UserInfo extends ErrorInfo implements Serializable {
     private String userType=null;
     private String balanceInvestment=null;
     private String balanceGuaranty=null;
-
+    private String isBusy=null;
     public String getUserId() {
         return userId;
     }
@@ -97,5 +97,13 @@ public class UserInfo extends ErrorInfo implements Serializable {
 
     public void setBalanceGuaranty(String balanceGuaranty) {
         this.balanceGuaranty = balanceGuaranty;
+    }
+
+    public String getIsBusy() {
+        return isBusy;
+    }
+
+    public void setIsBusy(String isBusy) {
+        this.isBusy = isBusy;
     }
 }

@@ -557,7 +557,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                                         if (carInfo.getFileList() != null)
                                             carSize = carInfo.getFileList().size();
                                         //根据 车 是否有图片   车牌号码  总价 来判断是否是真实的车
-                                        if (carSize > 0 || !JDAppUtil.isEmpty(carInfo.getSum_price()) || !JDAppUtil.isEmpty(carInfo.getPlate_num())) {
+                                        if (carSize > 0 || !JDAppUtil.isEmpty(carInfo.getSumPrice()) || !JDAppUtil.isEmpty(carInfo.getPlateNum())) {
                                             switch (i) {
                                                 case 0:
                                                     initServerFile(carInfo.getFileList());
@@ -665,7 +665,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             imgInfo.setIdxTag(0);
             imgInfo.setIsDefault(true);
             imgInfo.setiServer(false);
-            imgInfo.setFileType(UploadFileType.SW.getValue());
+            imgInfo.setFileType(UploadFileType.JY.getValue());
             mJYList_1.add(imgInfo);
             mJYAdapter_1 = new ImgsGridViewAdapter(getActivity(), mJYList_1);
             mJYAdapter_1.setOnClickImgListener(this);
@@ -677,7 +677,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             imgInfo.setIdxTag(0);
             imgInfo.setIsDefault(true);
             imgInfo.setiServer(false);
-            imgInfo.setFileType(UploadFileType.SW.getValue());
+            imgInfo.setFileType(UploadFileType.CP.getValue());
             mCPList_1.add(imgInfo);
             mCPAdpter_1 = new ImgsGridViewAdapter(getActivity(), mCPList_1);
             mCPAdpter_1.setOnClickImgListener(this);
@@ -689,7 +689,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             imgInfo.setIdxTag(0);
             imgInfo.setIsDefault(true);
             imgInfo.setiServer(false);
-            imgInfo.setFileType(UploadFileType.QT.getValue());
+            imgInfo.setFileType(UploadFileType.XS.getValue());
             mXSList_1.add(imgInfo);
             mXSAdpter_1 = new ImgsGridViewAdapter(getActivity(), mXSList_1);
             mXSAdpter_1.setOnClickImgListener(this);
@@ -701,7 +701,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             imgInfo.setIdxTag(0);
             imgInfo.setIsDefault(true);
             imgInfo.setiServer(false);
-            imgInfo.setFileType(UploadFileType.QT.getValue());
+            imgInfo.setFileType(UploadFileType.FC.getValue());
             mFCList_1.add(imgInfo);
             mFCAdpter_1 = new ImgsGridViewAdapter(getActivity(), mFCList_1);
             mFCAdpter_1.setOnClickImgListener(this);
@@ -905,6 +905,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         }
     }
 
+    //删除图片
+    @Override
+    public void onDeletePhoto(UploadFileInfo uploadFileInfo) {
+        //刷新数据源
+        refreshData(uploadFileInfo);
+    }
+
     //保存图片
     private Runnable mRunnable = new Runnable() {
         @Override
@@ -1020,7 +1027,6 @@ public class PersonalAssetsFragment extends BaseFragment {
             imgInfo.setiServer(false);
             imgInfo.setBigImgPath(bigImgPath);
             imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setParentTableName(Constants.BUSINESS_INFO);
             imgInfo.setIdxTag(selIdxTag);
             imgInfo.setFileType(fileType.getValue());
             addGridViewData(imgInfo);
@@ -1164,6 +1170,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else {
 
         }
+    }
+
+    /*
+    * 保存数据
+    * */
+    public void saveDataSubmit() {
+
     }
 
     public static PersonalAssetsFragment newInstance() {

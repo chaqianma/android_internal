@@ -80,7 +80,7 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
      * Dialog按钮回调接口
      */
     public interface OnViewPagerDialogListener {
-        void onDeletePhoto(int fType, int idxTag);
+        void onDeletePhoto(UploadFileInfo uploadFileInfo);
     }
 
     //设置监听器
@@ -144,7 +144,7 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
                                             deleteFile(uploadImgInfo);
                                             isDefaultImgdismissPopUp();
                                             if (listener != null)
-                                                listener.onDeletePhoto(uploadImgInfo.getFileType(),uploadImgInfo.getIdxTag());
+                                                listener.onDeletePhoto(uploadImgInfo);
                                             JDToast.showLongText(mContext, "图片删除成功");
                                         }
 
@@ -160,7 +160,7 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
                                     deleteFile(uploadImgInfo);
                                     isDefaultImgdismissPopUp();
                                     if (listener != null)
-                                        listener.onDeletePhoto(uploadImgInfo.getFileType(),uploadImgInfo.getIdxTag());
+                                        listener.onDeletePhoto(uploadImgInfo);
                                     JDToast.showLongText(mContext, "图片删除成功");
                                 }
                             }

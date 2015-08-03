@@ -10,6 +10,7 @@ import java.util.List;
 public class CustomerBaseInfo extends ErrorInfo {
     private String id = null;
     private String birthday = null;
+    private String idCardNumber=null;
     private String borrorRequestId = null;
     private String certificateNum = null;
     private String certificateType = null;
@@ -145,5 +146,13 @@ public class CustomerBaseInfo extends ErrorInfo {
 
     public void setFileList(List<UploadFileInfo> fileList) {
         this.fileList = fileList;
+    }
+
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 }

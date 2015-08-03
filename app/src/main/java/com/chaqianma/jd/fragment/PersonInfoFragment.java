@@ -5,11 +5,14 @@ package com.chaqianma.jd.fragment;
  */
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -20,25 +23,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
 import com.chaqianma.jd.adapters.SoundGridViewAdapter;
-import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
-import com.chaqianma.jd.model.BorrowRequestInfo;
 import com.chaqianma.jd.model.DownImgInfo;
 import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.CustomerBaseInfo;
+import com.chaqianma.jd.model.UserInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
@@ -46,20 +50,26 @@ import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
-import com.chaqianma.jd.widget.PhotoPopup;
-import com.chaqianma.jd.widget.ViewPagerPopup;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.ContentBody;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -84,12 +94,12 @@ public class PersonInfoFragment extends BaseFragment {
     RadioButton radio_nonlocal;
     @InjectView(R.id.layout_come_date)
     LinearLayout layout_come_date;
-    @InjectView(R.id.tv_card_id)
-    TextView tv_card_id;
-    @InjectView(R.id.tv_name)
-    TextView tv_name;
-    @InjectView(R.id.tv_mobile)
-    TextView tv_mobile;
+    @InjectView(R.id.et_card_id)
+    EditText et_card_id;
+    @InjectView(R.id.et_name)
+    EditText et_name;
+    @InjectView(R.id.et_mobile)
+    EditText et_mobile;
     @InjectView(R.id.rg_sex)
     RadioGroup rg_sex;
     @InjectView(R.id.radio_man)
@@ -114,8 +124,8 @@ public class PersonInfoFragment extends BaseFragment {
     RadioButton radio_yes;
     @InjectView(R.id.radio_no)
     RadioButton radio_no;
-    @InjectView(R.id.et_mark)
-    EditText et_mark;
+    @InjectView(R.id.et_remark)
+    EditText et_remark;
     @InjectView(R.id.gv_card_imgs)
     GridView gv_card_imgs;
     @InjectView(R.id.gv_marry_imgs)
@@ -150,15 +160,19 @@ public class PersonInfoFragment extends BaseFragment {
     private List<UploadFileInfo> soundInfoList = null;
     //备注集合
     private List<UploadFileInfo> remarkUploadImgInfoList = null;
-
+    //用于标识图片类型
     private UploadFileType fileType = UploadFileType.CARD;
+    //日期弹出框
+    private DatePickerDialog datePickerDialog = null;
     //上传文件所用的Id
     private String mParentId = null;
+    private int year, month, day;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initImagesList();
+        initDate();
     }
 
     @Override
@@ -276,6 +290,34 @@ public class PersonInfoFragment extends BaseFragment {
         }
     }
 
+    /*
+    * 初始化日期
+    * */
+    private void initDate() {
+        Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /*
+    * 来本地日期
+    * */
+    @OnClick(R.id.tv_come_date)
+    void onComeDateClick() {
+        datePickerDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                PersonInfoFragment.this.year = year;
+                month = monthOfYear;
+                day = dayOfMonth;
+                tv_come_date.setText(year + "-" + String.format("%2d", monthOfYear + 1) + "-" + String.format("%2d", dayOfMonth));
+            }
+        }, year, month, day);
+        datePickerDialog.show();
+    }
+
     //获取客户基本信息
     private void getPersonalInfo() {
         String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.PERSONALINFO + "/" + getBorrowRequestId();
@@ -285,8 +327,9 @@ public class PersonInfoFragment extends BaseFragment {
                 public void onSuccess(CustomerBaseInfo customerBaseInfo) {
                     if (customerBaseInfo != null) {
                         mParentId = customerBaseInfo.getId();
-                        tv_name.setText(customerBaseInfo.getName());
-                        tv_mobile.setText(customerBaseInfo.getMobile());
+                        et_card_id.setText(customerBaseInfo.getIdCardNumber());
+                        et_name.setText(customerBaseInfo.getName());
+                        et_mobile.setText(customerBaseInfo.getMobile());
                         if (customerBaseInfo.getGender() != null) {
                             if (customerBaseInfo.getGender().equals("1"))
                                 radio_man.setChecked(true);
@@ -321,7 +364,7 @@ public class PersonInfoFragment extends BaseFragment {
                                 layout_come_date.setVisibility(View.VISIBLE);
                                 radio_nonlocal.setChecked(true);
                                 //来本地日期
-                                tv_come_date.setText(JDAppUtil.getTimeToStr(customerBaseInfo.getComeLocalTime()));
+                                tv_come_date.setText(JDAppUtil.getTimeYMD(customerBaseInfo.getComeLocalTime()));
                             }
                         }
                         //是否是农业户口
@@ -332,7 +375,7 @@ public class PersonInfoFragment extends BaseFragment {
                                 radio_no.setChecked(true);
                         }
                         //备注
-                        et_mark.setText(customerBaseInfo.getRemark());
+                        et_remark.setText(customerBaseInfo.getRemark());
                         //初始化服务端图片
                         initServerFile(customerBaseInfo.getFileList());
                     }
@@ -346,10 +389,10 @@ public class PersonInfoFragment extends BaseFragment {
     @OnClick(R.id.btn_name_auth)
     void onRealNameAuth(View v) {
         btn_name_auth.setText("认证中。。。");
-        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair("name", "倪美华"));
-        formparams.add(new BasicNameValuePair("idNumber", "320623198610022361"));
-        HttpClientUtil.put(getActivity(), HttpRequestURL.realNameAuthenticationUrl, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+        HashMap<String, Object> argMaps = new HashMap<String, Object>();
+        argMaps.put("name", "倪美华");
+        argMaps.put("idNumber", "32062319010022361");
+        HttpClientUtil.post(HttpRequestURL.realNameAuthenticationUrl, argMaps, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
                 btn_name_auth.setText("认证成功");
@@ -467,17 +510,9 @@ public class PersonInfoFragment extends BaseFragment {
 
     //删除图片
     @Override
-    public void onDeletePhoto(int fType, int idxTag) {
+    public void onDeletePhoto(UploadFileInfo uploadFileInfo) {
         //刷新数据源
-        if (fType == UploadFileType.CARD.getValue()) {
-            cardImgsAdapter.refreshData();
-        } else if (fType == UploadFileType.MARRY.getValue() || fType == UploadFileType.SINGLE.getValue()) {
-            marryImgsAdapter.refreshData();
-        } else if (fType == UploadFileType.REMARK.getValue()) {
-            remarkImgsAdapter.refreshData();
-        } else {
-
-        }
+        refreshData(uploadFileInfo);
     }
 
     @Override
@@ -571,7 +606,7 @@ public class PersonInfoFragment extends BaseFragment {
             imgInfo.setiServer(false);
             imgInfo.setBigImgPath(bigImgPath);
             imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setParentTableName(Constants.BUSINESS_INFO);
+            imgInfo.setParentTableName(Constants.USER_BASE_INFO);
             imgInfo.setFileType(fileType.getValue());
             //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
             addGridViewData(imgInfo);
@@ -664,20 +699,12 @@ public class PersonInfoFragment extends BaseFragment {
                     fileInfo.setUserId(downImgInfo.getUserId());
                     fileInfo.setParentTableName(downImgInfo.getParentTableName());
                     fileInfo.setParentId(downImgInfo.getParentId());
-                    refreshData();
+                    refreshData(fileInfo);
                 }
 
                 @Override
                 public void onFailure(String data) {
                     fileInfo.setStatus(UploadStatus.FAILURE.getValue());//失败
-                    if (fileType == UploadFileType.CARD) {
-
-                        cardImgsAdapter.notifyDataSetChanged();
-                    } else if (fileType == UploadFileType.MARRY) {
-
-                    } else {
-
-                    }
                 }
             }, Class.forName(DownImgInfo.class.getName())));
         } catch (Exception e) {
@@ -685,21 +712,84 @@ public class PersonInfoFragment extends BaseFragment {
         }
     }
 
-    //刷新整个数据源
-    private void refreshAllData() {
-        cardImgsAdapter.refreshData();
-        marryImgsAdapter.refreshData();
-        //soundAdapter
-        remarkImgsAdapter.refreshData();
+    /*
+    * 保持数据
+    * */
+    public void saveDataSubmit() {
+        //身份证号
+        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        HashMap<String, Object> argMaps = new HashMap<String, Object>();
+        String card_id = et_card_id.getText().toString().trim();
+        if (card_id != null && card_id.length() > 0) {
+            formparams.add(new BasicNameValuePair("idCardNumber", card_id));
+        } else {
+            JDToast.showLongText(getActivity(), "请输入身份证号");
+            return;
+        }
+        //姓名
+        String name = et_name.getText().toString().trim();
+        if (name != null && name.length() > 0) {
+            formparams.add(new BasicNameValuePair("name", name));
+        } else {
+            JDToast.showLongText(getActivity(), "请输入姓名");
+            return;
+        }
+        //手机号
+        String mobile = et_mobile.getText().toString();
+        formparams.add(new BasicNameValuePair("mobile", mobile));
+        //数据  1男2女
+        formparams.add(new BasicNameValuePair("gender", radio_man.isChecked() ? "1" : "2"));
+        //婚姻状况 1. 未婚 2. 已婚 3离异
+        formparams.add(new BasicNameValuePair("maritalStatus", radio_single.isChecked() ? "1" : (radio_married.isChecked() ? "2" : "3")));
+        //子女数
+        if (radio_married.isChecked() || radio_divorce.isChecked()) {
+            String childCount = et_children_count.getText().toString().trim();
+            if (childCount != null && childCount.length() > 0) {
+                formparams.add(new BasicNameValuePair("countChildren", childCount));
+            } else {
+                JDToast.showLongText(getActivity(), "已婚/离异必须要输入子女数");
+                return;
+            }
+        }
+        //户口 户口类型 1、本地户口 2外地户口
+        formparams.add(new BasicNameValuePair("householdType", radio_native.isChecked() ? "1" : "2"));
+        //外地过来日期
+        if (radio_nonlocal.isChecked()) {
+            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String come_date = tv_come_date.getText().toString();
+            if (come_date != null && come_date.length() > 0) {
+                try {
+                    Date date = sdf.parse("" + year + "-" + (month + 1) + "-" + day + " 00:00:00");
+                    formparams.add(new BasicNameValuePair("comeLocalTime", date.getTime() + ""));
+                } catch (Exception e) {
+                    String sss = "11111";
+                    sss = "11111";
+                    sss = "11111";
+                    sss = "11111";
+                }
+            }
+        }
+        //是否农业户口 1是 0否
+        formparams.add(new BasicNameValuePair("isAgriculturalHousehold", radio_yes.isChecked() ? "1" : "0"));
+        //备注
+        formparams.add(new BasicNameValuePair("remark", et_remark.getText().toString().trim()));
+
+        HttpClientUtil.put(getActivity(), HttpRequestURL.updatePersonUrl + mParentId, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+            @Override
+            public void onSuccess(Object o) {
+                JDToast.showLongText(getActivity(), "个人信息保存成功");
+            }
+        }));
     }
 
     //刷新数据源
-    private void refreshData() {
-        if (fileType == UploadFileType.CARD) {
+    private void refreshData(UploadFileInfo uploadFileInfo) {
+        UploadFileType fType = UploadFileType.valueOf(uploadFileInfo.getFileType());
+        if (fType == UploadFileType.CARD) {
             cardImgsAdapter.refreshData();
-        } else if (fileType == UploadFileType.MARRY || fileType == UploadFileType.SINGLE) {
+        } else if (fType == UploadFileType.MARRY || fType == UploadFileType.SINGLE) {
             marryImgsAdapter.refreshData();
-        } else if (fileType == UploadFileType.REMARK) {
+        } else if (fType == UploadFileType.REMARK) {
             remarkImgsAdapter.refreshData();
         } else {
 

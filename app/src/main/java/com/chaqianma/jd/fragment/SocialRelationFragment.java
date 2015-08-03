@@ -408,7 +408,7 @@ public class SocialRelationFragment extends BaseFragment {
             imgInfo.setiServer(false);
             imgInfo.setBigImgPath(bigImgPath);
             imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setParentTableName(Constants.BUSINESS_INFO);
+            imgInfo.setParentTableName(Constants.CONTACT_INFO);
             imgInfo.setIdxTag(selIdxTag);
             imgInfo.setFileType(fileType.getValue());
             //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
@@ -526,6 +526,13 @@ public class SocialRelationFragment extends BaseFragment {
         }
     }
 
+    //删除图片
+    @Override
+    public void onDeletePhoto(UploadFileInfo uploadFileInfo) {
+        //刷新数据源
+        refreshData(uploadFileInfo);
+    }
+
     /*
        * 往GridView里添加图片
        * */
@@ -555,6 +562,12 @@ public class SocialRelationFragment extends BaseFragment {
         mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
     }
 
+    /*
+        * 保存数据
+        * */
+    public void saveDataSubmit() {
+
+    }
     public static SocialRelationFragment newInstance() {
         SocialRelationFragment socialRelationFragment = new SocialRelationFragment();
         return socialRelationFragment;
