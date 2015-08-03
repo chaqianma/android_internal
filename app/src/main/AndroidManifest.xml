@@ -3,7 +3,7 @@
     package="com.chaqianma.jd">
 
     <permission
-        android:name="com.jwy.jd.permission.JPUSH_MESSAGE"
+        android:name="com.chaqianma.jd.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
     <permission android:name="android.permission.BAIDU_LOCATION_SERVICE"></permission>
     <!-- Required  一些系统要求的权限，如访问网络等-->
@@ -202,7 +202,7 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="90dd6e77314877a143e88de8" />
+            android:value="9b3350fa7a81165e4231c074" />
         <!--极光推送end-->
 
         <!---百度地图 Start-->

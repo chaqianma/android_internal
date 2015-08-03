@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 
+import com.chaqianma.jd.activity.LoginActivity;
 import com.chaqianma.jd.activity.MainActivity;
 
 import cn.jpush.android.api.JPushInterface;
@@ -32,11 +33,20 @@ public class JPNotificationReceiver extends BroadcastReceiver {
             long [] pattern = {100,400,100,400};   // 停止 开启 停止 开启
             vibrator.vibrate(pattern,2);           //重复两次上面的pattern 如果只想震动一次，index设为-1
 */
-            Intent i = new Intent(context, MainActivity.class);
+
+
+            if (intent.hasExtra("messageType")) {
+                String messageType = intent.getStringExtra("messageType");
+            }
+            Intent startIntent = new Intent();
+            startIntent.setClass(context, LoginActivity.class);
+            startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(startIntent);
+           /* Intent intent = new Intent(context, MainActivity.class);
             i.putExtras(bundle);
             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(i);
+            context.startActivity(i);*/
         } else {
         }
     }

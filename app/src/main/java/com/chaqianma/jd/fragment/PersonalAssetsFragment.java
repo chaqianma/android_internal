@@ -1298,11 +1298,10 @@ public class PersonalAssetsFragment extends BaseFragment {
                 return;
             }
         }
-
-        String remark=et_remark.getText().toString();
-        if(JDAppUtil.isEmpty(remark))
-        {
-            JDToast.showLongText(getActivity(), "备助不能为空");
+        //备注
+        String remark = et_remark.getText().toString();
+        if (JDAppUtil.isEmpty(remark)) {
+            JDToast.showLongText(getActivity(), "备注不能为空");
             return;
         }
     }
