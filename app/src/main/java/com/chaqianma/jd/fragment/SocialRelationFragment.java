@@ -65,6 +65,8 @@ public class SocialRelationFragment extends BaseFragment {
     EditText et_remark;
     @InjectView(R.id.et_comment)
     EditText et_comment;
+    @InjectView(R.id.gv_comment)
+    GridView gv_comment;
     //关系类型
     private ImgsGridViewAdapter mRCAdapter_1 = null;
     private List<UploadFileInfo> mRCList_1 = null;
@@ -93,7 +95,13 @@ public class SocialRelationFragment extends BaseFragment {
     private Spinner sp_relation_type_5 = null;
     private GridView gv_relation_card_5 = null;
 
-    private View mView=null;
+
+    //尽职说明
+    private ImgsGridViewAdapter mJZAdapter = null;
+    private List<UploadFileInfo> mJZList = null;
+
+
+    private View mView = null;
     private boolean isShow2 = false, isShow3 = false, isShow4 = false, isShow5 = false;
     //图片标签
     private UploadFileType fileType = UploadFileType.CARD;
@@ -112,7 +120,7 @@ public class SocialRelationFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_social_relation, container, false);
         ButterKnife.inject(this, view);
-        mView=view;
+        mView = view;
         initOneView();
         getSocialRelationInfo();
         return view;
@@ -134,6 +142,15 @@ public class SocialRelationFragment extends BaseFragment {
             mRCAdapter_1.setOnClickImgListener(this);
             gv_relation_card_1.setAdapter(mRCAdapter_1);
         }
+        {
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setIdxTag(0);
+            imgInfo.setIsDefault(true);
+            imgInfo.setiServer(false);
+            imgInfo.setFileType(UploadFileType.REMARK.getValue());
+            mJZList.add(imgInfo);
+            mJZAdapter = new ImgsGridViewAdapter(getActivity(), mJZList);
+        }
     }
 
     @OnClick(R.id.img_social_add)
@@ -149,8 +166,8 @@ public class SocialRelationFragment extends BaseFragment {
             isShow2 = true;
             View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_2)).inflate();
             JDAppUtil.addShowAction(view);
-            gv_relation_card_2=(GridView)mView.findViewById(R.id.gv_relation_card_2);
-            sp_relation_type_2=(Spinner)mView.findViewById(R.id.sp_relation_type_2);
+            gv_relation_card_2 = (GridView) mView.findViewById(R.id.gv_relation_card_2);
+            sp_relation_type_2 = (Spinner) mView.findViewById(R.id.sp_relation_type_2);
             UploadFileInfo imgInfo = new UploadFileInfo();
             imgInfo.setIdxTag(1);
             imgInfo.setIsDefault(true);
@@ -165,8 +182,8 @@ public class SocialRelationFragment extends BaseFragment {
                 isShow3 = true;
                 View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_3)).inflate();
                 JDAppUtil.addShowAction(view);
-                gv_relation_card_3=(GridView)mView.findViewById(R.id.gv_relation_card_3);
-                sp_relation_type_3=(Spinner)mView.findViewById(R.id.sp_relation_type_3);
+                gv_relation_card_3 = (GridView) mView.findViewById(R.id.gv_relation_card_3);
+                sp_relation_type_3 = (Spinner) mView.findViewById(R.id.sp_relation_type_3);
                 UploadFileInfo imgInfo = new UploadFileInfo();
                 imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
@@ -181,8 +198,8 @@ public class SocialRelationFragment extends BaseFragment {
                     isShow4 = true;
                     View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_4)).inflate();
                     JDAppUtil.addShowAction(view);
-                    gv_relation_card_4=(GridView)mView.findViewById(R.id.gv_relation_card_4);
-                    sp_relation_type_4=(Spinner)mView.findViewById(R.id.sp_relation_type_4);
+                    gv_relation_card_4 = (GridView) mView.findViewById(R.id.gv_relation_card_4);
+                    sp_relation_type_4 = (Spinner) mView.findViewById(R.id.sp_relation_type_4);
                     UploadFileInfo imgInfo = new UploadFileInfo();
                     imgInfo.setIdxTag(3);
                     imgInfo.setIsDefault(true);
@@ -197,8 +214,8 @@ public class SocialRelationFragment extends BaseFragment {
                         isShow5 = true;
                         View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_5)).inflate();
                         JDAppUtil.addShowAction(view);
-                        gv_relation_card_5=(GridView)mView.findViewById(R.id.gv_relation_card_5);
-                        sp_relation_type_5=(Spinner)mView.findViewById(R.id.sp_relation_type_5);
+                        gv_relation_card_5 = (GridView) mView.findViewById(R.id.gv_relation_card_5);
+                        sp_relation_type_5 = (Spinner) mView.findViewById(R.id.sp_relation_type_5);
                         UploadFileInfo imgInfo = new UploadFileInfo();
                         imgInfo.setIdxTag(4);
                         imgInfo.setIsDefault(true);
@@ -221,6 +238,7 @@ public class SocialRelationFragment extends BaseFragment {
         mRCList_3 = new ArrayList<UploadFileInfo>();
         mRCList_4 = new ArrayList<UploadFileInfo>();
         mRCList_5 = new ArrayList<UploadFileInfo>();
+        mJZList = new ArrayList<UploadFileInfo>();
     }
 
     /*
@@ -338,6 +356,7 @@ public class SocialRelationFragment extends BaseFragment {
             }
         }
     };
+
     /*
        * 拍照回调
        * */
@@ -379,9 +398,10 @@ public class SocialRelationFragment extends BaseFragment {
             }
         }
     }
-     /*
-    * 先这么写吧。。。 图片处理 到时与下面的整合起来
-    * */
+
+    /*
+   * 先这么写吧。。。 图片处理 到时与下面的整合起来
+   * */
     private class ImgRunable implements Runnable {
         private String imgPath = null;
 
@@ -466,6 +486,7 @@ public class SocialRelationFragment extends BaseFragment {
                     fileInfo.setParentId(downImgInfo.getParentId());
                     refreshData(fileInfo);
                 }
+
                 @Override
                 public void onFailure(String data) {
                     fileInfo.setStatus(UploadStatus.FAILURE.getValue());//失败
@@ -570,6 +591,7 @@ public class SocialRelationFragment extends BaseFragment {
     public void saveDataSubmit() {
 
     }
+
     public static SocialRelationFragment newInstance() {
         SocialRelationFragment socialRelationFragment = new SocialRelationFragment();
         return socialRelationFragment;
