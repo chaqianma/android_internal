@@ -28,7 +28,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="房产证/合同：" />
+                    android:text="房产证/合同：" android:textColor="@color/red"/>
 
                 <LinearLayout
 
@@ -58,7 +58,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="土地证：" />
+                    android:text="土地证：" android:textColor="@color/red"/>
 
                 <LinearLayout
 
@@ -86,7 +86,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="对应房产：" />
+                    android:text="对应房产：" android:textColor="@color/red"/>
 
                 <Spinner
                     android:id="@+id/sp_house_2"

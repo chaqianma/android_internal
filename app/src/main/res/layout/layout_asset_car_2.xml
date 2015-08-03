@@ -30,7 +30,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="车牌车型：" />
+                android:text="车牌车型：" android:textColor="@color/red"/>
 
             <LinearLayout
 
@@ -61,7 +61,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="行驶证：" />
+                android:text="行驶证：" android:textColor="@color/red"/>
 
             <LinearLayout
 
@@ -90,7 +90,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="对应车辆：" />
+                android:text="对应车辆：" android:textColor="@color/red"/>
 
             <Spinner
                 android:id="@+id/sp_car_2"

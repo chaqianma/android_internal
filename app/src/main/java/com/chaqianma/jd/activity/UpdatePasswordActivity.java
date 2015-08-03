@@ -37,9 +37,6 @@ public class UpdatePasswordActivity extends BaseActivity {
         setContentView(R.layout.activity_update_password);
         ButterKnife.inject(this);
         setTopBarState("修改密码", true, true);
-        et_old_password.setText("a123456789");
-        et_new_password.setText("a123456789");
-        et_confirm_password.setText("a123456789");
     }
 
     @OnClick(R.id.top_right_btn)

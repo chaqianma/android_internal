@@ -29,7 +29,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="收入证明：" />
+                android:text="收入证明："
+                android:textColor="@color/red" />
 
             <LinearLayout
 
@@ -60,7 +61,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="经营性单据：" />
+                android:text="经营性单据："
+                android:textColor="@color/red" />
 
             <LinearLayout
 
@@ -89,7 +91,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="对应企业：" />
+                android:text="对应企业："
+                android:textColor="@color/red" />
 
             <Spinner
                 android:id="@+id/sp_company_3"

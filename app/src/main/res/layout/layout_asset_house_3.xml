@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_asset_house_2"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -30,7 +29,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="房产证/合同：" />
+                android:text="房产证/合同："
+                android:textColor="@color/red" />
 
             <LinearLayout
 
@@ -61,7 +61,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="土地证：" />
+                android:text="土地证："
+                android:textColor="@color/red" />
 
             <LinearLayout
 
@@ -90,7 +91,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="对应房产：" />
+                android:text="对应房产："
+                android:textColor="@color/red" />
 
             <Spinner
                 android:id="@+id/sp_house_3"

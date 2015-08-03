@@ -54,10 +54,11 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="备注" />
+                    android:text="备注"
+                    android:textColor="@color/red"/>
 
                 <EditText
-                    android:id="@+id/et_mark"
+                    android:id="@+id/et_remark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left|top"
@@ -70,7 +71,7 @@
 
                     <TextView
                         style="@style/SmallTextStyle"
-                        android:text="录音" />
+                        android:text="尽职说明" />
 
                     <EditText
                         android:id="@+id/et_comment"

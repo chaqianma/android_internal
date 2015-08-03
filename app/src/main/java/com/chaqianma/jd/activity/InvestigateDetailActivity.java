@@ -118,6 +118,14 @@ public class InvestigateDetailActivity extends FragmentActivity {
         });
     }
 
+    /*
+    * 跳转下一地址
+    * */
+    public void gotoNext() {
+        if (mViewPager.getCurrentItem() != 3)
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+    }
+
     @OnClick(R.id.top_back_btn)
     void onBack(View v) {
         this.finish();

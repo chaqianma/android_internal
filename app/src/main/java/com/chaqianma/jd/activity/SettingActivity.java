@@ -1,9 +1,11 @@
 package com.chaqianma.jd.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -64,7 +66,13 @@ public class SettingActivity extends BaseActivity {
     @OnClick(R.id.btn_signout)
     void onSignout()
     {
-
+        JDAlertDialog.showAlertDialog(SettingActivity.this, "确定退出系统吗？", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                android.os.Process.killProcess(android.os.Process.myPid());   //获取PID
+                System.exit(0);
+            }
+        });
     }
 
     @Override

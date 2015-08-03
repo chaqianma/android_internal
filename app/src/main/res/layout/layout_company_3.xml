@@ -80,7 +80,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="税务登记：" />
+                android:text="税务登记证："
+                android:textColor="@color/red" />
 
             <LinearLayout
 
@@ -112,7 +113,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="企业代码证：" />
+                android:text="企业代码证："
+                android:textColor="@color/red" />
 
             <LinearLayout
 
@@ -143,7 +145,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="其它证件：" />
+                android:text="其它证件："
+                android:textColor="@color/red" />
 
             <LinearLayout
 
@@ -192,7 +195,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="房产证/合同：" />
+                android:text="房产证/合同："
+                android:textColor="@color/red" />
 
             <LinearLayout
 
@@ -223,7 +227,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="土地证：" />
+                android:text="土地证："
+                android:textColor="@color/red" />
 
             <LinearLayout
 
@@ -252,7 +257,8 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="对应企业：" />
+                android:text="对应企业："
+                android:textColor="@color/red" />
 
             <Spinner
                 android:id="@+id/sp_some_company_3"

@@ -61,6 +61,8 @@ public class SocialRelationFragment extends BaseFragment {
     Spinner sp_relation_type_1;
     @InjectView(R.id.gv_relation_card_1)
     GridView gv_relation_card_1;
+    @InjectView(R.id.et_remark)
+    EditText et_remark;
     @InjectView(R.id.et_comment)
     EditText et_comment;
     //关系类型
@@ -248,7 +250,7 @@ public class SocialRelationFragment extends BaseFragment {
                                 if (fileSize > 0 || !JDAppUtil.isEmpty(contactInfo.getName()) || !JDAppUtil.isEmpty(contactInfo.getRelation())) {
                                     switch (i) {
                                         case 0:
-                                            et_comment.setText(contactInfo.getRemark());
+                                            et_remark.setText(contactInfo.getRemark());
                                             initServerFile(contactInfo.getFileList());
                                             break;
                                         case 1:

@@ -32,7 +32,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chaqianma.jd.DBHelper.ImageTable;
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.activity.InvestigateDetailActivity;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
 import com.chaqianma.jd.adapters.SoundGridViewAdapter;
 import com.chaqianma.jd.common.Constants;
@@ -762,22 +764,26 @@ public class PersonInfoFragment extends BaseFragment {
                     Date date = sdf.parse("" + year + "-" + (month + 1) + "-" + day + " 00:00:00");
                     formparams.add(new BasicNameValuePair("comeLocalTime", date.getTime() + ""));
                 } catch (Exception e) {
-                    String sss = "11111";
-                    sss = "11111";
-                    sss = "11111";
-                    sss = "11111";
+
                 }
             }
         }
         //是否农业户口 1是 0否
         formparams.add(new BasicNameValuePair("isAgriculturalHousehold", radio_yes.isChecked() ? "1" : "0"));
         //备注
-        formparams.add(new BasicNameValuePair("remark", et_remark.getText().toString().trim()));
+        String remark=et_remark.getText().toString().trim();
+        if(!JDAppUtil.isEmpty(remark) || soundInfoList.size()>0 || remarkUploadImgInfoList.size()>0) {
+            formparams.add(new BasicNameValuePair("remark", remark));
+        }else {
+            JDToast.showLongText(getActivity(), "备注不能为空");
+        }
 
         HttpClientUtil.put(getActivity(), HttpRequestURL.updatePersonUrl + mParentId, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
                 JDToast.showLongText(getActivity(), "个人信息保存成功");
+                if(getActivity() instanceof InvestigateDetailActivity)
+                    ((InvestigateDetailActivity)getActivity()).gotoNext();
             }
         }));
     }
