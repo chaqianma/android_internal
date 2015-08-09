@@ -287,14 +287,15 @@ public class SoundGridViewAdapter extends BaseAdapter {
                     }
                 }
             });
-
             sound_img.setBackgroundResource(R.drawable.sound_animation);
             soundAnimation = (AnimationDrawable) sound_img.getBackground();
         }
-        setVisible(true);
-        soundDialog.setCancelable(false);
-        soundDialog.show();
-        soundAnimation.start();
+    }
+
+
+    //刷新数据源
+    public void refreshData() {
+        notifyDataSetChanged();
     }
 
     //开始录音
@@ -307,6 +308,10 @@ public class SoundGridViewAdapter extends BaseAdapter {
         }
         //mHandler.post(mRunable);
         showVoiceDialog();
+        setVisible(true);
+        soundDialog.setCancelable(false);
+        soundDialog.show();
+        //soundAnimation.start();
     }
 
     //结束录音
@@ -318,9 +323,9 @@ public class SoundGridViewAdapter extends BaseAdapter {
             MultipartEntityBuilder entity = MultipartEntityBuilder.create();
             ContentBody fileBody = new FileBody(new File(mSoundPath));
             entity.addPart("files", fileBody);
-            entity.addPart("fileType", new StringBody(UploadFileType.SOUND.getValue() + "", ContentType.DEFAULT_TEXT));
+            entity.addPart("fileType", new StringBody(UploadFileType.REMARK.getValue() + "", ContentType.DEFAULT_TEXT));
             entity.addPart("parentTableName", new StringBody(Constants.USER_BASE_INFO, ContentType.DEFAULT_TEXT));
-            entity.addPart("parentId", new StringBody("1", ContentType.DEFAULT_TEXT));
+            entity.addPart("parentId", new StringBody(mParentId, ContentType.DEFAULT_TEXT));
             HttpClientUtil.post(mContext, HttpRequestURL.uploadImgUrl, entity.build(), new JDHttpResponseHandler(mContext, new ResponseHandler<UploadFileInfo>() {
                 @Override
                 public void onSuccess(UploadFileInfo fileInfo) {
@@ -354,7 +359,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
 
     //播放录音
     private void playRecord(UploadFileInfo uploadFileInfo) {
-
+        showVoiceDialog();
         if (!soundDialog.isShowing()) {
             soundDialog.show();
             soundDialog.setCancelable(true);

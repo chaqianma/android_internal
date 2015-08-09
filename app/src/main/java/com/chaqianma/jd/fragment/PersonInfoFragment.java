@@ -10,11 +10,8 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -30,9 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.chaqianma.jd.DBHelper.ImageTable;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.InvestigateDetailActivity;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
@@ -44,7 +39,6 @@ import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.CustomerBaseInfo;
-import com.chaqianma.jd.model.UserInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
@@ -53,17 +47,10 @@ import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 
 import java.io.File;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,7 +58,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -288,7 +274,7 @@ public class PersonInfoFragment extends BaseFragment {
             remarkUploadImgInfoList.add(imgInfo);
             remarkImgsAdapter = new ImgsGridViewAdapter(getActivity(), remarkUploadImgInfoList);
             remarkImgsAdapter.setOnClickImgListener(this);
-            gv_mark.setAdapter(marryImgsAdapter);
+            gv_mark.setAdapter(remarkImgsAdapter);
         }
     }
 
@@ -436,8 +422,12 @@ public class PersonInfoFragment extends BaseFragment {
                 uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
                 String fileExt = uploadFileInfo.getFileExt();
                 if (fileExt.equals("amr")) {
+                    uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
                     soundInfoList.add(0, uploadFileInfo);
-                } else if (fileExt.equals("jpg")) {
+
+                }
+                 addGridViewData(uploadFileInfo);
+                 /*else if (fileExt.equals("jpg")) {
                     //1.身份证  2 离婚证  3 结婚证 16 备注  17 语音
                     UploadFileType fType = UploadFileType.valueOf(uploadFileInfo.getFileType());
                     if (fType == UploadFileType.CARD) {
@@ -455,7 +445,7 @@ public class PersonInfoFragment extends BaseFragment {
                     } else {
 
                     }
-                }
+                }*/
             }
 
             @Override
@@ -629,6 +619,7 @@ public class PersonInfoFragment extends BaseFragment {
                     marryImgsAdapter.refreshData();
                     break;
                 case SOUND:
+                    soundAdapter.refreshData();
                     break;
                 case REMARK:
                     remarkImgsAdapter.refreshData();
@@ -676,6 +667,9 @@ public class PersonInfoFragment extends BaseFragment {
         if (fileType == UploadFileType.CARD) {
             cardUploadImgInfoList.add(0, imgInfo);
             mHandler.sendMessage(mHandler.obtainMessage(CARD, null));
+        } else if (fileType == UploadFileType.SOUND) {
+            soundInfoList.add(0, imgInfo);
+            mHandler.sendMessage(mHandler.obtainMessage(SOUND, null));
         } else if (fileType == UploadFileType.MARRY || fileType == UploadFileType.SINGLE) {
             //离婚//结婚
             marryUploadImgInfoList.add(0, imgInfo);
@@ -771,10 +765,10 @@ public class PersonInfoFragment extends BaseFragment {
         //是否农业户口 1是 0否
         formparams.add(new BasicNameValuePair("isAgriculturalHousehold", radio_yes.isChecked() ? "1" : "0"));
         //备注
-        String remark=et_remark.getText().toString().trim();
-        if(!JDAppUtil.isEmpty(remark) || soundInfoList.size()>0 || remarkUploadImgInfoList.size()>0) {
+        String remark = et_remark.getText().toString().trim();
+        if (!JDAppUtil.isEmpty(remark) || soundInfoList.size() > 0 || remarkUploadImgInfoList.size() > 0) {
             formparams.add(new BasicNameValuePair("remark", remark));
-        }else {
+        } else {
             JDToast.showLongText(getActivity(), "备注不能为空");
         }
 
@@ -782,8 +776,8 @@ public class PersonInfoFragment extends BaseFragment {
             @Override
             public void onSuccess(Object o) {
                 JDToast.showLongText(getActivity(), "个人信息保存成功");
-                if(getActivity() instanceof InvestigateDetailActivity)
-                    ((InvestigateDetailActivity)getActivity()).gotoNext();
+                if (getActivity() instanceof InvestigateDetailActivity)
+                    ((InvestigateDetailActivity) getActivity()).gotoNext();
             }
         }));
     }

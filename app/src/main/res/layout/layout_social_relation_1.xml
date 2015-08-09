@@ -33,7 +33,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="关系类型：" />
+                    android:text="关系类型："
+                    android:textColor="@color/red" />
 
                 <Spinner
                     android:id="@+id/sp_relation_type_1"
@@ -53,7 +54,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="关系人身份证件：" />
+                    android:text="关系人身份证件："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
 

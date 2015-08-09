@@ -18,6 +18,7 @@ public class CompanyInfo  implements Serializable {
     private String companySize=null;
     private String organizationType=null;
     private String phone=null;
+    private String businessPremises=null;// 经营场所 1自由 2租赁 3其他
     private boolean isValid=false;  //是否有效
 
     public String getId() {
@@ -114,5 +115,13 @@ public class CompanyInfo  implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getBusinessPremises() {
+        return businessPremises;
+    }
+
+    public void setBusinessPremises(String businessPremises) {
+        this.businessPremises = businessPremises;
     }
 }

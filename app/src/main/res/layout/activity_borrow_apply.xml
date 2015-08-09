@@ -235,6 +235,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginTop="4dp"
                     android:text="@string/transfer_task"
                     android:textColor="#0A57DB" />
 
@@ -243,6 +244,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_marginTop="4dp"
                     android:text="@string/finish_task"
                     android:textColor="#0A57DB" />
             </RelativeLayout>

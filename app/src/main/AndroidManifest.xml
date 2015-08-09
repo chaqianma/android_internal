@@ -110,6 +110,7 @@
         <activity
             android:name=".activity.InvestigateDetailActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
             android:theme="@style/translucent_theme">
 
         </activity>

@@ -9,7 +9,7 @@ package com.chaqianma.jd.model;
  * parentTableName //关联记录表名 个人信息 user_base_info 企业信息 business_info
  * parentId 关联记录ID
  */
-public class UploadFileInfo {
+public class UploadFileInfo extends ErrorInfo {
 
     private int id;
     //图片id

@@ -178,17 +178,26 @@ public class BorrowApplyActivity extends BaseActivity {
             tv_finish_task.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    HttpClientUtil.put(HttpRequestURL.finishTaskUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {
+                    JDAlertDialog.showAlertDialog(BorrowApplyActivity.this, "确定提交尽调任务报告吗？", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onSuccess(Object o) {
-                            JDToast.showShortText(BorrowApplyActivity.this, "提交尽调任务报告成功");
-                            btn_borrow.setEnabled(false);
+                        public void onClick(DialogInterface dialog, int which) {
+                            HttpClientUtil.put(HttpRequestURL.finishTaskUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {
+                                @Override
+                                public void onSuccess(Object o) {
+                                    JDToast.showShortText(BorrowApplyActivity.this, "提交尽调任务报告成功");
+                                    btn_borrow.setEnabled(false);
+                                }
+                            }));
                         }
-                    }));
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            dialog.cancel();
+                        }
+                    });
                 }
             });
-
-
             btn_borrow.setText("开始尽调");
             if (borrowRequestInfo.getStatus().equals("2")) {
                 isShouldRequest = false;

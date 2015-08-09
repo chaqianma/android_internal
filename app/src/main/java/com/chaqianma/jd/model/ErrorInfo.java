@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class ErrorInfo implements Serializable {
     private String timestamp = null;
-    private String status = null;
+    //private String status = null;
     private String error = null;
     private String exception = null;
     private String message = null;
@@ -23,13 +23,13 @@ public class ErrorInfo implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getStatus() {
+   /* public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
+    }*/
 
     public String getError() {
         return error;

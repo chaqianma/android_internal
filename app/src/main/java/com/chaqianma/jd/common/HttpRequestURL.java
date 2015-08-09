@@ -6,7 +6,7 @@ package com.chaqianma.jd.common;
  */
 public class HttpRequestURL {
     //请求URL 192.168.199.112
-    public static final String BASEURL= "http://192.168.199.112:8080/";
+    public static final String BASEURL= "http://192.168.199.223:8080/";
     //登录 POST
     public static final String LoginUrl="api/user/login";
     //尽调申请(贷款)
@@ -34,7 +34,11 @@ public class HttpRequestURL {
     //修改个人信息
     public static final String updatePersonUrl="api/borrow/dd/userbaseinfo/update/";
     //修改企业信息
-    public static final String updateBusinessInfoUrl="api/borrow/dd/businessinfo/update/";
-
-    public static final String sss="api/borrow/dd/businessinfo/update/";
+    //public static final String updateBusinessInfoUrl="api/borrow/dd/businessinfo/update/";
+    //更新个人资产信息
+    public static final String updatePersonAssetUrl="/api/borrow/dd/personalassetsinfo/update/";
+    //批量修改企业信息
+    public static final String updateBusinessInfoUrl="api/borrow/dd/businessinfo/update/batch/";
+    //修改社会关系信息
+    public static final String updateSocialRelationURL="api/borrow/dd/socialrelation/update";
 }

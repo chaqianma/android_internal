@@ -55,7 +55,7 @@
                 <TextView
                     style="@style/SmallTextStyle"
                     android:text="备注"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/red"/>
 
                 <EditText
                     android:id="@+id/et_remark"
@@ -67,28 +67,85 @@
 
                 <LinearLayout
                     style="@style/LinearLayoutStyle"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         style="@style/SmallTextStyle"
-                        android:text="尽职说明" />
+                        android:text="录音" />
 
-                    <EditText
-                        android:id="@+id/et_comment"
+                    <com.chaqianma.jd.widget.SoundGridView
+                        android:id="@+id/gv_sound"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="left|top"
-                        android:inputType="textMultiLine"
-                        android:minLines="6" />
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/white"
+                        android:columnWidth="80dp"
+                        android:gravity="center"
+                        android:horizontalSpacing="5dp"
+                        android:listSelector="#ffffff"
+                        android:numColumns="auto_fit"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="10dp" />
                 </LinearLayout>
 
+                <LinearLayout
+                    style="@style/LinearLayoutStyle"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/SmallTextStyle"
+                        android:text="图片" />
+
+                    <com.chaqianma.jd.widget.ImageGridView
+                        android:id="@+id/gv_mark"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/white"
+                        android:columnWidth="80dp"
+                        android:gravity="center"
+                        android:horizontalSpacing="5dp"
+                        android:listSelector="#ffffff"
+                        android:numColumns="auto_fit"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="10dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LinearLayoutStyle"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SmallTextStyle"
+                    android:text="尽职说明" />
+
+                <EditText
+                    android:id="@+id/et_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|top"
+                    android:inputType="textMultiLine"
+                    android:minLines="6" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LinearLayoutStyle"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SmallTextStyle"
+                    android:text="图片" />
 
                 <com.chaqianma.jd.widget.ImageGridView
                     android:id="@+id/gv_comment"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_centerVertical="true"
-                    android:background="#ffffff"
+                    android:background="@color/white"
                     android:columnWidth="80dp"
                     android:gravity="center"
                     android:horizontalSpacing="5dp"
@@ -96,7 +153,6 @@
                     android:numColumns="auto_fit"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="10dp" />
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

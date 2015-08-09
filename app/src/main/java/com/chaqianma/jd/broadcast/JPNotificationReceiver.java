@@ -27,26 +27,16 @@ public class JPNotificationReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-
-            //查看是震动，还是声音
-            /*Vibrator  vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-            long [] pattern = {100,400,100,400};   // 停止 开启 停止 开启
-            vibrator.vibrate(pattern,2);           //重复两次上面的pattern 如果只想震动一次，index设为-1
-*/
-
-
             if (intent.hasExtra("messageType")) {
-                String messageType = intent.getStringExtra("messageType");
+                String msgType = intent.getStringExtra("messageType");
+                if (msgType.equals("2")) {
+
+                }
             }
             Intent startIntent = new Intent();
             startIntent.setClass(context, LoginActivity.class);
             startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(startIntent);
-           /* Intent intent = new Intent(context, MainActivity.class);
-            i.putExtras(bundle);
-            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(i);*/
         } else {
         }
     }

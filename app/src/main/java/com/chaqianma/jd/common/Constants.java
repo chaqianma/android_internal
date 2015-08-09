@@ -2,6 +2,8 @@ package com.chaqianma.jd.common;
 
 import android.os.Environment;
 
+import java.util.ArrayList;
+
 /**
  * Created by zhangxd on 2015/7/15.
  */
@@ -80,6 +82,14 @@ public class Constants {
     public static final String PERSONALASSETSINFO = "personalassetsinfo";
     //社会关系
     public static final String CONTACTINFO = "contactinfo";
+    //下拉框集合 企业
+    public static final ArrayList<String> COMPANYLIST = new ArrayList<String>() {
+        {
+            add("企业1");
+            add("企业2");
+            add("企业3");
+        }
+    };
     //拼音code
     public static int[] characterValue = new int[]{-20319, -20317, -20304, -20295, -20292, -20283, -20265, -20257, -20242, -20230, -20051, -20036, -20032,
             -20026, -20002, -19990, -19986, -19982, -19976, -19805, -19784, -19775, -19774, -19763, -19756, -19751, -19746, -19741, -19739, -19728,

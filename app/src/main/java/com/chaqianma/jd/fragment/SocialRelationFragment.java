@@ -24,7 +24,9 @@ import android.widget.Spinner;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.activity.InvestigateDetailActivity;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
+import com.chaqianma.jd.adapters.SoundGridViewAdapter;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
@@ -40,6 +42,10 @@ import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,6 +69,10 @@ public class SocialRelationFragment extends BaseFragment {
     GridView gv_relation_card_1;
     @InjectView(R.id.et_remark)
     EditText et_remark;
+    @InjectView(R.id.gv_sound)
+    GridView gv_sound;
+    @InjectView(R.id.gv_mark)
+    GridView gv_mark;
     @InjectView(R.id.et_comment)
     EditText et_comment;
     @InjectView(R.id.gv_comment)
@@ -110,6 +120,23 @@ public class SocialRelationFragment extends BaseFragment {
     //父ID
     private String[] mParentId = new String[5];
 
+    //配偶说明
+    private String mSpouse = "配偶";
+
+    //备注数据源
+    private ImgsGridViewAdapter remarkImgsAdapter = null;
+    //备注集合
+    private List<UploadFileInfo> remarkUploadImgInfoList = null;
+    //录音数据源
+    private SoundGridViewAdapter soundAdapter = null;
+    //录音集合
+    private List<UploadFileInfo> soundInfoList = null;
+
+    //尽职数据源
+    private ImgsGridViewAdapter commentImgsAdapter = null;
+    //尽职集合
+    private List<UploadFileInfo> commentUploadImgInfoList = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,9 +174,45 @@ public class SocialRelationFragment extends BaseFragment {
             imgInfo.setIdxTag(0);
             imgInfo.setIsDefault(true);
             imgInfo.setiServer(false);
-            imgInfo.setFileType(UploadFileType.REMARK.getValue());
+            imgInfo.setFileType(UploadFileType.COMMENT.getValue());
             mJZList.add(imgInfo);
             mJZAdapter = new ImgsGridViewAdapter(getActivity(), mJZList);
+        }
+
+        {
+            //录音
+            UploadFileInfo soundInfo = new UploadFileInfo();
+            soundInfo.setIsDefault(true);
+            soundInfo.setFileType(UploadFileType.SOUND.getValue());
+            soundInfo.setiServer(false);
+            soundInfoList.add(soundInfo);
+            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList, "-1");
+            gv_sound.setAdapter(soundAdapter);
+        }
+
+        {
+            //备注
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setIsDefault(true);
+            imgInfo.setFileType(UploadFileType.REMARK.getValue());
+            imgInfo.setiServer(false);
+            remarkUploadImgInfoList.add(imgInfo);
+            remarkImgsAdapter = new ImgsGridViewAdapter(getActivity(), remarkUploadImgInfoList);
+            remarkImgsAdapter.setOnClickImgListener(this);
+            gv_mark.setAdapter(remarkImgsAdapter);
+        }
+
+        //尽职说明
+        {
+            //备注
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setIsDefault(true);
+            imgInfo.setFileType(UploadFileType.COMMENT.getValue());
+            imgInfo.setiServer(false);
+            commentUploadImgInfoList.add(imgInfo);
+            commentImgsAdapter = new ImgsGridViewAdapter(getActivity(), commentUploadImgInfoList);
+            commentImgsAdapter.setOnClickImgListener(this);
+            gv_comment.setAdapter(commentImgsAdapter);
         }
     }
 
@@ -231,6 +294,81 @@ public class SocialRelationFragment extends BaseFragment {
         }
     }
 
+    /*
+   * 添加联系人
+   * */
+    private void addRCPerson(int rcIdx) {
+        switch (rcIdx) {
+            case 2: {
+                isShow2 = true;
+                ((ViewStub) mView.findViewById(R.id.stub_social_relation_2)).inflate();
+                gv_relation_card_2 = (GridView) mView.findViewById(R.id.gv_relation_card_2);
+                sp_relation_type_2 = (Spinner) mView.findViewById(R.id.sp_relation_type_2);
+                UploadFileInfo imgInfo = new UploadFileInfo();
+                imgInfo.setIdxTag(1);
+                imgInfo.setIsDefault(true);
+                imgInfo.setiServer(false);
+                imgInfo.setFileType(UploadFileType.CARD.getValue());
+                mRCList_2.add(imgInfo);
+                mRCAdapter_2 = new ImgsGridViewAdapter(getActivity(), mRCList_2);
+                mRCAdapter_2.setOnClickImgListener(this);
+                gv_relation_card_2.setAdapter(mRCAdapter_2);
+            }
+            break;
+            case 3: {
+                isShow3 = true;
+                ((ViewStub) mView.findViewById(R.id.stub_social_relation_3)).inflate();
+                gv_relation_card_3 = (GridView) mView.findViewById(R.id.gv_relation_card_3);
+                sp_relation_type_3 = (Spinner) mView.findViewById(R.id.sp_relation_type_3);
+                UploadFileInfo imgInfo = new UploadFileInfo();
+                imgInfo.setIdxTag(2);
+                imgInfo.setIsDefault(true);
+                imgInfo.setiServer(false);
+                imgInfo.setFileType(UploadFileType.CARD.getValue());
+                mRCList_3.add(imgInfo);
+                mRCAdapter_3 = new ImgsGridViewAdapter(getActivity(), mRCList_3);
+                mRCAdapter_3.setOnClickImgListener(this);
+                gv_relation_card_3.setAdapter(mRCAdapter_3);
+            }
+            break;
+            case 4: {
+                isShow4 = true;
+                ((ViewStub) mView.findViewById(R.id.stub_social_relation_4)).inflate();
+                gv_relation_card_4 = (GridView) mView.findViewById(R.id.gv_relation_card_4);
+                sp_relation_type_4 = (Spinner) mView.findViewById(R.id.sp_relation_type_4);
+                UploadFileInfo imgInfo = new UploadFileInfo();
+                imgInfo.setIdxTag(3);
+                imgInfo.setIsDefault(true);
+                imgInfo.setiServer(false);
+                imgInfo.setFileType(UploadFileType.CARD.getValue());
+                mRCList_4.add(imgInfo);
+                mRCAdapter_4 = new ImgsGridViewAdapter(getActivity(), mRCList_4);
+                mRCAdapter_4.setOnClickImgListener(this);
+                gv_relation_card_4.setAdapter(mRCAdapter_4);
+            }
+            break;
+            case 5: {
+                isShow5 = true;
+                ((ViewStub) mView.findViewById(R.id.stub_social_relation_5)).inflate();
+                gv_relation_card_5 = (GridView) mView.findViewById(R.id.gv_relation_card_5);
+                sp_relation_type_5 = (Spinner) mView.findViewById(R.id.sp_relation_type_5);
+                UploadFileInfo imgInfo = new UploadFileInfo();
+                imgInfo.setIdxTag(4);
+                imgInfo.setIsDefault(true);
+                imgInfo.setiServer(false);
+                imgInfo.setFileType(UploadFileType.CARD.getValue());
+                mRCList_5.add(imgInfo);
+                mRCAdapter_5 = new ImgsGridViewAdapter(getActivity(), mRCList_5);
+                mRCAdapter_5.setOnClickImgListener(this);
+                gv_relation_card_5.setAdapter(mRCAdapter_5);
+            }
+            break;
+            default:
+                break;
+        }
+    }
+
+
     //初始化集合
     private void initImageList() {
         mRCList_1 = new ArrayList<UploadFileInfo>();
@@ -238,6 +376,9 @@ public class SocialRelationFragment extends BaseFragment {
         mRCList_3 = new ArrayList<UploadFileInfo>();
         mRCList_4 = new ArrayList<UploadFileInfo>();
         mRCList_5 = new ArrayList<UploadFileInfo>();
+        remarkUploadImgInfoList = new ArrayList<UploadFileInfo>();
+        soundInfoList = new ArrayList<UploadFileInfo>();
+        commentUploadImgInfoList=new ArrayList<UploadFileInfo>();
         mJZList = new ArrayList<UploadFileInfo>();
     }
 
@@ -254,6 +395,13 @@ public class SocialRelationFragment extends BaseFragment {
                         return;
                     JSONObject json = JSON.parseObject(o.toString());
                     try {
+                        //尽职说明
+                        JSONObject ddObj = json.getJSONObject("applyInfo");
+                        if (ddObj != null && !ddObj.isEmpty()) {
+                            et_comment.setText(ddObj.getString("ddDescription"));
+                            List<UploadFileInfo> uploadFileInfos = JSON.parseArray(json.getString("fileList"), UploadFileInfo.class);
+                            initServerFile(uploadFileInfos);
+                        }
                         List<ContactInfo> contactInfoList = JSON.parseArray(json.getString("contactInfoList"), ContactInfo.class);
                         if (contactInfoList != null) {
                             int size = contactInfoList.size();
@@ -261,11 +409,12 @@ public class SocialRelationFragment extends BaseFragment {
                             for (int i = 0; i < size; i++) {
                                 contactInfo = contactInfoList.get(i);
                                 mParentId[i] = contactInfo.getId();
+                                //尽职说明
                                 int fileSize = -1;
                                 if (contactInfo.getFileList() != null)
                                     fileSize = contactInfo.getFileList().size();
                                 //判断是否是有效企业 企业名称
-                                if (fileSize > 0 || !JDAppUtil.isEmpty(contactInfo.getName()) || !JDAppUtil.isEmpty(contactInfo.getRelation())) {
+                                if (fileSize > 0 || !JDAppUtil.isEmpty(contactInfo.getRelation())) {
                                     switch (i) {
                                         case 0:
                                             et_remark.setText(contactInfo.getRemark());
@@ -275,7 +424,7 @@ public class SocialRelationFragment extends BaseFragment {
                                         case 2:
                                         case 3:
                                         case 4:
-                                            addRCPerson();
+                                            addRCPerson(i);
                                             initServerFile(contactInfo.getFileList());
                                             break;
                                         default:
@@ -523,8 +672,8 @@ public class SocialRelationFragment extends BaseFragment {
                 default:
                     break;
             }
-        } else {
-
+        } else if (fType == UploadFileType.COMMENT) {
+            mJZAdapter.refreshData();
         }
     }
 
@@ -581,6 +730,8 @@ public class SocialRelationFragment extends BaseFragment {
                 default:
                     break;
             }
+        } else if (fType == UploadFileType.COMMENT) {
+            mJZList.add(0, imgInfo);
         }
         mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
     }
@@ -589,7 +740,90 @@ public class SocialRelationFragment extends BaseFragment {
         * 保存数据
         * */
     public void saveDataSubmit() {
+        boolean isSelctedSpouse = false;
+        List<ContactInfo> contactInfoList = new ArrayList<ContactInfo>();
+        //关系类型  与关系人身份证件 备注 必填
+       /* if (mRCList_1.size() <= 1 && mRCList_1.get(0).isDefault()) {
+            JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+            return;
+        }*/
+        if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
+            isSelctedSpouse = true;
 
+        ContactInfo contactInfo = new ContactInfo();
+        contactInfo.setRemark(et_remark.getText().toString());
+        contactInfo.setRelation(sp_relation_type_1.getSelectedItemPosition() + 1 + "");
+        contactInfoList.add(contactInfo);
+
+        if (isShow2) {
+           /* if (mRCList_2.size() <= 1 && mRCList_2.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+                return;
+            }*/
+            if (sp_relation_type_2.getSelectedItem().toString().equals(mSpouse))
+                isSelctedSpouse = true;
+
+            contactInfo = new ContactInfo();
+            contactInfo.setRelation(sp_relation_type_2.getSelectedItemPosition() + 1 + "");
+            contactInfoList.add(contactInfo);
+        } else {
+            if (isShow3) {
+               /* if (mRCList_3.size() <= 1 && mRCList_3.get(0).isDefault()) {
+                    JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+                    return;
+                }*/
+                if (sp_relation_type_3.getSelectedItem().toString().equals(mSpouse))
+                    isSelctedSpouse = true;
+
+                contactInfo = new ContactInfo();
+                contactInfo.setRelation(sp_relation_type_3.getSelectedItemPosition() + 1 + "");
+                contactInfoList.add(contactInfo);
+            } else {
+                if (isShow4) {
+                  /*  if (mRCList_4.size() <= 1 && mRCList_4.get(0).isDefault()) {
+                        JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+                        return;
+                    }*/
+                    if (sp_relation_type_4.getSelectedItem().toString().equals(mSpouse))
+                        isSelctedSpouse = true;
+
+                    contactInfo = new ContactInfo();
+                    contactInfo.setRelation(sp_relation_type_4.getSelectedItemPosition() + 1 + "");
+                    contactInfoList.add(contactInfo);
+                } else {
+                    if (isShow5) {
+                        /*if (mRCList_5.size() <= 1 && mRCList_5.get(0).isDefault()) {
+                            JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+                            return;
+                        }*/
+                        if (sp_relation_type_5.getSelectedItem().toString().equals(mSpouse))
+                            isSelctedSpouse = true;
+
+                        contactInfo = new ContactInfo();
+                        contactInfo.setRelation(sp_relation_type_5.getSelectedItemPosition() + 1 + "");
+                        contactInfoList.add(contactInfo);
+                    }
+                }
+            }
+        }
+
+        //必须要有一个是配偶
+        if (!isSelctedSpouse) {
+            JDToast.showLongText(getActivity(), "必须有一个关系类型为配偶");
+            return;
+        }
+        // relation; // 1 配偶 2直系亲属 3合伙人 4财务 5其他
+        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        String ss = JSON.toJSONString(contactInfoList);
+        String b=et_comment.getText().toString();
+        formparams.add(new BasicNameValuePair("contactInfoListJson", ss));
+        formparams.add(new BasicNameValuePair("ddDescription",b ));
+        HttpClientUtil.put(getActivity(), HttpRequestURL.updateSocialRelationURL, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+            @Override
+            public void onSuccess(Object o) {
+                JDToast.showLongText(getActivity(), "社会关系信息保存成功");
+            }
+        }));
     }
 
     public static SocialRelationFragment newInstance() {

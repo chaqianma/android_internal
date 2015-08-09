@@ -43,6 +43,9 @@ import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -190,6 +193,8 @@ public class PersonalAssetsFragment extends BaseFragment {
     private String[] mHouseId = new String[3];
     //图片标签
     private UploadFileType fileType = UploadFileType.SY;
+    //获取备注ID
+    private String mRemarkId = null;
 
     /*
     * 添加企业营收
@@ -522,7 +527,6 @@ public class PersonalAssetsFragment extends BaseFragment {
 
                                     switch (i) {
                                         case 0:
-                                            et_remark.setText(companyInfo.getRemark());
                                             initServerFile(companyInfo.getFileList());
                                             break;
                                         case 1:
@@ -545,6 +549,11 @@ public class PersonalAssetsFragment extends BaseFragment {
                     AssetInfo assetInfo = json.getObject("personalAssetsInfo", AssetInfo.class);
                     if (assetInfo != null) {
                         try {
+                            //获取备注提交ID
+                            mRemarkId = assetInfo.getId();
+                            //设置备注信息
+                            if(!JDAppUtil.isEmpty(assetInfo.getRemark()))
+                                et_remark.setText(assetInfo.getRemark());
                             if (assetInfo.getPersonalAssetsCarInfoList() != null) {
                                 //车
                                 int size = assetInfo.getPersonalAssetsCarInfoList().size();
@@ -1178,7 +1187,7 @@ public class PersonalAssetsFragment extends BaseFragment {
     public void saveDataSubmit() {
         //第一家
         // 收入证明
-        if (mSYList_1.size() <= 1 && mSYList_1.get(0).isDefault()) {
+       /* if (mSYList_1.size() <= 1 && mSYList_1.get(0).isDefault()) {
             JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
             return;
         }
@@ -1211,7 +1220,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         if (mTDList_1.size() <= 1 && mTDList_1.get(0).isDefault()) {
             JDToast.showLongText(getActivity(), "请上传土地证图片");
             return;
-        }
+        }*/
 
         //第二家
         // 收入证明
@@ -1304,6 +1313,15 @@ public class PersonalAssetsFragment extends BaseFragment {
             JDToast.showLongText(getActivity(), "备注不能为空");
             return;
         }
+
+        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        formparams.add(new BasicNameValuePair("remark", et_remark.getText().toString()));
+        HttpClientUtil.put(getActivity(), HttpRequestURL.updatePersonAssetUrl + mRemarkId, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+            @Override
+            public void onSuccess(Object o) {
+                JDToast.showLongText(getActivity(), "保存个人资产信息成功");
+            }
+        }));
     }
 
     public static PersonalAssetsFragment newInstance() {

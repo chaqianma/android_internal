@@ -11,11 +11,12 @@ package com.chaqianma.jd.model;
     parentTableName //关联记录表名 个人信息 user_base_info 企业信息 business_info
     parentId 关联记录ID
 *   1身份证 2离婚证 3结婚证 4营业执照 5税务登记证 6企业代码证 7其他证件 8房产证/合同 9土地证：10收入证明 11 经营性单据 12车牌车型 13行驶证 14驾驶证 15护照 16备注文件
+    17 COMMENT  尽职说明
  */
 public enum UploadFileType {
     NONE(0), CARD(1),SINGLE(2),MARRY(3),
     YY(4), SW(5), QYDM(6), QT(7), FC(8), TD(9),
-    SY(10),JY(11),CP(12),XS(13),REMARK(16),SOUND(80);
+    SY(10),JY(11),CP(12),XS(13),REMARK(16),COMMENT(17),SOUND(80);
     private int index;
 
     private UploadFileType(int index) {
