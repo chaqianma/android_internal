@@ -23,7 +23,7 @@ public class Constants {
     //UUID
     public static final String UUID = "UUID";
     //判断当前任务是否结束
-    public static final String ISTASKFinishTAG="ISTASKFinishTAG";
+    public static final String ISTASKFinishTAG = "ISTASKFinishTAG";
     //文件存放目录
     public static final String FILEDIR = "chaqianma";
     //临时图片放置
@@ -40,6 +40,8 @@ public class Constants {
     public static final String CHECKEDID = "CHECKEDID";
     //消息通知提醒
     public static final String MSGNOTIFY = "MSGNOTIFY";
+    //何种提示方式
+    public static final String MSGTOAST = "MSGTOAST";
     //声音
     public static final String MSGSOUND = "MSGSOUND";
     //震动
@@ -65,15 +67,15 @@ public class Constants {
     //个人信息表  --上传文件
     public static final String USER_BASE_INFO = "user_base_info";
     //企业信息    --上传文件
-    public static final String BUSINESS_INFO="business_info";
+    public static final String BUSINESS_INFO = "business_info";
     //个人资产---企业收入---备注
-    public static final String PERSONAL_ASSETS_INFO="personal_assets_info";
+    public static final String PERSONAL_ASSETS_INFO = "personal_assets_info";
     //个人资产---汽车
-    public static final String PERSONAL_ASSERTS_CAR_INFO="personal_asserts_car_info";
+    public static final String PERSONAL_ASSERTS_CAR_INFO = "personal_asserts_car_info";
     //个人资产---房子
-    public static final String PERSONAL_ASSETS_HOUSE_INFO="personal_assets_house_info";
+    public static final String PERSONAL_ASSETS_HOUSE_INFO = "personal_assets_house_info";
     //联系人  上传文件
-    public static final String CONTACT_INFO="contact_info";
+    public static final String CONTACT_INFO = "contact_info";
     //个人信息标签
     public static final String PERSONALINFO = "personalinfo";
     //企业信息标签

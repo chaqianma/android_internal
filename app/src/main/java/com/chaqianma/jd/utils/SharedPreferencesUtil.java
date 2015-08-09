@@ -27,6 +27,13 @@ public class SharedPreferencesUtil {
         return settings.getBoolean(strKey, false);
     }
 
+    public static boolean getShareBoolean(Context context, String strKey,boolean defaultValue)
+    {
+        SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
+        return settings.getBoolean(strKey, defaultValue);
+    }
+
+
     public static void setShareBoolean(Context context, String strKey, boolean bVaule)
     {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);

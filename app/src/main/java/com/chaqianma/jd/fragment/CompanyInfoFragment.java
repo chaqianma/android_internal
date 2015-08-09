@@ -255,26 +255,23 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     private void addCompany(int showIdx) {
         switch (showIdx) {
             case 1:
-                img_company_add.setEnabled(false);
                 isCompany2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
                 initControlView(true);
                 initGridViewData(true);
                 sp_some_company_2.setEnabled(false);
                 //下拉框
-                initSpinner(sp_some_company_2, companyList);
-                sp_some_company_2.setSelection(0);
-                img_company_add.setEnabled(true);
+                initSpinner(sp_some_company_2, Constants.COMPANYLIST);
+                sp_some_company_2.setSelection(1);
                 break;
             case 2:
                 isCompany3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
                 initControlView(false);
                 initGridViewData(false);
-                sp_some_company_2.setEnabled(false);
-                companyList.remove(sp_some_company_2.getSelectedItemPosition());
-                initSpinner(sp_some_company_3, companyList);
-                sp_some_company_3.setSelection(0);
+                sp_some_company_3.setEnabled(false);
+                initSpinner(sp_some_company_3, Constants.COMPANYLIST);
+                sp_some_company_3.setSelection(2);
                 break;
             default:
                 break;
@@ -1113,7 +1110,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         List<CompanyInfo> companyInfoList = new ArrayList<CompanyInfo>();
         //必填验证
 
-      /*  if (mTRList_1.size() <= 1 && mTRList_1.get(0).isDefault()) {
+     if (mTRList_1.size() <= 1 && mTRList_1.get(0).isDefault()) {
             JDToast.showLongText(getActivity(), "请上传税务登记图片");
             return;
         }
@@ -1136,7 +1133,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         if (mLCList_1.size() <= 1 && mLCList_1.get(0).isDefault()) {
             JDToast.showLongText(getActivity(), "请上传土地证图片");
             return;
-        }*/
+        }
 
         CompanyInfo companyInfo = new CompanyInfo();
         companyInfo.setOrganizationType(sp_company_type_1.getSelectedItemPosition() + 1 + "");
@@ -1146,7 +1143,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         companyInfoList.add(companyInfo);
 
         if (isCompany2Show) {
-            /*if (mTRList_2.size() <= 1 && mTRList_2.get(0).isDefault()) {
+            if (mTRList_2.size() <= 1 && mTRList_2.get(0).isDefault()) {
                 JDToast.showLongText(getActivity(), "请上传税务登记图片");
                 return;
             }
@@ -1169,7 +1166,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             if (mLCList_2.size() <= 1 && mLCList_2.get(0).isDefault()) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return;
-            }*/
+            }
 
             companyInfo = new CompanyInfo();
             companyInfo.setOrganizationType(sp_company_type_2.getSelectedItemPosition() + 1 + "");
@@ -1179,7 +1176,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         }
 
         if (isCompany3Show) {
-            /*if (mTRList_3.size() <= 1 && mTRList_3.get(0).isDefault()) {
+            if (mTRList_3.size() <= 1 && mTRList_3.get(0).isDefault()) {
                 JDToast.showLongText(getActivity(), "请上传税务登记图片");
                 return;
             }
@@ -1202,7 +1199,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             if (mLCList_3.size() <= 1 && mLCList_3.get(0).isDefault()) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return;
-            }*/
+            }
 
             companyInfo = new CompanyInfo();
             companyInfo.setOrganizationType(sp_company_type_3.getSelectedItemPosition() + 1 + "");
@@ -1212,7 +1209,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         }
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         String ss = JSON.toJSONString(companyInfoList);
-        formparams.add(new BasicNameValuePair("businessInfoListJson", ss));
+        formparams.add(new BasicNameValuePair("businessInfoListJson", JSON.toJSONString(companyInfoList)));
         HttpClientUtil.put(getActivity(), HttpRequestURL.updateBusinessInfoUrl, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {

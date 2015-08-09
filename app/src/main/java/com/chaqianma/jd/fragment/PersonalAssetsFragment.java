@@ -220,6 +220,26 @@ public class PersonalAssetsFragment extends BaseFragment {
     }
 
     /*
+   * 添加企业营收
+   * */
+    private void addCompanyIncome(int incomeIdx) {
+        switch (incomeIdx) {
+            case 1:
+                isIncome2Show = true;
+                ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
+                initCompanyView(true);
+                break;
+            case 2:
+                isIncome3Show = true;
+                ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
+                initCompanyView(false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /*
     * 添加车
     * */
     private void addCar() {
@@ -239,6 +259,26 @@ public class PersonalAssetsFragment extends BaseFragment {
     }
 
     /*
+   * 添加车
+   * */
+    private void addCar(int carIdx) {
+        switch (carIdx) {
+            case 1:
+                isCar2Show = true;
+                ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
+                initCarView(true);
+                break;
+            case 2:
+                isCar3Show = true;
+                ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
+                initCarView(false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /*
     * 房
     * */
     private void addHouse() {
@@ -254,6 +294,26 @@ public class PersonalAssetsFragment extends BaseFragment {
                 JDAppUtil.addShowAction(view);
                 initHouseView(false);
             }
+        }
+    }
+
+    /*
+   * 房
+   * */
+    private void addHouse(int houseIdx) {
+        switch (houseIdx) {
+            case 1:
+                isHouse2Show = true;
+                ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
+                initHouseView(true);
+                break;
+            case 2:
+                isHouse3Show = true;
+                ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
+                initHouseView(false);
+                break;
+            default:
+                break;
         }
     }
 
@@ -530,11 +590,11 @@ public class PersonalAssetsFragment extends BaseFragment {
                                             initServerFile(companyInfo.getFileList());
                                             break;
                                         case 1:
-                                            addCompanyIncome();
+                                            addCompanyIncome(1);
                                             initServerFile(companyInfo.getFileList());
                                             break;
                                         case 2:
-                                            addCompanyIncome();
+                                            addCompanyIncome(2);
                                             initServerFile(companyInfo.getFileList());
                                             break;
                                         default:
@@ -552,7 +612,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                             //获取备注提交ID
                             mRemarkId = assetInfo.getId();
                             //设置备注信息
-                            if(!JDAppUtil.isEmpty(assetInfo.getRemark()))
+                            if (!JDAppUtil.isEmpty(assetInfo.getRemark()))
                                 et_remark.setText(assetInfo.getRemark());
                             if (assetInfo.getPersonalAssetsCarInfoList() != null) {
                                 //车
@@ -572,11 +632,11 @@ public class PersonalAssetsFragment extends BaseFragment {
                                                     initServerFile(carInfo.getFileList());
                                                     break;
                                                 case 1:
-                                                    addCar();
+                                                    addCar(1);
                                                     initServerFile(carInfo.getFileList());
                                                     break;
                                                 case 2:
-                                                    addCar();
+                                                    addCar(2);
                                                     initServerFile(carInfo.getFileList());
                                                     break;
                                                 default:
@@ -607,11 +667,11 @@ public class PersonalAssetsFragment extends BaseFragment {
                                                 initServerFile(houseInfo.getFileList());
                                                 break;
                                             case 1:
-                                                addCar();
+                                                addCar(1);
                                                 initServerFile(houseInfo.getFileList());
                                                 break;
                                             case 2:
-                                                addCar();
+                                                addCar(2);
                                                 initServerFile(houseInfo.getFileList());
                                                 break;
                                             default:

@@ -30,16 +30,34 @@ public class MsgnotifyActivity extends BaseActivity {
         setContentView(R.layout.activity_msgnotify);
         ButterKnife.inject(this);
         setTopBarState("消息提醒", true, true);
-        //switch_notify.setOnCheckedChangeListener(onCheckedChangeListener);
-        //switch_sound.setOnCheckedChangeListener(onCheckedChangeListener);
-        //switch_shake.setOnCheckedChangeListener(onCheckedChangeListener);
+        initData();
+        switch_notify.setOnCheckedChangeListener(onCheckedChangeListener);
+        switch_sound.setOnCheckedChangeListener(onCheckedChangeListener);
+        switch_shake.setOnCheckedChangeListener(onCheckedChangeListener);
+    }
+
+
+    /*
+    * 设置默认值
+    * */
+    private void initData() {
+        switch_notify.setChecked(SharedPreferencesUtil.getShareBoolean(MsgnotifyActivity.this, Constants.MSGNOTIFY, true));
+        boolean notifyWay = SharedPreferencesUtil.getShareString(MsgnotifyActivity.this, Constants.MSGTOAST).equals(Constants.MSGSHAKE);
+        if (notifyWay)
+            switch_shake.setChecked(true);
+        else
+            switch_sound.setChecked(false);
     }
 
     @OnClick(R.id.top_right_btn)
     void onSubmit() {
         SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGNOTIFY, switch_notify.isChecked());
-        SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSOUND, switch_sound.isChecked());
-        SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSHAKE, switch_shake.isChecked());
+        //只有开启才保存数据
+        if (switch_notify.isChecked()) {
+            SharedPreferencesUtil.setShareString(MsgnotifyActivity.this, Constants.MSGTOAST, switch_shake.isChecked() ? Constants.MSGSHAKE : Constants.MSGSOUND);
+            //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSOUND, switch_sound.isChecked());
+            //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSHAKE, switch_shake.isChecked());
+        }
     }
 
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -48,13 +66,15 @@ public class MsgnotifyActivity extends BaseActivity {
             CompoundButton switchView = buttonView;
             switch (switchView.getId()) {
                 case R.id.switch_notify:
-                    SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGNOTIFY, isChecked);
+                    //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGNOTIFY, isChecked);
                     break;
                 case R.id.switch_sound:
-                    SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSOUND, isChecked);
+                    //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSOUND, isChecked);
+                    switch_shake.setChecked(!isChecked);
                     break;
                 case R.id.switch_shake:
-                    SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSHAKE, isChecked);
+                    //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSHAKE, isChecked);
+                    switch_sound.setChecked(!isChecked);
                     break;
                 default:
                     break;
