@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.utils.JPushUtil;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDToast;
 import com.chaqianma.jd.widget.SwitchButton;
@@ -110,15 +111,17 @@ public class NodisturbActivity extends BaseActivity {
                         return;
                     }
                 }
-                //开启
-                JPushInterface.setSilenceTime(getApplicationContext(), beginHour, beginMin, endHour, endMin);
+                //设置某个时间段内无任何提醒
+                JPushUtil.setSilenceTime(NodisturbActivity.this, beginHour, beginMin, endHour, endMin);
             } else {
-                //关闭
+                //设置全天无任何提醒
                 JPushInterface.setSilenceTime(getApplicationContext(), 0, 0, 0, 0);
             }
             SharedPreferencesUtil.setShareBoolean(NodisturbActivity.this, Constants.NODISTURB, switch_disturb.isChecked());
             SharedPreferencesUtil.setShareString(NodisturbActivity.this, Constants.NODISTURB_BEGINTIME, tv_begin_time.getText().toString());
             SharedPreferencesUtil.setShareString(NodisturbActivity.this, Constants.NODISTURB_ENDTIME, tv_end_time.getText().toString());
+            JDToast.showLongText(NodisturbActivity.this, "勿扰模式设置成功");
+            finish();
         } catch (Exception e) {
 
         }

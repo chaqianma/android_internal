@@ -211,8 +211,7 @@
 
             <TextView
                 android:id="@+id/tv_apply_time"
-                style="@style/SmallTextStyle"
-                android:layout_marginLeft="2dp" />
+                style="@style/SmallTextStyle"/>
         </LinearLayout>
 
         <View style="@style/ViewLineStyle" />

@@ -6,7 +6,9 @@ import android.widget.CompoundButton;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.utils.JPushUtil;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
+import com.chaqianma.jd.widget.JDToast;
 import com.chaqianma.jd.widget.SwitchButton;
 
 import butterknife.ButterKnife;
@@ -42,12 +44,21 @@ public class MsgnotifyActivity extends BaseActivity {
     * 设置默认值
     * */
     private void initData() {
-        switch_notify.setChecked(SharedPreferencesUtil.getShareBoolean(MsgnotifyActivity.this, Constants.MSGNOTIFY, true));
-        boolean notifyWay = SharedPreferencesUtil.getShareString(MsgnotifyActivity.this, Constants.MSGTOAST).equals(Constants.MSGSHAKE);
-        if (notifyWay)
-            switch_shake.setChecked(true);
-        else
+        boolean isOpen = SharedPreferencesUtil.getShareBoolean(MsgnotifyActivity.this, Constants.MSGNOTIFY, true);
+        switch_notify.setChecked(isOpen);
+        if (isOpen) {
+            boolean notifyWay = SharedPreferencesUtil.getShareString(MsgnotifyActivity.this, Constants.MSGTOAST).equals(Constants.MSGSHAKE);
+            if (notifyWay) {
+                switch_sound.setChecked(false);
+                switch_shake.setChecked(true);
+            } else {
+                switch_sound.setChecked(false);
+                switch_shake.setChecked(true);
+            }
+        } else {
             switch_sound.setChecked(false);
+            switch_shake.setChecked(false);
+        }
     }
 
     @OnClick(R.id.top_right_btn)
@@ -56,13 +67,15 @@ public class MsgnotifyActivity extends BaseActivity {
         //只有开启才保存数据
         if (switch_notify.isChecked()) {
             SharedPreferencesUtil.setShareString(MsgnotifyActivity.this, Constants.MSGTOAST, switch_shake.isChecked() ? Constants.MSGSHAKE : Constants.MSGSOUND);
+            JPushUtil.setPushNotificationBuilder(MsgnotifyActivity.this);
             //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSOUND, switch_sound.isChecked());
             //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSHAKE, switch_shake.isChecked());
+        } else {
+            //设置无任务提醒
+            JPushUtil.setSilenceTime(MsgnotifyActivity.this, 0, 59, 23, 59);
         }
-        else
-        {
-           // JPushInterface.setSilenceTime(getApplicationContext(), beginHour, beginMin, endHour, endMin);
-        }
+        JDToast.showLongText(MsgnotifyActivity.this,"消息提醒设置成功");
+        finish();
     }
 
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {

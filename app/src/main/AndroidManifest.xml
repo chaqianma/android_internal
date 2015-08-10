@@ -198,7 +198,7 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="9b3350fa7a81165e4231c074" />
+            android:value="fe4f174d1b0d7a7a73e8d4e4" />
         <!--极光推送end-->
 
         <!---百度地图 Start-->
@@ -213,7 +213,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="o9P1XmVD7bKh5c5IGwQYkO9u" />
+            android:value="59PhG8zA0MLPeU5DBH7KrbAL" />
         <!--百度地图 end-->
 
     </application>
