@@ -73,7 +73,7 @@
 
 
         <activity
-            android:name=".activity.StaffActivity_bak"
+            android:name=".activity.StaffActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme" />
 
@@ -89,11 +89,6 @@
 
         <activity
             android:name=".activity.UpdatePasswordActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme" />
-
-        <activity
-            android:name=".activity.StaffActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme" />
 

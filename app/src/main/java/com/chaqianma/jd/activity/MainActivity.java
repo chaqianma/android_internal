@@ -75,7 +75,7 @@ public class MainActivity extends ActivityGroup {
             if (mIsHasTask)
                 this.mTabHost.addTab(buildTabSpec("tab1", "0", new Intent(this, BorrowApplyActivity.class)));
             else
-                this.mTabHost.addTab(buildTabSpec("tab1", "0", new Intent(this, StaffActivity_bak.class)));
+                this.mTabHost.addTab(buildTabSpec("tab1", "0", new Intent(this, StaffActivity.class)));
             this.mTabHost.addTab(buildTabSpec("tab2", "1", new Intent(this, SettingActivity.class)));
 
         } catch (Exception e) {
