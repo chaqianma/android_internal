@@ -1,5 +1,6 @@
 package com.chaqianma.jd.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -11,6 +12,7 @@ import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.widget.JDToast;
@@ -136,6 +138,20 @@ public class JDAppUtil {
         mHiddenAction.setDuration(500);
         mHiddenAction.setAnimationListener(new MyAnimationListener(view, false));
         view.startAnimation(mHiddenAction);
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    public static void hidekeyboard(Activity act) {
+        InputMethodManager imm = ((InputMethodManager) act
+                .getSystemService(Activity.INPUT_METHOD_SERVICE));
+        if (imm.isActive()) {
+            View focusView = act.getCurrentFocus();
+            if (focusView != null) {
+                imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+            }
+        }
     }
 
     //判断值是否为空

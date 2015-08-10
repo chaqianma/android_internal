@@ -520,7 +520,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         //初始化第一家企业
         initOneView();
         getCompanyInfo();
-        sp_business_premises_1.setSelection(2);
+
         return mView;
     }
 
@@ -680,23 +680,23 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                         //组织类型
                                         switch (i) {
                                             case 0:
-                                                sp_company_type_1.setSelection(Integer.parseInt(companyInfo.getOrganizationType()), true);
-                                                sp_business_premises_1.setSelection(Integer.parseInt(companyInfo.getBusinessPremises()), true);
+                                                sp_company_type_1.setSelection(Integer.parseInt(companyInfo.getOrganizationType())-1, true);
+                                                sp_business_premises_1.setSelection(Integer.parseInt(companyInfo.getBusinessPremises())-1, true);
                                                 sp_some_company_1.setSelection(0);
                                                 et_remark.setText(companyInfo.getRemark());
                                                 initServerFile(companyInfo.getFileList());
                                                 break;
                                             case 1:
                                                 addCompany(1);
-                                                sp_company_type_2.setSelection(Integer.parseInt(companyInfo.getOrganizationType()), true);
-                                                sp_business_premises_2.setSelection(Integer.parseInt(companyInfo.getBusinessPremises()), true);
+                                                sp_company_type_2.setSelection(Integer.parseInt(companyInfo.getOrganizationType())-1, true);
+                                                sp_business_premises_2.setSelection(Integer.parseInt(companyInfo.getBusinessPremises())-1, true);
                                                 //下载图片
                                                 initServerFile(companyInfo.getFileList());
                                                 break;
                                             case 2:
                                                 addCompany(2);
-                                                sp_company_type_3.setSelection(Integer.parseInt(companyInfo.getOrganizationType()), true);
-                                                sp_business_premises_3.setSelection(Integer.parseInt(companyInfo.getBusinessPremises()), true);
+                                                sp_company_type_3.setSelection(Integer.parseInt(companyInfo.getOrganizationType())-1, true);
+                                                sp_business_premises_3.setSelection(Integer.parseInt(companyInfo.getBusinessPremises())-1, true);
                                                 //下载图片
                                                 initServerFile(companyInfo.getFileList());
                                                 break;
@@ -710,7 +710,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                 soundAdapter.setParentId(mParentId[0]);
                             }
                         } catch (Exception e) {
-
+                            String msg=e.getMessage();
                         }
                     }
                 }

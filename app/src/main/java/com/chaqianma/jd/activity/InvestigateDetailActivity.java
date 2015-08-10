@@ -25,6 +25,7 @@ import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.utils.HttpClientUtil;
+import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDAlertDialog;
@@ -130,8 +131,8 @@ public class InvestigateDetailActivity extends FragmentActivity {
     * 跳转下一地址
     * */
     public void gotoNext() {
-        if (mViewPager.getCurrentItem() != 3)
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+        //if (mViewPager.getCurrentItem() != 3)
+        //    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
     }
 
     @OnClick(R.id.top_back_btn)
@@ -142,6 +143,7 @@ public class InvestigateDetailActivity extends FragmentActivity {
 
     @OnClick(R.id.top_right_btn)
     void onSubmit() {
+        JDAppUtil.hidekeyboard(this);
         JDAlertDialog.showAlertDialog(InvestigateDetailActivity.this, "确定提交吗？", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

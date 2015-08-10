@@ -439,8 +439,6 @@ public class PersonInfoFragment extends BaseFragment {
                 String fileExt = uploadFileInfo.getFileExt();
                 if (fileExt.equals("amr")) {
                     uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
-                    soundInfoList.add(0, uploadFileInfo);
-
                 }
                 addGridViewData(uploadFileInfo);
                  /*else if (fileExt.equals("jpg")) {
@@ -728,10 +726,10 @@ public class PersonInfoFragment extends BaseFragment {
     * 保持数据
     * */
     public void saveDataSubmit() {
-        if (!mIsAuthSuccess) {
-            JDToast.showLongText(getActivity(), "请进行实名认证");
-            return;
-        }
+        //if (!mIsAuthSuccess) {
+        //    JDToast.showLongText(getActivity(), "请进行实名认证");
+        //    return;
+        // }
         //身份证号
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         HashMap<String, Object> argMaps = new HashMap<String, Object>();
@@ -752,7 +750,13 @@ public class PersonInfoFragment extends BaseFragment {
         }
         //手机号
         String mobile = et_mobile.getText().toString();
-        formparams.add(new BasicNameValuePair("mobile", mobile));
+        char c = mobile.charAt(0);
+        if (!JDAppUtil.isEmpty(mobile) && mobile.length() == 11 && mobile.charAt(0) == '1') {
+            formparams.add(new BasicNameValuePair("mobile", mobile));
+        } else {
+            JDToast.showLongText(getActivity(), "请输入正确的手机号码");
+            return;
+        }
         //数据  1男2女
         formparams.add(new BasicNameValuePair("gender", radio_man.isChecked() ? "1" : "2"));
         //婚姻状况 1. 未婚 2. 已婚 3离异
