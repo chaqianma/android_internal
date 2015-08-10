@@ -21,6 +21,7 @@ import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.UploadFileType;
+import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.widget.PhotoPopup;
 import com.chaqianma.jd.widget.ViewPagerPopup;
 
@@ -161,6 +162,25 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         return entity.build();
     }
 
+    /*
+ * 判断是否有上传成功图片
+ * */
+    protected boolean isUploadSuccess(List<UploadFileInfo> uploadFileInfoList) {
+        boolean isSuccess = false;
+        if (uploadFileInfoList != null) {
+            int size = uploadFileInfoList.size();
+            UploadFileInfo uploadFileInfo = null;
+            for (int i = 0; i < size; i++) {
+                uploadFileInfo = uploadFileInfoList.get(i);
+                //uploadFileInfo.iServer() &&
+                if (uploadFileInfo.getStatus() == UploadStatus.SUCCESS.getValue()) {
+                    isSuccess = true;
+                    break;
+                }
+            }
+        }
+        return isSuccess;
+    }
 
     //选择本地照片
     @Override

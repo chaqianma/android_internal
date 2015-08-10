@@ -43,7 +43,7 @@ public class NodisturbActivity extends BaseActivity {
 
     //初始化数据
     private void initData() {
-        switch_disturb.setChecked(SharedPreferencesUtil.getShareBoolean(NodisturbActivity.this, Constants.NODISTURB));
+        switch_disturb.setChecked(SharedPreferencesUtil.getShareBoolean(NodisturbActivity.this, Constants.NODISTURB,true));
         String begin_time = SharedPreferencesUtil.getShareString(NodisturbActivity.this, Constants.NODISTURB_BEGINTIME);
         String end_time = SharedPreferencesUtil.getShareString(NodisturbActivity.this, Constants.NODISTURB_ENDTIME);
         if (begin_time != null && begin_time.length() > 0)

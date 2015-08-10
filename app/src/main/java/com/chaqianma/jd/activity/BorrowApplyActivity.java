@@ -31,6 +31,7 @@ import com.chaqianma.jd.widget.JDToast;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -197,6 +198,12 @@ public class BorrowApplyActivity extends BaseActivity {
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.setClass(BorrowApplyActivity.this, MainActivity.class);
                                     startActivity(intent);
+                                    //删除临时文件
+                                    try {
+
+                                    } catch (Exception e) {
+
+                                    }
                                     finish();
                                 }
                             }));

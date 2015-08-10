@@ -215,13 +215,13 @@ public class PersonalAssetsFragment extends BaseFragment {
     private void addCompanyIncome() {
         if (!isIncome2Show) {
             //收入
-            if (mSYList_1.size() <= 1 && mSYList_1.get(0).isDefault()) {
+            if (!isUploadSuccess(mSYList_1)) {
                 JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
                 return;
             }
 
             //经营
-            if (mJYList_1.size() <= 1 && mJYList_1.get(0).isDefault()) {
+            if (!isUploadSuccess(mJYList_1)) {
                 JDToast.showLongText(getActivity(), "请上传经营性单据图片");
                 return;
             }
@@ -236,13 +236,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else {
             if (!isIncome3Show) {
                 //收入
-                if (mSYList_2.size() <= 1 && mSYList_2.get(0).isDefault()) {
+                if (!isUploadSuccess(mSYList_2)) {
                     JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
                     return;
                 }
 
                 //经营
-                if (mJYList_2.size() <= 1 && mJYList_2.get(0).isDefault()) {
+                if (!isUploadSuccess(mJYList_2)) {
                     JDToast.showLongText(getActivity(), "请上传经营性单据图片");
                     return;
                 }
@@ -280,13 +280,13 @@ public class PersonalAssetsFragment extends BaseFragment {
     private void addCar() {
         if (!isCar2Show) {
             //车牌
-            if (mCPList_1.size() <= 1 && mCPList_1.get(0).isDefault()) {
+            if (!isUploadSuccess(mCPList_1)) {
                 JDToast.showLongText(getActivity(), "请上传车牌车型图片");
                 return;
             }
 
             //行驶证
-            if (mXSList_1.size() <= 1 && mXSList_1.get(0).isDefault()) {
+            if (!isUploadSuccess(mXSList_1)) {
                 JDToast.showLongText(getActivity(), "请上传行驶证图片");
                 return;
             }
@@ -297,13 +297,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else {
             if (!isCar3Show) {
                 //车牌
-                if (mCPList_2.size() <= 1 && mCPList_2.get(0).isDefault()) {
+                if (!isUploadSuccess(mCPList_2)) {
                     JDToast.showLongText(getActivity(), "请上传车牌车型图片");
                     return;
                 }
 
                 //行驶证
-                if (mXSList_2.size() <= 1 && mXSList_2.get(0).isDefault()) {
+                if (!isUploadSuccess(mXSList_2)) {
                     JDToast.showLongText(getActivity(), "请上传行驶证图片");
                     return;
                 }
@@ -341,13 +341,13 @@ public class PersonalAssetsFragment extends BaseFragment {
     private void addHouse() {
         if (!isHouse2Show) {
             //房产证/合同
-            if (mFCList_1.size() <= 1 && mFCList_1.get(0).isDefault()) {
+            if (!isUploadSuccess(mFCList_1)) {
                 JDToast.showLongText(getActivity(), "请上传房产证合同图片");
                 return;
             }
 
             //土地证
-            if (mTDList_1.size() <= 1 && mTDList_1.get(0).isDefault()) {
+            if (!isUploadSuccess(mTDList_1)) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return;
             }
@@ -358,13 +358,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else {
             if (!isHouse3Show) {
                 //房产证/合同
-                if (mFCList_2.size() <= 1 && mFCList_2.get(0).isDefault()) {
+                if (!isUploadSuccess(mFCList_2)) {
                     JDToast.showLongText(getActivity(), "请上传房产证合同图片");
                     return;
                 }
 
                 //土地证
-                if (mTDList_2.size() <= 1 && mTDList_2.get(0).isDefault()) {
+                if (!isUploadSuccess(mTDList_2)) {
                     JDToast.showLongText(getActivity(), "请上传土地证图片");
                     return;
                 }
@@ -1352,6 +1352,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         }
     }
 
+
     /*
    * 必须输入判断
    * */
@@ -1359,37 +1360,38 @@ public class PersonalAssetsFragment extends BaseFragment {
 
         //第一家
         // 收入证明
-        if (mSYList_1.size() <= 1 && mSYList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mSYList_1)) {
             JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
             return false;
         }
 
         //经营
-        if (mJYList_1.size() <= 1 && mJYList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mJYList_1)) {
             JDToast.showLongText(getActivity(), "请上传经营性单据图片");
             return false;
         }
 
+
         //车牌
-        if (mCPList_1.size() <= 1 && mCPList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mCPList_1)) {
             JDToast.showLongText(getActivity(), "请上传车牌车型图片");
             return false;
         }
 
         //行驶证
-        if (mXSList_1.size() <= 1 && mXSList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mXSList_1)) {
             JDToast.showLongText(getActivity(), "请上传行驶证图片");
             return false;
         }
 
         //房产证/合同
-        if (mFCList_1.size() <= 1 && mFCList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mFCList_1)) {
             JDToast.showLongText(getActivity(), "请上传房产证合同图片");
             return false;
         }
 
         //土地证
-        if (mTDList_1.size() <= 1 && mTDList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mTDList_1)) {
             JDToast.showLongText(getActivity(), "请上传土地证图片");
             return false;
         }
@@ -1397,13 +1399,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         //第二家
         // 收入证明
         if (isIncome2Show) {
-            if (mSYList_2.size() <= 1 && mSYList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mSYList_2)) {
                 JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
                 return false;
             }
 
             //经营
-            if (mJYList_2.size() <= 1 && mJYList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mJYList_2)) {
                 JDToast.showLongText(getActivity(), "请上传经营性单据图片");
                 return false;
             }
@@ -1411,13 +1413,13 @@ public class PersonalAssetsFragment extends BaseFragment {
 
         if (isCar2Show) {
             //车牌
-            if (mCPList_2.size() <= 1 && mCPList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mCPList_2)) {
                 JDToast.showLongText(getActivity(), "请上传车牌车型图片");
                 return false;
             }
 
             //行驶证
-            if (mXSList_2.size() <= 1 && mXSList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mXSList_2)) {
                 JDToast.showLongText(getActivity(), "请上传行驶证图片");
                 return false;
             }
@@ -1425,13 +1427,13 @@ public class PersonalAssetsFragment extends BaseFragment {
 
         if (isHouse2Show) {
             //房产证/合同
-            if (mFCList_2.size() <= 1 && mFCList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mFCList_2)) {
                 JDToast.showLongText(getActivity(), "请上传房产证合同图片");
                 return false;
             }
 
             //土地证
-            if (mTDList_2.size() <= 1 && mTDList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mTDList_2)) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
             }
@@ -1440,13 +1442,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         //第三家
         // 收入证明
         if (isIncome3Show) {
-            if (mSYList_3.size() <= 1 && mSYList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mSYList_3)) {
                 JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
                 return false;
             }
 
             //经营
-            if (mJYList_3.size() <= 1 && mJYList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mJYList_3)) {
                 JDToast.showLongText(getActivity(), "请上传经营性单据图片");
                 return false;
             }
@@ -1454,13 +1456,13 @@ public class PersonalAssetsFragment extends BaseFragment {
 
         if (isCar3Show) {
             //车牌
-            if (mCPList_3.size() <= 1 && mCPList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mCPList_3)) {
                 JDToast.showLongText(getActivity(), "请上传车牌车型图片");
                 return false;
             }
 
             //行驶证
-            if (mXSList_3.size() <= 1 && mXSList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mXSList_3)) {
                 JDToast.showLongText(getActivity(), "请上传行驶证图片");
                 return false;
             }
@@ -1468,13 +1470,13 @@ public class PersonalAssetsFragment extends BaseFragment {
 
         if (isHouse3Show) {
             //房产证/合同
-            if (mFCList_3.size() <= 1 && mFCList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mFCList_3)) {
                 JDToast.showLongText(getActivity(), "请上传房产证合同图片");
                 return false;
             }
 
             //土地证
-            if (mTDList_3.size() <= 1 && mTDList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mTDList_3)) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
             }

@@ -1154,79 +1154,67 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     * 必须输入判断
     * */
     private boolean requiredInput() {
-        if (mTRList_1.size() <= 1 && mTRList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mTRList_1)) {
             JDToast.showLongText(getActivity(), "请上传税务登记图片");
             return false;
         }
-
-        if (mCCList_1.size() <= 1 && mCCList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mCCList_1)) {
             JDToast.showLongText(getActivity(), "请上传企业代码图片");
             return false;
         }
-
-        if (mOCList_1.size() <= 1 && mOCList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mOCList_1)) {
             JDToast.showLongText(getActivity(), "请上传其它证件图片");
             return false;
         }
-
-        if (mHCList_1.size() <= 1 && mHCList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mHCList_1)) {
             JDToast.showLongText(getActivity(), "请上传房产证合同图片");
             return false;
         }
-
-        if (mLCList_1.size() <= 1 && mLCList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mLCList_1)) {
             JDToast.showLongText(getActivity(), "请上传土地证图片");
             return false;
         }
         if (isCompany2Show) {
-            if (mTRList_2.size() <= 1 && mTRList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mTRList_2)) {
                 JDToast.showLongText(getActivity(), "请上传税务登记图片");
                 return false;
             }
-
-            if (mCCList_2.size() <= 1 && mCCList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mCCList_2)) {
                 JDToast.showLongText(getActivity(), "请上传企业代码图片");
                 return false;
             }
-
-            if (mOCList_2.size() <= 1 && mOCList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mOCList_2)) {
                 JDToast.showLongText(getActivity(), "请上传其它证件图片");
                 return false;
             }
-
-            if (mHCList_2.size() <= 1 && mHCList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mHCList_2)) {
                 JDToast.showLongText(getActivity(), "请上传房产证合同图片");
                 return false;
             }
-
-            if (mLCList_2.size() <= 1 && mLCList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mLCList_2)) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
             }
         }
 
         if (isCompany3Show) {
-            if (mTRList_3.size() <= 1 && mTRList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mTRList_3)) {
                 JDToast.showLongText(getActivity(), "请上传税务登记图片");
                 return false;
             }
-
-            if (mCCList_3.size() <= 1 && mCCList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mCCList_3)) {
                 JDToast.showLongText(getActivity(), "请上传企业代码图片");
                 return false;
             }
-
-            if (mOCList_3.size() <= 1 && mOCList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mOCList_3)) {
                 JDToast.showLongText(getActivity(), "请上传其它证件图片");
                 return false;
             }
-
-            if (mHCList_3.size() <= 1 && mHCList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mHCList_3)) {
                 JDToast.showLongText(getActivity(), "请上传房产证合同图片");
                 return false;
             }
-
-            if (mLCList_3.size() <= 1 && mLCList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mLCList_3)) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
             }

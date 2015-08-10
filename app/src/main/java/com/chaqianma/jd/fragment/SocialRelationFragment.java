@@ -753,34 +753,34 @@ public class SocialRelationFragment extends BaseFragment {
   * */
     private boolean requiredInput() {
         //关系类型  与关系人身份证件 备注 必填
-        if (mRCList_1.size() <= 1 && mRCList_1.get(0).isDefault()) {
+        if (!isUploadSuccess(mRCList_1)) {
             JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
             return false;
         }
 
         if (isShow2) {
-            if (mRCList_2.size() <= 1 && mRCList_2.get(0).isDefault()) {
+            if (!isUploadSuccess(mRCList_2)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
             }
         }
 
         if (isShow3) {
-            if (mRCList_3.size() <= 1 && mRCList_3.get(0).isDefault()) {
+            if (!isUploadSuccess(mRCList_3)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
             }
         }
 
         if (isShow4) {
-            if (mRCList_4.size() <= 1 && mRCList_4.get(0).isDefault()) {
+            if (!isUploadSuccess(mRCList_4)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
             }
         }
 
         if (isShow5) {
-            if (mRCList_5.size() <= 1 && mRCList_5.get(0).isDefault()) {
+            if (!isUploadSuccess(mRCList_5)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
             }
