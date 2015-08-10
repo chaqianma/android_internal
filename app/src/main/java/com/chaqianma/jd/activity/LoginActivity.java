@@ -105,9 +105,7 @@ public class LoginActivity extends BaseActivity {
                 public void onSuccess(BorrowRequestInfo borrowRequestInfo) {
                     if (borrowRequestInfo != null) {
                         String borrowRequestId = borrowRequestInfo.getBorrowRequestId();
-                        String name = borrowRequestInfo.getName();
-                        if (borrowRequestId != null && borrowRequestId.length() > 0
-                                && name != null && name.length() > 0) {
+                        if (borrowRequestId != null && borrowRequestId.length() > 0) {
                             AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
                         }
                     }

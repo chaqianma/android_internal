@@ -1,6 +1,7 @@
 package com.chaqianma.jd.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,8 @@ public class BorrowApplyActivity extends BaseActivity {
     //回退判断
     private boolean isBack = false;
     private String mLocation = null;
+    //办公地址
+    private String workLocation = null;
     //是否需要请求服务端
     private boolean isShouldRequest = true;
     //用于点击判断
@@ -84,7 +87,6 @@ public class BorrowApplyActivity extends BaseActivity {
     void onViewMap(View v) {
         //latitude  longitude
         Bundle bundle = new Bundle();
-        mLocation = "118.996925,32.142425";
         bundle.putString(Constants.LOCATION, mLocation);
         bundle.putString(Constants.BORROWNAME, tv_name.getText().toString());
         startActivity(BaiduMapActivity.class, bundle);
@@ -93,8 +95,8 @@ public class BorrowApplyActivity extends BaseActivity {
     @OnClick(R.id.tv_office_map)
     void onViewOfficeMap() {
         Bundle bundle = new Bundle();
-        mLocation = "118.996925,32.142425";
-        bundle.putString(Constants.LOCATION, mLocation);
+        ;
+        bundle.putString(Constants.LOCATION, workLocation);
         bundle.putString(Constants.BORROWNAME, tv_name.getText().toString());
         startActivity(BaiduMapActivity.class, bundle);
     }
@@ -113,6 +115,8 @@ public class BorrowApplyActivity extends BaseActivity {
             getBorrowRequestInfo();
         } else {
             initData(AppData.getInstance().getBorrowRequestInfo());
+            mLocation = AppData.getInstance().getBorrowRequestInfo().getLocation();
+            workLocation = AppData.getInstance().getBorrowRequestInfo().getWorkLocation();
         }
     }
 
@@ -144,9 +148,9 @@ public class BorrowApplyActivity extends BaseActivity {
             tv_date.setText(borrowRequestInfo.getLength());
             tv_purpose.setText(borrowRequestInfo.getBorrowPurpose());
             mLocation = borrowRequestInfo.getLocation();
-            mLocation = "118.996925,32.142425";
+            workLocation = borrowRequestInfo.getWorkLocation();
             getUserLocation(mLocation, false);
-            getUserLocation(mLocation, true);
+            getUserLocation(workLocation, true);
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
             if (borrowRequestInfo.getStatus().equals("1")) {
@@ -185,9 +189,18 @@ public class BorrowApplyActivity extends BaseActivity {
                                 @Override
                                 public void onSuccess(Object o) {
                                     JDToast.showShortText(BorrowApplyActivity.this, "提交尽调任务报告成功");
+                                    AppData.getInstance().clearBorrowRequestData();
                                     btn_borrow.setEnabled(false);
+                                    Intent intent = new Intent();
+                                    AppData.getInstance().getUserInfo().setIsBusy("0");
+                                    //singleTask
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setClass(BorrowApplyActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 }
                             }));
+
                         }
                     }, new DialogInterface.OnClickListener() {
                         @Override

@@ -19,6 +19,7 @@ public class BorrowRequestInfo implements Serializable {
     private String borrowPurpose=null;
     private String dateline=null;
     private String location=null;
+    private String workLocation=null;
     private String status=null;   // 1 没点  2点了
 
     public String getBorrowRequestId() {
@@ -107,5 +108,13 @@ public class BorrowRequestInfo implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getWorkLocation() {
+        return workLocation;
+    }
+
+    public void setWorkLocation(String workLocation) {
+        this.workLocation = workLocation;
     }
 }

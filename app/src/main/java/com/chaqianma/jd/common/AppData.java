@@ -33,6 +33,14 @@ public class AppData {
         return appData;
     }
 
+    /*
+    * 任务完成后将BorrowRequest设置为NULL
+    * */
+    public void clearBorrowRequestData()
+    {
+        setBorrowRequestInfo(null);
+    }
+
     public UserInfo getUserInfo() {
         return userInfo;
     }

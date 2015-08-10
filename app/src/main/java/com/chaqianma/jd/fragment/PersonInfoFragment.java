@@ -154,6 +154,8 @@ public class PersonInfoFragment extends BaseFragment {
     private DatePickerDialog datePickerDialog = null;
     //上传文件所用的Id
     private String mParentId = null;
+    //用于实名认证
+    private boolean mIsAuthSuccess = false;
     private int year, month, day;
 
     @Override
@@ -315,7 +317,7 @@ public class PersonInfoFragment extends BaseFragment {
                 public void onSuccess(CustomerBaseInfo customerBaseInfo) {
                     if (customerBaseInfo != null) {
                         mParentId = customerBaseInfo.getId();
-                        soundAdapter.setParentId(mParentId,Constants.USER_BASE_INFO);
+                        soundAdapter.setParentId(mParentId, Constants.USER_BASE_INFO);
                         et_card_id.setText(customerBaseInfo.getIdCardNumber());
                         et_name.setText(customerBaseInfo.getName());
                         et_mobile.setText(customerBaseInfo.getMobile());
@@ -380,10 +382,12 @@ public class PersonInfoFragment extends BaseFragment {
         btn_name_auth.setText("认证中。。。");
         HashMap<String, Object> argMaps = new HashMap<String, Object>();
         argMaps.put("name", "倪美华");
-        argMaps.put("idNumber", "32062319010022361");
+        argMaps.put("idNumber", "320623198610022361");
         HttpClientUtil.post(HttpRequestURL.realNameAuthenticationUrl, argMaps, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
+                mIsAuthSuccess = true;
+                btn_name_auth.setEnabled(false);
                 btn_name_auth.setText("认证成功");
                 JDToast.showLongText(getActivity(), "实名认证成功");
             }
@@ -391,6 +395,7 @@ public class PersonInfoFragment extends BaseFragment {
             @Override
             public void onFailure(String data) {
                 super.onFailure(data);
+                mIsAuthSuccess = false;
                 btn_name_auth.setText("认验失败");
             }
         }));
@@ -427,7 +432,7 @@ public class PersonInfoFragment extends BaseFragment {
                     soundInfoList.add(0, uploadFileInfo);
 
                 }
-                 addGridViewData(uploadFileInfo);
+                addGridViewData(uploadFileInfo);
                  /*else if (fileExt.equals("jpg")) {
                     //1.身份证  2 离婚证  3 结婚证 16 备注  17 语音
                     UploadFileType fType = UploadFileType.valueOf(uploadFileInfo.getFileType());
@@ -713,6 +718,10 @@ public class PersonInfoFragment extends BaseFragment {
     * 保持数据
     * */
     public void saveDataSubmit() {
+        if (!mIsAuthSuccess) {
+            JDToast.showLongText(getActivity(), "请进行实名认证");
+            return;
+        }
         //身份证号
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         HashMap<String, Object> argMaps = new HashMap<String, Object>();

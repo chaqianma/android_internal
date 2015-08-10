@@ -61,6 +61,7 @@ public class StaffActivity extends BaseActivity {
                 public void onSuccess(Object o) {
                     btn_state.setText(isBusy ? "空闲" : "忙碌");
                     userInfo.setIsBusy(isBusy ? "0" : "1");
+                    isBusy=!isBusy;
                 }
             }));
         } catch (Exception e) {

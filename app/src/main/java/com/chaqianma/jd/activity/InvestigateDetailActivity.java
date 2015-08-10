@@ -1,5 +1,7 @@
 package com.chaqianma.jd.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -21,6 +23,12 @@ import com.chaqianma.jd.R;
 import com.chaqianma.jd.adapters.InvestigateDetailFragmentAdapter;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.common.HttpRequestURL;
+import com.chaqianma.jd.utils.HttpClientUtil;
+import com.chaqianma.jd.utils.JDHttpResponseHandler;
+import com.chaqianma.jd.utils.ResponseHandler;
+import com.chaqianma.jd.widget.JDAlertDialog;
+import com.chaqianma.jd.widget.JDToast;
 
 import org.w3c.dom.Text;
 
@@ -134,6 +142,17 @@ public class InvestigateDetailActivity extends FragmentActivity {
 
     @OnClick(R.id.top_right_btn)
     void onSubmit() {
-        mAdapter.saveData(mViewPager.getCurrentItem());
+        JDAlertDialog.showAlertDialog(InvestigateDetailActivity.this, "确定提交吗？", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mAdapter.saveData(mViewPager.getCurrentItem());
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                dialog.cancel();
+            }
+        });
     }
 }
