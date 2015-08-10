@@ -105,12 +105,6 @@ public class SocialRelationFragment extends BaseFragment {
     private Spinner sp_relation_type_5 = null;
     private GridView gv_relation_card_5 = null;
 
-
-    //尽职说明
-    private ImgsGridViewAdapter mJZAdapter = null;
-    private List<UploadFileInfo> mJZList = null;
-
-
     private View mView = null;
     private boolean isShow2 = false, isShow3 = false, isShow4 = false, isShow5 = false;
     //图片标签
@@ -168,15 +162,6 @@ public class SocialRelationFragment extends BaseFragment {
             mRCAdapter_1.setOnClickImgListener(this);
             gv_relation_card_1.setAdapter(mRCAdapter_1);
         }
-        {
-            UploadFileInfo imgInfo = new UploadFileInfo();
-            imgInfo.setIdxTag(0);
-            imgInfo.setIsDefault(true);
-            imgInfo.setiServer(false);
-            imgInfo.setFileType(UploadFileType.COMMENT.getValue());
-            mJZList.add(imgInfo);
-            mJZAdapter = new ImgsGridViewAdapter(getActivity(), mJZList);
-        }
 
         {
             //录音
@@ -203,7 +188,6 @@ public class SocialRelationFragment extends BaseFragment {
 
         //尽职说明
         {
-            //备注
             UploadFileInfo imgInfo = new UploadFileInfo();
             imgInfo.setIsDefault(true);
             imgInfo.setFileType(UploadFileType.COMMENT.getValue());
@@ -386,7 +370,6 @@ public class SocialRelationFragment extends BaseFragment {
         remarkUploadImgInfoList = new ArrayList<UploadFileInfo>();
         soundInfoList = new ArrayList<UploadFileInfo>();
         commentUploadImgInfoList = new ArrayList<UploadFileInfo>();
-        mJZList = new ArrayList<UploadFileInfo>();
     }
 
     /*
@@ -439,6 +422,7 @@ public class SocialRelationFragment extends BaseFragment {
                                     }
                                 }
                             }
+                            soundAdapter.setParentId(mParentId[0]);
                         }
                     } catch (Exception e) {
 
@@ -680,7 +664,7 @@ public class SocialRelationFragment extends BaseFragment {
                     break;
             }
         } else if (fType == UploadFileType.COMMENT) {
-            mJZAdapter.refreshData();
+            commentImgsAdapter.refreshData();
         } else if (fType == UploadFileType.REMARK) {
             remarkImgsAdapter.refreshData();
         } else {
@@ -741,7 +725,7 @@ public class SocialRelationFragment extends BaseFragment {
                     break;
             }
         } else if (fType == UploadFileType.COMMENT) {
-            mJZList.add(0, imgInfo);
+            commentUploadImgInfoList.add(0, imgInfo);
         } else if (fType == UploadFileType.REMARK) {
             remarkUploadImgInfoList.add(0, imgInfo);
         }
@@ -795,8 +779,8 @@ public class SocialRelationFragment extends BaseFragment {
         boolean isSelctedSpouse = false;
         List<ContactInfo> contactInfoList = new ArrayList<ContactInfo>();
 
-        if (!requiredInput())
-            return;
+        //if (!requiredInput())
+        //    return;
 
         if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
             isSelctedSpouse = true;

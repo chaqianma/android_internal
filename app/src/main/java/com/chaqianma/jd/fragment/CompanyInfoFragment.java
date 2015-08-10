@@ -639,7 +639,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             soundInfo.setFileType(UploadFileType.SOUND.getValue());
             soundInfo.setiServer(false);
             soundInfoList.add(soundInfo);
-            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList);
+            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList,Constants.BUSINESS_INFO);
             gv_sound.setAdapter(soundAdapter);
         }
 
@@ -707,7 +707,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                 }
 
                                 //设置录音parentId,parentTableName
-                                soundAdapter.setParentId(mParentId[0], Constants.BUSINESS_INFO);
+                                soundAdapter.setParentId(mParentId[0]);
                             }
                         } catch (Exception e) {
 

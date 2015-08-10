@@ -80,15 +80,14 @@ public class SoundGridViewAdapter extends BaseAdapter {
     }
 
 
-    public SoundGridViewAdapter(Context context, List<UploadFileInfo> soundInfoList, String parentId) {
+    public SoundGridViewAdapter(Context context, List<UploadFileInfo> soundInfoList, String parentTableName) {
         this.mContext = context;
         this.mSoundInfoList = soundInfoList;
-        this.mParentId = parentId;
+        this.mParentTableName = parentTableName;
     }
 
-    public void setParentId(String parentId, String parentTableName) {
+    public void setParentId(String parentId) {
         this.mParentId = parentId;
-        this.mParentTableName = parentTableName;
     }
 
     @Override
@@ -343,7 +342,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                     UploadFileInfo soundInfo = new UploadFileInfo();
                     soundInfo.setIsDefault(false);
                     soundInfo.setFileType(UploadFileType.SOUND.getValue());
-                    soundInfo.setParentTableName(Constants.USER_BASE_INFO);
+                    soundInfo.setParentTableName(mParentTableName);
                     soundInfo.setBigImgPath(mSoundPath);
                     soundInfo.setStatus(UploadStatus.SUCCESS.getValue());
                     soundInfo.setFileId(fileInfo.getFileId());
@@ -358,6 +357,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                 public void onFailure(String data) {
                     UploadFileInfo soundInfo = new UploadFileInfo();
                     soundInfo.setStatus(UploadStatus.FAILURE.getValue());//失败
+                    soundInfo.setBigImgPath(mSoundPath);
                     soundInfo.setiServer(false);
                     mSoundInfoList.add(0, soundInfo);
                     notifyDataSetChanged();

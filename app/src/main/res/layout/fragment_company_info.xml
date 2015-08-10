@@ -58,7 +58,8 @@
                     android:minLines="6" />
 
                 <LinearLayout
-                    style="@style/LinearLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -81,7 +82,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/LinearLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
                     <TextView

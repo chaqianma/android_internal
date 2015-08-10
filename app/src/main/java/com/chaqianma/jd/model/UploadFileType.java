@@ -14,9 +14,9 @@ package com.chaqianma.jd.model;
     17 COMMENT  尽职说明
  */
 public enum UploadFileType {
-    NONE(0), CARD(1),SINGLE(2),MARRY(3),
+    NONE(0), CARD(1), SINGLE(2), MARRY(3),
     YY(4), SW(5), QYDM(6), QT(7), FC(8), TD(9),
-    SY(10),JY(11),CP(12),XS(13),REMARK(16),COMMENT(17),SOUND(80);
+    SY(10), JY(11), CP(12), XS(13), REMARK(16), COMMENT(17), SOUND(80);
     private int index;
 
     private UploadFileType(int index) {
@@ -73,6 +73,12 @@ public enum UploadFileType {
                 break;
             case 16:
                 fileType = UploadFileType.REMARK;
+                break;
+            case 17:
+                fileType = UploadFileType.COMMENT;
+                break;
+            case 80:
+                fileType = UploadFileType.SOUND;
                 break;
             default:
                 break;

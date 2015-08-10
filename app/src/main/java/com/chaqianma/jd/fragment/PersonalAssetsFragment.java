@@ -690,7 +690,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                         try {
                             //获取备注提交ID
                             mRemarkId = assetInfo.getId();
-                            soundAdapter.setParentId(mRemarkId, Constants.PERSONAL_ASSETS_INFO);
+                            soundAdapter.setParentId(mRemarkId);
                             //设置备注信息
                             if (!JDAppUtil.isEmpty(assetInfo.getRemark()))
                                 et_remark.setText(assetInfo.getRemark());
@@ -880,7 +880,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             soundInfo.setFileType(UploadFileType.SOUND.getValue());
             soundInfo.setiServer(false);
             soundInfoList.add(soundInfo);
-            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList);
+            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList,Constants.PERSONAL_ASSETS_INFO);
             gv_sound.setAdapter(soundAdapter);
         }
 
