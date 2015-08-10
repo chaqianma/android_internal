@@ -261,7 +261,7 @@ public class PersonInfoFragment extends BaseFragment {
             soundInfo.setFileType(UploadFileType.SOUND.getValue());
             soundInfo.setiServer(false);
             soundInfoList.add(soundInfo);
-            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList, mParentId);
+            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList);
             gv_sound.setAdapter(soundAdapter);
         }
 
@@ -315,6 +315,7 @@ public class PersonInfoFragment extends BaseFragment {
                 public void onSuccess(CustomerBaseInfo customerBaseInfo) {
                     if (customerBaseInfo != null) {
                         mParentId = customerBaseInfo.getId();
+                        soundAdapter.setParentId(mParentId);
                         et_card_id.setText(customerBaseInfo.getIdCardNumber());
                         et_name.setText(customerBaseInfo.getName());
                         et_mobile.setText(customerBaseInfo.getMobile());

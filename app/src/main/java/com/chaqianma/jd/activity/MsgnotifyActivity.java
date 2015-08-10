@@ -12,6 +12,7 @@ import com.chaqianma.jd.widget.SwitchButton;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by zhangxd on 2015/7/24.
@@ -57,6 +58,10 @@ public class MsgnotifyActivity extends BaseActivity {
             SharedPreferencesUtil.setShareString(MsgnotifyActivity.this, Constants.MSGTOAST, switch_shake.isChecked() ? Constants.MSGSHAKE : Constants.MSGSOUND);
             //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSOUND, switch_sound.isChecked());
             //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSHAKE, switch_shake.isChecked());
+        }
+        else
+        {
+           // JPushInterface.setSilenceTime(getApplicationContext(), beginHour, beginMin, endHour, endMin);
         }
     }
 

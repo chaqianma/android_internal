@@ -243,6 +243,7 @@ public class BorrowApplyActivity extends BaseActivity {
                         isCanClickOnce = false;
                         setTaskTag(false);
                         isPreBack = true;
+                        tv_begin_task.setVisibility(View.GONE);
                         btn_borrow.setText("进入尽调");
                         isShouldRequest = false;
                     }

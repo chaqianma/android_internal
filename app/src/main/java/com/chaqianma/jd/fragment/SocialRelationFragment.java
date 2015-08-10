@@ -378,7 +378,7 @@ public class SocialRelationFragment extends BaseFragment {
         mRCList_5 = new ArrayList<UploadFileInfo>();
         remarkUploadImgInfoList = new ArrayList<UploadFileInfo>();
         soundInfoList = new ArrayList<UploadFileInfo>();
-        commentUploadImgInfoList=new ArrayList<UploadFileInfo>();
+        commentUploadImgInfoList = new ArrayList<UploadFileInfo>();
         mJZList = new ArrayList<UploadFileInfo>();
     }
 
@@ -815,10 +815,10 @@ public class SocialRelationFragment extends BaseFragment {
         // relation; // 1 配偶 2直系亲属 3合伙人 4财务 5其他
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         String ss = JSON.toJSONString(contactInfoList);
-        String b=et_comment.getText().toString();
+        String b = et_comment.getText().toString();
         formparams.add(new BasicNameValuePair("contactInfoListJson", ss));
-        formparams.add(new BasicNameValuePair("ddDescription",b ));
-        HttpClientUtil.put(getActivity(), HttpRequestURL.updateSocialRelationURL, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+        formparams.add(new BasicNameValuePair("ddDescription", b));
+        HttpClientUtil.put(getActivity(), HttpRequestURL.updateSocialRelationURL + getBorrowRequestId(), formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
                 JDToast.showLongText(getActivity(), "社会关系信息保存成功");

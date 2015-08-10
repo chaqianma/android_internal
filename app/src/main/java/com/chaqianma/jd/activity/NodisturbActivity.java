@@ -91,38 +91,34 @@ public class NodisturbActivity extends BaseActivity {
             if (switch_disturb.isChecked()) {
                 String begin_time = tv_begin_time.getText().toString();
                 int beginHour = 0, endHour = 0;
+                int beginMin = 0, endMin = 0;
                 if (begin_time != null && begin_time.indexOf(":") > -1) {
                     beginHour = Integer.parseInt(begin_time.split(":")[0]);
+                    beginMin = Integer.parseInt(begin_time.split(":")[1]);
                 }
-                String end_time = tv_begin_time.getText().toString();
+                String end_time = tv_end_time.getText().toString();
                 if (end_time != null && end_time.indexOf(":") > -1) {
                     endHour = Integer.parseInt(end_time.split(":")[0]);
+                    endMin = Integer.parseInt(end_time.split(":")[1]);
                 }
                 if (beginHour > endHour) {
                     JDToast.showLongText(NodisturbActivity.this, "开始时间不能大于结束时间");
                     return;
+                } else {
+                    if (beginMin > endMin) {
+                        JDToast.showLongText(NodisturbActivity.this, "开始时间不能大于结束时间");
+                        return;
+                    }
                 }
-                /*
-                * Set days 0表示星期天，1表示星期一，以此类推。 （7天制，Set集合里面的int范围为0到6）
-
-                Sdk1.2.9 – 新功能:set的值为null,则任何时间都可以收到消息和通知，set的size为0，则表示任何时间都收不到消息和通知.
-
-                int startHour 允许推送的开始时间 （24小时制：startHour的范围为0到23）
-                int endHour 允许推送的结束时间 （24小时制：endHour的范围为0到23）
-                * */
-                Set<Integer> days = new HashSet<Integer>();
-                days.add(0);
-                days.add(1);
-                days.add(2);
-                days.add(3);
-                days.add(4);
-                days.add(5);
-                days.add(6);
-                JPushInterface.setPushTime(getApplicationContext(), days, beginHour, endHour);
+                //开启
+                JPushInterface.setSilenceTime(getApplicationContext(), beginHour, beginMin, endHour, endMin);
+            } else {
+                //关闭
+                JPushInterface.setSilenceTime(getApplicationContext(), 0, 0, 0, 0);
             }
             SharedPreferencesUtil.setShareBoolean(NodisturbActivity.this, Constants.NODISTURB, switch_disturb.isChecked());
             SharedPreferencesUtil.setShareString(NodisturbActivity.this, Constants.NODISTURB_BEGINTIME, tv_begin_time.getText().toString());
-            SharedPreferencesUtil.setShareString(NodisturbActivity.this, Constants.NODISTURB_ENDTIME, tv_begin_time.getText().toString());
+            SharedPreferencesUtil.setShareString(NodisturbActivity.this, Constants.NODISTURB_ENDTIME, tv_end_time.getText().toString());
         } catch (Exception e) {
 
         }

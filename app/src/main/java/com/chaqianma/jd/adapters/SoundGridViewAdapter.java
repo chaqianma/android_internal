@@ -74,10 +74,20 @@ public class SoundGridViewAdapter extends BaseAdapter {
         void onStopRecord();
     }
 
+    public SoundGridViewAdapter(Context context, List<UploadFileInfo> soundInfoList) {
+        this(context,soundInfoList,null);
+    }
+
+
     public SoundGridViewAdapter(Context context, List<UploadFileInfo> soundInfoList, String parentId) {
         this.mContext = context;
         this.mSoundInfoList = soundInfoList;
         this.mParentId = parentId;
+    }
+
+    public void setParentId(String parentId)
+    {
+        this.mParentId=parentId;
     }
 
     @Override

@@ -40,5 +40,5 @@ public class HttpRequestURL {
     //批量修改企业信息
     public static final String updateBusinessInfoUrl="api/borrow/dd/businessinfo/update/batch/";
     //修改社会关系信息
-    public static final String updateSocialRelationURL="api/borrow/dd/socialrelation/update";
+    public static final String updateSocialRelationURL="api/borrow/dd/socialrelation/update/";
 }
