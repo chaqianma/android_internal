@@ -381,8 +381,18 @@ public class PersonInfoFragment extends BaseFragment {
     void onRealNameAuth(View v) {
         btn_name_auth.setText("认证中。。。");
         HashMap<String, Object> argMaps = new HashMap<String, Object>();
-        argMaps.put("name", "倪美华");
-        argMaps.put("idNumber", "320623198610022361");
+        String name = et_name.getText().toString();
+        String card_id = et_card_id.getText().toString();
+        if (JDAppUtil.isEmpty(card_id)) {
+            JDToast.showLongText(getActivity(), "请输入身份证号");
+            return;
+        }
+        if (JDAppUtil.isEmpty(name)) {
+            JDToast.showLongText(getActivity(), "请输入姓名");
+            return;
+        }
+        argMaps.put("name", name);
+        argMaps.put("idNumber", card_id);
         HttpClientUtil.post(HttpRequestURL.realNameAuthenticationUrl, argMaps, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {

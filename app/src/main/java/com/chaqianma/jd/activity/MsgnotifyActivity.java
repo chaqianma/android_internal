@@ -52,8 +52,8 @@ public class MsgnotifyActivity extends BaseActivity {
                 switch_sound.setChecked(false);
                 switch_shake.setChecked(true);
             } else {
-                switch_sound.setChecked(false);
-                switch_shake.setChecked(true);
+                switch_sound.setChecked(true);
+                switch_shake.setChecked(false);
             }
         } else {
             switch_sound.setChecked(false);
@@ -74,7 +74,7 @@ public class MsgnotifyActivity extends BaseActivity {
             //设置无任务提醒
             JPushUtil.setSilenceTime(MsgnotifyActivity.this, 0, 59, 23, 59);
         }
-        JDToast.showLongText(MsgnotifyActivity.this,"消息提醒设置成功");
+        JDToast.showLongText(MsgnotifyActivity.this, "消息提醒设置成功");
         finish();
     }
 

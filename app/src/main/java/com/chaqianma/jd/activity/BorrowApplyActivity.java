@@ -194,8 +194,7 @@ public class BorrowApplyActivity extends BaseActivity {
                                     btn_borrow.setEnabled(false);
                                     Intent intent = new Intent();
                                     AppData.getInstance().getUserInfo().setIsBusy("0");
-                                    //singleTask
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.setClass(BorrowApplyActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     //删除临时文件

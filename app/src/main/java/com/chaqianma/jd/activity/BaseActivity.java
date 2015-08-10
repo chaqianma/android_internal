@@ -20,7 +20,6 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class BaseActivity extends Activity implements View.OnClickListener {
     protected iBackPressedListener ibackPressedListener;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

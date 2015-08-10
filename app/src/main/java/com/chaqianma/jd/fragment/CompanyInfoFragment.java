@@ -1230,8 +1230,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         //经营场所 1自由 2租赁 3其他
         List<CompanyInfo> companyInfoList = new ArrayList<CompanyInfo>();
         //必填验证
-        if (!requiredInput())
-            return;
+        //if (!requiredInput())
+        //    return;
 
         CompanyInfo companyInfo = new CompanyInfo();
         companyInfo.setOrganizationType(sp_company_type_1.getSelectedItemPosition() + 1 + "");

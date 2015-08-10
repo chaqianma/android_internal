@@ -1,8 +1,13 @@
 package com.chaqianma.jd.common;
 
+import android.app.Activity;
+
 import com.chaqianma.jd.model.BorrowRequestInfo;
 import com.chaqianma.jd.model.LocationInfo;
 import com.chaqianma.jd.model.UserInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zhangxd on 2015/7/17.
@@ -13,14 +18,15 @@ public class AppData {
 
     private LocationInfo locationInfo = null;
 
-    private BorrowRequestInfo borrowRequestInfo=null;
+    private BorrowRequestInfo borrowRequestInfo = null;
 
+    public List<Activity> activityList;
 
-
-    private String header=null;
+    private String header = null;
 
 
     private AppData() {
+        activityList=new ArrayList<Activity>();
     }
 
     public static AppData getInstance() {
@@ -36,8 +42,7 @@ public class AppData {
     /*
     * 任务完成后将BorrowRequest设置为NULL
     * */
-    public void clearBorrowRequestData()
-    {
+    public void clearBorrowRequestData() {
         setBorrowRequestInfo(null);
     }
 
@@ -73,5 +78,4 @@ public class AppData {
     public void setHeader(String header) {
         this.header = header;
     }
-
 }

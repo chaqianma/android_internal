@@ -144,8 +144,8 @@ public class JPushUtil {
             builder.notificationDefaults = Notification.DEFAULT_VIBRATE;  //设置为铃声（ Notification.DEFAULT_SOUND）或者震动（ Notification.DEFAULT_VIBRATE）
         else
             builder.notificationDefaults = Notification.DEFAULT_SOUND;
-        JPushInterface.setPushNotificationBuilder(1, builder);
-        //JPushInterface.setDefaultPushNotificationBuilder(builder);
+        //JPushInterface.setPushNotificationBuilder(1, builder);
+        JPushInterface.setDefaultPushNotificationBuilder(builder);
     }
 
     public static class CustomNotificationBuilder {
