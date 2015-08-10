@@ -880,7 +880,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             soundInfo.setFileType(UploadFileType.SOUND.getValue());
             soundInfo.setiServer(false);
             soundInfoList.add(soundInfo);
-            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList,Constants.PERSONAL_ASSETS_INFO);
+            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList, Constants.PERSONAL_ASSETS_INFO);
             gv_sound.setAdapter(soundAdapter);
         }
 
@@ -923,6 +923,9 @@ public class PersonalAssetsFragment extends BaseFragment {
             public void onSuccess(UploadFileInfo uploadFileInfo) {
                 uploadFileInfo.setiServer(true);
                 uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
+                if (uploadFileInfo.getFileExt().equals("amr")) {
+                    uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
+                }
                 addGridViewData(uploadFileInfo);
             }
 
@@ -1040,6 +1043,8 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
         } else if (fType == UploadFileType.REMARK) {
             remarkUploadImgInfoList.add(0, imgInfo);
+        } else if (fType == UploadFileType.SOUND) {
+            soundInfoList.add(0, imgInfo);
         } else {
 
         }
@@ -1347,6 +1352,8 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
         } else if (fType == UploadFileType.REMARK) {
             remarkImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.SOUND) {
+            soundAdapter.refreshData();
         } else {
 
         }

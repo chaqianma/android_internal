@@ -744,6 +744,9 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             public void onSuccess(UploadFileInfo uploadFileInfo) {
                 uploadFileInfo.setiServer(true);
                 uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
+                if (uploadFileInfo.getFileExt().equals("amr")) {
+                    uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
+                }
                 addGridViewData(uploadFileInfo);
             }
 
@@ -947,6 +950,10 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             }
         } else if (fType == UploadFileType.REMARK) {
             remarkUploadImgInfoList.add(0, imgInfo);
+        }else if (fType == UploadFileType.SOUND) {
+            soundInfoList.add(0, imgInfo);
+        }else{
+
         }
         mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
     }
@@ -1145,6 +1152,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             }
         } else if (fType == UploadFileType.REMARK) {
             remarkImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.SOUND) {
+            soundAdapter.refreshData();
         } else {
 
         }

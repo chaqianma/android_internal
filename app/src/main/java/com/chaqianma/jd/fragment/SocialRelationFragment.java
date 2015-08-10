@@ -473,6 +473,9 @@ public class SocialRelationFragment extends BaseFragment {
             public void onSuccess(UploadFileInfo uploadFileInfo) {
                 uploadFileInfo.setiServer(true);
                 uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
+                if (uploadFileInfo.getFileExt().equals("amr")) {
+                    uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
+                }
                 addGridViewData(uploadFileInfo);
             }
 
@@ -667,6 +670,8 @@ public class SocialRelationFragment extends BaseFragment {
             commentImgsAdapter.refreshData();
         } else if (fType == UploadFileType.REMARK) {
             remarkImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.SOUND) {
+            soundAdapter.refreshData();
         } else {
         }
     }
@@ -728,6 +733,10 @@ public class SocialRelationFragment extends BaseFragment {
             commentUploadImgInfoList.add(0, imgInfo);
         } else if (fType == UploadFileType.REMARK) {
             remarkUploadImgInfoList.add(0, imgInfo);
+        } else if (fType == UploadFileType.SOUND) {
+            soundInfoList.add(0, imgInfo);
+        } else {
+
         }
         mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
     }
