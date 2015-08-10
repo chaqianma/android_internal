@@ -26,6 +26,7 @@ import com.alibaba.fastjson.JSON;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.InvestigateDetailActivity;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
+import com.chaqianma.jd.adapters.SoundGridViewAdapter;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.CompanyInfo;
@@ -89,6 +90,11 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     //备注
     @InjectView(R.id.et_remark)
     EditText et_remark;
+
+    @InjectView(R.id.gv_sound)
+    GridView gv_sound;
+    @InjectView(R.id.gv_mark)
+    GridView gv_mark;
     //第二家企业
     Spinner sp_company_type_2 = null;
     //营业执照
@@ -208,6 +214,14 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             add("企业3");
         }
     };
+    //备注数据源
+    private ImgsGridViewAdapter remarkImgsAdapter = null;
+    //备注集合
+    private List<UploadFileInfo> remarkUploadImgInfoList = null;
+    //录音数据源
+    private SoundGridViewAdapter soundAdapter = null;
+    //录音集合
+    private List<UploadFileInfo> soundInfoList = null;
 
     /*
     * 添加企业
@@ -223,6 +237,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     private void addCompany() {
         //第二家企业
         if (!isCompany2Show) {
+            if (!requiredInput())
+                return;
             img_company_add.setEnabled(false);
             isCompany2Show = true;
             ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
@@ -237,6 +253,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         } else {
             //添加第三家企业
             if (!isCompany3Show) {
+                if (!requiredInput())
+                    return;
                 isCompany3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
                 initControlView(false);
@@ -531,6 +549,10 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         mOCList_3 = new ArrayList<UploadFileInfo>();
         mHCList_3 = new ArrayList<UploadFileInfo>();
         mLCList_3 = new ArrayList<UploadFileInfo>();
+
+        //备注
+        remarkUploadImgInfoList = new ArrayList<UploadFileInfo>();
+        soundInfoList = new ArrayList<UploadFileInfo>();
     }
 
     //初始化数据源控件
@@ -609,6 +631,29 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             mLCAdapter_1.setOnClickImgListener(this);
             gv_land_card_1.setAdapter(mLCAdapter_1);
         }
+
+        {
+            //录音
+            UploadFileInfo soundInfo = new UploadFileInfo();
+            soundInfo.setIsDefault(true);
+            soundInfo.setFileType(UploadFileType.SOUND.getValue());
+            soundInfo.setiServer(false);
+            soundInfoList.add(soundInfo);
+            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList);
+            gv_sound.setAdapter(soundAdapter);
+        }
+
+        {
+            //备注
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setIsDefault(true);
+            imgInfo.setFileType(UploadFileType.REMARK.getValue());
+            imgInfo.setiServer(false);
+            remarkUploadImgInfoList.add(imgInfo);
+            remarkImgsAdapter = new ImgsGridViewAdapter(getActivity(), remarkUploadImgInfoList);
+            remarkImgsAdapter.setOnClickImgListener(this);
+            gv_mark.setAdapter(remarkImgsAdapter);
+        }
     }
 
     /*
@@ -660,6 +705,9 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                         }
                                     }
                                 }
+
+                                //设置录音parentId,parentTableName
+                                soundAdapter.setParentId(mParentId[0], Constants.BUSINESS_INFO);
                             }
                         } catch (Exception e) {
 
@@ -897,8 +945,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 default:
                     break;
             }
-        } else {
-
+        } else if (fType == UploadFileType.REMARK) {
+            remarkUploadImgInfoList.add(0, imgInfo);
         }
         mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
     }
@@ -980,7 +1028,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     //上传图片
     private void uploadImg(final UploadFileInfo fileInfo) {
         try {
-
             HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, mParentId[fileInfo.getIdxTag()], false), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
                 @Override
                 public void onSuccess(UploadFileInfo downImgInfo) {
@@ -1096,9 +1143,95 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 default:
                     break;
             }
+        } else if (fType == UploadFileType.REMARK) {
+            remarkImgsAdapter.refreshData();
         } else {
 
         }
+    }
+
+    /*
+    * 必须输入判断
+    * */
+    private boolean requiredInput() {
+        if (mTRList_1.size() <= 1 && mTRList_1.get(0).isDefault()) {
+            JDToast.showLongText(getActivity(), "请上传税务登记图片");
+            return false;
+        }
+
+        if (mCCList_1.size() <= 1 && mCCList_1.get(0).isDefault()) {
+            JDToast.showLongText(getActivity(), "请上传企业代码图片");
+            return false;
+        }
+
+        if (mOCList_1.size() <= 1 && mOCList_1.get(0).isDefault()) {
+            JDToast.showLongText(getActivity(), "请上传其它证件图片");
+            return false;
+        }
+
+        if (mHCList_1.size() <= 1 && mHCList_1.get(0).isDefault()) {
+            JDToast.showLongText(getActivity(), "请上传房产证合同图片");
+            return false;
+        }
+
+        if (mLCList_1.size() <= 1 && mLCList_1.get(0).isDefault()) {
+            JDToast.showLongText(getActivity(), "请上传土地证图片");
+            return false;
+        }
+        if (isCompany2Show) {
+            if (mTRList_2.size() <= 1 && mTRList_2.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传税务登记图片");
+                return false;
+            }
+
+            if (mCCList_2.size() <= 1 && mCCList_2.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传企业代码图片");
+                return false;
+            }
+
+            if (mOCList_2.size() <= 1 && mOCList_2.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传其它证件图片");
+                return false;
+            }
+
+            if (mHCList_2.size() <= 1 && mHCList_2.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
+                return false;
+            }
+
+            if (mLCList_2.size() <= 1 && mLCList_2.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传土地证图片");
+                return false;
+            }
+        }
+
+        if (isCompany3Show) {
+            if (mTRList_3.size() <= 1 && mTRList_3.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传税务登记图片");
+                return false;
+            }
+
+            if (mCCList_3.size() <= 1 && mCCList_3.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传企业代码图片");
+                return false;
+            }
+
+            if (mOCList_3.size() <= 1 && mOCList_3.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传其它证件图片");
+                return false;
+            }
+
+            if (mHCList_3.size() <= 1 && mHCList_3.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
+                return false;
+            }
+
+            if (mLCList_3.size() <= 1 && mLCList_3.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传土地证图片");
+                return false;
+            }
+        }
+        return true;
     }
 
     /*
@@ -1109,31 +1242,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         //经营场所 1自由 2租赁 3其他
         List<CompanyInfo> companyInfoList = new ArrayList<CompanyInfo>();
         //必填验证
-
-     if (mTRList_1.size() <= 1 && mTRList_1.get(0).isDefault()) {
-            JDToast.showLongText(getActivity(), "请上传税务登记图片");
+        if (!requiredInput())
             return;
-        }
-
-        if (mCCList_1.size() <= 1 && mCCList_1.get(0).isDefault()) {
-            JDToast.showLongText(getActivity(), "请上传企业代码图片");
-            return;
-        }
-
-        if (mOCList_1.size() <= 1 && mOCList_1.get(0).isDefault()) {
-            JDToast.showLongText(getActivity(), "请上传其它证件图片");
-            return;
-        }
-
-        if (mHCList_1.size() <= 1 && mHCList_1.get(0).isDefault()) {
-            JDToast.showLongText(getActivity(), "请上传房产证合同图片");
-            return;
-        }
-
-        if (mLCList_1.size() <= 1 && mLCList_1.get(0).isDefault()) {
-            JDToast.showLongText(getActivity(), "请上传土地证图片");
-            return;
-        }
 
         CompanyInfo companyInfo = new CompanyInfo();
         companyInfo.setOrganizationType(sp_company_type_1.getSelectedItemPosition() + 1 + "");
@@ -1143,30 +1253,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         companyInfoList.add(companyInfo);
 
         if (isCompany2Show) {
-            if (mTRList_2.size() <= 1 && mTRList_2.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传税务登记图片");
-                return;
-            }
-
-            if (mCCList_2.size() <= 1 && mCCList_2.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传企业代码图片");
-                return;
-            }
-
-            if (mOCList_2.size() <= 1 && mOCList_2.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传其它证件图片");
-                return;
-            }
-
-            if (mHCList_2.size() <= 1 && mHCList_2.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
-                return;
-            }
-
-            if (mLCList_2.size() <= 1 && mLCList_2.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传土地证图片");
-                return;
-            }
 
             companyInfo = new CompanyInfo();
             companyInfo.setOrganizationType(sp_company_type_2.getSelectedItemPosition() + 1 + "");
@@ -1176,31 +1262,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         }
 
         if (isCompany3Show) {
-            if (mTRList_3.size() <= 1 && mTRList_3.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传税务登记图片");
-                return;
-            }
-
-            if (mCCList_3.size() <= 1 && mCCList_3.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传企业代码图片");
-                return;
-            }
-
-            if (mOCList_3.size() <= 1 && mOCList_3.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传其它证件图片");
-                return;
-            }
-
-            if (mHCList_3.size() <= 1 && mHCList_3.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
-                return;
-            }
-
-            if (mLCList_3.size() <= 1 && mLCList_3.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传土地证图片");
-                return;
-            }
-
             companyInfo = new CompanyInfo();
             companyInfo.setOrganizationType(sp_company_type_3.getSelectedItemPosition() + 1 + "");
             companyInfo.setBusinessPremises(sp_business_premises_3.getSelectedItemPosition() + 1 + "");
@@ -1219,13 +1280,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             }
         }));
     }
-
-    //获取对应企业
-    private int getCompanyPosition() {
-
-        return 0;
-    }
-
 
     public static CompanyInfoFragment newInstance() {
         CompanyInfoFragment companyInfoFragment = new CompanyInfoFragment();

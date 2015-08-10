@@ -131,7 +131,6 @@ public class SocialRelationFragment extends BaseFragment {
     private SoundGridViewAdapter soundAdapter = null;
     //录音集合
     private List<UploadFileInfo> soundInfoList = null;
-
     //尽职数据源
     private ImgsGridViewAdapter commentImgsAdapter = null;
     //尽职集合
@@ -226,6 +225,8 @@ public class SocialRelationFragment extends BaseFragment {
     * */
     private void addRCPerson() {
         if (!isShow2) {
+            if (!requiredInput())
+                return;
             isShow2 = true;
             View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_2)).inflate();
             JDAppUtil.addShowAction(view);
@@ -242,6 +243,8 @@ public class SocialRelationFragment extends BaseFragment {
             gv_relation_card_2.setAdapter(mRCAdapter_2);
         } else {
             if (!isShow3) {
+                if (!requiredInput())
+                    return;
                 isShow3 = true;
                 View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_3)).inflate();
                 JDAppUtil.addShowAction(view);
@@ -258,6 +261,8 @@ public class SocialRelationFragment extends BaseFragment {
                 gv_relation_card_3.setAdapter(mRCAdapter_3);
             } else {
                 if (!isShow4) {
+                    if (!requiredInput())
+                        return;
                     isShow4 = true;
                     View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_4)).inflate();
                     JDAppUtil.addShowAction(view);
@@ -274,6 +279,8 @@ public class SocialRelationFragment extends BaseFragment {
                     gv_relation_card_4.setAdapter(mRCAdapter_4);
                 } else {
                     if (!isShow5) {
+                        if (!requiredInput())
+                            return;
                         isShow5 = true;
                         View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_5)).inflate();
                         JDAppUtil.addShowAction(view);
@@ -674,6 +681,9 @@ public class SocialRelationFragment extends BaseFragment {
             }
         } else if (fType == UploadFileType.COMMENT) {
             mJZAdapter.refreshData();
+        } else if (fType == UploadFileType.REMARK) {
+            remarkImgsAdapter.refreshData();
+        } else {
         }
     }
 
@@ -732,21 +742,62 @@ public class SocialRelationFragment extends BaseFragment {
             }
         } else if (fType == UploadFileType.COMMENT) {
             mJZList.add(0, imgInfo);
+        } else if (fType == UploadFileType.REMARK) {
+            remarkUploadImgInfoList.add(0, imgInfo);
         }
         mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
     }
 
     /*
-        * 保存数据
-        * */
+  * 必须输入判断
+  * */
+    private boolean requiredInput() {
+        //关系类型  与关系人身份证件 备注 必填
+        if (mRCList_1.size() <= 1 && mRCList_1.get(0).isDefault()) {
+            JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+            return false;
+        }
+
+        if (isShow2) {
+            if (mRCList_2.size() <= 1 && mRCList_2.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+                return false;
+            }
+        }
+
+        if (isShow3) {
+            if (mRCList_3.size() <= 1 && mRCList_3.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+                return false;
+            }
+        }
+
+        if (isShow4) {
+            if (mRCList_4.size() <= 1 && mRCList_4.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+                return false;
+            }
+        }
+
+        if (isShow5) {
+            if (mRCList_5.size() <= 1 && mRCList_5.get(0).isDefault()) {
+                JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /*
+     * 保存数据
+     * */
     public void saveDataSubmit() {
         boolean isSelctedSpouse = false;
         List<ContactInfo> contactInfoList = new ArrayList<ContactInfo>();
-        //关系类型  与关系人身份证件 备注 必填
-       /* if (mRCList_1.size() <= 1 && mRCList_1.get(0).isDefault()) {
-            JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
+
+        if (!requiredInput())
             return;
-        }*/
+
         if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
             isSelctedSpouse = true;
 
@@ -756,10 +807,7 @@ public class SocialRelationFragment extends BaseFragment {
         contactInfoList.add(contactInfo);
 
         if (isShow2) {
-           /* if (mRCList_2.size() <= 1 && mRCList_2.get(0).isDefault()) {
-                JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
-                return;
-            }*/
+
             if (sp_relation_type_2.getSelectedItem().toString().equals(mSpouse))
                 isSelctedSpouse = true;
 
@@ -768,22 +816,13 @@ public class SocialRelationFragment extends BaseFragment {
             contactInfoList.add(contactInfo);
         } else {
             if (isShow3) {
-               /* if (mRCList_3.size() <= 1 && mRCList_3.get(0).isDefault()) {
-                    JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
-                    return;
-                }*/
                 if (sp_relation_type_3.getSelectedItem().toString().equals(mSpouse))
                     isSelctedSpouse = true;
-
                 contactInfo = new ContactInfo();
                 contactInfo.setRelation(sp_relation_type_3.getSelectedItemPosition() + 1 + "");
                 contactInfoList.add(contactInfo);
             } else {
                 if (isShow4) {
-                  /*  if (mRCList_4.size() <= 1 && mRCList_4.get(0).isDefault()) {
-                        JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
-                        return;
-                    }*/
                     if (sp_relation_type_4.getSelectedItem().toString().equals(mSpouse))
                         isSelctedSpouse = true;
 
@@ -792,10 +831,6 @@ public class SocialRelationFragment extends BaseFragment {
                     contactInfoList.add(contactInfo);
                 } else {
                     if (isShow5) {
-                        /*if (mRCList_5.size() <= 1 && mRCList_5.get(0).isDefault()) {
-                            JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
-                            return;
-                        }*/
                         if (sp_relation_type_5.getSelectedItem().toString().equals(mSpouse))
                             isSelctedSpouse = true;
 

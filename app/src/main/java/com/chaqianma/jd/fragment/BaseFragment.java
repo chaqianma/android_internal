@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.MainActivity;
-import com.chaqianma.jd.activity.MainActivity_bak;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
 import com.chaqianma.jd.adapters.SoundGridViewAdapter;
 import com.chaqianma.jd.common.AppData;
@@ -77,11 +76,11 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
     }
 
     protected void setShowFragment(String fragmentTag, boolean isAddToBackStack) {
-        FragmentActivity fragmentActivity = getActivity();
-        if (fragmentActivity instanceof MainActivity_bak) {
-            MainActivity_bak activity = (MainActivity_bak) fragmentActivity;
+        /*FragmentActivity fragmentActivity = getActivity();
+        if (fragmentActivity instanceof MainActivity) {
+            MainActivity activity = (MainActivity) fragmentActivity;
             activity.setShowFragment(fragmentTag, isAddToBackStack);
-        }
+        }*/
     }
 
     protected void startActivity(Class<?> toClass) {

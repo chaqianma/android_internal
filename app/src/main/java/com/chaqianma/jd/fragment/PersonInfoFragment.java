@@ -315,7 +315,7 @@ public class PersonInfoFragment extends BaseFragment {
                 public void onSuccess(CustomerBaseInfo customerBaseInfo) {
                     if (customerBaseInfo != null) {
                         mParentId = customerBaseInfo.getId();
-                        soundAdapter.setParentId(mParentId);
+                        soundAdapter.setParentId(mParentId,Constants.USER_BASE_INFO);
                         et_card_id.setText(customerBaseInfo.getIdCardNumber());
                         et_name.setText(customerBaseInfo.getName());
                         et_mobile.setText(customerBaseInfo.getMobile());

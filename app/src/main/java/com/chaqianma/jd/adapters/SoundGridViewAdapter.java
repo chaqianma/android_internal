@@ -65,6 +65,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
     private ImageView img_delete = null;
     private UploadFileInfo soundInfo = null;
     private String mParentId = "1";
+    private String mParentTableName = null;
     private String mSoundPath = null;
     private TextView tv_record_status = null;
 
@@ -75,7 +76,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
     }
 
     public SoundGridViewAdapter(Context context, List<UploadFileInfo> soundInfoList) {
-        this(context,soundInfoList,null);
+        this(context, soundInfoList, null);
     }
 
 
@@ -85,9 +86,9 @@ public class SoundGridViewAdapter extends BaseAdapter {
         this.mParentId = parentId;
     }
 
-    public void setParentId(String parentId)
-    {
-        this.mParentId=parentId;
+    public void setParentId(String parentId, String parentTableName) {
+        this.mParentId = parentId;
+        this.mParentTableName = parentTableName;
     }
 
     @Override
@@ -334,7 +335,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
             ContentBody fileBody = new FileBody(new File(mSoundPath));
             entity.addPart("files", fileBody);
             entity.addPart("fileType", new StringBody(UploadFileType.REMARK.getValue() + "", ContentType.DEFAULT_TEXT));
-            entity.addPart("parentTableName", new StringBody(Constants.USER_BASE_INFO, ContentType.DEFAULT_TEXT));
+            entity.addPart("parentTableName", new StringBody(mParentTableName, ContentType.DEFAULT_TEXT));
             entity.addPart("parentId", new StringBody(mParentId, ContentType.DEFAULT_TEXT));
             HttpClientUtil.post(mContext, HttpRequestURL.uploadImgUrl, entity.build(), new JDHttpResponseHandler(mContext, new ResponseHandler<UploadFileInfo>() {
                 @Override
