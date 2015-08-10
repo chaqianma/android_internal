@@ -726,10 +726,10 @@ public class PersonInfoFragment extends BaseFragment {
     * 保持数据
     * */
     public void saveDataSubmit() {
-        //if (!mIsAuthSuccess) {
-        //    JDToast.showLongText(getActivity(), "请进行实名认证");
-        //    return;
-        // }
+        if (!mIsAuthSuccess) {
+            JDToast.showLongText(getActivity(), "请进行实名认证");
+            return;
+        }
         //身份证号
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         HashMap<String, Object> argMaps = new HashMap<String, Object>();
