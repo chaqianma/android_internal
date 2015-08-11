@@ -26,6 +26,8 @@ public class Constants {
     public static final String ISTASKFinishTAG = "ISTASKFinishTAG";
     //文件存放目录
     public static final String FILEDIR = "chaqianma";
+    //刷新图片与上传图片标签
+    public static final int IMAGE = 9090;
     //临时图片放置
     public static final String TEMPPATH = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR + "/" + "temp.jpg";
     //图片文件夹路径

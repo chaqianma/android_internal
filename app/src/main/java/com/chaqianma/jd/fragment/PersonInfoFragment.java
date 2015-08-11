@@ -13,6 +13,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.view.Gravity;
@@ -46,6 +48,7 @@ import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
+import com.loopj.android.http.SyncHttpClient;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -72,8 +75,12 @@ public class PersonInfoFragment extends BaseFragment {
     LinearLayout linear_container;
     @InjectView(R.id.rg_marry)
     RadioGroup radioGroup_marry;
-    @InjectView(R.id.layout_card)
-    LinearLayout layout_card;
+    @InjectView(R.id.layout_marry)
+    LinearLayout layout_marry;
+    @InjectView(R.id.layout_divorce)
+    LinearLayout layout_divorce;
+    @InjectView(R.id.layout_child)
+    LinearLayout layout_child;
     @InjectView(R.id.rg_registered_residence)
     RadioGroup radioGroup_registered;
     @InjectView(R.id.radio_native)
@@ -118,6 +125,8 @@ public class PersonInfoFragment extends BaseFragment {
     GridView gv_card_imgs;
     @InjectView(R.id.gv_marry_imgs)
     GridView gv_marry_imgs;
+    @InjectView(R.id.gv_divorce_imgs)
+    GridView gv_divorce_imgs;
     @InjectView(R.id.gv_sound)
     GridView gv_sound;
     @InjectView(R.id.gv_mark)
@@ -130,20 +139,26 @@ public class PersonInfoFragment extends BaseFragment {
     private static final int MARRY = 1004;
     //刷新GridView 录音
     private static final int SOUND = 1005;
+    //刷新GridView 离异
+    private static final int SINGLE = 1006;
     //刷新GridView 备注
-    private static final int REMARK = 1006;
+    private static final int REMARK = 1007;
     //身份证数据源
     private ImgsGridViewAdapter cardImgsAdapter = null;
-    //结婚证/离婚证
+    //结婚证
     private ImgsGridViewAdapter marryImgsAdapter = null;
+    //离婚证
+    private ImgsGridViewAdapter divorceImgsAdapter = null;
     //录音数据源
     private SoundGridViewAdapter soundAdapter = null;
     //备注数据源
     private ImgsGridViewAdapter remarkImgsAdapter = null;
     //身份证图片集合
     private List<UploadFileInfo> cardUploadImgInfoList = null;
-    //结婚证/离婚证集合
+    //结婚证
     private List<UploadFileInfo> marryUploadImgInfoList = null;
+    //离婚证
+    private List<UploadFileInfo> divorceUploadImgInfoList = null;
     //录音集合
     private List<UploadFileInfo> soundInfoList = null;
     //备注集合
@@ -175,6 +190,30 @@ public class PersonInfoFragment extends BaseFragment {
         return view;
     }
 
+    /*
+    * 设置未婚、结婚、离异 显示与否
+    */
+    private void setLayoutMarryVisible(int idx) {
+        switch (idx) {
+            case 1:
+                layout_child.setVisibility(View.GONE);
+                layout_marry.setVisibility(View.GONE);
+                layout_divorce.setVisibility(View.GONE);
+                break;
+            case 2:
+                layout_divorce.setVisibility(View.GONE);
+                layout_marry.setVisibility(View.VISIBLE);
+                layout_child.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                layout_marry.setVisibility(View.GONE);
+                layout_divorce.setVisibility(View.VISIBLE);
+                layout_child.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
+        }
+    }
 
     /*
     * 初始化RadioGroup
@@ -186,13 +225,13 @@ public class PersonInfoFragment extends BaseFragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.radio_single:
-                        JDAppUtil.addHiddenAction(layout_card);
+                        setLayoutMarryVisible(1);
                         break;
                     case R.id.radio_married:
+                        setLayoutMarryVisible(2);
+                        break;
                     case R.id.radio_divorce:
-                        if (layout_card.getVisibility() == View.GONE) {
-                            JDAppUtil.addShowAction(layout_card);
-                        }
+                        setLayoutMarryVisible(3);
                         break;
                     default:
                         break;
@@ -226,6 +265,7 @@ public class PersonInfoFragment extends BaseFragment {
         marryUploadImgInfoList = new ArrayList<UploadFileInfo>();
         soundInfoList = new ArrayList<UploadFileInfo>();
         remarkUploadImgInfoList = new ArrayList<UploadFileInfo>();
+        divorceUploadImgInfoList = new ArrayList<UploadFileInfo>();
     }
 
     /*
@@ -245,7 +285,7 @@ public class PersonInfoFragment extends BaseFragment {
         }
 
         {
-            //结婚证/离婚证
+            //结婚证
             UploadFileInfo imgInfo = new UploadFileInfo();
             imgInfo.setIsDefault(true);
             imgInfo.setFileType(UploadFileType.MARRY.getValue());
@@ -254,6 +294,18 @@ public class PersonInfoFragment extends BaseFragment {
             marryImgsAdapter = new ImgsGridViewAdapter(getActivity(), marryUploadImgInfoList);
             marryImgsAdapter.setOnClickImgListener(this);
             gv_marry_imgs.setAdapter(marryImgsAdapter);
+        }
+
+        {
+            //离婚证
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setIsDefault(true);
+            imgInfo.setiServer(false);
+            imgInfo.setFileType(UploadFileType.SINGLE.getValue());
+            divorceUploadImgInfoList.add(imgInfo);
+            divorceImgsAdapter = new ImgsGridViewAdapter(getActivity(), divorceUploadImgInfoList);
+            divorceImgsAdapter.setOnClickImgListener(this);
+            gv_divorce_imgs.setAdapter(divorceImgsAdapter);
         }
 
         {
@@ -314,59 +366,62 @@ public class PersonInfoFragment extends BaseFragment {
         try {
             HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler<CustomerBaseInfo>() {
                 @Override
-                public void onSuccess(CustomerBaseInfo customerBaseInfo) {
+                public void onSuccess(final CustomerBaseInfo customerBaseInfo) {
                     if (customerBaseInfo != null) {
                         mParentId = customerBaseInfo.getId();
                         soundAdapter.setParentId(mParentId);
-                        et_card_id.setText(customerBaseInfo.getIdCardNumber());
-                        et_name.setText(customerBaseInfo.getName());
-                        et_mobile.setText(customerBaseInfo.getMobile());
-                        if (customerBaseInfo.getGender() != null) {
-                            if (customerBaseInfo.getGender().equals("1"))
-                                radio_man.setChecked(true);
-                            else
-                                radio_woman.setChecked(true);
-                        }
-                        //已婚，离异
-                        if (customerBaseInfo.getMaritalStatus() != null) {
-                            String marital_status = customerBaseInfo.getMaritalStatus();
-                            if (marital_status.equals("1")) {
-                                radio_single.setChecked(true);
-                                et_children_count.setVisibility(View.GONE);
-                            } else if (marital_status.equals("2")) {
-                                radio_married.setChecked(true);
-                                marryUploadImgInfoList.get(0).setFileType(UploadFileType.MARRY.getValue());
-                                et_children_count.setVisibility(View.VISIBLE);
-                                et_children_count.setText(customerBaseInfo.getCountChildren());
-                            } else {
-                                radio_divorce.setChecked(true);
-                                marryUploadImgInfoList.get(0).setFileType(UploadFileType.SINGLE.getValue());
-                                et_children_count.setVisibility(View.VISIBLE);
-                                et_children_count.setText(customerBaseInfo.getCountChildren());
-                            }
-                        }
-                        //户口 本地  外地 household_type
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                et_card_id.setText(customerBaseInfo.getIdCardNumber());
+                                et_name.setText(customerBaseInfo.getName());
+                                et_mobile.setText(customerBaseInfo.getMobile());
+                                if (customerBaseInfo.getGender() != null) {
+                                    if (customerBaseInfo.getGender().equals("1"))
+                                        radio_man.setChecked(true);
+                                    else
+                                        radio_woman.setChecked(true);
+                                }
+                                //已婚，离异
+                                if (customerBaseInfo.getMaritalStatus() != null) {
+                                    String marital_status = customerBaseInfo.getMaritalStatus();
+                                    if (marital_status.equals("1")) {
+                                        radio_single.setChecked(true);
+                                        setLayoutMarryVisible(1);
+                                    } else if (marital_status.equals("2")) {
+                                        radio_married.setChecked(true);
+                                        setLayoutMarryVisible(2);
+                                        et_children_count.setText(customerBaseInfo.getCountChildren());
+                                    } else {
+                                        radio_divorce.setChecked(true);
+                                        setLayoutMarryVisible(3);
+                                        et_children_count.setText(customerBaseInfo.getCountChildren());
+                                    }
+                                }
+                                //户口 本地  外地 household_type
 
-                        if (customerBaseInfo.getHouseholdType() != null) {
-                            if (customerBaseInfo.getHouseholdType().equals("1")) {
-                                layout_come_date.setVisibility(View.GONE);
-                                radio_native.setChecked(true);
-                            } else {
-                                layout_come_date.setVisibility(View.VISIBLE);
-                                radio_nonlocal.setChecked(true);
-                                //来本地日期
-                                tv_come_date.setText(JDAppUtil.getTimeYMD(customerBaseInfo.getComeLocalTime()));
+                                if (customerBaseInfo.getHouseholdType() != null) {
+                                    if (customerBaseInfo.getHouseholdType().equals("1")) {
+                                        layout_come_date.setVisibility(View.GONE);
+                                        radio_native.setChecked(true);
+                                    } else {
+                                        layout_come_date.setVisibility(View.VISIBLE);
+                                        radio_nonlocal.setChecked(true);
+                                        //来本地日期
+                                        tv_come_date.setText(JDAppUtil.getTimeYMD(customerBaseInfo.getComeLocalTime()));
+                                    }
+                                }
+                                //是否是农业户口
+                                if (customerBaseInfo.getIsAgriculturalHousehold() != null) {
+                                    if (customerBaseInfo.getIsAgriculturalHousehold().equals("1"))
+                                        radio_yes.setChecked(true);
+                                    else
+                                        radio_no.setChecked(true);
+                                }
+                                //备注
+                                et_remark.setText(customerBaseInfo.getRemark());
                             }
-                        }
-                        //是否是农业户口
-                        if (customerBaseInfo.getIsAgriculturalHousehold() != null) {
-                            if (customerBaseInfo.getIsAgriculturalHousehold().equals("1"))
-                                radio_yes.setChecked(true);
-                            else
-                                radio_no.setChecked(true);
-                        }
-                        //备注
-                        et_remark.setText(customerBaseInfo.getRemark());
+                        });
                         //初始化服务端图片
                         initServerFile(customerBaseInfo.getFileList());
                     }
@@ -416,7 +471,7 @@ public class PersonInfoFragment extends BaseFragment {
      */
     private void initServerFile(List<UploadFileInfo> fileInfoList) {
         if (fileInfoList != null && fileInfoList.size() > 0) {
-            for (UploadFileInfo uploadFileInfo : fileInfoList) {
+            for (final UploadFileInfo uploadFileInfo : fileInfoList) {
                 uploadFileInfo.setiServer(true);
                 uploadFileInfo.setIsDefault(false);
                 uploadFileInfo.setBorrowRequestId(getBorrowRequestId());
@@ -441,25 +496,6 @@ public class PersonInfoFragment extends BaseFragment {
                     uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
                 }
                 addGridViewData(uploadFileInfo);
-                 /*else if (fileExt.equals("jpg")) {
-                    //1.身份证  2 离婚证  3 结婚证 16 备注  17 语音
-                    UploadFileType fType = UploadFileType.valueOf(uploadFileInfo.getFileType());
-                    if (fType == UploadFileType.CARD) {
-                        cardUploadImgInfoList.add(0, uploadFileInfo);
-                        cardImgsAdapter.notifyDataSetChanged();
-                    } else if (fType == UploadFileType.SINGLE) {
-                        marryUploadImgInfoList.add(0, uploadFileInfo);
-                        marryImgsAdapter.notifyDataSetChanged();
-                    } else if (fType == UploadFileType.MARRY) {
-                        marryUploadImgInfoList.add(0, uploadFileInfo);
-                        marryImgsAdapter.notifyDataSetChanged();
-                    } else if (fType == UploadFileType.REMARK) {
-                        remarkUploadImgInfoList.add(0, uploadFileInfo);
-                        remarkImgsAdapter.notifyDataSetChanged();
-                    } else {
-
-                    }
-                }*/
             }
 
             @Override
@@ -467,23 +503,6 @@ public class PersonInfoFragment extends BaseFragment {
                 super.onFailure(uploadFileInfo);
                 uploadFileInfo.setiServer(false);
                 uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
-                /*switch (uploadFileInfo.getFileType()) {
-                    case 1:
-                        cardUploadImgInfoList.add(0, uploadFileInfo);
-                        cardImgsAdapter.notifyDataSetChanged();
-                        break;
-                    case 2:
-                        marryUploadImgInfoList.add(0, uploadFileInfo);
-                        marryImgsAdapter.notifyDataSetChanged();
-                        break;
-                    case 3:
-                        uploadFileInfo.setFileType(UploadFileType.REMARK.getValue());
-                        remarkUploadImgInfoList.add(0, uploadFileInfo);
-                        remarkImgsAdapter.notifyDataSetChanged();
-                        break;
-                    default:
-                        break;
-                }*/
             }
         }));
     }
@@ -526,13 +545,6 @@ public class PersonInfoFragment extends BaseFragment {
         if (idx < uploadImgInfoList.size()) {
             UploadFileInfo imgInfo = uploadImgInfoList.get(idx);
             fileType = UploadFileType.valueOf(imgInfo.getFileType());
-            //以选择的radiobutton为准
-            if (fileType == UploadFileType.SINGLE || fileType == UploadFileType.MARRY) {
-                if (radio_divorce.isChecked())
-                    fileType = UploadFileType.SINGLE;
-                else if (radio_married.isChecked())
-                    fileType = UploadFileType.MARRY;
-            }
             if (imgInfo.isDefault()) {
                 mPopup.showAtLocation(linear_container, Gravity.BOTTOM, 0, 0);
             } else {
@@ -559,7 +571,7 @@ public class PersonInfoFragment extends BaseFragment {
                             if (cursor != null && cursor.getCount() > 0) {
                                 int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                                 cursor.moveToFirst();
-                                mHandler.post(new ImgRunable(cursor.getString(colunm_index)));
+                                new Thread(new ImgRunable(cursor.getString(colunm_index), Constants.USER_BASE_INFO, fileType, new UpdateUIHandler())).start();
                             } else {
                                 JDToast.showLongText(getActivity(), "请选择有效的图片文件夹");
                             }
@@ -574,123 +586,50 @@ public class PersonInfoFragment extends BaseFragment {
                     }
                     break;
                 case REQUEST_TAKE_PHOTO:
-                    mHandler.post(mRunnable);
+                    //mHandler.post(mRunnable);
+                    new Thread(new ImgRunable(Constants.TEMPPATH, Constants.USER_BASE_INFO, fileType, new UpdateUIHandler())).start();
                     break;
             }
         }
     }
 
     /*
-    * 先这么写吧。。。 图片处理 到时与下面的整合起来
+    * 刷新GridView数据与上传文件
     * */
-
-    private class ImgRunable implements Runnable {
-        private String imgPath = null;
-
-        public ImgRunable(String imgPath) {
-            this.imgPath = imgPath;
-        }
-
-        @Override
-        public void run() {
-            String random = System.currentTimeMillis() + "";
-            String smallImgPath = getFilePath(random, fileType.getValue(), false);
-            String bigImgPath = getFilePath(random, fileType.getValue(), true);
-            //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
-            if (proportionBM != null) {
-                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
-                proportionBM.recycle();
-            }
-            //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 80, 80, "jpg");
-            if (bitmap != null) {
-                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
-                bitmap.recycle();
-            }
-            UploadFileInfo imgInfo = new UploadFileInfo();
-            imgInfo.setiServer(false);
-            imgInfo.setBigImgPath(bigImgPath);
-            imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setParentTableName(Constants.USER_BASE_INFO);
-            imgInfo.setFileType(fileType.getValue());
-            //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
-            addGridViewData(imgInfo);
-            uploadImg(imgInfo);
-        }
-    }
-
-    //刷新数据
-    private Handler mHandler = new Handler() {
+    private class UpdateUIHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what) {
-                case CARD:
-                    cardImgsAdapter.refreshData();
-                    break;
-                case MARRY:
-                    marryImgsAdapter.refreshData();
-                    break;
-                case SOUND:
-                    soundAdapter.refreshData();
-                    break;
-                case REMARK:
-                    remarkImgsAdapter.refreshData();
-                    break;
-                default:
-                    break;
+            if (msg.obj != null) {
+                UploadFileInfo fileInfo = (UploadFileInfo) msg.obj;
+                addGridViewData(fileInfo);
+                uploadImg(fileInfo);
             }
         }
-    };
-
-    //保存图片
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            String random = System.currentTimeMillis() + "";
-            String smallImgPath = getFilePath(random, fileType.getValue(), false);
-            String bigImgPath = getFilePath(random, fileType.getValue(), true);
-            //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(Constants.TEMPPATH, 1024);
-            if (proportionBM != null) {
-                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
-                proportionBM.recycle();
-            }
-            //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(Constants.TEMPPATH, 80, 80, "jpg");
-            if (bitmap != null) {
-                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
-                bitmap.recycle();
-            }
-            UploadFileInfo imgInfo = new UploadFileInfo();
-            imgInfo.setiServer(false);
-            imgInfo.setBigImgPath(bigImgPath);
-            imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setParentTableName(Constants.USER_BASE_INFO);
-            imgInfo.setFileType(fileType.getValue());
-            addGridViewData(imgInfo);
-            uploadImg(imgInfo);
-        }
-    };
+    }
 
     /*
     * 添加到GridView
     * */
     private void addGridViewData(UploadFileInfo imgInfo) {
-        if (fileType == UploadFileType.CARD) {
+        UploadFileType fType = UploadFileType.valueOf(imgInfo.getFileType());
+        if (fType == UploadFileType.CARD) {
             cardUploadImgInfoList.add(0, imgInfo);
-            mHandler.sendMessage(mHandler.obtainMessage(CARD, null));
-        } else if (fileType == UploadFileType.SOUND) {
+            cardImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.SOUND) {
             soundInfoList.add(0, imgInfo);
-            mHandler.sendMessage(mHandler.obtainMessage(SOUND, null));
-        } else if (fileType == UploadFileType.MARRY || fileType == UploadFileType.SINGLE) {
-            //离婚//结婚
+            soundAdapter.refreshData();
+        } else if (fType == UploadFileType.MARRY) {
+            //结婚
             marryUploadImgInfoList.add(0, imgInfo);
-            mHandler.sendMessage(mHandler.obtainMessage(MARRY, null));
-        } else if (fileType == UploadFileType.REMARK) {
+            marryImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.SINGLE) {
+            //离婚
+            divorceUploadImgInfoList.add(0, imgInfo);
+            divorceImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.REMARK) {
             remarkUploadImgInfoList.add(0, imgInfo);
-            mHandler.sendMessage(mHandler.obtainMessage(REMARK, null));
+            remarkImgsAdapter.refreshData();
         } else {
 
         }
@@ -726,10 +665,10 @@ public class PersonInfoFragment extends BaseFragment {
     * 保持数据
     * */
     public void saveDataSubmit() {
-        if (!mIsAuthSuccess) {
+        /*if (!mIsAuthSuccess) {
             JDToast.showLongText(getActivity(), "请进行实名认证");
             return;
-        }
+        }*/
         //身份证号
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         HashMap<String, Object> argMaps = new HashMap<String, Object>();
@@ -763,6 +702,18 @@ public class PersonInfoFragment extends BaseFragment {
         formparams.add(new BasicNameValuePair("maritalStatus", radio_single.isChecked() ? "1" : (radio_married.isChecked() ? "2" : "3")));
         //子女数
         if (radio_married.isChecked() || radio_divorce.isChecked()) {
+            if (radio_married.isChecked()) {
+                if (!isUploadSuccess(marryUploadImgInfoList)) {
+                    JDToast.showLongText(getActivity(), "请上传结婚证书");
+                    return;
+                }
+            }
+            if (radio_divorce.isChecked()) {
+                if (!isUploadSuccess(divorceUploadImgInfoList)) {
+                    JDToast.showLongText(getActivity(), "请上传离婚证书");
+                    return;
+                }
+            }
             String childCount = et_children_count.getText().toString().trim();
             if (childCount != null && childCount.length() > 0) {
                 formparams.add(new BasicNameValuePair("countChildren", childCount));
@@ -811,8 +762,10 @@ public class PersonInfoFragment extends BaseFragment {
         UploadFileType fType = UploadFileType.valueOf(uploadFileInfo.getFileType());
         if (fType == UploadFileType.CARD) {
             cardImgsAdapter.refreshData();
-        } else if (fType == UploadFileType.MARRY || fType == UploadFileType.SINGLE) {
+        } else if (fType == UploadFileType.MARRY) {
             marryImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.SINGLE) {
+            divorceImgsAdapter.refreshData();
         } else if (fType == UploadFileType.REMARK) {
             remarkImgsAdapter.refreshData();
         } else {

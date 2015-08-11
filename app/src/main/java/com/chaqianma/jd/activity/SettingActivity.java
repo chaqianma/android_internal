@@ -4,11 +4,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
+
 import java.util.Timer;
 import java.util.TimerTask;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -18,6 +21,7 @@ import butterknife.OnClick;
 public class SettingActivity extends BaseActivity {
     private Timer timer = new Timer();
     private boolean isBack = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,35 +31,31 @@ public class SettingActivity extends BaseActivity {
     }
 
     @OnClick(R.id.layout_msg_notify)
-    void gotoMsgNotify(View v)
-    {
+    void gotoMsgNotify(View v) {
         switchPage(v);
     }
 
     @OnClick(R.id.layout_no_disturb)
-    void gotoNoDisturb(View v)
-    {
+    void gotoNoDisturb(View v) {
         switchPage(v);
     }
 
     @OnClick(R.id.layout_update_password)
-    void gotoUpdatePassword(View v)
-    {
+    void gotoUpdatePassword(View v) {
         switchPage(v);
     }
 
-    private void switchPage(View v)
-    {
-        Intent intent=new Intent();
+    private void switchPage(View v) {
+        Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.layout_msg_notify:
-                intent.setClass(SettingActivity.this,MsgnotifyActivity.class);
+                intent.setClass(SettingActivity.this, MsgnotifyActivity.class);
                 break;
             case R.id.layout_no_disturb:
-                intent.setClass(SettingActivity.this,NodisturbActivity.class);
+                intent.setClass(SettingActivity.this, NodisturbActivity.class);
                 break;
             case R.id.layout_update_password:
-                intent.setClass(SettingActivity.this,UpdatePasswordActivity.class);
+                intent.setClass(SettingActivity.this, UpdatePasswordActivity.class);
                 break;
             default:
                 break;
@@ -64,13 +64,18 @@ public class SettingActivity extends BaseActivity {
     }
 
     @OnClick(R.id.btn_signout)
-    void onSignout()
-    {
+    void onSignout() {
         JDAlertDialog.showAlertDialog(SettingActivity.this, "确定退出系统吗？", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 android.os.Process.killProcess(android.os.Process.myPid());   //获取PID
                 System.exit(0);
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                dialog.cancel();
             }
         });
     }

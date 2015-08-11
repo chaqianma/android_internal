@@ -2,8 +2,10 @@ package com.chaqianma.jd.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +24,7 @@ import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.model.UploadStatus;
+import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.widget.PhotoPopup;
 import com.chaqianma.jd.widget.ViewPagerPopup;
 
@@ -147,7 +150,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
     }
 
     /*
-    * 获取上传文件 entity  排除个人信息的 remak 与 YY 的冲突
+    * 获取上传文件 entity
     * */
     protected HttpEntity getUploadEntity(UploadFileInfo fileInfo, String parentId, boolean isPerson) {
         MultipartEntityBuilder entity = MultipartEntityBuilder.create();
@@ -161,6 +164,96 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         entity.addPart("parentId", new StringBody(parentId, ContentType.DEFAULT_TEXT));
         return entity.build();
     }
+
+    /*
+    * 获取上传成功的文件数
+    * */
+    protected int getUploadSuccessFile(List<UploadFileInfo> uploadFileInfoList) {
+        int fileCount = 0;
+        if (uploadFileInfoList != null) {
+            int size = uploadFileInfoList.size();
+            UploadFileInfo uploadFileInfo = null;
+            for (int i = 0; i < size; i++) {
+                uploadFileInfo = uploadFileInfoList.get(i);
+                if (uploadFileInfo.iServer() && uploadFileInfo.getStatus() == UploadStatus.SUCCESS.getValue())
+                    fileCount++;
+            }
+        }
+        return fileCount;
+    }
+
+    /*
+       * 图片处理
+       * */
+    protected class ImgRunable implements Runnable {
+        private String imgPath = null;
+        private String parentTableName = null;
+        private Handler mHandler = null;
+        private UploadFileType fileType = UploadFileType.NONE;
+
+        public ImgRunable(String imgPath, String parentTableName, UploadFileType fileType, Handler handler) {
+            this.imgPath = imgPath;
+            this.fileType=fileType;
+            this.parentTableName = parentTableName;
+            this.mHandler = handler;
+        }
+
+        @Override
+        public void run() {
+            String random = System.currentTimeMillis() + "";
+            String smallImgPath = getFilePath(random, fileType.getValue(), false);
+            String bigImgPath = getFilePath(random, fileType.getValue(), true);
+            //存放大图
+            Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
+            if (proportionBM != null) {
+                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
+                proportionBM.recycle();
+            }
+            //存放小图
+           /* Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 80, 80, "jpg");
+            if (bitmap != null) {
+                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
+                bitmap.recycle();
+            }*/
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setiServer(false);
+            imgInfo.setBigImgPath(bigImgPath);
+            imgInfo.setSmallImgPath(smallImgPath);
+            imgInfo.setParentTableName(parentTableName);
+            imgInfo.setFileType(fileType.getValue());
+            mHandler.sendMessage(mHandler.obtainMessage(Constants.IMAGE, imgInfo));
+        }
+    }
+
+    //保存图片
+    private Runnable mRunnable1 = new Runnable() {
+        @Override
+        public void run() {
+            String random = System.currentTimeMillis() + "";
+            //String smallImgPath = getFilePath(random, fileType.getValue(), false);
+            // String bigImgPath = getFilePath(random, fileType.getValue(), true);
+            //存放大图
+            Bitmap proportionBM = ImageUtil.proportionZoom(Constants.TEMPPATH, 1024);
+            if (proportionBM != null) {
+                // ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
+                proportionBM.recycle();
+            }
+            //存放小图
+            Bitmap bitmap = ImageUtil.getLocalThumbImg(Constants.TEMPPATH, 80, 80, "jpg");
+            if (bitmap != null) {
+                // ImageUtil.saveBitmapFile(smallImgPath, bitmap);
+                bitmap.recycle();
+            }
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setiServer(false);
+            // imgInfo.setBigImgPath(bigImgPath);
+            //imgInfo.setSmallImgPath(smallImgPath);
+            //imgInfo.setParentTableName(Constants.USER_BASE_INFO);
+            //imgInfo.setFileType(fileType.getValue());
+            // addGridViewData(imgInfo);
+            // uploadImg(imgInfo);
+        }
+    };
 
     /*
  * 判断是否有上传成功图片

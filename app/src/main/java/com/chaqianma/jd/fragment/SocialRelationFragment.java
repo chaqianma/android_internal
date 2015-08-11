@@ -212,8 +212,7 @@ public class SocialRelationFragment extends BaseFragment {
             if (!requiredInput())
                 return;
             isShow2 = true;
-            View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_2)).inflate();
-            JDAppUtil.addShowAction(view);
+            ((ViewStub) mView.findViewById(R.id.stub_social_relation_2)).inflate();
             gv_relation_card_2 = (GridView) mView.findViewById(R.id.gv_relation_card_2);
             sp_relation_type_2 = (Spinner) mView.findViewById(R.id.sp_relation_type_2);
             UploadFileInfo imgInfo = new UploadFileInfo();
@@ -230,8 +229,7 @@ public class SocialRelationFragment extends BaseFragment {
                 if (!requiredInput())
                     return;
                 isShow3 = true;
-                View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_3)).inflate();
-                JDAppUtil.addShowAction(view);
+                ((ViewStub) mView.findViewById(R.id.stub_social_relation_3)).inflate();
                 gv_relation_card_3 = (GridView) mView.findViewById(R.id.gv_relation_card_3);
                 sp_relation_type_3 = (Spinner) mView.findViewById(R.id.sp_relation_type_3);
                 UploadFileInfo imgInfo = new UploadFileInfo();
@@ -248,8 +246,7 @@ public class SocialRelationFragment extends BaseFragment {
                     if (!requiredInput())
                         return;
                     isShow4 = true;
-                    View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_4)).inflate();
-                    JDAppUtil.addShowAction(view);
+                    ((ViewStub) mView.findViewById(R.id.stub_social_relation_4)).inflate();
                     gv_relation_card_4 = (GridView) mView.findViewById(R.id.gv_relation_card_4);
                     sp_relation_type_4 = (Spinner) mView.findViewById(R.id.sp_relation_type_4);
                     UploadFileInfo imgInfo = new UploadFileInfo();
@@ -266,8 +263,7 @@ public class SocialRelationFragment extends BaseFragment {
                         if (!requiredInput())
                             return;
                         isShow5 = true;
-                        View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_5)).inflate();
-                        JDAppUtil.addShowAction(view);
+                        ((ViewStub) mView.findViewById(R.id.stub_social_relation_5)).inflate();
                         gv_relation_card_5 = (GridView) mView.findViewById(R.id.gv_relation_card_5);
                         sp_relation_type_5 = (Spinner) mView.findViewById(R.id.sp_relation_type_5);
                         UploadFileInfo imgInfo = new UploadFileInfo();
@@ -359,7 +355,6 @@ public class SocialRelationFragment extends BaseFragment {
         }
     }
 
-
     //初始化集合
     private void initImageList() {
         mRCList_1 = new ArrayList<UploadFileInfo>();
@@ -392,6 +387,7 @@ public class SocialRelationFragment extends BaseFragment {
                             List<UploadFileInfo> uploadFileInfos = JSON.parseArray(json.getString("fileList"), UploadFileInfo.class);
                             initServerFile(uploadFileInfos);
                         }
+
                         List<ContactInfo> contactInfoList = JSON.parseArray(json.getString("contactInfoList"), ContactInfo.class);
                         if (contactInfoList != null) {
                             int size = contactInfoList.size();
@@ -449,8 +445,8 @@ public class SocialRelationFragment extends BaseFragment {
     }
 
     /*
-       *获取服务器文件信息
-        */
+     *获取服务器文件信息
+    */
     private void initServerFile(List<UploadFileInfo> fileInfoList) {
         if (fileInfoList != null && fileInfoList.size() > 0) {
             for (UploadFileInfo uploadFileInfo : fileInfoList) {
@@ -587,8 +583,8 @@ public class SocialRelationFragment extends BaseFragment {
         @Override
         public void run() {
             String random = System.currentTimeMillis() + "";
-            String smallImgPath = getFilePath(random, fileType.getValue(), false);
-            String bigImgPath = getFilePath(random, fileType.getValue(), true);
+            String smallImgPath = getFilePath(random,fileType.getValue(), false);
+            String bigImgPath = getFilePath(random,fileType.getValue(), true);
             //存放大图
             Bitmap proportionBM = ImageUtil.proportionZoom(Constants.TEMPPATH, 1024);
             if (proportionBM != null) {
@@ -788,8 +784,8 @@ public class SocialRelationFragment extends BaseFragment {
         boolean isSelctedSpouse = false;
         List<ContactInfo> contactInfoList = new ArrayList<ContactInfo>();
 
-        if (!requiredInput())
-            return;
+       //if (!requiredInput())
+       //     return;
 
         if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
             isSelctedSpouse = true;

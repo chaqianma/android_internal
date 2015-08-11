@@ -79,6 +79,11 @@ public class MainActivity extends ActivityGroup {
             this.mTabHost.addTab(buildTabSpec("tab2", "1", new Intent(this, SettingActivity.class)));
 
         } catch (Exception e) {
+            String sss="1";
+            sss="1";
+            sss="1";
+            sss="1";
+            sss="1";
         }
     }
 

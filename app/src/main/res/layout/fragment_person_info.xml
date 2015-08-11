@@ -27,11 +27,11 @@
                 <EditText
                     android:id="@+id/et_card_id"
                     style="@style/SmallTextStyle"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginRight="5dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number"/>
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:inputType="number" />
             </LinearLayout>
 
             <View style="@style/ViewLineStyle" />
@@ -48,14 +48,14 @@
                 <EditText
                     android:id="@+id/et_name"
                     style="@style/SmallTextStyle"
-                    android:layout_weight="1"
-                    android:layout_toRightOf="@id/tv_name_tag" />
+                    android:layout_toRightOf="@id/tv_name_tag"
+                    android:layout_weight="1" />
 
                 <Button
                     android:id="@+id/btn_name_auth"
                     style="@style/SettingRightIconStyle"
                     android:layout_marginRight="5dp"
-                    android:text="实名认证"/>
+                    android:text="实名认证" />
 
             </LinearLayout>
 
@@ -105,10 +105,10 @@
 
                 <EditText
                     android:id="@+id/et_mobile"
-                    android:layout_weight="1"
                     style="@style/SmallTextStyle"
                     android:layout_marginRight="5dp"
-                    android:inputType="number"/>
+                    android:layout_weight="1"
+                    android:inputType="number" />
             </LinearLayout>
 
             <View style="@style/ViewLineStyle" />
@@ -171,15 +171,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_card"
+                android:id="@+id/layout_marry"
                 style="@style/LinearLayoutStyle"
                 android:orientation="vertical"
                 android:visibility="gone">
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="结婚证/离婚证："
-                    android:textColor="@color/red"/>
+                    android:text="结婚证："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
                     style="@style/LinearLayoutStyle"
@@ -199,22 +199,54 @@
                         android:stretchMode="columnWidth"
                         android:verticalSpacing="10dp" />
                 </LinearLayout>
+            </LinearLayout>
 
-                <LinearLayout style="@style/LinearLayoutStyle">
+            <LinearLayout
+                android:id="@+id/layout_divorce"
+                style="@style/LinearLayoutStyle"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                    <TextView
-                        style="@style/SmallTextStyle"
-                        android:textColor="@color/red"
-                        android:text="子女数：" />
+                <TextView
+                    style="@style/SmallTextStyle"
+                    android:text="离婚证："
+                    android:textColor="@color/red" />
 
-                    <EditText
-                        android:id="@+id/et_children_count"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:inputType="number" />
+                <LinearLayout
+                    style="@style/LinearLayoutStyle"
+                    android:orientation="horizontal">
+
+                    <com.chaqianma.jd.widget.ImageGridView
+                        android:id="@+id/gv_divorce_imgs"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/white"
+                        android:columnWidth="80dp"
+                        android:gravity="center"
+                        android:horizontalSpacing="5dp"
+                        android:listSelector="#ffffff"
+                        android:numColumns="auto_fit"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="10dp" />
                 </LinearLayout>
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_child"
+                style="@style/LinearLayoutStyle">
+
+                <TextView
+                    style="@style/SmallTextStyle"
+                    android:text="子女数："
+                    android:textColor="@color/red" />
+
+                <EditText
+                    android:id="@+id/et_children_count"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:inputType="number" />
             </LinearLayout>
 
             <View style="@style/ViewLineStyle" />
@@ -263,8 +295,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:hint="选择日期"/>
+                        android:hint="选择日期"
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
                 <LinearLayout style="@style/LinearLayoutStyle">
@@ -303,7 +335,7 @@
                 <TextView
                     style="@style/SmallTextStyle"
                     android:text="备注"
-                    android:textColor="@color/red"/>
+                    android:textColor="@color/red" />
 
                 <EditText
                     android:id="@+id/et_remark"

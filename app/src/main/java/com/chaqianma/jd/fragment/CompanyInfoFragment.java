@@ -639,7 +639,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             soundInfo.setFileType(UploadFileType.SOUND.getValue());
             soundInfo.setiServer(false);
             soundInfoList.add(soundInfo);
-            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList,Constants.BUSINESS_INFO);
+            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList, Constants.BUSINESS_INFO);
             gv_sound.setAdapter(soundAdapter);
         }
 
@@ -677,26 +677,32 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                     if ((!JDAppUtil.isEmpty(companyInfo.getOrganizationType()) && !JDAppUtil.isEmpty(companyInfo.getBusinessPremises()))
                                             || (companyInfo.getFileList() != null && companyInfo.getFileList().size() > 0)) {
                                         companyInfo.setIsValid(true);
+                                        int orgType = 0;
+                                        if (!JDAppUtil.isEmpty(companyInfo.getOrganizationType()))
+                                            orgType = Integer.parseInt(companyInfo.getOrganizationType()) - 1;
+                                        int busPremises = 0;
+                                        if (!JDAppUtil.isEmpty(companyInfo.getBusinessPremises()))
+                                            busPremises = Integer.parseInt(companyInfo.getBusinessPremises()) - 1;
                                         //组织类型
                                         switch (i) {
                                             case 0:
-                                                sp_company_type_1.setSelection(Integer.parseInt(companyInfo.getOrganizationType())-1, true);
-                                                sp_business_premises_1.setSelection(Integer.parseInt(companyInfo.getBusinessPremises())-1, true);
+                                                sp_company_type_1.setSelection(orgType, true);
+                                                sp_business_premises_1.setSelection(busPremises, true);
                                                 sp_some_company_1.setSelection(0);
                                                 et_remark.setText(companyInfo.getRemark());
                                                 initServerFile(companyInfo.getFileList());
                                                 break;
                                             case 1:
                                                 addCompany(1);
-                                                sp_company_type_2.setSelection(Integer.parseInt(companyInfo.getOrganizationType())-1, true);
-                                                sp_business_premises_2.setSelection(Integer.parseInt(companyInfo.getBusinessPremises())-1, true);
+                                                sp_company_type_2.setSelection(orgType, true);
+                                                sp_business_premises_2.setSelection(busPremises, true);
                                                 //下载图片
                                                 initServerFile(companyInfo.getFileList());
                                                 break;
                                             case 2:
                                                 addCompany(2);
-                                                sp_company_type_3.setSelection(Integer.parseInt(companyInfo.getOrganizationType())-1, true);
-                                                sp_business_premises_3.setSelection(Integer.parseInt(companyInfo.getBusinessPremises())-1, true);
+                                                sp_company_type_3.setSelection(orgType, true);
+                                                sp_business_premises_3.setSelection(busPremises, true);
                                                 //下载图片
                                                 initServerFile(companyInfo.getFileList());
                                                 break;
@@ -710,7 +716,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                 soundAdapter.setParentId(mParentId[0]);
                             }
                         } catch (Exception e) {
-                            String msg=e.getMessage();
+                            String msg = e.getMessage();
                         }
                     }
                 }
@@ -759,7 +765,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         }));
     }
 
-    //刷新数据
+   /* //刷新数据
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -769,7 +775,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 refreshData(imgInfo);
             }
         }
-    };
+    };*/
 
     @Override
     public void onImgClick(List<UploadFileInfo> uploadImgInfoList, int idx) {
@@ -827,7 +833,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                             if (cursor != null && cursor.getCount() > 0) {
                                 int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                                 cursor.moveToFirst();
-                                mHandler.post(new ImgRunable(cursor.getString(colunm_index)));
+                                new Thread(new ImgRunable(cursor.getString(colunm_index), Constants.BUSINESS_INFO, fileType, new UpdateUIHandler())).start();
                             } else {
                                 JDToast.showLongText(getActivity(), "请选择有效的图片文件夹");
                             }
@@ -842,7 +848,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                     }
                     break;
                 case REQUEST_TAKE_PHOTO:
-                    mHandler.post(mRunnable);
+                    new Thread(new ImgRunable(Constants.TEMPPATH, Constants.BUSINESS_INFO, fileType, new UpdateUIHandler())).start();
                     break;
                 default:
                     break;
@@ -855,6 +861,21 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     public void onDeletePhoto(UploadFileInfo uploadFileInfo) {
         //刷新数据源
         refreshData(uploadFileInfo);
+    }
+
+    /*
+     * 刷新GridView数据与上传文件
+    */
+    private class UpdateUIHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.obj != null) {
+                UploadFileInfo fileInfo = (UploadFileInfo) msg.obj;
+                addGridViewData(fileInfo);
+                uploadImg(fileInfo);
+            }
+        }
     }
 
     /*
@@ -950,86 +971,12 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             }
         } else if (fType == UploadFileType.REMARK) {
             remarkUploadImgInfoList.add(0, imgInfo);
-        }else if (fType == UploadFileType.SOUND) {
+        } else if (fType == UploadFileType.SOUND) {
             soundInfoList.add(0, imgInfo);
-        }else{
-
+        } else {
         }
-        mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
+        refreshData(imgInfo);
     }
-
-    /*
-    * 先这么写吧。。。 图片处理 到时与下面的整合起来
-    * */
-
-    private class ImgRunable implements Runnable {
-        private String imgPath = null;
-
-        public ImgRunable(String imgPath) {
-            this.imgPath = imgPath;
-        }
-
-        @Override
-        public void run() {
-            String random = System.currentTimeMillis() + "";
-            String smallImgPath = getFilePath(random, fileType.getValue(), false);
-            String bigImgPath = getFilePath(random, fileType.getValue(), true);
-            //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
-            if (proportionBM != null) {
-                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
-                proportionBM.recycle();
-            }
-            //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 80, 80, "jpg");
-            if (bitmap != null) {
-                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
-                bitmap.recycle();
-            }
-            UploadFileInfo imgInfo = new UploadFileInfo();
-            imgInfo.setiServer(false);
-            imgInfo.setBigImgPath(bigImgPath);
-            imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setParentTableName(Constants.BUSINESS_INFO);
-            imgInfo.setIdxTag(selCompanyIdxTag);
-            imgInfo.setFileType(fileType.getValue());
-            //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
-            addGridViewData(imgInfo);
-            uploadImg(imgInfo);
-        }
-    }
-
-    //保存图片
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            String random = System.currentTimeMillis() + "";
-            String smallImgPath = getFilePath(random, fileType.getValue(), false);
-            String bigImgPath = getFilePath(random, fileType.getValue(), true);
-            //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(Constants.TEMPPATH, 1024);
-            if (proportionBM != null) {
-                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
-                proportionBM.recycle();
-            }
-            //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(Constants.TEMPPATH, 80, 80, "jpg");
-            if (bitmap != null) {
-                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
-                bitmap.recycle();
-            }
-            UploadFileInfo imgInfo = new UploadFileInfo();
-            imgInfo.setiServer(false);
-            imgInfo.setBigImgPath(bigImgPath);
-            imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setParentTableName(Constants.BUSINESS_INFO);
-            imgInfo.setIdxTag(selCompanyIdxTag);
-            imgInfo.setFileType(fileType.getValue());
-            //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
-            addGridViewData(imgInfo);
-            uploadImg(imgInfo);
-        }
-    };
 
 
     //上传图片

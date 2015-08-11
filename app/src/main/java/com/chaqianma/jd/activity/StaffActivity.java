@@ -8,6 +8,7 @@ import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.UserInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
+import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
@@ -42,8 +43,9 @@ public class StaffActivity extends BaseActivity {
         ButterKnife.inject(this);
         //是否忙碌着 1忙 0闲置
         userInfo = AppData.getInstance().getUserInfo();
-        isBusy = userInfo.getIsBusy().equals("1");
         if (userInfo != null) {
+            if (!JDAppUtil.isEmpty(userInfo.getIsBusy()))
+                isBusy = userInfo.getIsBusy().equals("1");
             if (!isBusy)
                 btn_state.setText("空闲");
             else
@@ -61,7 +63,7 @@ public class StaffActivity extends BaseActivity {
                 public void onSuccess(Object o) {
                     btn_state.setText(isBusy ? "空闲" : "忙碌");
                     userInfo.setIsBusy(isBusy ? "0" : "1");
-                    isBusy=!isBusy;
+                    isBusy = !isBusy;
                 }
             }));
         } catch (Exception e) {

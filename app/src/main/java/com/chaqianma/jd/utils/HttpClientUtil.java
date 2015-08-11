@@ -1,6 +1,7 @@
 package com.chaqianma.jd.utils;
 
 import android.content.Context;
+import android.os.Looper;
 
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
