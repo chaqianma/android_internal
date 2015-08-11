@@ -586,7 +586,6 @@ public class PersonInfoFragment extends BaseFragment {
                     }
                     break;
                 case REQUEST_TAKE_PHOTO:
-                    //mHandler.post(mRunnable);
                     new Thread(new ImgRunable(Constants.TEMPPATH, Constants.USER_BASE_INFO, fileType, new UpdateUIHandler())).start();
                     break;
             }

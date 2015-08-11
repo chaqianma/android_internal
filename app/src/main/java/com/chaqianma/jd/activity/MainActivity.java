@@ -51,13 +51,21 @@ public class MainActivity extends ActivityGroup {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.radio_msg:
+                    case R.id.radio_main:
                         top_title.setText("首页");
                         mTabHost.setCurrentTab(0);
                         break;
+                    case R.id.radio_urge:
+                        top_title.setText("催收");
+                        mTabHost.setCurrentTab(1);
+                        break;
+                    case R.id.radio_msg:
+                        top_title.setText("消息");
+                        mTabHost.setCurrentTab(2);
+                        break;
                     case R.id.radio_setup:
                         top_title.setText("设置");
-                        mTabHost.setCurrentTab(1);
+                        mTabHost.setCurrentTab(3);
                         break;
                     default:
                         break;
@@ -70,20 +78,19 @@ public class MainActivity extends ActivityGroup {
         top_back_btn.setVisibility(View.GONE);
     }
 
+    /*
+    * 添加页面
+    * */
     private void addTabIntent() {
         try {
             if (mIsHasTask)
-                this.mTabHost.addTab(buildTabSpec("tab1", "0", new Intent(this, BorrowApplyActivity.class)));
+                this.mTabHost.addTab(buildTabSpec("tab0", "0", new Intent(this, BorrowApplyActivity.class)));
             else
-                this.mTabHost.addTab(buildTabSpec("tab1", "0", new Intent(this, StaffActivity.class)));
-            this.mTabHost.addTab(buildTabSpec("tab2", "1", new Intent(this, SettingActivity.class)));
-
+                this.mTabHost.addTab(buildTabSpec("tab0", "0", new Intent(this, StaffActivity.class)));
+            this.mTabHost.addTab(buildTabSpec("tab1", "1", new Intent(this, UrgeActivity.class)));
+            this.mTabHost.addTab(buildTabSpec("tab2", "2", new Intent(this, MessageCenterActivity.class)));
+            this.mTabHost.addTab(buildTabSpec("tab3", "3", new Intent(this, SettingActivity.class)));
         } catch (Exception e) {
-            String sss="1";
-            sss="1";
-            sss="1";
-            sss="1";
-            sss="1";
         }
     }
 

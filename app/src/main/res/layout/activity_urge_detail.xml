@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/SmallTextStyle"
+            android:layout_marginLeft="15dp"
+            android:text="标的编号"
+            android:textSize="@dimen/large_text_size" />
+
+        <TextView
+            android:id="@+id/tv_id"
+            style="@style/SmallTextStyle"
+            android:text="487372"
+            android:textSize="@dimen/large_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_corners"
+        android:orientation="vertical"
+        android:padding="1dp">
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="状态：" />
+
+            <TextView
+                android:id="@+id/tv_urge_status"
+                style="@style/SmallTextStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="借款人姓名：" />
+
+            <TextView
+                android:id="@+id/tv_borrowName"
+                style="@style/SmallTextStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="手机：" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                style="@style/SmallTextStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="应还金额：" />
+
+            <TextView
+                android:id="@+id/tv_should_money"
+                style="@style/SmallTextStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="应还日期：" />
+
+            <TextView
+                android:id="@+id/tv_should_date"
+                style="@style/SmallTextStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="办公地址：" />
+
+            <TextView
+                android:id="@+id/tv_office_addr"
+                style="@style/SmallTextStyle" />
+        </LinearLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="催款次数：" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_img_success" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

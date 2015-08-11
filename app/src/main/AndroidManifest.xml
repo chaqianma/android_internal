@@ -48,8 +48,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme">
-        </activity>
+            android:theme="@style/translucent_theme"/>
 
         <activity
             android:name=".activity.InitActivity"
@@ -57,58 +56,66 @@
             android:theme="@style/translucent_theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme" />
+            android:theme="@style/translucent_theme"/>
 
         <activity
             android:name=".activity.MsgnotifyActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme" />
+            android:theme="@style/translucent_theme"/>
 
 
         <activity
             android:name=".activity.StaffActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme" />
+            android:theme="@style/translucent_theme"/>
 
         <activity
             android:name=".activity.BorrowApplyActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme" />
+            android:theme="@style/translucent_theme"/>
 
         <activity
             android:name=".activity.NodisturbActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme"></activity>
+            android:theme="@style/translucent_theme"/>
 
         <activity
             android:name=".activity.UpdatePasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme" />
+            android:theme="@style/translucent_theme"/>
 
         <activity
             android:name=".activity.SettingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme" />
+            android:theme="@style/translucent_theme"/>
 
         <activity
             android:name=".activity.BaiduMapActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent_theme" />
+            android:theme="@style/translucent_theme"/>
 
         <activity
             android:name=".activity.InvestigateDetailActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateUnchanged"
-            android:theme="@style/translucent_theme">
+            android:theme="@style/translucent_theme"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"/>
 
-        </activity>
+        <activity
+            android:name=".activity.UrgeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent_theme"/>
+
+        <activity
+            android:name=".activity.MessageCenterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent_theme"/>
         <!--极光Start-->
         <!-- Required SDK核心功能-->
         <activity
