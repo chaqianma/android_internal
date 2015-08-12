@@ -106,6 +106,7 @@
                 android:text="催款次数：" />
 
             <ImageView
+                android:id="@+id/img_urge_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon_img_success" />

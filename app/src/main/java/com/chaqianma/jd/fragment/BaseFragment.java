@@ -146,13 +146,6 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
     * 获取上传文件 entity
     * */
     protected HttpEntity getUploadEntity(UploadFileInfo fileInfo, String parentId) {
-        return getUploadEntity(fileInfo, parentId, true);
-    }
-
-    /*
-    * 获取上传文件 entity
-    * */
-    protected HttpEntity getUploadEntity(UploadFileInfo fileInfo, String parentId, boolean isPerson) {
         MultipartEntityBuilder entity = MultipartEntityBuilder.create();
         ContentBody fileBody = new FileBody(new File(fileInfo.getBigImgPath()));
         entity.addPart("files", fileBody);
@@ -191,11 +184,22 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         private Handler mHandler = null;
         private UploadFileType fileType = UploadFileType.NONE;
 
+        private int mSelIdxTag = -1;
+
         public ImgRunable(String imgPath, String parentTableName, UploadFileType fileType, Handler handler) {
+            this(imgPath, parentTableName, fileType, -1, handler);
+        }
+
+        public ImgRunable(String imgPath, UploadFileType fileType, int selIdxTag, Handler handler) {
+            this(imgPath, null, fileType, selIdxTag, handler);
+        }
+
+        public ImgRunable(String imgPath, String parentTableName, UploadFileType fileType, int selIdxTag, Handler handler) {
             this.imgPath = imgPath;
-            this.fileType=fileType;
+            this.fileType = fileType;
             this.parentTableName = parentTableName;
             this.mHandler = handler;
+            this.mSelIdxTag = selIdxTag;
         }
 
         @Override
@@ -221,6 +225,8 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
             imgInfo.setSmallImgPath(smallImgPath);
             imgInfo.setParentTableName(parentTableName);
             imgInfo.setFileType(fileType.getValue());
+            if (mSelIdxTag != -1)
+                imgInfo.setIdxTag(mSelIdxTag);
             mHandler.sendMessage(mHandler.obtainMessage(Constants.IMAGE, imgInfo));
         }
     }

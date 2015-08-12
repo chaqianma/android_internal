@@ -16,10 +16,6 @@ import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.model.LocationInfo;
 import com.chaqianma.jd.utils.LocationUtil;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
-import com.chaqianma.jd.widget.JDToast;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -59,7 +55,7 @@ public class MainActivity extends ActivityGroup {
                         top_title.setText("催收");
                         mTabHost.setCurrentTab(1);
                         break;
-                    case R.id.radio_msg:
+                    case R.id.radio_message:
                         top_title.setText("消息");
                         mTabHost.setCurrentTab(2);
                         break;
@@ -87,7 +83,7 @@ public class MainActivity extends ActivityGroup {
                 this.mTabHost.addTab(buildTabSpec("tab0", "0", new Intent(this, BorrowApplyActivity.class)));
             else
                 this.mTabHost.addTab(buildTabSpec("tab0", "0", new Intent(this, StaffActivity.class)));
-            this.mTabHost.addTab(buildTabSpec("tab1", "1", new Intent(this, UrgeActivity.class)));
+            this.mTabHost.addTab(buildTabSpec("tab1", "1", new Intent(this, UrgeListActivity.class)));
             this.mTabHost.addTab(buildTabSpec("tab2", "2", new Intent(this, MessageCenterActivity.class)));
             this.mTabHost.addTab(buildTabSpec("tab3", "3", new Intent(this, SettingActivity.class)));
         } catch (Exception e) {

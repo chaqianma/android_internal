@@ -11,7 +11,7 @@ import com.chaqianma.jd.fragment.SocialRelationFragment;
 
 /**
  * Created by zhangxd on 2015/7/28.
- * <p/>
+ * <p>
  * 尽调详情Adapter
  */
 public class InvestigateDetailFragmentAdapter extends FragmentPagerAdapter {
@@ -24,10 +24,10 @@ public class InvestigateDetailFragmentAdapter extends FragmentPagerAdapter {
 
     public InvestigateDetailFragmentAdapter(FragmentManager fm) {
         super(fm);
-        personInfoFragment = PersonInfoFragment.newInstance();
+        /*personInfoFragment = PersonInfoFragment.newInstance();
         companyInfoFragment = CompanyInfoFragment.newInstance();
         personalAssetsFragment = PersonalAssetsFragment.newInstance();
-        socialRelationFragment = SocialRelationFragment.newInstance();
+        socialRelationFragment = SocialRelationFragment.newInstance();*/
     }
 
     public void saveData(int currItemIdx) {
@@ -54,15 +54,23 @@ public class InvestigateDetailFragmentAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
+                if (personInfoFragment == null)
+                    personInfoFragment = PersonInfoFragment.newInstance();
                 fragment = personInfoFragment;
                 break;
             case 1:
+                if(companyInfoFragment==null)
+                    companyInfoFragment= CompanyInfoFragment.newInstance();
                 fragment = companyInfoFragment;
                 break;
             case 2:
+                if(personalAssetsFragment==null)
+                    personalAssetsFragment = PersonalAssetsFragment.newInstance();
                 fragment = personalAssetsFragment;
                 break;
             case 3:
+                if(socialRelationFragment==null)
+                    socialRelationFragment = SocialRelationFragment.newInstance();
                 fragment = socialRelationFragment;
                 break;
             default:

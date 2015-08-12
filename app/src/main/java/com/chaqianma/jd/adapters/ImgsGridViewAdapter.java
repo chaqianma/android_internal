@@ -103,7 +103,7 @@ public class ImgsGridViewAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         HolderView holderView = null;
         if (position < mUploadImgInfoList.size()) {
-           /* if (null == convertView) {
+            if (null == convertView) {
                 holderView = new HolderView();
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_img_item, null);
                 holderView.imageView = (ImageView) convertView.findViewById(R.id.img_main);
@@ -112,14 +112,16 @@ public class ImgsGridViewAdapter extends BaseAdapter {
                 convertView.setTag(holderView);
             } else {
                 holderView = (HolderView) convertView.getTag();
-            }*/
+            }
             //暂时不复用View
-            holderView = new HolderView();
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_img_item, null);
+            //holderView = new HolderView();
+            //convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_img_item, null);
             holderView.imageView = (ImageView) convertView.findViewById(R.id.img_main);
             holderView.img_fail = (ImageView) convertView.findViewById(R.id.img_fail);
             holderView.img_success = (ImageView) convertView.findViewById(R.id.img_success);
             final UploadFileInfo imgInfo = mUploadImgInfoList.get(position);
+            holderView.img_fail.setVisibility(View.GONE);
+            holderView.img_success.setVisibility(View.GONE);
             if (!imgInfo.isDefault()) {
                 if (imgInfo.getStatus() == UploadStatus.SUCCESS.getValue()) {
                     holderView.img_fail.setVisibility(View.GONE);
@@ -129,6 +131,7 @@ public class ImgsGridViewAdapter extends BaseAdapter {
                     holderView.img_success.setVisibility(View.GONE);
                 }
             }
+            holderView.imageView.setOnClickListener(null);
             holderView.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

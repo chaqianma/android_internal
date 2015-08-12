@@ -613,7 +613,7 @@ public class SocialRelationFragment extends BaseFragment {
     //上传图片
     private void uploadImg(final UploadFileInfo fileInfo) {
         try {
-            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, mParentId[fileInfo.getIdxTag()], false), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
+            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, mParentId[fileInfo.getIdxTag()]), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
                 @Override
                 public void onSuccess(UploadFileInfo downImgInfo) {
                     fileInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功

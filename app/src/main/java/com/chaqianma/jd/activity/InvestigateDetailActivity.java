@@ -60,12 +60,12 @@ public class InvestigateDetailActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investigate_detail);
         ButterKnife.inject(this);
-        mViewPager.setOffscreenPageLimit(4);
         if (AppData.getInstance().getBorrowRequestInfo() != null)
             mBorrowRequestId = AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId();
         top_title.setText("尽调详情");
         top_right_btn.setVisibility(View.VISIBLE);
         mAdapter = new InvestigateDetailFragmentAdapter(getSupportFragmentManager());
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(mAdapter);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 

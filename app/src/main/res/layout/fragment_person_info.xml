@@ -234,7 +234,8 @@
 
             <LinearLayout
                 android:id="@+id/layout_child"
-                style="@style/LinearLayoutStyle">
+                style="@style/LinearLayoutStyle"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/SmallTextStyle"

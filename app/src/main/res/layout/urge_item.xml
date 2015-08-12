@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -14,7 +15,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_desc"
+            android:id="@+id/tv_urgeStatus"
             style="@style/SmallTextStyle"
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"

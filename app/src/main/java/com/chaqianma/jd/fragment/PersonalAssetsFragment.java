@@ -643,130 +643,155 @@ public class PersonalAssetsFragment extends BaseFragment {
     */
     private void getPersonalAssetInfo() {
         String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.PERSONALASSETSINFO + "/" + getBorrowRequestId();
-        try {
-            HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
-                @Override
-                public void onSuccess(Object o) {
-                    if (o == null)
-                        return;
-                    JSONObject json = JSON.parseObject(o.toString());
-                    try {
-                        List<CompanyInfo> companyInfoList = JSON.parseArray(json.getString("businessInfoList"), CompanyInfo.class);
-                        if (companyInfoList != null) {
-                            int size = companyInfoList.size();
-                            CompanyInfo companyInfo = null;
-                            for (int i = 0; i < size; i++) {
-                                companyInfo = companyInfoList.get(i);
-                                mCompanyId[i] = companyInfo.getId();
-                                int companySize = -1;
-                                if (companyInfo.getFileList() != null)
-                                    companySize = companyInfo.getFileList().size();
-                                //判断是否是有效企业 企业名称
-                                if (companySize > 0 || !JDAppUtil.isEmpty(companyInfo.getCompanyName())) {
 
-                                    switch (i) {
-                                        case 0:
-                                            initServerFile(companyInfo.getFileList());
-                                            break;
-                                        case 1:
-                                            addCompanyIncome(1);
-                                            initServerFile(companyInfo.getFileList());
-                                            break;
-                                        case 2:
-                                            addCompanyIncome(2);
-                                            initServerFile(companyInfo.getFileList());
-                                            break;
-                                        default:
-                                            break;
+        HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+            @Override
+            public void onSuccess(final Object o) {
+                try {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (o == null)
+                                return;
+                            JSONObject json = JSON.parseObject(o.toString());
+                            //获取企业
+                            getCompanyList(JSON.parseArray(json.getString("businessInfoList"), CompanyInfo.class));
+                            final AssetInfo assetInfo = json.getObject("personalAssetsInfo", AssetInfo.class);
+                            if (assetInfo != null) {
+                                //获取备注提交ID
+                                mRemarkId = assetInfo.getId();
+                                soundAdapter.setParentId(mRemarkId);
+                                //获取车辆
+                                getCarInfoList(assetInfo.getPersonalAssetsCarInfoList());
+                                //获取房
+                                getHouseInfoList(assetInfo.getPersonalAssetsHouseInfoList());
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //设置备注信息
+                                        if (!JDAppUtil.isEmpty(assetInfo.getRemark()))
+                                            et_remark.setText(assetInfo.getRemark());
                                     }
-                                }
+                                });
                             }
                         }
-                    } catch (Exception e) {
-
-                    }
-                    AssetInfo assetInfo = json.getObject("personalAssetsInfo", AssetInfo.class);
-                    if (assetInfo != null) {
-                        try {
-                            //获取备注提交ID
-                            mRemarkId = assetInfo.getId();
-                            soundAdapter.setParentId(mRemarkId);
-                            //设置备注信息
-                            if (!JDAppUtil.isEmpty(assetInfo.getRemark()))
-                                et_remark.setText(assetInfo.getRemark());
-                            if (assetInfo.getPersonalAssetsCarInfoList() != null) {
-                                //车
-                                int size = assetInfo.getPersonalAssetsCarInfoList().size();
-                                CarInfo carInfo = null;
-                                for (int i = 0; i < size; i++) {
-                                    carInfo = assetInfo.getPersonalAssetsCarInfoList().get(i);
-                                    if (carInfo != null) {
-                                        mCardId[i] = carInfo.getId();
-                                        int carSize = -1;
-                                        if (carInfo.getFileList() != null)
-                                            carSize = carInfo.getFileList().size();
-                                        //根据 车 是否有图片   车牌号码  总价 来判断是否是真实的车
-                                        if (carSize > 0 || !JDAppUtil.isEmpty(carInfo.getSumPrice()) || !JDAppUtil.isEmpty(carInfo.getPlateNum())) {
-                                            switch (i) {
-                                                case 0:
-                                                    initServerFile(carInfo.getFileList());
-                                                    break;
-                                                case 1:
-                                                    addCar(1);
-                                                    initServerFile(carInfo.getFileList());
-                                                    break;
-                                                case 2:
-                                                    addCar(2);
-                                                    initServerFile(carInfo.getFileList());
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-
-                        }
-                        if (assetInfo.getPersonalAssetsHouseInfoList() != null) {
-                            //房
-                            int size = assetInfo.getPersonalAssetsHouseInfoList().size();
-                            HouseInfo houseInfo = null;
-                            for (int i = 0; i < size; i++) {
-                                houseInfo = assetInfo.getPersonalAssetsHouseInfoList().get(i);
-                                if (houseInfo != null) {
-                                    mHouseId[i] = houseInfo.getId();
-                                    int houseSize = -1;
-                                    if (houseInfo.getFileList() != null)
-                                        houseSize = houseInfo.getFileList().size();
-                                    //根据 房 是否有图片   地址  面积  房产价号 来判断是否是真实的房子
-                                    if (houseSize > 0 || !JDAppUtil.isEmpty(houseInfo.getArea()) || !JDAppUtil.isEmpty(houseInfo.getAddress()) || !JDAppUtil.isEmpty(houseInfo.getDeed_num())) {
-                                        switch (i) {
-                                            case 0:
-                                                initServerFile(houseInfo.getFileList());
-                                                break;
-                                            case 1:
-                                                addCar(1);
-                                                initServerFile(houseInfo.getFileList());
-                                                break;
-                                            case 2:
-                                                addCar(2);
-                                                initServerFile(houseInfo.getFileList());
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
+                    }).start();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }));
-        } catch (Exception e) {
-            e.printStackTrace();
+            }
+        }));
+    }
+
+    /*
+    * 获取企业
+    * */
+    private void getCompanyList(List<CompanyInfo> companyInfoList) {
+        if (companyInfoList != null) {
+            int size = companyInfoList.size();
+            CompanyInfo companyInfo = null;
+            for (int i = 0; i < size; i++) {
+                companyInfo = companyInfoList.get(i);
+                mCompanyId[i] = companyInfo.getId();
+                int companySize = -1;
+                if (companyInfo.getFileList() != null)
+                    companySize = companyInfo.getFileList().size();
+                //判断是否是有效企业 企业名称
+                if (companySize > 0 || !JDAppUtil.isEmpty(companyInfo.getCompanyName())) {
+
+                    switch (i) {
+                        case 0:
+                            initServerFile(companyInfo.getFileList());
+                            break;
+                        case 1:
+                            addCompanyIncome(1);
+                            initServerFile(companyInfo.getFileList());
+                            break;
+                        case 2:
+                            addCompanyIncome(2);
+                            initServerFile(companyInfo.getFileList());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    /*
+    * 获取车辆
+    * */
+    private void getCarInfoList(List<CarInfo> carInfoList) {
+        if (carInfoList != null) {
+            //车
+            int size = carInfoList.size();
+            CarInfo carInfo = null;
+            for (int i = 0; i < size; i++) {
+                carInfo = carInfoList.get(i);
+                if (carInfo != null) {
+                    mCardId[i] = carInfo.getId();
+                    int carSize = -1;
+                    if (carInfo.getFileList() != null)
+                        carSize = carInfo.getFileList().size();
+                    //根据 车 是否有图片   车牌号码  总价 来判断是否是真实的车
+                    if (carSize > 0 || !JDAppUtil.isEmpty(carInfo.getSumPrice()) || !JDAppUtil.isEmpty(carInfo.getPlateNum())) {
+                        switch (i) {
+                            case 0:
+                                initServerFile(carInfo.getFileList());
+                                break;
+                            case 1:
+                                addCar(1);
+                                initServerFile(carInfo.getFileList());
+                                break;
+                            case 2:
+                                addCar(2);
+                                initServerFile(carInfo.getFileList());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /*
+    * 获取房产
+    * */
+    private void getHouseInfoList(List<HouseInfo> houseInfoList) {
+        if (houseInfoList != null) {
+            //房
+            int size = houseInfoList.size();
+            HouseInfo houseInfo = null;
+            for (int i = 0; i < size; i++) {
+                houseInfo = houseInfoList.get(i);
+                if (houseInfo != null) {
+                    mHouseId[i] = houseInfo.getId();
+                    int houseSize = -1;
+                    if (houseInfo.getFileList() != null)
+                        houseSize = houseInfo.getFileList().size();
+                    //根据 房 是否有图片   地址  面积  房产价号 来判断是否是真实的房子
+                    if (houseSize > 0 || !JDAppUtil.isEmpty(houseInfo.getArea()) || !JDAppUtil.isEmpty(houseInfo.getAddress()) || !JDAppUtil.isEmpty(houseInfo.getDeed_num())) {
+                        switch (i) {
+                            case 0:
+                                initServerFile(houseInfo.getFileList());
+                                break;
+                            case 1:
+                                addCar(1);
+                                initServerFile(houseInfo.getFileList());
+                                break;
+                            case 2:
+                                addCar(2);
+                                initServerFile(houseInfo.getFileList());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -912,43 +937,37 @@ public class PersonalAssetsFragment extends BaseFragment {
         }
     }
 
+
     /*
    * 得到服务器文件
    * */
     private void getServerFile(final UploadFileInfo fileInfo) {
         String filePath = getSaveFilePath(fileInfo);
         fileInfo.setBigImgPath(filePath);
-        HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
-            public void onSuccess(UploadFileInfo uploadFileInfo) {
-                uploadFileInfo.setiServer(true);
-                uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
-                if (uploadFileInfo.getFileExt().equals("amr")) {
-                    uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
-                }
-                addGridViewData(uploadFileInfo);
-            }
+            public void run() {
+                HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
+                    @Override
+                    public void onSuccess(UploadFileInfo uploadFileInfo) {
+                        uploadFileInfo.setiServer(true);
+                        uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
+                        if (uploadFileInfo.getFileExt().equals("amr")) {
+                            uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
+                        }
+                        addGridViewData(uploadFileInfo);
+                    }
 
-            @Override
-            public void onFailure(UploadFileInfo uploadFileInfo) {
-                super.onFailure(uploadFileInfo);
-                uploadFileInfo.setiServer(false);
-                uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                    @Override
+                    public void onFailure(UploadFileInfo uploadFileInfo) {
+                        super.onFailure(uploadFileInfo);
+                        uploadFileInfo.setiServer(false);
+                        uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                    }
+                }));
             }
-        }));
+        });
     }
-
-    //刷新数据
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.obj != null) {
-                UploadFileInfo imgInfo = (UploadFileInfo) msg.obj;
-                refreshData(imgInfo);
-            }
-        }
-    };
 
     /*
    * 往GridView里添加图片
@@ -1048,7 +1067,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else {
 
         }
-        mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
+        refreshData(imgInfo);
     }
 
     @Override
@@ -1218,6 +1237,21 @@ public class PersonalAssetsFragment extends BaseFragment {
     }
 
     /*
+       * 刷新GridView数据与上传文件
+       * */
+    private class UpdateUIHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.obj != null) {
+                UploadFileInfo fileInfo = (UploadFileInfo) msg.obj;
+                addGridViewData(fileInfo);
+                uploadImg(fileInfo);
+            }
+        }
+    }
+
+    /*
     * 拍照回调
     * */
     @Override
@@ -1236,7 +1270,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                             if (cursor != null && cursor.getCount() > 0) {
                                 int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                                 cursor.moveToFirst();
-                                mHandler.post(new ImgRunable(cursor.getString(colunm_index)));
+                                new Thread(new BaseFragment.ImgRunable(cursor.getString(colunm_index), fileType, selIdxTag, new UpdateUIHandler())).start();
+                                //mHandler.post(new ImgRunable(cursor.getString(colunm_index)));
                             } else {
                                 JDToast.showLongText(getActivity(), "请选择有效的图片文件夹");
                             }
@@ -1251,7 +1286,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                     }
                     break;
                 case REQUEST_TAKE_PHOTO:
-                    mHandler.post(mRunnable);
+                    // mHandler.post(mRunnable);
+                    new Thread(new BaseFragment.ImgRunable(Constants.TEMPPATH, fileType, selIdxTag, new UpdateUIHandler())).start();
                     break;
                 default:
                     break;

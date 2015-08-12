@@ -26,8 +26,10 @@ import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.utils.AudioRecorder;
 import com.chaqianma.jd.utils.HttpClientUtil;
+import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
+import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
 import org.apache.http.entity.ContentType;
@@ -63,7 +65,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
     private ImageView img_ok = null;
     private ImageView img_cancel = null;
     private ImageView img_delete = null;
-    private UploadFileInfo soundInfo = null;
+    //private UploadFileInfo soundInfo = null;
     private String mParentId = "1";
     private String mParentTableName = null;
     private String mSoundPath = null;
@@ -125,7 +127,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                 holderView = (HolderView) convertView.getTag();
             }*/
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_img_item, null);
-            ImageView imgView = (ImageView) convertView.findViewById(R.id.img_main);
+            final ImageView imgView = (ImageView) convertView.findViewById(R.id.img_main);
             ImageView img_fail = (ImageView) convertView.findViewById(R.id.img_fail);
             ImageView img_success = (ImageView) convertView.findViewById(R.id.img_success);
             if (!fileInfo.isDefault()) {
@@ -139,6 +141,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                 }
             }
             imgView.setTag(fileInfo);
+            imgView.setLongClickable(true);
             imgView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -150,6 +153,52 @@ public class SoundGridViewAdapter extends BaseAdapter {
                             playRecord(uploadFileInfo);
                         }
                     }
+                }
+            });
+            imgView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    JDAlertDialog.showAlertDialog(mContext, "确定删除录音吗？", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (imgView.getTag() instanceof UploadFileInfo) {
+                                final UploadFileInfo soundInfo = (UploadFileInfo) imgView.getTag();
+                                try {//删除正在收听的录音
+                                    if (mediaPlayer != null)
+                                        mediaPlayer.release();
+                                    mediaPlayer = null;
+                                    if (soundInfo == null)
+                                        return;
+                                    if (soundInfo.iServer()) {
+                                        //去服务端删除文件
+                                        HttpClientUtil.delete(HttpRequestURL.deleteFileUrl + soundInfo.getFileId(), null, new JDHttpResponseHandler(mContext, new ResponseHandler() {
+                                            @Override
+                                            public void onSuccess(Object o) {
+                                                JDToast.showLongText(mContext,"录音删除成功");
+                                                mSoundInfoList.remove(soundInfo);
+                                                notifyDataSetChanged();
+                                            }
+                                        }));
+                                    } else {
+                                        if (!soundInfo.isDefault()) {
+                                            mSoundInfoList.remove(soundInfo);
+                                            notifyDataSetChanged();
+                                        }
+                                    }
+                                    soundDialog.dismiss();
+                                } catch (Exception e) {
+                                }
+                            }
+                        }
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            dialog.cancel();
+                        }
+                    });
+                    //不执行短按操作
+                    return true;
                 }
             });
            /* if (soundInfo.isDefault()) {
@@ -260,9 +309,9 @@ public class SoundGridViewAdapter extends BaseAdapter {
                         //mAudioRecorder.stop();
                         mAudioRecorder.cancel();
                         soundDialog.dismiss();
-                        if (soundInfo == null) {
-                            return;
-                        }
+                        //if (soundInfo == null) {
+                        //    return;
+                        //}
                     } catch (Exception e) {
                     }
                 }
@@ -272,27 +321,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     try {
-                        //删除正在收听的录音
-                        mediaPlayer.release();
-                        mediaPlayer = null;
-                        if (soundInfo == null)
-                            return;
-                        if (soundInfo.iServer()) {
-                            //去服务端删除文件
-                            HttpClientUtil.delete(HttpRequestURL.deleteFileUrl + soundInfo.getFileId(), null, new JDHttpResponseHandler(mContext, new ResponseHandler() {
-                                @Override
-                                public void onSuccess(Object o) {
-                                    mSoundInfoList.remove(soundInfo);
-                                    notifyDataSetChanged();
-                                }
-                            }));
-                        } else {
-                            if (!soundInfo.isDefault()) {
-                                mSoundInfoList.remove(soundInfo);
-                                notifyDataSetChanged();
-                            }
-                        }
-                        soundDialog.dismiss();
+
                     } catch (Exception e) {
                     }
                 }
@@ -376,7 +405,6 @@ public class SoundGridViewAdapter extends BaseAdapter {
             soundDialog.setCancelable(true);
             setVisible(false);
         }
-        this.soundInfo = uploadFileInfo;
         try {
             if (mediaPlayer == null)
                 mediaPlayer = new MediaPlayer();
@@ -387,7 +415,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
 
         }
         try {
-            mediaPlayer.setDataSource(soundInfo.getBigImgPath());
+            mediaPlayer.setDataSource(uploadFileInfo.getBigImgPath());
             mediaPlayer.prepare();
             mediaPlayer.start();
         } catch (IllegalArgumentException e) {
@@ -415,7 +443,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
             //收听中。。。
             img_ok.setVisibility(View.GONE);
             img_cancel.setVisibility(View.GONE);
-            img_delete.setVisibility(View.VISIBLE);
+            img_delete.setVisibility(View.GONE);
             tv_record_status.setText("收听中...");
         }
     }

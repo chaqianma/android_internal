@@ -222,7 +222,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     private SoundGridViewAdapter soundAdapter = null;
     //录音集合
     private List<UploadFileInfo> soundInfoList = null;
-
+    //用于只加载一次
+    private boolean hasLoadedOnce=false;
     /*
     * 添加企业
     * */
@@ -520,7 +521,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         //初始化第一家企业
         initOneView();
         getCompanyInfo();
-
         return mView;
     }
 
@@ -982,7 +982,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     //上传图片
     private void uploadImg(final UploadFileInfo fileInfo) {
         try {
-            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, mParentId[fileInfo.getIdxTag()], false), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
+            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, mParentId[fileInfo.getIdxTag()]), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
                 @Override
                 public void onSuccess(UploadFileInfo downImgInfo) {
                     fileInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功
@@ -1223,6 +1223,15 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                     ((InvestigateDetailActivity) getActivity()).gotoNext();
             }
         }));
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(this.isVisible() && isVisibleToUser && !hasLoadedOnce)
+        {
+            hasLoadedOnce=true;
+        }
     }
 
     public static CompanyInfoFragment newInstance() {

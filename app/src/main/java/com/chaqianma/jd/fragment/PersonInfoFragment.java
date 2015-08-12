@@ -171,6 +171,8 @@ public class PersonInfoFragment extends BaseFragment {
     private String mParentId = null;
     //用于实名认证
     private boolean mIsAuthSuccess = false;
+    //用于只加载一次
+    private boolean hasLoadedOnce=false;
     private int year, month, day;
 
     @Override
@@ -769,6 +771,15 @@ public class PersonInfoFragment extends BaseFragment {
             remarkImgsAdapter.refreshData();
         } else {
 
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && !hasLoadedOnce) {
+            //getPersonalInfo();
+            hasLoadedOnce=true;
         }
     }
 }
