@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.baidu.mapapi.SDKInitializer;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.utils.FileUtil;
 import com.chaqianma.jd.utils.JPushUtil;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -34,6 +35,7 @@ public class JDApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FileUtil.deleteTempFile();
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(getApplicationContext());
         JPushInterface.setDebugMode(Constants.DEBUG); // 设置开启日志,发布时请关闭日志

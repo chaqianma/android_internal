@@ -21,6 +21,7 @@ import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.BorrowRequestInfo;
+import com.chaqianma.jd.utils.FileUtil;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
@@ -197,12 +198,7 @@ public class BorrowApplyActivity extends BaseActivity {
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.setClass(BorrowApplyActivity.this, MainActivity.class);
                                     startActivity(intent);
-                                    //删除临时文件
-                                    try {
-
-                                    } catch (Exception e) {
-
-                                    }
+                                    FileUtil.deleteTempFile();
                                     finish();
                                 }
                             }));
