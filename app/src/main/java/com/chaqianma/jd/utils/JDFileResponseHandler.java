@@ -32,6 +32,10 @@ public class JDFileResponseHandler extends FileAsyncHttpResponseHandler {
         if (file != null) {
             handler.onSuccess(mUploadFileInfo);
         }
+        else
+        {
+            String sss="ssss";
+        }
     }
 
     @Override

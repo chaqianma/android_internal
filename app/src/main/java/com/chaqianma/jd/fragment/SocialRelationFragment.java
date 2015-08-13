@@ -20,6 +20,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chaqianma.jd.R;
@@ -37,8 +38,10 @@ import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -276,75 +279,80 @@ public class SocialRelationFragment extends BaseFragment {
     /*
    * 添加联系人
    * */
-    private void addRCPerson(int rcIdx) {
-        switch (rcIdx) {
-            case 2: {
-                isShow2 = true;
-                ((ViewStub) mView.findViewById(R.id.stub_social_relation_2)).inflate();
-                gv_relation_card_2 = (GridView) mView.findViewById(R.id.gv_relation_card_2);
-                sp_relation_type_2 = (Spinner) mView.findViewById(R.id.sp_relation_type_2);
-                UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
-                imgInfo.setIsDefault(true);
-                imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.CARD.getValue());
-                mRCList_2.add(imgInfo);
-                mRCAdapter_2 = new ImgsGridViewAdapter(getActivity(), mRCList_2);
-                mRCAdapter_2.setOnClickImgListener(this);
-                gv_relation_card_2.setAdapter(mRCAdapter_2);
+    private void addRCPerson(final int rcIdx) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (rcIdx) {
+                    case 1: {
+                        isShow2 = true;
+                        ((ViewStub) mView.findViewById(R.id.stub_social_relation_2)).inflate();
+                        gv_relation_card_2 = (GridView) mView.findViewById(R.id.gv_relation_card_2);
+                        sp_relation_type_2 = (Spinner) mView.findViewById(R.id.sp_relation_type_2);
+                        UploadFileInfo imgInfo = new UploadFileInfo();
+                        imgInfo.setIdxTag(1);
+                        imgInfo.setIsDefault(true);
+                        imgInfo.setiServer(false);
+                        imgInfo.setFileType(UploadFileType.CARD.getValue());
+                        mRCList_2.add(imgInfo);
+                        mRCAdapter_2 = new ImgsGridViewAdapter(getActivity(), mRCList_2);
+                        mRCAdapter_2.setOnClickImgListener(SocialRelationFragment.this);
+                        gv_relation_card_2.setAdapter(mRCAdapter_2);
+                    }
+                    break;
+                    case 2: {
+                        isShow3 = true;
+                        ((ViewStub) mView.findViewById(R.id.stub_social_relation_3)).inflate();
+                        gv_relation_card_3 = (GridView) mView.findViewById(R.id.gv_relation_card_3);
+                        sp_relation_type_3 = (Spinner) mView.findViewById(R.id.sp_relation_type_3);
+                        UploadFileInfo imgInfo = new UploadFileInfo();
+                        imgInfo.setIdxTag(2);
+                        imgInfo.setIsDefault(true);
+                        imgInfo.setiServer(false);
+                        imgInfo.setFileType(UploadFileType.CARD.getValue());
+                        mRCList_3.add(imgInfo);
+                        mRCAdapter_3 = new ImgsGridViewAdapter(getActivity(), mRCList_3);
+                        mRCAdapter_3.setOnClickImgListener(SocialRelationFragment.this);
+                        gv_relation_card_3.setAdapter(mRCAdapter_3);
+                    }
+                    break;
+                    case 3: {
+                        isShow4 = true;
+                        ((ViewStub) mView.findViewById(R.id.stub_social_relation_4)).inflate();
+                        gv_relation_card_4 = (GridView) mView.findViewById(R.id.gv_relation_card_4);
+                        sp_relation_type_4 = (Spinner) mView.findViewById(R.id.sp_relation_type_4);
+                        UploadFileInfo imgInfo = new UploadFileInfo();
+                        imgInfo.setIdxTag(3);
+                        imgInfo.setIsDefault(true);
+                        imgInfo.setiServer(false);
+                        imgInfo.setFileType(UploadFileType.CARD.getValue());
+                        mRCList_4.add(imgInfo);
+                        mRCAdapter_4 = new ImgsGridViewAdapter(getActivity(), mRCList_4);
+                        mRCAdapter_4.setOnClickImgListener(SocialRelationFragment.this);
+                        gv_relation_card_4.setAdapter(mRCAdapter_4);
+                    }
+                    break;
+                    case 4: {
+                        isShow5 = true;
+                        ((ViewStub) mView.findViewById(R.id.stub_social_relation_5)).inflate();
+                        gv_relation_card_5 = (GridView) mView.findViewById(R.id.gv_relation_card_5);
+                        sp_relation_type_5 = (Spinner) mView.findViewById(R.id.sp_relation_type_5);
+                        UploadFileInfo imgInfo = new UploadFileInfo();
+                        imgInfo.setIdxTag(4);
+                        imgInfo.setIsDefault(true);
+                        imgInfo.setiServer(false);
+                        imgInfo.setFileType(UploadFileType.CARD.getValue());
+                        mRCList_5.add(imgInfo);
+                        mRCAdapter_5 = new ImgsGridViewAdapter(getActivity(), mRCList_5);
+                        mRCAdapter_5.setOnClickImgListener(SocialRelationFragment.this);
+                        gv_relation_card_5.setAdapter(mRCAdapter_5);
+                    }
+                    break;
+                    default:
+                        break;
+                }
             }
-            break;
-            case 3: {
-                isShow3 = true;
-                ((ViewStub) mView.findViewById(R.id.stub_social_relation_3)).inflate();
-                gv_relation_card_3 = (GridView) mView.findViewById(R.id.gv_relation_card_3);
-                sp_relation_type_3 = (Spinner) mView.findViewById(R.id.sp_relation_type_3);
-                UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(2);
-                imgInfo.setIsDefault(true);
-                imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.CARD.getValue());
-                mRCList_3.add(imgInfo);
-                mRCAdapter_3 = new ImgsGridViewAdapter(getActivity(), mRCList_3);
-                mRCAdapter_3.setOnClickImgListener(this);
-                gv_relation_card_3.setAdapter(mRCAdapter_3);
-            }
-            break;
-            case 4: {
-                isShow4 = true;
-                ((ViewStub) mView.findViewById(R.id.stub_social_relation_4)).inflate();
-                gv_relation_card_4 = (GridView) mView.findViewById(R.id.gv_relation_card_4);
-                sp_relation_type_4 = (Spinner) mView.findViewById(R.id.sp_relation_type_4);
-                UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(3);
-                imgInfo.setIsDefault(true);
-                imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.CARD.getValue());
-                mRCList_4.add(imgInfo);
-                mRCAdapter_4 = new ImgsGridViewAdapter(getActivity(), mRCList_4);
-                mRCAdapter_4.setOnClickImgListener(this);
-                gv_relation_card_4.setAdapter(mRCAdapter_4);
-            }
-            break;
-            case 5: {
-                isShow5 = true;
-                ((ViewStub) mView.findViewById(R.id.stub_social_relation_5)).inflate();
-                gv_relation_card_5 = (GridView) mView.findViewById(R.id.gv_relation_card_5);
-                sp_relation_type_5 = (Spinner) mView.findViewById(R.id.sp_relation_type_5);
-                UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(4);
-                imgInfo.setIsDefault(true);
-                imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.CARD.getValue());
-                mRCList_5.add(imgInfo);
-                mRCAdapter_5 = new ImgsGridViewAdapter(getActivity(), mRCList_5);
-                mRCAdapter_5.setOnClickImgListener(this);
-                gv_relation_card_5.setAdapter(mRCAdapter_5);
-            }
-            break;
-            default:
-                break;
-        }
+        });
     }
 
     //初始化集合
@@ -375,16 +383,24 @@ public class SocialRelationFragment extends BaseFragment {
                                 return;
                             JSONObject json = JSON.parseObject(o.toString());
                             //尽职说明
-                            JSONObject ddObj = json.getJSONObject("applyInfo");
+                            final JSONObject ddObj = json.getJSONObject("applyInfo");
                             if (ddObj != null && !ddObj.isEmpty()) {
-                                et_comment.setText(ddObj.getString("ddDescription"));
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        et_comment.setText(ddObj.getString("ddDescription"));
+                                    }
+                                });
                                 List<UploadFileInfo> uploadFileInfos = JSON.parseArray(json.getString("fileList"), UploadFileInfo.class);
-                                initServerFile(uploadFileInfos);
+                                initServerFile(uploadFileInfos, -1);
                             }
                             //获取联系人信息
                             getContactInfoList(JSON.parseArray(json.getString("contactInfoList"), ContactInfo.class));
                         } catch (Exception e) {
-
+                            String sss = "1";
+                            sss = "1";
+                            sss = "1";
+                            sss = "1";
                         }
                     }
                 }).start();
@@ -399,31 +415,46 @@ public class SocialRelationFragment extends BaseFragment {
     private void getContactInfoList(List<ContactInfo> contactInfoList) {
         if (contactInfoList != null) {
             int size = contactInfoList.size();
-            ContactInfo contactInfo = null;
             for (int i = 0; i < size; i++) {
-                contactInfo = contactInfoList.get(i);
+                final int idx = i;
+                final ContactInfo contactInfo = contactInfoList.get(i);
                 mParentId[i] = contactInfo.getId();
                 //尽职说明
                 int fileSize = -1;
                 if (contactInfo.getFileList() != null)
                     fileSize = contactInfo.getFileList().size();
                 //判断是否是有效企业 企业名称
-                if (fileSize > 0 || !JDAppUtil.isEmpty(contactInfo.getRelation())) {
-                    switch (i) {
-                        case 0:
-                            et_remark.setText(contactInfo.getRemark());
-                            initServerFile(contactInfo.getFileList());
-                            break;
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                            addRCPerson(i);
-                            initServerFile(contactInfo.getFileList());
-                            break;
-                        default:
-                            break;
-                    }
+                if (fileSize > 0 || contactInfo.getRelation() != -1) {
+                    //初始化控件
+                    addRCPerson(idx);
+                    //初始化服务器文件
+                    initServerFile(contactInfo.getFileList(), idx);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            switch (idx) {
+                                case 0:
+                                    et_remark.setText(contactInfo.getRemark());
+                                    sp_relation_type_1.setSelection(contactInfo.getRelation() - 1);
+                                    break;
+                                case 1:
+                                    sp_relation_type_2.setSelection(contactInfo.getRelation() - 1);
+                                    break;
+                                case 2:
+                                    sp_relation_type_3.setSelection(contactInfo.getRelation() - 1);
+                                    break;
+                                case 3:
+                                    sp_relation_type_4.setSelection(contactInfo.getRelation() - 1);
+                                    break;
+                                case 4:
+                                    sp_relation_type_5.setSelection(contactInfo.getRelation() - 1);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+
                 }
             }
             soundAdapter.setParentId(mParentId[0]);
@@ -449,16 +480,19 @@ public class SocialRelationFragment extends BaseFragment {
      *获取服务器文件信息
     */
 
-    private void initServerFile(List<UploadFileInfo> fileInfoList) {
+    private void initServerFile(List<UploadFileInfo> fileInfoList, int idxTag) {
         if (fileInfoList != null && fileInfoList.size() > 0) {
             for (UploadFileInfo uploadFileInfo : fileInfoList) {
                 uploadFileInfo.setiServer(true);
+                uploadFileInfo.setIdxTag(idxTag);
                 uploadFileInfo.setIsDefault(false);
                 uploadFileInfo.setBorrowRequestId(getBorrowRequestId());
                 getServerFile(uploadFileInfo);
             }
         }
     }
+
+    private int ss = 0;
 
     /*
    * 得到服务器文件
@@ -477,6 +511,10 @@ public class SocialRelationFragment extends BaseFragment {
                         if (uploadFileInfo.getFileExt().equals("amr")) {
                             uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
                         }
+                        if (uploadFileInfo.getFileType() == 1)
+                            ss += 1;
+
+
                         addGridViewData(uploadFileInfo);
                     }
 
@@ -731,7 +769,7 @@ public class SocialRelationFragment extends BaseFragment {
 
         ContactInfo contactInfo = new ContactInfo();
         contactInfo.setRemark(et_remark.getText().toString());
-        contactInfo.setRelation(sp_relation_type_1.getSelectedItemPosition() + 1 + "");
+        contactInfo.setRelation(sp_relation_type_1.getSelectedItemPosition() + 1);
         contactInfoList.add(contactInfo);
 
         if (isShow2) {
@@ -740,14 +778,14 @@ public class SocialRelationFragment extends BaseFragment {
                 isSelctedSpouse = true;
 
             contactInfo = new ContactInfo();
-            contactInfo.setRelation(sp_relation_type_2.getSelectedItemPosition() + 1 + "");
+            contactInfo.setRelation(sp_relation_type_2.getSelectedItemPosition() + 1);
             contactInfoList.add(contactInfo);
         } else {
             if (isShow3) {
                 if (sp_relation_type_3.getSelectedItem().toString().equals(mSpouse))
                     isSelctedSpouse = true;
                 contactInfo = new ContactInfo();
-                contactInfo.setRelation(sp_relation_type_3.getSelectedItemPosition() + 1 + "");
+                contactInfo.setRelation(sp_relation_type_3.getSelectedItemPosition() + 1 );
                 contactInfoList.add(contactInfo);
             } else {
                 if (isShow4) {
@@ -755,7 +793,7 @@ public class SocialRelationFragment extends BaseFragment {
                         isSelctedSpouse = true;
 
                     contactInfo = new ContactInfo();
-                    contactInfo.setRelation(sp_relation_type_4.getSelectedItemPosition() + 1 + "");
+                    contactInfo.setRelation(sp_relation_type_4.getSelectedItemPosition() + 1);
                     contactInfoList.add(contactInfo);
                 } else {
                     if (isShow5) {
@@ -763,7 +801,7 @@ public class SocialRelationFragment extends BaseFragment {
                             isSelctedSpouse = true;
 
                         contactInfo = new ContactInfo();
-                        contactInfo.setRelation(sp_relation_type_5.getSelectedItemPosition() + 1 + "");
+                        contactInfo.setRelation(sp_relation_type_5.getSelectedItemPosition() + 1);
                         contactInfoList.add(contactInfo);
                     }
                 }

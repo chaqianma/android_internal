@@ -218,7 +218,6 @@ public class PersonalAssetsFragment extends BaseFragment {
                 JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
                 return;
             }
-
             //经营
             if (!isUploadSuccess(mJYList_1)) {
                 JDToast.showLongText(getActivity(), "请上传经营性单据图片");
@@ -227,10 +226,6 @@ public class PersonalAssetsFragment extends BaseFragment {
             isIncome2Show = true;
             View view = ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
             initCompanyView(true);
-            //sp_company_1.setEnabled(false);
-            //下拉框
-            //companyList.remove(sp_some_company_2.getSelectedItemPosition());
-            //initSpinner(sp_some_company_2, companyList);
             JDAppUtil.addShowAction(view);
         } else {
             if (!isIncome3Show) {
@@ -424,7 +419,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             sp_company_2 = (Spinner) mView.findViewById(R.id.sp_company_2);
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(2);
+                imgInfo.setIdxTag(1);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.SY.getValue());
@@ -436,7 +431,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(2);
+                imgInfo.setIdxTag(1);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.JY.getValue());
@@ -456,7 +451,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(3);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.SY.getValue());
@@ -468,7 +463,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(3);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.JY.getValue());
@@ -494,7 +489,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(2);
+                imgInfo.setIdxTag(1);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.CP.getValue());
@@ -506,7 +501,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(2);
+                imgInfo.setIdxTag(1);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.XS.getValue());
@@ -526,7 +521,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(3);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.CP.getValue());
@@ -538,7 +533,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(3);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.XS.getValue());
@@ -564,7 +559,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(2);
+                imgInfo.setIdxTag(1);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.FC.getValue());
@@ -576,7 +571,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(2);
+                imgInfo.setIdxTag(1);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.TD.getValue());
@@ -596,7 +591,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(3);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.FC.getValue());
@@ -608,7 +603,7 @@ public class PersonalAssetsFragment extends BaseFragment {
 
             {
                 UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(3);
+                imgInfo.setIdxTag(2);
                 imgInfo.setIsDefault(true);
                 imgInfo.setiServer(false);
                 imgInfo.setFileType(UploadFileType.TD.getValue());
@@ -652,7 +647,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                         public void run() {
                             if (o == null)
                                 return;
-                            JSONObject json = JSON.parseObject(o.toString());
+                            String b = "{\"businessInfoList\":[{\"borrowRequestId\":35,\"fileList\":[{\"dateline\":1439430826333,\"fileExt\":\"jpg\",\"fileId\":64,\"fileType\":10,\"parentId\":17,\"parentTableName\":\"business_info\",\"userId\":7},{\"dateline\":1439430872691,\"fileExt\":\"jpg\",\"fileId\":65,\"fileType\":10,\"parentId\":17,\"parentTableName\":\"business_info\",\"userId\":7},{\"dateline\":1439433055854,\"fileExt\":\"jpg\",\"fileId\":67,\"fileType\":11,\"parentId\":17,\"parentTableName\":\"business_info\",\"userId\":7}],\"id\":17},{\"borrowRequestId\":35,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":117,\"fileType\":10,\"parentId\":18,\"parentTableName\":\"business_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":118,\"fileType\":11,\"parentId\":18,\"parentTableName\":\"business_info\",\"userId\":7}],\"id\":18},{\"borrowRequestId\":35,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":117,\"fileType\":10,\"parentId\":18,\"parentTableName\":\"business_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":118,\"fileType\":11,\"parentId\":18,\"parentTableName\":\"business_info\",\"userId\":7}],\"id\":19}],\"personalAssetsInfo\":{\"borrowRequestId\":35,\"id\":17,\"personalAssetsCarInfoList\":[{\"id\":49,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":120,\"fileType\":12,\"parentId\":49,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":121,\"fileType\":13,\"parentId\":49,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7}]},{\"id\":50,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":119,\"fileType\":12,\"parentId\":50,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":122,\"fileType\":13,\"parentId\":50,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7}]},{\"id\":51,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":119,\"fileType\":12,\"parentId\":50,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":122,\"fileType\":13,\"parentId\":50,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7}]}],\"personalAssetsHouseInfoList\":[{\"id\":49,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":123,\"fileType\":8,\"parentId\":49,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":124,\"fileType\":9,\"parentId\":49,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7}]},{\"id\":50,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":125,\"fileType\":8,\"parentId\":50,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":126,\"fileType\":9,\"parentId\":50,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7}]},{\"id\":51,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":125,\"fileType\":8,\"parentId\":50,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":126,\"fileType\":9,\"parentId\":50,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7}]}],\"remark\":\"sss\"}}";
+                            JSONObject json = JSON.parseObject(b.toString());
                             //获取企业
                             getCompanyList(JSON.parseArray(json.getString("businessInfoList"), CompanyInfo.class));
                             final AssetInfo assetInfo = json.getObject("personalAssetsInfo", AssetInfo.class);
@@ -660,10 +656,6 @@ public class PersonalAssetsFragment extends BaseFragment {
                                 //获取备注提交ID
                                 mRemarkId = assetInfo.getId();
                                 soundAdapter.setParentId(mRemarkId);
-                                //获取车辆
-                                getCarInfoList(assetInfo.getPersonalAssetsCarInfoList());
-                                //获取房
-                                getHouseInfoList(assetInfo.getPersonalAssetsHouseInfoList());
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -672,6 +664,10 @@ public class PersonalAssetsFragment extends BaseFragment {
                                             et_remark.setText(assetInfo.getRemark());
                                     }
                                 });
+                                //获取车辆
+                                getCarInfoList(assetInfo.getPersonalAssetsCarInfoList());
+                                //获取房
+                                getHouseInfoList(assetInfo.getPersonalAssetsHouseInfoList());
                             }
                         }
                     }).start();
@@ -688,31 +684,35 @@ public class PersonalAssetsFragment extends BaseFragment {
     private void getCompanyList(List<CompanyInfo> companyInfoList) {
         if (companyInfoList != null) {
             int size = companyInfoList.size();
-            CompanyInfo companyInfo = null;
             for (int i = 0; i < size; i++) {
-                companyInfo = companyInfoList.get(i);
-                mCompanyId[i] = companyInfo.getId();
+                final int idx = i;
+                final CompanyInfo companyInfo = companyInfoList.get(idx);
+                mCompanyId[idx] = companyInfo.getId();
                 int companySize = -1;
                 if (companyInfo.getFileList() != null)
                     companySize = companyInfo.getFileList().size();
                 //判断是否是有效企业 企业名称
                 if (companySize > 0 || !JDAppUtil.isEmpty(companyInfo.getCompanyName())) {
-
-                    switch (i) {
-                        case 0:
-                            initServerFile(companyInfo.getFileList());
-                            break;
-                        case 1:
-                            addCompanyIncome(1);
-                            initServerFile(companyInfo.getFileList());
-                            break;
-                        case 2:
-                            addCompanyIncome(2);
-                            initServerFile(companyInfo.getFileList());
-                            break;
-                        default:
-                            break;
-                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            switch (idx) {
+                                case 0:
+                                    initServerFile(companyInfo.getFileList(), idx);
+                                    break;
+                                case 1:
+                                    addCompanyIncome(1);
+                                    initServerFile(companyInfo.getFileList(), idx);
+                                    break;
+                                case 2:
+                                    addCompanyIncome(2);
+                                    initServerFile(companyInfo.getFileList(), idx);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    });
                 }
             }
         }
@@ -725,31 +725,36 @@ public class PersonalAssetsFragment extends BaseFragment {
         if (carInfoList != null) {
             //车
             int size = carInfoList.size();
-            CarInfo carInfo = null;
             for (int i = 0; i < size; i++) {
-                carInfo = carInfoList.get(i);
+                final int idx = i;
+                final CarInfo carInfo = carInfoList.get(idx);
                 if (carInfo != null) {
-                    mCardId[i] = carInfo.getId();
+                    mCardId[idx] = carInfo.getId();
                     int carSize = -1;
                     if (carInfo.getFileList() != null)
                         carSize = carInfo.getFileList().size();
                     //根据 车 是否有图片   车牌号码  总价 来判断是否是真实的车
                     if (carSize > 0 || !JDAppUtil.isEmpty(carInfo.getSumPrice()) || !JDAppUtil.isEmpty(carInfo.getPlateNum())) {
-                        switch (i) {
-                            case 0:
-                                initServerFile(carInfo.getFileList());
-                                break;
-                            case 1:
-                                addCar(1);
-                                initServerFile(carInfo.getFileList());
-                                break;
-                            case 2:
-                                addCar(2);
-                                initServerFile(carInfo.getFileList());
-                                break;
-                            default:
-                                break;
-                        }
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                switch (idx) {
+                                    case 0:
+                                        initServerFile(carInfo.getFileList(), idx);
+                                        break;
+                                    case 1:
+                                        addCar(1);
+                                        initServerFile(carInfo.getFileList(), idx);
+                                        break;
+                                    case 2:
+                                        addCar(2);
+                                        initServerFile(carInfo.getFileList(), idx);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        });
                     }
                 }
             }
@@ -763,9 +768,9 @@ public class PersonalAssetsFragment extends BaseFragment {
         if (houseInfoList != null) {
             //房
             int size = houseInfoList.size();
-            HouseInfo houseInfo = null;
             for (int i = 0; i < size; i++) {
-                houseInfo = houseInfoList.get(i);
+                final int idx = i;
+                final HouseInfo houseInfo = houseInfoList.get(idx);
                 if (houseInfo != null) {
                     mHouseId[i] = houseInfo.getId();
                     int houseSize = -1;
@@ -773,21 +778,26 @@ public class PersonalAssetsFragment extends BaseFragment {
                         houseSize = houseInfo.getFileList().size();
                     //根据 房 是否有图片   地址  面积  房产价号 来判断是否是真实的房子
                     if (houseSize > 0 || !JDAppUtil.isEmpty(houseInfo.getArea()) || !JDAppUtil.isEmpty(houseInfo.getAddress()) || !JDAppUtil.isEmpty(houseInfo.getDeed_num())) {
-                        switch (i) {
-                            case 0:
-                                initServerFile(houseInfo.getFileList());
-                                break;
-                            case 1:
-                                addCar(1);
-                                initServerFile(houseInfo.getFileList());
-                                break;
-                            case 2:
-                                addCar(2);
-                                initServerFile(houseInfo.getFileList());
-                                break;
-                            default:
-                                break;
-                        }
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                switch (idx) {
+                                    case 0:
+                                        initServerFile(houseInfo.getFileList(), idx);
+                                        break;
+                                    case 1:
+                                        addHouse(1);
+                                        initServerFile(houseInfo.getFileList(), idx);
+                                        break;
+                                    case 2:
+                                        addHouse(2);
+                                        initServerFile(houseInfo.getFileList(), idx);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        });
                     }
                 }
             }
@@ -925,18 +935,17 @@ public class PersonalAssetsFragment extends BaseFragment {
     /*
   *获取服务器文件信息
    */
-    private void initServerFile(List<UploadFileInfo> fileInfoList) {
+    private void initServerFile(List<UploadFileInfo> fileInfoList, int idxTag) {
         if (fileInfoList != null && fileInfoList.size() > 0) {
             for (UploadFileInfo uploadFileInfo : fileInfoList) {
                 uploadFileInfo.setiServer(true);
+                uploadFileInfo.setIdxTag(idxTag);
                 uploadFileInfo.setIsDefault(false);
                 uploadFileInfo.setBorrowRequestId(mBorrowRequestId);
                 getServerFile(uploadFileInfo);
             }
         }
     }
-
-
 
 
     /*
@@ -1115,37 +1124,6 @@ public class PersonalAssetsFragment extends BaseFragment {
         refreshData(uploadFileInfo);
     }
 
-    //保存图片
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            String random = System.currentTimeMillis() + "";
-            String smallImgPath = getFilePath(random, fileType.getValue(), false);
-            String bigImgPath = getFilePath(random, fileType.getValue(), true);
-            //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(Constants.TEMPPATH, 1024);
-            if (proportionBM != null) {
-                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
-                proportionBM.recycle();
-            }
-            //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(Constants.TEMPPATH, 80, 80, "jpg");
-            if (bitmap != null) {
-                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
-                bitmap.recycle();
-            }
-            UploadFileInfo imgInfo = new UploadFileInfo();
-            imgInfo.setiServer(false);
-            imgInfo.setBigImgPath(bigImgPath);
-            imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setIdxTag(selIdxTag);
-            imgInfo.setFileType(fileType.getValue());
-            //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
-            addGridViewData(imgInfo);
-            uploadImg(imgInfo);
-        }
-    };
-
     /*
     * 得到上传文件的父id 并设置ParentTableName
     * */
@@ -1161,7 +1139,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             fileInfo.setParentTableName(Constants.PERSONAL_ASSERTS_CAR_INFO);
         } else if (fType == UploadFileType.REMARK || fType == UploadFileType.SOUND) {
             fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_INFO);
-
+            parentId = mRemarkId;
         } else if (fType == UploadFileType.FC || fType == UploadFileType.TD) {
             parentId = mHouseId[fileInfo.getIdxTag()];
             fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_HOUSE_INFO);
@@ -1195,45 +1173,6 @@ public class PersonalAssetsFragment extends BaseFragment {
             }, Class.forName(UploadFileInfo.class.getName())));
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-/*
-    * 先这么写吧。。。 图片处理 到时与下面的整合起来
-    * */
-
-    private class ImgRunable implements Runnable {
-        private String imgPath = null;
-
-        public ImgRunable(String imgPath) {
-            this.imgPath = imgPath;
-        }
-
-        @Override
-        public void run() {
-            String random = System.currentTimeMillis() + "";
-            String smallImgPath = getFilePath(random, fileType.getValue(), false);
-            String bigImgPath = getFilePath(random, fileType.getValue(), true);
-            //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
-            if (proportionBM != null) {
-                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
-                proportionBM.recycle();
-            }
-            //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 80, 80, "jpg");
-            if (bitmap != null) {
-                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
-                bitmap.recycle();
-            }
-            UploadFileInfo imgInfo = new UploadFileInfo();
-            imgInfo.setiServer(false);
-            imgInfo.setBigImgPath(bigImgPath);
-            imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setIdxTag(selIdxTag);
-            imgInfo.setFileType(fileType.getValue());
-            addGridViewData(imgInfo);
-            uploadImg(imgInfo);
         }
     }
 

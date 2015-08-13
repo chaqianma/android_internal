@@ -39,11 +39,14 @@ import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -219,7 +222,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     //录音集合
     private List<UploadFileInfo> soundInfoList = null;
     //用于只加载一次
-    private boolean hasLoadedOnce=false;
+    private boolean hasLoadedOnce = false;
+
     /*
     * 添加企业
     * */
@@ -685,22 +689,23 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                                 sp_company_type_1.setSelection(orgType, true);
                                                 sp_business_premises_1.setSelection(busPremises, true);
                                                 sp_some_company_1.setSelection(0);
+                                                sp_some_company_1.setEnabled(false);
                                                 et_remark.setText(companyInfo.getRemark());
-                                                initServerFile(companyInfo.getFileList());
+                                                initServerFile(companyInfo.getFileList(), i);
                                                 break;
                                             case 1:
                                                 addCompany(1);
                                                 sp_company_type_2.setSelection(orgType, true);
                                                 sp_business_premises_2.setSelection(busPremises, true);
                                                 //下载图片
-                                                initServerFile(companyInfo.getFileList());
+                                                initServerFile(companyInfo.getFileList(), i);
                                                 break;
                                             case 2:
                                                 addCompany(2);
                                                 sp_company_type_3.setSelection(orgType, true);
                                                 sp_business_premises_3.setSelection(busPremises, true);
                                                 //下载图片
-                                                initServerFile(companyInfo.getFileList());
+                                                initServerFile(companyInfo.getFileList(), i);
                                                 break;
                                             default:
                                                 break;
@@ -724,10 +729,11 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     /*
    *获取服务器文件信息
     */
-    private void initServerFile(List<UploadFileInfo> fileInfoList) {
+    private void initServerFile(List<UploadFileInfo> fileInfoList, int idxTag) {
         if (fileInfoList != null && fileInfoList.size() > 0) {
             for (UploadFileInfo uploadFileInfo : fileInfoList) {
                 uploadFileInfo.setiServer(true);
+                uploadFileInfo.setIdxTag(idxTag);
                 uploadFileInfo.setIsDefault(false);
                 uploadFileInfo.setBorrowRequestId(mBorrowRequestId);
                 getServerFile(uploadFileInfo);
@@ -760,18 +766,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             }
         }));
     }
-
-   /* //刷新数据
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.obj != null) {
-                UploadFileInfo imgInfo = (UploadFileInfo) msg.obj;
-                refreshData(imgInfo);
-            }
-        }
-    };*/
 
     @Override
     public void onImgClick(List<UploadFileInfo> uploadImgInfoList, int idx) {
@@ -829,7 +823,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                             if (cursor != null && cursor.getCount() > 0) {
                                 int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                                 cursor.moveToFirst();
-                                new Thread(new ImgRunable(cursor.getString(colunm_index), Constants.BUSINESS_INFO, fileType, new UpdateUIHandler())).start();
+                                new Thread(new BaseFragment.ImgRunable(cursor.getString(colunm_index), Constants.BUSINESS_INFO, fileType, selCompanyIdxTag, new UpdateUIHandler())).start();
                             } else {
                                 JDToast.showLongText(getActivity(), "请选择有效的图片文件夹");
                             }
@@ -844,7 +838,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                     }
                     break;
                 case REQUEST_TAKE_PHOTO:
-                    new Thread(new ImgRunable(Constants.TEMPPATH, Constants.BUSINESS_INFO, fileType, new UpdateUIHandler())).start();
+                    new Thread(new BaseFragment.ImgRunable(Constants.TEMPPATH, Constants.BUSINESS_INFO, fileType, selCompanyIdxTag, new UpdateUIHandler())).start();
                     break;
                 default:
                     break;
@@ -931,7 +925,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                     mOCList_2.add(0, imgInfo);
                     break;
                 case 2:
-                    mOCList_2.add(0, imgInfo);
+                    mOCList_3.add(0, imgInfo);
                     break;
                 default:
                     break;
@@ -1224,9 +1218,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(this.isVisible() && isVisibleToUser && !hasLoadedOnce)
-        {
-            hasLoadedOnce=true;
+        if (this.isVisible() && isVisibleToUser && !hasLoadedOnce) {
+            hasLoadedOnce = true;
         }
     }
 

@@ -89,9 +89,9 @@ public class Constants {
     //下拉框集合 企业
     public static final ArrayList<String> COMPANYLIST = new ArrayList<String>() {
         {
-            add("企业1");
-            add("企业2");
-            add("企业3");
+            add("企业a");
+            add("企业b");
+            add("企业c");
         }
     };
     //拼音code

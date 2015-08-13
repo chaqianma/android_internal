@@ -11,7 +11,7 @@ public class ContactInfo extends ErrorInfo {
     private String borrowRequestId=null;
     private List<UploadFileInfo> fileList=null;
     private String id=null;
-    private String relation=null;
+    private int relation=-1;
     private String name=null;
     private String remark=null;
     public String getBorrowRequestId() {
@@ -38,11 +38,11 @@ public class ContactInfo extends ErrorInfo {
         this.id = id;
     }
 
-    public String getRelation() {
+    public int getRelation() {
         return relation;
     }
 
-    public void setRelation(String relation) {
+    public void setRelation(int relation) {
         this.relation = relation;
     }
 
