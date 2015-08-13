@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
@@ -936,6 +935,8 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
         }
     }
+
+
 
 
     /*

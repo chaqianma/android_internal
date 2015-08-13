@@ -42,13 +42,11 @@ import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.CustomerBaseInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
-import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
-import com.loopj.android.http.SyncHttpClient;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -436,8 +434,6 @@ public class PersonInfoFragment extends BaseFragment {
 
     @OnClick(R.id.btn_name_auth)
     void onRealNameAuth(View v) {
-        btn_name_auth.setText("认证中。。。");
-        HashMap<String, Object> argMaps = new HashMap<String, Object>();
         String name = et_name.getText().toString();
         String card_id = et_card_id.getText().toString();
         if (JDAppUtil.isEmpty(card_id)) {
@@ -448,6 +444,8 @@ public class PersonInfoFragment extends BaseFragment {
             JDToast.showLongText(getActivity(), "请输入姓名");
             return;
         }
+        btn_name_auth.setText("认证中...");
+        HashMap<String, Object> argMaps = new HashMap<String, Object>();
         argMaps.put("name", name);
         argMaps.put("idNumber", card_id);
         HttpClientUtil.post(HttpRequestURL.realNameAuthenticationUrl, argMaps, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {

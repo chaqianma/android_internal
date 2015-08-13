@@ -20,33 +20,25 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chaqianma.jd.R;
-import com.chaqianma.jd.activity.InvestigateDetailActivity;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
 import com.chaqianma.jd.adapters.SoundGridViewAdapter;
-import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
-import com.chaqianma.jd.model.CompanyInfo;
 import com.chaqianma.jd.model.ContactInfo;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.utils.HttpClientUtil;
-import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -170,7 +162,7 @@ public class SocialRelationFragment extends BaseFragment {
             soundInfo.setFileType(UploadFileType.SOUND.getValue());
             soundInfo.setiServer(false);
             soundInfoList.add(soundInfo);
-            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList, "-1");
+            soundAdapter = new SoundGridViewAdapter(getActivity(), soundInfoList, Constants.CONTACT_INFO);
             gv_sound.setAdapter(soundAdapter);
         }
 
@@ -372,60 +364,69 @@ public class SocialRelationFragment extends BaseFragment {
     * */
     private void getSocialRelationInfo() {
         String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.CONTACTINFO + "/" + getBorrowRequestId();
-        try {
-            HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
-                @Override
-                public void onSuccess(Object o) {
-                    if (o == null)
-                        return;
-                    JSONObject json = JSON.parseObject(o.toString());
-                    try {
-                        //尽职说明
-                        JSONObject ddObj = json.getJSONObject("applyInfo");
-                        if (ddObj != null && !ddObj.isEmpty()) {
-                            et_comment.setText(ddObj.getString("ddDescription"));
-                            List<UploadFileInfo> uploadFileInfos = JSON.parseArray(json.getString("fileList"), UploadFileInfo.class);
-                            initServerFile(uploadFileInfos);
-                        }
-
-                        List<ContactInfo> contactInfoList = JSON.parseArray(json.getString("contactInfoList"), ContactInfo.class);
-                        if (contactInfoList != null) {
-                            int size = contactInfoList.size();
-                            ContactInfo contactInfo = null;
-                            for (int i = 0; i < size; i++) {
-                                contactInfo = contactInfoList.get(i);
-                                mParentId[i] = contactInfo.getId();
-                                //尽职说明
-                                int fileSize = -1;
-                                if (contactInfo.getFileList() != null)
-                                    fileSize = contactInfo.getFileList().size();
-                                //判断是否是有效企业 企业名称
-                                if (fileSize > 0 || !JDAppUtil.isEmpty(contactInfo.getRelation())) {
-                                    switch (i) {
-                                        case 0:
-                                            et_remark.setText(contactInfo.getRemark());
-                                            initServerFile(contactInfo.getFileList());
-                                            break;
-                                        case 1:
-                                        case 2:
-                                        case 3:
-                                        case 4:
-                                            addRCPerson(i);
-                                            initServerFile(contactInfo.getFileList());
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
+        HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+            @Override
+            public void onSuccess(final Object o) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if (o == null)
+                                return;
+                            JSONObject json = JSON.parseObject(o.toString());
+                            //尽职说明
+                            JSONObject ddObj = json.getJSONObject("applyInfo");
+                            if (ddObj != null && !ddObj.isEmpty()) {
+                                et_comment.setText(ddObj.getString("ddDescription"));
+                                List<UploadFileInfo> uploadFileInfos = JSON.parseArray(json.getString("fileList"), UploadFileInfo.class);
+                                initServerFile(uploadFileInfos);
                             }
-                            soundAdapter.setParentId(mParentId[0]);
-                        }
-                    } catch (Exception e) {
+                            //获取联系人信息
+                            getContactInfoList(JSON.parseArray(json.getString("contactInfoList"), ContactInfo.class));
+                        } catch (Exception e) {
 
+                        }
+                    }
+                }).start();
+            }
+        }
+        ));
+    }
+
+    /*
+    * 获取联系人信息
+    * */
+    private void getContactInfoList(List<ContactInfo> contactInfoList) {
+        if (contactInfoList != null) {
+            int size = contactInfoList.size();
+            ContactInfo contactInfo = null;
+            for (int i = 0; i < size; i++) {
+                contactInfo = contactInfoList.get(i);
+                mParentId[i] = contactInfo.getId();
+                //尽职说明
+                int fileSize = -1;
+                if (contactInfo.getFileList() != null)
+                    fileSize = contactInfo.getFileList().size();
+                //判断是否是有效企业 企业名称
+                if (fileSize > 0 || !JDAppUtil.isEmpty(contactInfo.getRelation())) {
+                    switch (i) {
+                        case 0:
+                            et_remark.setText(contactInfo.getRemark());
+                            initServerFile(contactInfo.getFileList());
+                            break;
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                            addRCPerson(i);
+                            initServerFile(contactInfo.getFileList());
+                            break;
+                        default:
+                            break;
                     }
                 }
-            }));
-        } catch (Exception e) {
+            }
+            soundAdapter.setParentId(mParentId[0]);
         }
     }
 
@@ -447,6 +448,7 @@ public class SocialRelationFragment extends BaseFragment {
     /*
      *获取服务器文件信息
     */
+
     private void initServerFile(List<UploadFileInfo> fileInfoList) {
         if (fileInfoList != null && fileInfoList.size() > 0) {
             for (UploadFileInfo uploadFileInfo : fileInfoList) {
@@ -464,37 +466,46 @@ public class SocialRelationFragment extends BaseFragment {
     private void getServerFile(final UploadFileInfo fileInfo) {
         String filePath = getSaveFilePath(fileInfo);
         fileInfo.setBigImgPath(filePath);
-        HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
-            public void onSuccess(UploadFileInfo uploadFileInfo) {
-                uploadFileInfo.setiServer(true);
-                uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
-                if (uploadFileInfo.getFileExt().equals("amr")) {
-                    uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
-                }
-                addGridViewData(uploadFileInfo);
-            }
+            public void run() {
+                HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
+                    @Override
+                    public void onSuccess(UploadFileInfo uploadFileInfo) {
+                        uploadFileInfo.setiServer(true);
+                        uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
+                        if (uploadFileInfo.getFileExt().equals("amr")) {
+                            uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
+                        }
+                        addGridViewData(uploadFileInfo);
+                    }
 
-            @Override
-            public void onFailure(UploadFileInfo uploadFileInfo) {
-                super.onFailure(uploadFileInfo);
-                uploadFileInfo.setiServer(false);
-                uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                    @Override
+                    public void onFailure(UploadFileInfo uploadFileInfo) {
+                        super.onFailure(uploadFileInfo);
+                        uploadFileInfo.setiServer(false);
+                        uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                    }
+                }));
             }
-        }));
+        });
     }
 
-    //刷新数据
-    private Handler mHandler = new Handler() {
+    /*
+    * 刷新GridView数据与上传文件
+    * */
+    private class UpdateUIHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.obj != null) {
-                UploadFileInfo imgInfo = (UploadFileInfo) msg.obj;
-                refreshData(imgInfo);
+                UploadFileInfo fileInfo = (UploadFileInfo) msg.obj;
+                addGridViewData(fileInfo);
+                uploadImg(fileInfo);
             }
         }
-    };
+
+    }
 
     /*
        * 拍照回调
@@ -515,7 +526,7 @@ public class SocialRelationFragment extends BaseFragment {
                             if (cursor != null && cursor.getCount() > 0) {
                                 int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                                 cursor.moveToFirst();
-                                mHandler.post(new ImgRunable(cursor.getString(colunm_index)));
+                                new Thread(new BaseFragment.ImgRunable(cursor.getString(colunm_index), Constants.CONTACT_INFO, fileType, selIdxTag, new UpdateUIHandler())).start();
                             } else {
                                 JDToast.showLongText(getActivity(), "请选择有效的图片文件夹");
                             }
@@ -530,85 +541,14 @@ public class SocialRelationFragment extends BaseFragment {
                     }
                     break;
                 case REQUEST_TAKE_PHOTO:
-                    mHandler.post(mRunnable);
+                    //mHandler.post(mRunnable);
+                    new Thread(new BaseFragment.ImgRunable(Constants.TEMPPATH, Constants.CONTACT_INFO, fileType, selIdxTag, new UpdateUIHandler())).start();
                     break;
                 default:
                     break;
             }
         }
     }
-
-    /*
-   * 先这么写吧。。。 图片处理 到时与下面的整合起来
-   * */
-    private class ImgRunable implements Runnable {
-        private String imgPath = null;
-
-        public ImgRunable(String imgPath) {
-            this.imgPath = imgPath;
-        }
-
-        @Override
-        public void run() {
-            String random = System.currentTimeMillis() + "";
-            String smallImgPath = getFilePath(random, fileType.getValue(), false);
-            String bigImgPath = getFilePath(random, fileType.getValue(), true);
-            //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
-            if (proportionBM != null) {
-                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
-                proportionBM.recycle();
-            }
-            //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 80, 80, "jpg");
-            if (bitmap != null) {
-                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
-                bitmap.recycle();
-            }
-            UploadFileInfo imgInfo = new UploadFileInfo();
-            imgInfo.setiServer(false);
-            imgInfo.setBigImgPath(bigImgPath);
-            imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setParentTableName(Constants.CONTACT_INFO);
-            imgInfo.setIdxTag(selIdxTag);
-            imgInfo.setFileType(fileType.getValue());
-            //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
-            addGridViewData(imgInfo);
-            uploadImg(imgInfo);
-        }
-    }
-
-    //保存图片
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            String random = System.currentTimeMillis() + "";
-            String smallImgPath = getFilePath(random,fileType.getValue(), false);
-            String bigImgPath = getFilePath(random,fileType.getValue(), true);
-            //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(Constants.TEMPPATH, 1024);
-            if (proportionBM != null) {
-                ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
-                proportionBM.recycle();
-            }
-            //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(Constants.TEMPPATH, 80, 80, "jpg");
-            if (bitmap != null) {
-                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
-                bitmap.recycle();
-            }
-            UploadFileInfo imgInfo = new UploadFileInfo();
-            imgInfo.setiServer(false);
-            imgInfo.setBigImgPath(bigImgPath);
-            imgInfo.setSmallImgPath(smallImgPath);
-            imgInfo.setParentTableName(Constants.CONTACT_INFO);
-            imgInfo.setIdxTag(selIdxTag);
-            imgInfo.setFileType(fileType.getValue());
-            //  YY(4),SW(5),QYDM(6),QT(7),FC(8),TD(9);
-            addGridViewData(imgInfo);
-            uploadImg(imgInfo);
-        }
-    };
 
     //上传图片
     private void uploadImg(final UploadFileInfo fileInfo) {
@@ -732,9 +672,8 @@ public class SocialRelationFragment extends BaseFragment {
         } else if (fType == UploadFileType.SOUND) {
             soundInfoList.add(0, imgInfo);
         } else {
-
         }
-        mHandler.sendMessage(mHandler.obtainMessage(0, imgInfo));
+        refreshData(imgInfo);
     }
 
     /*
@@ -784,8 +723,8 @@ public class SocialRelationFragment extends BaseFragment {
         boolean isSelctedSpouse = false;
         List<ContactInfo> contactInfoList = new ArrayList<ContactInfo>();
 
-       //if (!requiredInput())
-       //     return;
+        //if (!requiredInput())
+        //     return;
 
         if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
             isSelctedSpouse = true;
