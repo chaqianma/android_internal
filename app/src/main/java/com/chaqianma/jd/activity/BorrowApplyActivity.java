@@ -192,9 +192,11 @@ public class BorrowApplyActivity extends BaseActivity {
                                 public void onSuccess(Object o) {
                                     JDToast.showShortText(BorrowApplyActivity.this, "提交尽调任务报告成功");
                                     AppData.getInstance().clearBorrowRequestData();
-                                    btn_borrow.setEnabled(false);
-                                    Intent intent = new Intent();
                                     AppData.getInstance().getUserInfo().setIsBusy("0");
+                                    btn_borrow.setEnabled(false);
+                                    //删除保存的请求ID值
+                                    SharedPreferencesUtil.removeBorrowRequestId(BorrowApplyActivity.this);
+                                    Intent intent = new Intent();
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.setClass(BorrowApplyActivity.this, MainActivity.class);
                                     startActivity(intent);
@@ -254,6 +256,8 @@ public class BorrowApplyActivity extends BaseActivity {
                 HttpClientUtil.put(HttpRequestURL.beginCheckUrl, null, new JDHttpResponseHandler(BorrowApplyActivity.this, new ResponseHandler() {
                     @Override
                     public void onSuccess(Object o) {
+                        //删除保存的请求ID值
+                        SharedPreferencesUtil.saveBorrowRequestId(BorrowApplyActivity.this, AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId());
                         startActivity(InvestigateDetailActivity.class);
                         isCanClickOnce = false;
                         setTaskTag(false);

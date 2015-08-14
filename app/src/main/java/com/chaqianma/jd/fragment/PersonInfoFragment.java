@@ -170,7 +170,7 @@ public class PersonInfoFragment extends BaseFragment {
     //用于实名认证
     private boolean mIsAuthSuccess = false;
     //用于只加载一次
-    private boolean hasLoadedOnce=false;
+    private boolean hasLoadedOnce = false;
     private int year, month, day;
 
     @Override
@@ -367,68 +367,77 @@ public class PersonInfoFragment extends BaseFragment {
             HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler<CustomerBaseInfo>() {
                 @Override
                 public void onSuccess(final CustomerBaseInfo customerBaseInfo) {
-                    if (customerBaseInfo != null) {
-                        mParentId = customerBaseInfo.getId();
-                        soundAdapter.setParentId(mParentId);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                et_card_id.setText(customerBaseInfo.getIdCardNumber());
-                                et_name.setText(customerBaseInfo.getName());
-                                et_mobile.setText(customerBaseInfo.getMobile());
-                                if (customerBaseInfo.getGender() != null) {
-                                    if (customerBaseInfo.getGender().equals("1"))
-                                        radio_man.setChecked(true);
-                                    else
-                                        radio_woman.setChecked(true);
-                                }
-                                //已婚，离异
-                                if (customerBaseInfo.getMaritalStatus() != null) {
-                                    String marital_status = customerBaseInfo.getMaritalStatus();
-                                    if (marital_status.equals("1")) {
-                                        radio_single.setChecked(true);
-                                        setLayoutMarryVisible(1);
-                                    } else if (marital_status.equals("2")) {
-                                        radio_married.setChecked(true);
-                                        setLayoutMarryVisible(2);
-                                        et_children_count.setText(customerBaseInfo.getCountChildren());
-                                    } else {
-                                        radio_divorce.setChecked(true);
-                                        setLayoutMarryVisible(3);
-                                        et_children_count.setText(customerBaseInfo.getCountChildren());
-                                    }
-                                }
-                                //户口 本地  外地 household_type
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (customerBaseInfo != null) {
+                                    mParentId = customerBaseInfo.getId();
+                                    soundAdapter.setParentId(mParentId);
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            et_card_id.setText(customerBaseInfo.getIdCardNumber());
+                                            et_name.setText(customerBaseInfo.getName());
+                                            et_mobile.setText(customerBaseInfo.getMobile());
+                                            if (customerBaseInfo.getGender() != null) {
+                                                if (customerBaseInfo.getGender().equals("1"))
+                                                    radio_man.setChecked(true);
+                                                else
+                                                    radio_woman.setChecked(true);
+                                            }
+                                            //已婚，离异
+                                            if (customerBaseInfo.getMaritalStatus() != null) {
+                                                String marital_status = customerBaseInfo.getMaritalStatus();
+                                                if (marital_status.equals("1")) {
+                                                    radio_single.setChecked(true);
+                                                    setLayoutMarryVisible(1);
+                                                } else if (marital_status.equals("2")) {
+                                                    radio_married.setChecked(true);
+                                                    setLayoutMarryVisible(2);
+                                                    et_children_count.setText(customerBaseInfo.getCountChildren());
+                                                } else {
+                                                    radio_divorce.setChecked(true);
+                                                    setLayoutMarryVisible(3);
+                                                    et_children_count.setText(customerBaseInfo.getCountChildren());
+                                                }
+                                            }
+                                            //户口 本地  外地 household_type
 
-                                if (customerBaseInfo.getHouseholdType() != null) {
-                                    if (customerBaseInfo.getHouseholdType().equals("1")) {
-                                        layout_come_date.setVisibility(View.GONE);
-                                        radio_native.setChecked(true);
-                                    } else {
-                                        layout_come_date.setVisibility(View.VISIBLE);
-                                        radio_nonlocal.setChecked(true);
-                                        //来本地日期
-                                        tv_come_date.setText(JDAppUtil.getTimeYMD(customerBaseInfo.getComeLocalTime()));
-                                    }
+                                            if (customerBaseInfo.getHouseholdType() != null) {
+                                                if (customerBaseInfo.getHouseholdType().equals("1")) {
+                                                    layout_come_date.setVisibility(View.GONE);
+                                                    radio_native.setChecked(true);
+                                                } else {
+                                                    layout_come_date.setVisibility(View.VISIBLE);
+                                                    radio_nonlocal.setChecked(true);
+                                                    //来本地日期
+                                                    tv_come_date.setText(JDAppUtil.getTimeYMD(customerBaseInfo.getComeLocalTime()));
+                                                }
+                                            }
+                                            //是否是农业户口
+                                            if (customerBaseInfo.getIsAgriculturalHousehold() != null) {
+                                                if (customerBaseInfo.getIsAgriculturalHousehold().equals("1"))
+                                                    radio_yes.setChecked(true);
+                                                else
+                                                    radio_no.setChecked(true);
+                                            }
+                                            //备注
+                                            et_remark.setText(customerBaseInfo.getRemark());
+                                        }
+                                    });
+                                    //初始化服务端图片
+                                    initServerFile(customerBaseInfo.getFileList());
                                 }
-                                //是否是农业户口
-                                if (customerBaseInfo.getIsAgriculturalHousehold() != null) {
-                                    if (customerBaseInfo.getIsAgriculturalHousehold().equals("1"))
-                                        radio_yes.setChecked(true);
-                                    else
-                                        radio_no.setChecked(true);
-                                }
-                                //备注
-                                et_remark.setText(customerBaseInfo.getRemark());
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        });
-                        //初始化服务端图片
-                        initServerFile(customerBaseInfo.getFileList());
-                    }
+                        }
+                    }).start();
                 }
             }, Class.forName(CustomerBaseInfo.class.getName())));
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -483,28 +492,33 @@ public class PersonInfoFragment extends BaseFragment {
     /*
     * 得到服务器文件
     * */
-    private void getServerFile(UploadFileInfo fileInfo) {
+    private void getServerFile(final UploadFileInfo fileInfo) {
         String filePath = getSaveFilePath(fileInfo);
         fileInfo.setBigImgPath(filePath);
-        HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
-            public void onSuccess(UploadFileInfo uploadFileInfo) {
-                uploadFileInfo.setiServer(true);
-                uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
-                String fileExt = uploadFileInfo.getFileExt();
-                if (fileExt.equals("amr")) {
-                    uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
-                }
-                addGridViewData(uploadFileInfo);
-            }
+            public void run() {
+                HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
+                    @Override
+                    public void onSuccess(UploadFileInfo uploadFileInfo) {
+                        uploadFileInfo.setiServer(true);
+                        uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
+                        String fileExt = uploadFileInfo.getFileExt();
+                        if (fileExt.equals("amr")) {
+                            uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
+                        }
+                        addGridViewData(uploadFileInfo);
+                    }
 
-            @Override
-            public void onFailure(UploadFileInfo uploadFileInfo) {
-                super.onFailure(uploadFileInfo);
-                uploadFileInfo.setiServer(false);
-                uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                    @Override
+                    public void onFailure(UploadFileInfo uploadFileInfo) {
+                        super.onFailure(uploadFileInfo);
+                        uploadFileInfo.setiServer(false);
+                        uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                    }
+                }));
             }
-        }));
+        });
     }
 
     public static PersonInfoFragment newInstance() {
@@ -775,9 +789,9 @@ public class PersonInfoFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser && !hasLoadedOnce) {
+        if (isVisibleToUser && !hasLoadedOnce) {
             //getPersonalInfo();
-            hasLoadedOnce=true;
+            hasLoadedOnce = true;
         }
     }
 }

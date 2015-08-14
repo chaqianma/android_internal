@@ -761,8 +761,8 @@ public class SocialRelationFragment extends BaseFragment {
         boolean isSelctedSpouse = false;
         List<ContactInfo> contactInfoList = new ArrayList<ContactInfo>();
 
-        //if (!requiredInput())
-        //     return;
+        if (!requiredInput())
+             return;
 
         if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
             isSelctedSpouse = true;

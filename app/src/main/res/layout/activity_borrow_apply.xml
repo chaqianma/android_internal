@@ -59,14 +59,14 @@
                 <TextView
                     android:id="@+id/tv_telephone"
                     style="@style/SmallTextStyle"
-                    android:layout_gravity="center"
-                    android:text="13913999601" />
+                    android:layout_gravity="center" />
 
                 <ImageView
                     android:id="@+id/img_telephone"
                     android:layout_width="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_clear_input" />
+                    android:src="@mipmap/icon_phone" />
             </LinearLayout>
         </RelativeLayout>
 

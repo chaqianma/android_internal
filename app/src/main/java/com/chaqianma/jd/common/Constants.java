@@ -38,6 +38,8 @@ public class Constants {
     public static final int GETLOCATION = 1001;
     //城市保存标签
     public static final String CITYTAG = "CITY";
+    //请求ID标签
+    public static final String BORROWREQUESTIDTAG="BORROWREQUESTIDTAG";
     //底部按钮选中标识
     public static final String CHECKEDID = "CHECKEDID";
     //消息通知提醒

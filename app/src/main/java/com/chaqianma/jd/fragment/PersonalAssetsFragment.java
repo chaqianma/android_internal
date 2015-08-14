@@ -224,9 +224,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                 return;
             }
             isIncome2Show = true;
-            View view = ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
+            ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
             initCompanyView(true);
-            JDAppUtil.addShowAction(view);
         } else {
             if (!isIncome3Show) {
                 //收入
@@ -285,8 +284,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 return;
             }
             isCar2Show = true;
-            View view = ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
-            JDAppUtil.addShowAction(view);
+            ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
             initCarView(true);
         } else {
             if (!isCar3Show) {
@@ -302,8 +300,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     return;
                 }
                 isCar3Show = true;
-                View view = ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
-                JDAppUtil.addShowAction(view);
+                ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
                 initCarView(false);
             }
         }
@@ -346,8 +343,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 return;
             }
             isHouse2Show = true;
-            View view = ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
-            JDAppUtil.addShowAction(view);
+            ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
             initHouseView(true);
         } else {
             if (!isHouse3Show) {
@@ -363,8 +359,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     return;
                 }
                 isHouse3Show = true;
-                View view = ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
-                JDAppUtil.addShowAction(view);
+                ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
                 initHouseView(false);
             }
         }
@@ -648,7 +643,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                             if (o == null)
                                 return;
                             String b = "{\"businessInfoList\":[{\"borrowRequestId\":35,\"fileList\":[{\"dateline\":1439430826333,\"fileExt\":\"jpg\",\"fileId\":64,\"fileType\":10,\"parentId\":17,\"parentTableName\":\"business_info\",\"userId\":7},{\"dateline\":1439430872691,\"fileExt\":\"jpg\",\"fileId\":65,\"fileType\":10,\"parentId\":17,\"parentTableName\":\"business_info\",\"userId\":7},{\"dateline\":1439433055854,\"fileExt\":\"jpg\",\"fileId\":67,\"fileType\":11,\"parentId\":17,\"parentTableName\":\"business_info\",\"userId\":7}],\"id\":17},{\"borrowRequestId\":35,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":117,\"fileType\":10,\"parentId\":18,\"parentTableName\":\"business_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":118,\"fileType\":11,\"parentId\":18,\"parentTableName\":\"business_info\",\"userId\":7}],\"id\":18},{\"borrowRequestId\":35,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":117,\"fileType\":10,\"parentId\":18,\"parentTableName\":\"business_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":118,\"fileType\":11,\"parentId\":18,\"parentTableName\":\"business_info\",\"userId\":7}],\"id\":19}],\"personalAssetsInfo\":{\"borrowRequestId\":35,\"id\":17,\"personalAssetsCarInfoList\":[{\"id\":49,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":120,\"fileType\":12,\"parentId\":49,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":121,\"fileType\":13,\"parentId\":49,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7}]},{\"id\":50,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":119,\"fileType\":12,\"parentId\":50,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":122,\"fileType\":13,\"parentId\":50,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7}]},{\"id\":51,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":119,\"fileType\":12,\"parentId\":50,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":122,\"fileType\":13,\"parentId\":50,\"parentTableName\":\"personal_asserts_car_info\",\"userId\":7}]}],\"personalAssetsHouseInfoList\":[{\"id\":49,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":123,\"fileType\":8,\"parentId\":49,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":124,\"fileType\":9,\"parentId\":49,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7}]},{\"id\":50,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":125,\"fileType\":8,\"parentId\":50,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":126,\"fileType\":9,\"parentId\":50,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7}]},{\"id\":51,\"personalAssetsId\":17,\"fileList\":[{\"dateline\":1439447657985,\"fileExt\":\"jpg\",\"fileId\":125,\"fileType\":8,\"parentId\":50,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7},{\"dateline\":1439447674480,\"fileExt\":\"jpg\",\"fileId\":126,\"fileType\":9,\"parentId\":50,\"parentTableName\":\"personal_assets_house_info\",\"userId\":7}]}],\"remark\":\"sss\"}}";
-                            JSONObject json = JSON.parseObject(b.toString());
+                            JSONObject json = JSON.parseObject(o.toString());
                             //获取企业
                             getCompanyList(JSON.parseArray(json.getString("businessInfoList"), CompanyInfo.class));
                             final AssetInfo assetInfo = json.getObject("personalAssetsInfo", AssetInfo.class);

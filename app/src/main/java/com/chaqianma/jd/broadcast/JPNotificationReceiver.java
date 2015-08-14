@@ -8,6 +8,8 @@ import android.os.Vibrator;
 
 import com.chaqianma.jd.activity.LoginActivity;
 import com.chaqianma.jd.activity.MainActivity;
+import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.utils.SharedPreferencesUtil;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -25,7 +27,7 @@ public class JPNotificationReceiver extends BroadcastReceiver {
         if (NOTIFICATIONRECEIVER.equals(intent.getAction())) {
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-
+            SharedPreferencesUtil.saveBorrowRequestId(context, "");
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             if (intent.hasExtra("messageType")) {
                 String msgType = intent.getStringExtra("messageType");

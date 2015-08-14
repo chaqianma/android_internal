@@ -108,12 +108,12 @@
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
 
         <activity
-            android:name=".activity.UrgeListActivity"
+            android:name=".activity.RepaymentListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme" />
 
         <activity
-            android:name=".activity.UrgeDetailActivity"
+            android:name=".activity.RepaymentDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme" />
 

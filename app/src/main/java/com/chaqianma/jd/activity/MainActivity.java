@@ -83,7 +83,7 @@ public class MainActivity extends ActivityGroup {
                 this.mTabHost.addTab(buildTabSpec("tab0", "0", new Intent(this, BorrowApplyActivity.class)));
             else
                 this.mTabHost.addTab(buildTabSpec("tab0", "0", new Intent(this, StaffActivity.class)));
-            this.mTabHost.addTab(buildTabSpec("tab1", "1", new Intent(this, UrgeListActivity.class)));
+            this.mTabHost.addTab(buildTabSpec("tab1", "1", new Intent(this, RepaymentListActivity.class)));
             this.mTabHost.addTab(buildTabSpec("tab2", "2", new Intent(this, MessageCenterActivity.class)));
             this.mTabHost.addTab(buildTabSpec("tab3", "3", new Intent(this, SettingActivity.class)));
         } catch (Exception e) {
@@ -95,6 +95,16 @@ public class MainActivity extends ActivityGroup {
         return this.mTabHost.newTabSpec(tag).setIndicator(m).setContent(content);
     }
 
+    /*
+    * 重新刷新View
+    * */
+    private void refreshView() {
+        if (AppData.getInstance().getBorrowRequestInfo() != null) {
+
+        } else {
+
+        }
+    }
 
     //Handler to get something
     private Handler mHandler = new Handler() {

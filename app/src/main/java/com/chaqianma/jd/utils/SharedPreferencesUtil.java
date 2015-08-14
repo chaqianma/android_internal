@@ -21,53 +21,70 @@ public class SharedPreferencesUtil {
     public static String SHAREPREFERENCE_TUISONGIDLIST = "SHAREPREFERENCE_TUISONGIDLIST";
     public static String SHAREPREFERENCE_WEBVIEWZITI = "SHAREPREFERENCE_WEBVIEWZITI";
 
-    public static boolean getShareBoolean(Context context, String strKey)
-    {
+    public static boolean getShareBoolean(Context context, String strKey) {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
         return settings.getBoolean(strKey, false);
     }
 
-    public static boolean getShareBoolean(Context context, String strKey,boolean defaultValue)
-    {
+    public static boolean getShareBoolean(Context context, String strKey, boolean defaultValue) {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
         return settings.getBoolean(strKey, defaultValue);
     }
 
 
-    public static void setShareBoolean(Context context, String strKey, boolean bVaule)
-    {
+    public static void setShareBoolean(Context context, String strKey, boolean bVaule) {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(strKey, bVaule);
         editor.commit();
     }
 
-    public static String getShareString(Context context, String strKey)
-    {
+    public static String getShareString(Context context, String strKey) {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
         return settings.getString(strKey, "");
     }
 
-    public static void setShareString(Context context, String strKey, String strValue)
-    {
+    public static void setShareString(Context context, String strKey, String strValue) {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(strKey, strValue);
         editor.commit();
     }
 
-    public static void setShareInt(Context context, String strKey, int iValue)
-    {
+    public static void setShareInt(Context context, String strKey, int iValue) {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(strKey, iValue);
         editor.commit();
     }
 
-    public static int getShareInt(Context context, String strKey)
-    {
+    public static int getShareInt(Context context, String strKey) {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
         return settings.getInt(strKey, 0);
+    }
+
+   /*
+   * 保存请求ID
+   * */
+    public static void saveBorrowRequestId(Context context, String borrowRequestId) {
+        setShareString(context, Constants.BORROWREQUESTIDTAG, borrowRequestId);
+    }
+
+    /*
+    * 删除请求ID
+    * */
+    public static void removeBorrowRequestId(Context context) {
+        removeValue(context, Constants.BORROWREQUESTIDTAG);
+    }
+
+    /*
+    * 删除对应的Key值
+    * */
+    public static void removeValue(Context context, String strKey) {
+        SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.remove(strKey);
+        editor.commit();
     }
 
     //保存用记名与密码

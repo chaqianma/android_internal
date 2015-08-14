@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/android_layout_bg"
     android:orientation="vertical">
+
+    <include layout="@layout/top" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +41,7 @@
                 android:text="状态：" />
 
             <TextView
-                android:id="@+id/tv_urge_status"
+                android:id="@+id/tv_status"
                 style="@style/SmallTextStyle" />
         </LinearLayout>
 
@@ -71,7 +74,7 @@
                 android:text="应还金额：" />
 
             <TextView
-                android:id="@+id/tv_should_money"
+                android:id="@+id/tv_repayment_money"
                 style="@style/SmallTextStyle" />
         </LinearLayout>
 
@@ -82,7 +85,7 @@
                 android:text="应还日期：" />
 
             <TextView
-                android:id="@+id/tv_should_date"
+                android:id="@+id/tv_repayment_date"
                 style="@style/SmallTextStyle" />
         </LinearLayout>
 
@@ -105,10 +108,16 @@
                 style="@style/SmallTextStyle"
                 android:text="催款次数：" />
 
+            <TextView
+                android:id="@+id/tv_repayment_count"
+                style="@style/SmallTextStyle" />
+
             <ImageView
-                android:id="@+id/img_urge_count"
+                android:id="@+id/img_repayment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:gravity="center"
                 android:src="@mipmap/icon_img_success" />
         </LinearLayout>
     </LinearLayout>

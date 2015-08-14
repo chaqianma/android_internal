@@ -6,8 +6,8 @@ package com.chaqianma.jd.common;
  */
 public class HttpRequestURL {
     //请求URL 192.168.199.112
-    //public static final String BASEURL= "http://192.168.199.223:8080/";
-    public static final String BASEURL="http://rest-staging.chaqianma.com/";
+    public static final String BASEURL= "http://192.168.199.223:8080/";
+    //public static final String BASEURL="http://rest-staging.chaqianma.com/";
     //登录 POST
     public static final String LoginUrl="api/user/login";
     //尽调申请(贷款)
@@ -42,4 +42,8 @@ public class HttpRequestURL {
     public static final String updateBusinessInfoUrl="api/borrow/dd/businessinfo/update/batch/";
     //修改社会关系信息
     public static final String updateSocialRelationURL="api/borrow/dd/socialrelation/update/";
+    //获取催收记录
+    public static final String getRepaymentList="api/repayment/dunning/list";
+    //获取催收详情  催收次数
+    public static final String getRepaymentDetail="api/repayment/dunning/";
 }

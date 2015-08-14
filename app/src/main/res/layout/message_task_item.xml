@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="5dp"
+    android:layout_margin="10dp"
     android:background="@drawable/background_corners"
     android:orientation="vertical"
     android:padding="1dp">
+
     <LinearLayout
         style="@style/LinearLayoutStyle"
         android:gravity="center"
@@ -23,9 +24,11 @@
             android:text="2015-06-28 09:30" />
     </LinearLayout>
 
-    <TextView
-        style="@style/SmallTextStyle"
-        android:text="您好！您收到一条新尽调任务。" />
+    <LinearLayout style="@style/LinearLayoutStyle">
+        <TextView
+            style="@style/SmallTextStyle"
+            android:text="您好！您收到一条新尽调任务。" />
+    </LinearLayout>
 
     <LinearLayout style="@style/LinearLayoutStyle">
 
@@ -34,7 +37,7 @@
             android:text="ID：" />
 
         <TextView
-            android:id="@+id/tv_id"
+            android:id="@+id/tv_task_id"
             style="@style/SmallTextStyle"
             android:text="487372" />
     </LinearLayout>
@@ -58,7 +61,7 @@
             android:text="手机：" />
 
         <TextView
-            android:id="@+id/tv_task_phone"
+            android:id="@+id/tv_phone"
             style="@style/SmallTextStyle"
             android:text="158505854848" />
     </LinearLayout>
@@ -106,7 +109,7 @@
             android:text="办公地址：" />
 
         <TextView
-            android:id="@+id/tv_taskAddr"
+            android:id="@+id/tv_task_addr"
             style="@style/SmallTextStyle"
             android:text="南京市玄武区钟山路288号" />
     </LinearLayout>

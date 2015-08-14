@@ -175,8 +175,8 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
     }
 
     private void addHeaderView() {
-        // header view zxd
-       /* mHeaderView = mInflater.inflate(R.layout.refresh_header, this, false);
+        // header view
+        mHeaderView = mInflater.inflate(R.layout.refresh_header, this, false);
 
         mHeaderImageView = (ImageView) mHeaderView
                 .findViewById(R.id.pull_to_refresh_image);
@@ -194,12 +194,12 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
         // 设置topMargin的值为负的header View高度,即将其隐藏在最上方
         params.topMargin = -(mHeaderViewHeight);
         // mHeaderView.setLayoutParams(params1);
-        addView(mHeaderView, params);*/
+        addView(mHeaderView, params);
     }
 
     private void addFooterView() {
-        // footer view zxd
-       /* mFooterView = mInflater.inflate(R.layout.refresh_footer, this, false);
+        // footer view
+        mFooterView = mInflater.inflate(R.layout.refresh_footer, this, false);
         mFooterImageView = (ImageView) mFooterView
                 .findViewById(R.id.pull_to_load_image);
         mFooterTextView = (TextView) mFooterView
@@ -218,7 +218,6 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
         // 由于是线性布局可以直接添加,只要AdapterView的高度是MATCH_PARENT,那么footer view就会被添加到最后,并隐藏
         addView(mFooterView, params);
         mFooterView.setVisibility(View.GONE);
-*/
     }
 
     @Override
@@ -232,8 +231,6 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
 
     /**
      * init AdapterView like ListView,GridView and so on;or init ScrollView
-     *
-     * @description hylin 2012-7-30下午8:48:12
      */
     private void initContentAdapterView() {
         int count = getChildCount();
@@ -519,8 +516,6 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
     /**
      * 修改Header view top margin的值
      *
-     * @param deltaY
-     * @return hylin 2012-7-31下午1:14:31
      * @description
      */
     private int changingHeaderViewTopMargin(int deltaY) {
@@ -545,16 +540,14 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
 
     /**
      * header refreshing
-     *
-     * @description hylin 2012-7-31上午9:10:12
      */
     public void headerRefreshing() {
         mHeaderState = REFRESHING;
         setHeaderTopMargin(0);
         mHeaderImageView.setVisibility(View.VISIBLE);
-        //mHeaderImageView.setImageResource(R.drawable.freshman);// 头部头像更新 zxd
+        mHeaderImageView.setImageResource(R.mipmap.shanglaman);// 头部头像更新 zxd
         mHeaderImageView.clearAnimation();
-        // mHeaderImageView.setImageDrawable(null);
+         mHeaderImageView.setImageDrawable(null);
         mHeaderProgressBar.setVisibility(View.GONE);
         mHeaderUpdateTextView.setVisibility(View.GONE);
         mHeaderTextView.setText("努力加载中\u2026");
@@ -565,8 +558,6 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
 
     /**
      * footer refreshing
-     *
-     * @description hylin 2012-7-31上午9:09:59
      */
     private void footerRefreshing() {
         if (REFRESHING == mFooterState) {
@@ -578,7 +569,7 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
         mFooterImageView.setVisibility(View.VISIBLE);
         mFooterImageView.clearAnimation();
         // shanglaman zxd
-        //mFooterImageView.setImageResource(R.drawable.shanglaman);// 尾部加载头像
+        mFooterImageView.setImageResource(R.mipmap.shanglaman);// 尾部加载头像
         mFooterProgressBar.setVisibility(View.GONE);
         mFooterTextView.setText("正在加载中\u2026");
         if (mOnFooterRefreshListener != null) {
@@ -591,7 +582,6 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
      * 设置header view 的topMargin的值
      *
      * @param topMargin ，为0时，说明header view 刚好完全显示出来； 为-mHeaderViewHeight时，说明完全隐藏了
-     *                  hylin 2012-7-31上午11:24:06
      * @description
      */
     public void setHeaderTopMargin(int topMargin) {
@@ -610,15 +600,13 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
 
     /**
      * header view 完成更新后恢复初始状态
-     *
-     * @description hylin 2012-7-31上午11:54:23
      */
     public void onHeaderRefreshComplete() {
         setHeaderTopMargin(-mHeaderViewHeight);
         mHeaderImageView.setVisibility(View.VISIBLE);
         //zxd
-        //mHeaderImageView.setImageResource(R.drawable.xialajusexian);
-        mHeaderTextView.setText("轻轻下拉，刷新精彩...");
+        mHeaderImageView.setImageResource(R.mipmap.refresh);
+        mHeaderTextView.setText("放开刷新...");
         mHeaderProgressBar.setVisibility(View.GONE);
         mHeaderState = PULL_TO_REFRESH;
         setLastUpdated("最近更新:" + new Date().toLocaleString());
@@ -647,7 +635,8 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
     public void onFooterRefreshComplete() {
         setHeaderTopMargin(-mHeaderViewHeight);
         mFooterImageView.setVisibility(View.VISIBLE);
-        //zxd mFooterImageView.setImageResource(R.drawable.xialajusexian);
+        //zxd
+        mFooterImageView.setImageResource(R.mipmap.refresh);
         mFooterTextView.setText("上拉加载更多");
         mFooterProgressBar.setVisibility(View.GONE);
         // mHeaderUpdateTextView.setText("");
@@ -666,7 +655,8 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
         }
         setHeaderTopMargin(-mHeaderViewHeight);
         mFooterImageView.setVisibility(View.VISIBLE);
-        //zxd mFooterImageView.setImageResource(R.drawable.xialajusexian);
+        //zxd
+        mFooterImageView.setImageResource(R.mipmap.refresh);
         mFooterTextView.setText("上拉加载更多");
         mFooterProgressBar.setVisibility(View.GONE);
         // mHeaderUpdateTextView.setText("");
@@ -689,9 +679,6 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
 
     /**
      * 获取当前header view 的topMargin
-     *
-     * @return hylin 2012-7-31上午11:22:50
-     * @description
      */
     private int getHeaderTopMargin() {
         LayoutParams params = (LayoutParams) mHeaderView.getLayoutParams();
@@ -719,7 +706,6 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
     /**
      * set headerRefreshListener
      *
-     * @param headerRefreshListener hylin 2012-7-31上午11:43:58
      * @description
      */
     public void setOnHeaderRefreshListener(
