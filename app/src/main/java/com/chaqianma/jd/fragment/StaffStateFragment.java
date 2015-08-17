@@ -1,6 +1,9 @@
-package com.chaqianma.jd.activity;
+package com.chaqianma.jd.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.chaqianma.jd.R;
@@ -11,36 +14,30 @@ import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
-import com.chaqianma.jd.widget.JDToast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
- * Created by zhangxd on 2015/7/29.
+ * Created by zhangxd on 2015/7/24.
  */
-public class StaffActivity extends BaseActivity {
+public class StaffStateFragment extends BaseFragment {
     @InjectView(R.id.btn_state)
     Button btn_state;
-    private Timer timer = new Timer();
-    private boolean isBack = false;
     private boolean isBusy = false;
     private UserInfo userInfo = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_staff_status);
-        ButterKnife.inject(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_staff_status, container, false);
+        ButterKnife.inject(this, view);
+        setTitle("首页", false);
         //是否忙碌着 1忙 0闲置
         userInfo = AppData.getInstance().getUserInfo();
         if (userInfo != null) {
@@ -51,6 +48,7 @@ public class StaffActivity extends BaseActivity {
             else
                 btn_state.setText("忙碌");
         }
+        return view;
     }
 
     @OnClick(R.id.btn_state)
@@ -58,7 +56,7 @@ public class StaffActivity extends BaseActivity {
         try {
             List<NameValuePair> formparams = new ArrayList<NameValuePair>();
             formparams.add(new BasicNameValuePair("isBusy", isBusy ? "0" : "1"));
-            HttpClientUtil.put(StaffActivity.this, HttpRequestURL.changeStateUrl, formparams, new JDHttpResponseHandler(StaffActivity.this, new ResponseHandler() {
+            HttpClientUtil.put(getActivity(), HttpRequestURL.changeStateUrl, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
                 @Override
                 public void onSuccess(Object o) {
                     btn_state.setText(isBusy ? "空闲" : "忙碌");
@@ -72,18 +70,15 @@ public class StaffActivity extends BaseActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (isBack) {
-            super.onBackPressed();
-        } else {
-            isBack = true;
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    isBack = false;
-                }
-            }, 5 * 1000);
-            JDToast.showShortText(StaffActivity.this, "再按一次退出系统");
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            setTitle("首页", false);
         }
+    }
+
+    public static StaffStateFragment newInstance() {
+        StaffStateFragment staffStateFragment = new StaffStateFragment();
+        return staffStateFragment;
     }
 }

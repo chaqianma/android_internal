@@ -108,7 +108,8 @@ public class SocialRelationFragment extends BaseFragment {
     private int selIdxTag = -1;
     //父ID
     private String[] mParentId = new String[5];
-
+    //Apply_info
+    private String mApplyInfoId = null;
     //配偶说明
     private String mSpouse = "配偶";
 
@@ -383,24 +384,22 @@ public class SocialRelationFragment extends BaseFragment {
                                 return;
                             JSONObject json = JSON.parseObject(o.toString());
                             //尽职说明
-                            final JSONObject ddObj = json.getJSONObject("applyInfo");
-                            if (ddObj != null && !ddObj.isEmpty()) {
+                            final JSONObject applyObj = json.getJSONObject("applyInfo");
+                            if (applyObj != null && !applyObj.isEmpty()) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        et_comment.setText(ddObj.getString("ddDescription"));
+                                        et_comment.setText(applyObj.getString("ddDescription"));
                                     }
                                 });
-                                List<UploadFileInfo> uploadFileInfos = JSON.parseArray(json.getString("fileList"), UploadFileInfo.class);
+                                mApplyInfoId = applyObj.getString("id");
+                                List<UploadFileInfo> uploadFileInfos = JSON.parseArray(applyObj.getString("fileList"), UploadFileInfo.class);
                                 initServerFile(uploadFileInfos, -1);
                             }
                             //获取联系人信息
                             getContactInfoList(JSON.parseArray(json.getString("contactInfoList"), ContactInfo.class));
                         } catch (Exception e) {
-                            String sss = "1";
-                            sss = "1";
-                            sss = "1";
-                            sss = "1";
+                            e.printStackTrace();
                         }
                     }
                 }).start();
@@ -419,7 +418,6 @@ public class SocialRelationFragment extends BaseFragment {
                 final int idx = i;
                 final ContactInfo contactInfo = contactInfoList.get(i);
                 mParentId[i] = contactInfo.getId();
-                //尽职说明
                 int fileSize = -1;
                 if (contactInfo.getFileList() != null)
                     fileSize = contactInfo.getFileList().size();
@@ -492,8 +490,6 @@ public class SocialRelationFragment extends BaseFragment {
         }
     }
 
-    private int ss = 0;
-
     /*
    * 得到服务器文件
    * */
@@ -511,10 +507,6 @@ public class SocialRelationFragment extends BaseFragment {
                         if (uploadFileInfo.getFileExt().equals("amr")) {
                             uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
                         }
-                        if (uploadFileInfo.getFileType() == 1)
-                            ss += 1;
-
-
                         addGridViewData(uploadFileInfo);
                     }
 
@@ -542,7 +534,6 @@ public class SocialRelationFragment extends BaseFragment {
                 uploadImg(fileInfo);
             }
         }
-
     }
 
     /*
@@ -591,7 +582,14 @@ public class SocialRelationFragment extends BaseFragment {
     //上传图片
     private void uploadImg(final UploadFileInfo fileInfo) {
         try {
-            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, mParentId[fileInfo.getIdxTag()]), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
+            String parentId = null;
+            if (fileType == UploadFileType.COMMENT) {
+                fileInfo.setParentTableName(Constants.APPLY_INFO);
+                parentId = mApplyInfoId;
+            } else {
+                parentId=mParentId[fileInfo.getIdxTag()];
+            }
+            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, parentId), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
                 @Override
                 public void onSuccess(UploadFileInfo downImgInfo) {
                     fileInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功
@@ -761,14 +759,15 @@ public class SocialRelationFragment extends BaseFragment {
         boolean isSelctedSpouse = false;
         List<ContactInfo> contactInfoList = new ArrayList<ContactInfo>();
 
-        if (!requiredInput())
-             return;
+        //if (!requiredInput())
+        //     return;
 
         if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
             isSelctedSpouse = true;
 
         ContactInfo contactInfo = new ContactInfo();
         contactInfo.setRemark(et_remark.getText().toString());
+        contactInfo.setId(mParentId[0]);
         contactInfo.setRelation(sp_relation_type_1.getSelectedItemPosition() + 1);
         contactInfoList.add(contactInfo);
 
@@ -779,13 +778,15 @@ public class SocialRelationFragment extends BaseFragment {
 
             contactInfo = new ContactInfo();
             contactInfo.setRelation(sp_relation_type_2.getSelectedItemPosition() + 1);
+            contactInfo.setId(mParentId[1]);
             contactInfoList.add(contactInfo);
         } else {
             if (isShow3) {
                 if (sp_relation_type_3.getSelectedItem().toString().equals(mSpouse))
                     isSelctedSpouse = true;
                 contactInfo = new ContactInfo();
-                contactInfo.setRelation(sp_relation_type_3.getSelectedItemPosition() + 1 );
+                contactInfo.setId(mParentId[2]);
+                contactInfo.setRelation(sp_relation_type_3.getSelectedItemPosition() + 1);
                 contactInfoList.add(contactInfo);
             } else {
                 if (isShow4) {
@@ -793,6 +794,7 @@ public class SocialRelationFragment extends BaseFragment {
                         isSelctedSpouse = true;
 
                     contactInfo = new ContactInfo();
+                    contactInfo.setId(mParentId[3]);
                     contactInfo.setRelation(sp_relation_type_4.getSelectedItemPosition() + 1);
                     contactInfoList.add(contactInfo);
                 } else {
@@ -801,6 +803,7 @@ public class SocialRelationFragment extends BaseFragment {
                             isSelctedSpouse = true;
 
                         contactInfo = new ContactInfo();
+                        contactInfo.setId(mParentId[4]);
                         contactInfo.setRelation(sp_relation_type_5.getSelectedItemPosition() + 1);
                         contactInfoList.add(contactInfo);
                     }
@@ -815,10 +818,9 @@ public class SocialRelationFragment extends BaseFragment {
         }
         // relation; // 1 配偶 2直系亲属 3合伙人 4财务 5其他
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        String ss = JSON.toJSONString(contactInfoList);
-        String b = et_comment.getText().toString();
-        formparams.add(new BasicNameValuePair("contactInfoListJson", ss));
-        formparams.add(new BasicNameValuePair("ddDescription", b));
+
+        formparams.add(new BasicNameValuePair("contactInfoListJson", JSON.toJSONString(contactInfoList)));
+        formparams.add(new BasicNameValuePair("ddDescription", et_comment.getText().toString()));
         HttpClientUtil.put(getActivity(), HttpRequestURL.updateSocialRelationURL + getBorrowRequestId(), formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {

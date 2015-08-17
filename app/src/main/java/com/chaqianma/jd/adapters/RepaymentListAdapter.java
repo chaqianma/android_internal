@@ -53,6 +53,7 @@ public class RepaymentListAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.repayment_item, null);
+            viewHolder.tv_id = (TextView) convertView.findViewById(R.id.tv_id);
             viewHolder.tv_borrowName = (TextView) convertView.findViewById(R.id.tv_borrowName);
             viewHolder.tv_status = (TextView) convertView.findViewById(R.id.tv_status);
             viewHolder.tv_money = (TextView) convertView.findViewById(R.id.tv_money);
@@ -63,22 +64,24 @@ public class RepaymentListAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        //赋值 zxd
+        //赋值
         position = 0;
         if (position < mRepaymentInfoList.size()) {
             RepaymentInfo repaymentInfo = mRepaymentInfoList.get(position);
-            viewHolder.tv_borrowName.setText(repaymentInfo.getId());
+            viewHolder.tv_id.setText(repaymentInfo.getInvestmentNo());
+            viewHolder.tv_borrowName.setText(repaymentInfo.getUserName());
             viewHolder.tv_status.setText(repaymentInfo.getDescStatus());
             viewHolder.tv_money.setText(repaymentInfo.getMoney());
-            viewHolder.tv_phone.setText(repaymentInfo.getId());
+            viewHolder.tv_phone.setText(repaymentInfo.getUserMobile());
             viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
-            viewHolder.tv_address.setText(repaymentInfo.getId());
+            viewHolder.tv_address.setText(repaymentInfo.getUserWorkLocation());
         }
         return convertView;
     }
 
 
     class ViewHolder {
+        TextView tv_id;
         TextView tv_borrowName;
         TextView tv_status;
         TextView tv_money;

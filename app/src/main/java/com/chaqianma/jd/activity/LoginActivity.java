@@ -109,7 +109,7 @@ public class LoginActivity extends BaseActivity {
                             AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
                         }
                     }
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity_bak.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     LoginActivity.this.finish();

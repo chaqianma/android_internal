@@ -68,13 +68,13 @@ public class RepaymentDetailActivity extends BaseActivity {
                 @Override
                 public void onSuccess(RepaymentInfo repaymentInfo) {
                     if (repaymentInfo != null) {
-                        tv_id.setText(repaymentInfo.getId());
+                        tv_id.setText(repaymentInfo.getInvestmentNo());
                         tv_status.setText(repaymentInfo.getDescStatus());
-                        //tv_borrowName.setText(repaymentInfo.getB);
-                        tv_phone.setText(repaymentInfo.getId());
+                        tv_borrowName.setText(repaymentInfo.getUserName());
+                        tv_phone.setText(repaymentInfo.getUserMobile());
                         tv_repayment_money.setText(repaymentInfo.getMoney());
                         tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
-                        tv_office_addr.setText(repaymentInfo.getId());
+                        tv_office_addr.setText(repaymentInfo.getUserWorkLocation());
                         tv_repayment_count.setText(repaymentInfo.getDunningCount());
                     }
                 }

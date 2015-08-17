@@ -48,7 +48,7 @@ public class ImgsGridViewAdapter extends BaseAdapter {
             .showImageOnLoading(R.drawable.icon_img_add)            //加载图片时的图片
                     //.showImageForEmptyUri(R.drawable.ic_empty)         //没有图片资源时的默认图片
                     //.showImageOnFail(R.drawable.ic_error)              //加载失败时的图片
-            .cacheInMemory(true)                               //启用内存缓存
+            .cacheInMemory(false)                               //启用内存缓存
             .cacheOnDisk(false)                                 //启用外存缓存
             .considerExifParams(true)                          //启用EXIF和JPEG图像格式
                     //.displayer(new RoundedBitmapDisplayer(20))         //设置显示风格这里是圆角矩形
@@ -140,6 +140,7 @@ public class ImgsGridViewAdapter extends BaseAdapter {
                 }
             });
             holderView.imageView.setImageDrawable(null);
+            holderView.imageView.setImageBitmap(null);
             mImageLoader.displayImage("file:///" + imgInfo.getBigImgPath(), holderView.imageView, options);
             //ShowImgAsyncTask task=new ShowImgAsyncTask(holderView.imageView);
             //task.execute(imgInfo);

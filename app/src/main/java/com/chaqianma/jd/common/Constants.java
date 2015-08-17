@@ -62,6 +62,10 @@ public class Constants {
     public static final String SETTING = "SETTING";
     //尽调申请
     public static final String BORROWAPPLY = "BORROWAPPLY";
+    //消息列表
+    public static final String MESSAGECENTER="MESSAGECENTER";
+    //催收
+    public static final String REPAYMENT="REPAYMENT";
     //传值KEY
     public static final String TOVALUEKEY = "TOVALUEKEY";
     //借款人姓名
@@ -78,6 +82,8 @@ public class Constants {
     public static final String PERSONAL_ASSERTS_CAR_INFO = "personal_asserts_car_info";
     //个人资产---房子
     public static final String PERSONAL_ASSETS_HOUSE_INFO = "personal_assets_house_info";
+    //尽职上传文件
+    public static final String APPLY_INFO="apply_info";
     //联系人  上传文件
     public static final String CONTACT_INFO = "contact_info";
     //个人信息标签

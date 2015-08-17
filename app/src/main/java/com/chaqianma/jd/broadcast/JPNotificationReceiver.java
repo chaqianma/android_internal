@@ -27,6 +27,19 @@ public class JPNotificationReceiver extends BroadcastReceiver {
         if (NOTIFICATIONRECEIVER.equals(intent.getAction())) {
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
+            //1 新任务  5 还款日  6 逾期
+            if (intent.hasExtra("messageType")) {
+                String msgType = intent.getStringExtra("messageType");
+                if (msgType.equals("1")) {
+
+                } else if (msgType.equals("5")) {
+
+                } else if (msgType.equals("6")) {
+                    SharedPreferencesUtil.addRepaymentId(mContext,intent.getStringExtra("id"));
+                } else {
+
+                }
+            }
             SharedPreferencesUtil.saveBorrowRequestId(context, "");
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             if (intent.hasExtra("messageType")) {

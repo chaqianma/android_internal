@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chaqianma.jd.R;
@@ -70,21 +71,15 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    protected void setTitle(String title) {
+    protected void setTitle(String title, boolean isCanBack) {
         FragmentActivity fragmentActivity = getActivity();
         if (fragmentActivity != null) {
             View view = fragmentActivity.findViewById(R.id.top_title);
-            if (view != null)
+            if (view != null) {
                 ((TextView) view).setText(title);
+                ((LinearLayout) fragmentActivity.findViewById(R.id.top_back_btn)).setVisibility(View.GONE);
+            }
         }
-    }
-
-    protected void setShowFragment(String fragmentTag, boolean isAddToBackStack) {
-        /*FragmentActivity fragmentActivity = getActivity();
-        if (fragmentActivity instanceof MainActivity) {
-            MainActivity activity = (MainActivity) fragmentActivity;
-            activity.setShowFragment(fragmentTag, isAddToBackStack);
-        }*/
     }
 
     protected void startActivity(Class<?> toClass) {

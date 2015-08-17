@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_board">
+    android:orientation="vertical">
+
     <RadioGroup
         android:id="@+id/radiogroup"
         android:layout_width="fill_parent"
@@ -12,20 +13,36 @@
         android:paddingTop="4dp">
 
         <RadioButton
-            android:id="@+id/radio_msg"
+            android:id="@+id/radio_main"
             style="@style/main_tab_bottom"
             android:checked="true"
             android:drawablePadding="4dp"
-            android:tag="radio_choumeibang"
             android:drawableTop="@drawable/selector_radio_msg"
+            android:tag="radio_choumeibang"
+            android:text="首页" />
+
+        <RadioButton
+            android:id="@+id/radio_repayment"
+            style="@style/main_tab_bottom"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/selector_radio_msg"
+            android:tag="radio_choumeibang"
+            android:text="催收" />
+
+        <RadioButton
+            android:id="@+id/radio_message"
+            style="@style/main_tab_bottom"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/selector_radio_msg"
+            android:tag="radio_choumeibang"
             android:text="消息" />
 
         <RadioButton
             android:id="@+id/radio_setup"
             style="@style/main_tab_bottom"
             android:drawablePadding="1dp"
-            android:tag="radio_hairscan"
             android:drawableTop="@drawable/selector_radio_setting"
+            android:tag="radio_hairscan"
             android:text="设置" />
     </RadioGroup>
 </LinearLayout>

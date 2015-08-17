@@ -63,9 +63,9 @@ public class SharedPreferencesUtil {
         return settings.getInt(strKey, 0);
     }
 
-   /*
-   * 保存请求ID
-   * */
+    /*
+    * 保存请求ID
+    * */
     public static void saveBorrowRequestId(Context context, String borrowRequestId) {
         setShareString(context, Constants.BORROWREQUESTIDTAG, borrowRequestId);
     }
@@ -77,6 +77,7 @@ public class SharedPreferencesUtil {
         removeValue(context, Constants.BORROWREQUESTIDTAG);
     }
 
+
     /*
     * 删除对应的Key值
     * */
@@ -84,6 +85,43 @@ public class SharedPreferencesUtil {
         SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.remove(strKey);
+        editor.commit();
+    }
+
+    /*
+    * 获取催收ID值
+    * */
+    public static String getRepaymentId(Context context) {
+        String key = "REPAYMENT";
+        SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
+        return settings.getString(key, "");
+    }
+
+    /*
+    * 添加催收ID值
+    * */
+    public static void addRepaymentId(Context context, String bVal) {
+        String key = "REPAYMENT";
+        SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
+        String pId = settings.getString(key, "");
+        if (!JDAppUtil.isEmpty(pId)) {
+            pId += "," + bVal;
+        } else {
+            pId += bVal;
+        }
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, pId);
+        editor.commit();
+    }
+
+    /*
+    * 删除催收ID值
+    * */
+    public static void removePaymentId(Context context) {
+        String key = "REPAYMENT";
+        SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.remove(key);
         editor.commit();
     }
 

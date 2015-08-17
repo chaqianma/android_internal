@@ -7,8 +7,11 @@ public class RepaymentInfo extends ErrorInfo {
     private String id = null;
     private String name=null;
     private String phone=null;
+    private String investmentNo=null;  //标的ID
+    private String userMobile=null;
+    private String userName=null;
+    private String userWorkLocation=null;
     private String interestAmount = null;//应还利息
-    private String investmentId = null; //关联的标的ID
     private String overdueFee = null;//滞纳金
     private String period = null; //期数
     private String principalAmount = null;//应还本金
@@ -53,14 +56,6 @@ public class RepaymentInfo extends ErrorInfo {
 
     public void setInterestAmount(String interestAmount) {
         this.interestAmount = interestAmount;
-    }
-
-    public String getInvestmentId() {
-        return investmentId;
-    }
-
-    public void setInvestmentId(String investmentId) {
-        this.investmentId = investmentId;
     }
 
     public String getOverdueFee() {
@@ -127,7 +122,7 @@ public class RepaymentInfo extends ErrorInfo {
                 descStatus = "待还款";
                 break;
             case 2:
-                descStatus = "2账单日";
+                descStatus = "账单日";
                 break;
             case 3:
                 descStatus = "逾期";
@@ -204,5 +199,37 @@ public class RepaymentInfo extends ErrorInfo {
 
     public void setFlag(int flag) {
         this.flag = flag;
+    }
+
+    public String getInvestmentNo() {
+        return investmentNo;
+    }
+
+    public void setInvestmentNo(String investmentNo) {
+        this.investmentNo = investmentNo;
+    }
+
+    public String getUserMobile() {
+        return userMobile;
+    }
+
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserWorkLocation() {
+        return userWorkLocation;
+    }
+
+    public void setUserWorkLocation(String userWorkLocation) {
+        this.userWorkLocation = userWorkLocation;
     }
 }

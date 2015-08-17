@@ -28,23 +28,24 @@ public class SettingFragment extends BaseFragment {
     RelativeLayout tv_update_password;
     @InjectView(R.id.btn_signout)
     Button btn_signout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.activity_setting,container,false);
+        View view = inflater.inflate(R.layout.activity_setting, container, false);
         ButterKnife.inject(this, view);
-        setTitle("设置");
+        setTitle("设置", false);
         tv_msg_notify.setOnClickListener(onClickListener);
         tv_no_disturb.setOnClickListener(onClickListener);
         tv_update_password.setOnClickListener(onClickListener);
         btn_signout.setOnClickListener(onClickListener);
         return view;
     }
-  private View.OnClickListener onClickListener=new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-          Intent intent=new Intent();
-            switch (v.getId())
-            {
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            switch (v.getId()) {
                 case R.id.layout_msg_notify:
                     intent.setClass(getActivity(), MsgnotifyActivity.class);
                     startActivity(intent);
@@ -60,14 +61,22 @@ public class SettingFragment extends BaseFragment {
                 case R.id.btn_signout:
 
                     break;
-                default:break;
+                default:
+                    break;
             }
-      }
-  };
+        }
+    };
 
-    public static SettingFragment newInstance()
-    {
-        SettingFragment fragment=new SettingFragment();
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            setTitle("设置", false);
+        }
+    }
+
+    public static SettingFragment newInstance() {
+        SettingFragment fragment = new SettingFragment();
         return fragment;
     }
 }

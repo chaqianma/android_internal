@@ -82,9 +82,6 @@ public class BorrowApplyActivity extends BaseActivity {
     private boolean isShouldRequest = true;
     //用于点击判断
     private boolean isCanClickOnce = false;
-    //是否是上个页面回退
-    private boolean isPreBack = false;
-
     @OnClick(R.id.tv_view_map)
     void onViewMap(View v) {
         //latitude  longitude
@@ -151,8 +148,8 @@ public class BorrowApplyActivity extends BaseActivity {
             tv_purpose.setText(borrowRequestInfo.getBorrowPurpose());
             mLocation = borrowRequestInfo.getLocation();
             workLocation = borrowRequestInfo.getWorkLocation();
-            getUserLocation(mLocation, false);
-            getUserLocation(workLocation, true);
+            getLocation(mLocation, false);
+            getLocation(workLocation, true);
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
             if (borrowRequestInfo.getStatus().equals("1")) {
@@ -261,7 +258,6 @@ public class BorrowApplyActivity extends BaseActivity {
                         startActivity(InvestigateDetailActivity.class);
                         isCanClickOnce = false;
                         setTaskTag(false);
-                        isPreBack = true;
                         tv_begin_task.setVisibility(View.GONE);
                         btn_borrow.setText("进入尽调");
                         isShouldRequest = false;
@@ -288,7 +284,7 @@ public class BorrowApplyActivity extends BaseActivity {
     }
 
     //获取用户的地址
-    private void getUserLocation(String location, final boolean isOffice) {
+    private void getLocation(String location, final boolean isOffice) {
         if (location != null && location.length() > 0 && location.indexOf(",") >= 0) {
             try {
                 String[] arrs = location.split(",");

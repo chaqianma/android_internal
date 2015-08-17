@@ -22,6 +22,11 @@ import butterknife.InjectView;
 
 import com.chaqianma.jd.common.Constants;
 
+
+/*
+* 原本用Fragment来做
+* 以后有时间再改过来。。MainActivity_bak里有做
+* */
 @SuppressWarnings("deprecation")
 public class MainActivity extends ActivityGroup {
     @InjectView(R.id.tabhost)

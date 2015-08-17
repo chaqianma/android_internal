@@ -427,7 +427,7 @@ public class PersonInfoFragment extends BaseFragment {
                                         }
                                     });
                                     //初始化服务端图片
-                                    initServerFile(customerBaseInfo.getFileList());
+                                   // initServerFile(customerBaseInfo.getFileList());
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

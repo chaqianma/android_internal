@@ -65,13 +65,13 @@ public class MessageAdapater extends BaseAdapter {
             TextView tv_repayment_Detail = (TextView) convertView.findViewById(R.id.tv_repayment_Detail);
 
             tv_come_date.setText("");
-            tv_repayment_id.setText(repaymentInfo.getId());
+            tv_repayment_id.setText(repaymentInfo.getInvestmentNo());
             tv_repayment_status.setText(repaymentInfo.getDescStatus());
-            tv_borrowName.setText(repaymentInfo.getName());
-            tv_borrow_phone.setText(repaymentInfo.getPhone());
+            tv_borrowName.setText(repaymentInfo.getUserName());
+            tv_borrow_phone.setText(repaymentInfo.getUserMobile());
             tv_repayment_money.setText(repaymentInfo.getMoney());
             tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
-            tv_office_addr.setText("");
+            tv_office_addr.setText(repaymentInfo.getUserWorkLocation());
         } else {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.message_task_item, null);
             TextView tv_task_date = (TextView) convertView.findViewById(R.id.tv_task_date);

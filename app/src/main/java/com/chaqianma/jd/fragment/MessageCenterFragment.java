@@ -1,11 +1,16 @@
-package com.chaqianma.jd.activity;
+package com.chaqianma.jd.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
 import com.alibaba.fastjson.JSON;
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.activity.MainActivity;
+import com.chaqianma.jd.activity.RepaymentDetailActivity;
 import com.chaqianma.jd.adapters.MessageAdapater;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.HttpRequestURL;
@@ -14,36 +19,38 @@ import com.chaqianma.jd.model.RepaymentInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
- * Created by zhangxd on 2015/8/11
- * 消息中心
+ * Created by zhangxd on 2015/8/17.
  */
-public class MessageCenterActivity extends BaseActivity {
+public class MessageCenterFragment extends BaseFragment {
     @InjectView(R.id.list_msgs)
     ListView list_msgs;
     private List<RepaymentInfo> mRepaymentList = null;
     private MessageAdapater messageAdapater = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message_center);
-        ButterKnife.inject(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_message_center, container, false);
+        ButterKnife.inject(this, view);
         initData();
+        setTitle("消息中心", false);
+        return view;
     }
 
     /*
-    * 初始化数据
-    * */
+   * 初始化数据
+   * */
     private void initData() {
         mRepaymentList = new ArrayList<RepaymentInfo>();
-        messageAdapater = new MessageAdapater(MessageCenterActivity.this, mRepaymentList);
+        messageAdapater = new MessageAdapater(getActivity(), mRepaymentList);
         list_msgs.setAdapter(messageAdapater);
         //获取任务信息
         getBorrowRequest();
@@ -73,7 +80,7 @@ public class MessageCenterActivity extends BaseActivity {
             if (AppData.getInstance().getBorrowRequestInfo() != null) {
                 transform(AppData.getInstance().getBorrowRequestInfo());
             } else {
-                HttpClientUtil.get(HttpRequestURL.loanApplyUrl, null, new JDHttpResponseHandler(MessageCenterActivity.this, new ResponseHandler<BorrowRequestInfo>() {
+                HttpClientUtil.get(HttpRequestURL.loanApplyUrl, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler<BorrowRequestInfo>() {
                     @Override
                     public void onSuccess(BorrowRequestInfo borrowRequestInfo) {
                         if (borrowRequestInfo != null) {
@@ -93,7 +100,7 @@ public class MessageCenterActivity extends BaseActivity {
     private void getRepaymentList() {
         HashMap<String, Object> argMaps = new HashMap<String, Object>();
         argMaps.put("idList", "1,2,3");//SharedPreferencesUtil.getRepaymentId(MessageCenterActivity.this);
-        HttpClientUtil.get(HttpRequestURL.getNotifyRepaymentList, argMaps, new JDHttpResponseHandler(MessageCenterActivity.this, new ResponseHandler() {
+        HttpClientUtil.get(HttpRequestURL.getNotifyRepaymentList, argMaps, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
                 if (o != null) {
@@ -123,5 +130,19 @@ public class MessageCenterActivity extends BaseActivity {
         //办公地址
         mRepaymentList.add(0, repaymentInfo);
         messageAdapater.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            setTitle("消息中心", false);
+        }
+    }
+
+    public static MessageCenterFragment newInstance()
+    {
+        MessageCenterFragment messageCenterFragment = new MessageCenterFragment();
+        return messageCenterFragment;
     }
 }
