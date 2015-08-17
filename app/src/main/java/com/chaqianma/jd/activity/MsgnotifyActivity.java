@@ -2,10 +2,13 @@ package com.chaqianma.jd.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JPushUtil;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDToast;
@@ -26,6 +29,8 @@ public class MsgnotifyActivity extends BaseActivity {
     SwitchButton switch_sound;
     @InjectView(R.id.switch_shake)
     SwitchButton switch_shake;
+    @InjectView(R.id.layout_notify)
+    LinearLayout layout_notify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,7 @@ public class MsgnotifyActivity extends BaseActivity {
         boolean isOpen = SharedPreferencesUtil.getShareBoolean(MsgnotifyActivity.this, Constants.MSGNOTIFY, true);
         switch_notify.setChecked(isOpen);
         if (isOpen) {
+            layout_notify.setVisibility(View.VISIBLE);
             boolean notifyWay = SharedPreferencesUtil.getShareString(MsgnotifyActivity.this, Constants.MSGTOAST).equals(Constants.MSGSHAKE);
             if (notifyWay) {
                 switch_sound.setChecked(false);
@@ -58,6 +64,7 @@ public class MsgnotifyActivity extends BaseActivity {
         } else {
             switch_sound.setChecked(false);
             switch_shake.setChecked(false);
+            layout_notify.setVisibility(View.GONE);
         }
     }
 
@@ -84,6 +91,10 @@ public class MsgnotifyActivity extends BaseActivity {
             CompoundButton switchView = buttonView;
             switch (switchView.getId()) {
                 case R.id.switch_notify:
+                    if (isChecked)
+                        JDAppUtil.addShowAction(layout_notify);
+                    else
+                        JDAppUtil.addHiddenAction(layout_notify);
                     //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGNOTIFY, isChecked);
                     break;
                 case R.id.switch_sound:

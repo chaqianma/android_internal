@@ -1,10 +1,7 @@
 package com.chaqianma.jd.activity;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -100,7 +97,7 @@ public class LoginActivity extends BaseActivity {
     //查看是否有任务
     private void getBorrowRequest() {
         try {
-            HttpClientUtil.get(HttpRequestURL.loanApplyUrl, null, new JDHttpResponseHandler(LoginActivity.this, new ResponseHandler<BorrowRequestInfo>() {
+            HttpClientUtil.get(HttpRequestURL.loanApplyUrl,null,new JDHttpResponseHandler(LoginActivity.this, new ResponseHandler<BorrowRequestInfo>() {
                 @Override
                 public void onSuccess(BorrowRequestInfo borrowRequestInfo) {
                     if (borrowRequestInfo != null) {
@@ -109,7 +106,7 @@ public class LoginActivity extends BaseActivity {
                             AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
                         }
                     }
-                    Intent intent = new Intent(LoginActivity.this, MainActivity_bak.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     LoginActivity.this.finish();

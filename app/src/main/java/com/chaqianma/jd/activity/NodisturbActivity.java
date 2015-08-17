@@ -1,10 +1,14 @@
 package com.chaqianma.jd.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JPushUtil;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDToast;
@@ -29,6 +33,8 @@ public class NodisturbActivity extends BaseActivity {
     TextView tv_end_time;
     @InjectView(R.id.switch_disturb)
     SwitchButton switch_disturb;
+    @InjectView(R.id.layout_no_disturb)
+    LinearLayout layout_no_disturb;
     private WheelViewDialog mWheelViewDialog = null;
     private boolean isBegin = true;
 
@@ -43,7 +49,17 @@ public class NodisturbActivity extends BaseActivity {
 
     //初始化数据
     private void initData() {
-        switch_disturb.setChecked(SharedPreferencesUtil.getShareBoolean(NodisturbActivity.this, Constants.NODISTURB,true));
+        switch_disturb.setChecked(SharedPreferencesUtil.getShareBoolean(NodisturbActivity.this, Constants.NODISTURB, true));
+        switch_disturb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    JDAppUtil.addShowAction(layout_no_disturb);
+                else
+                    JDAppUtil.addHiddenAction(layout_no_disturb);
+            }
+        });
+        layout_no_disturb.setVisibility(switch_disturb.isChecked() ? View.VISIBLE : View.GONE);
         String begin_time = SharedPreferencesUtil.getShareString(NodisturbActivity.this, Constants.NODISTURB_BEGINTIME);
         String end_time = SharedPreferencesUtil.getShareString(NodisturbActivity.this, Constants.NODISTURB_ENDTIME);
         if (begin_time != null && begin_time.length() > 0)

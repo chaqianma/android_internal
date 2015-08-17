@@ -35,6 +35,7 @@ public class MessageCenterFragment extends BaseFragment {
     ListView list_msgs;
     private List<RepaymentInfo> mRepaymentList = null;
     private MessageAdapater messageAdapater = null;
+    private boolean isGotoMainPage = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +66,12 @@ public class MessageCenterFragment extends BaseFragment {
                     if (rInfo.getFlag() == 1) {
                         startActivity(RepaymentDetailActivity.class, rInfo.getId());
                     } else {
-                        startActivity(MainActivity.class);
+                        if (AppData.getInstance().getBorrowRequestInfo() != null) {
+                            ((MainActivity) (getActivity())).setShowFragment(0);
+                        } else {
+                            isGotoMainPage = true;
+                            getBorrowRequest();
+                        }
                     }
                 }
             }
@@ -84,7 +90,12 @@ public class MessageCenterFragment extends BaseFragment {
                     @Override
                     public void onSuccess(BorrowRequestInfo borrowRequestInfo) {
                         if (borrowRequestInfo != null) {
-                            transform(borrowRequestInfo);
+                            if (!isGotoMainPage)
+                                transform(borrowRequestInfo);
+                            else {
+                                isGotoMainPage = false;
+                                ((MainActivity) (getActivity())).setShowFragment(0);
+                            }
                         }
                     }
                 }, Class.forName(BorrowRequestInfo.class.getName())));
@@ -99,7 +110,7 @@ public class MessageCenterFragment extends BaseFragment {
    * */
     private void getRepaymentList() {
         HashMap<String, Object> argMaps = new HashMap<String, Object>();
-        argMaps.put("idList", "1,2,3");//SharedPreferencesUtil.getRepaymentId(MessageCenterActivity.this);
+        argMaps.put("idList", "1,2,3");//SharedPreferencesUtil.getRepaymentId(.this);
         HttpClientUtil.get(HttpRequestURL.getNotifyRepaymentList, argMaps, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
@@ -140,8 +151,7 @@ public class MessageCenterFragment extends BaseFragment {
         }
     }
 
-    public static MessageCenterFragment newInstance()
-    {
+    public static MessageCenterFragment newInstance() {
         MessageCenterFragment messageCenterFragment = new MessageCenterFragment();
         return messageCenterFragment;
     }

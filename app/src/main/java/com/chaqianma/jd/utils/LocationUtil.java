@@ -14,25 +14,28 @@ import com.chaqianma.jd.model.LocationInfo;
 /**
  * Created by zhangxd on 2015/7/20.
  */
-public class LocationUtil implements Runnable {
+public class LocationUtil {
     private LocationClient mLocationClient = null;
     private Context mContext = null;
-    private Handler mHandler=null;
+    private Handler mHandler = null;
     private MyBDLocationListener myLocationListener = null;
-    private String mCoorType="gcj02";
-    public LocationUtil(Context context,Handler handler) {
-        this.mContext = context;
-        this.mHandler=handler;
+    private String mCoorType = "gcj02";
+
+    public LocationUtil(Context context, Handler handler) {
+        this(context, handler, null);
     }
 
-    public LocationUtil(Context context,Handler handler,String coorType) {
+    public LocationUtil(Context context, Handler handler, String coorType) {
         this.mContext = context;
-        this.mHandler=handler;
-        this.mCoorType=coorType;
+        this.mHandler = handler;
+        this.mCoorType = coorType;
+        initLocationClient();
     }
 
-    @Override
-    public void run() {
+    /*
+    * 初始化位置组件
+    * */
+    private void initLocationClient() {
         mLocationClient = new LocationClient(mContext);
         myLocationListener = new MyBDLocationListener();
         mLocationClient.registerLocationListener(myLocationListener);
@@ -40,7 +43,7 @@ public class LocationUtil implements Runnable {
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//设置定位模式
         option.setCoorType(mCoorType);//返回的定位结果是百度经纬度，默认值gcj02
         option.setScanSpan(5 * 1000);//设置发起定位请求的间隔时间为5000ms
-        if(this.mCoorType.equals("gcj02"))
+        if (this.mCoorType.equals("gcj02"))
             option.setIsNeedAddress(true);
         mLocationClient.setLocOption(option);
         mLocationClient.start();
@@ -76,10 +79,11 @@ public class LocationUtil implements Runnable {
                 locationInfo.setProvince(location.getProvince());
             }
             AppData.getInstance().setLocationInfo(locationInfo);
-            mHandler.sendMessage(mHandler.obtainMessage(Constants.GETLOCATION,null));
+            mHandler.sendMessage(mHandler.obtainMessage(Constants.GETLOCATION, null));
             unRegisterLocationListener();
             mLocationClient.stop();
         }
+
         public void onReceivePoi(BDLocation poiLocation) {
         }
     }

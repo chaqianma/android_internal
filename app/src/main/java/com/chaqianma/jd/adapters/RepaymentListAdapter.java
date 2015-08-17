@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.model.RepaymentInfo;
 import com.chaqianma.jd.model.UrgeInfo;
+import com.chaqianma.jd.utils.GeoCoderUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 
 import org.w3c.dom.Text;
@@ -74,7 +75,8 @@ public class RepaymentListAdapter extends BaseAdapter {
             viewHolder.tv_money.setText(repaymentInfo.getMoney());
             viewHolder.tv_phone.setText(repaymentInfo.getUserMobile());
             viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
-            viewHolder.tv_address.setText(repaymentInfo.getUserWorkLocation());
+            viewHolder.tv_address.setText("");
+            //new GeoCoderUtil(viewHolder.tv_address, repaymentInfo.getUserWorkLocation());
         }
         return convertView;
     }

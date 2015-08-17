@@ -10,6 +10,7 @@ import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.RepaymentInfo;
+import com.chaqianma.jd.utils.GeoCoderUtil;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
@@ -74,7 +75,7 @@ public class RepaymentDetailActivity extends BaseActivity {
                         tv_phone.setText(repaymentInfo.getUserMobile());
                         tv_repayment_money.setText(repaymentInfo.getMoney());
                         tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
-                        tv_office_addr.setText(repaymentInfo.getUserWorkLocation());
+                        new GeoCoderUtil(tv_office_addr, repaymentInfo.getUserWorkLocation());
                         tv_repayment_count.setText(repaymentInfo.getDunningCount());
                     }
                 }

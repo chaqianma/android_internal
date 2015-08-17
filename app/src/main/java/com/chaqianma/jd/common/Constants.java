@@ -22,8 +22,6 @@ public class Constants {
     public static final String REMEMBERPASSWORD = "REMEMBERPASSWORD";
     //UUID
     public static final String UUID = "UUID";
-    //判断当前任务是否结束
-    public static final String ISTASKFinishTAG = "ISTASKFinishTAG";
     //文件存放目录
     public static final String FILEDIR = "chaqianma";
     //刷新图片与上传图片标签

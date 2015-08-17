@@ -12,6 +12,7 @@ import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.RepaymentDetailActivity;
 import com.chaqianma.jd.model.RepaymentInfo;
 import com.chaqianma.jd.model.UrgeInfo;
+import com.chaqianma.jd.utils.GeoCoderUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 
 import java.util.List;
@@ -53,25 +54,31 @@ public class MessageAdapater extends BaseAdapter {
         RepaymentInfo repaymentInfo = mRepaymentInfoList.get(position);
         // 0 新任务  1 催款
         if (repaymentInfo.getFlag() == 1) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.message_repayment_item, null);
-            TextView tv_come_date = (TextView) convertView.findViewById(R.id.tv_come_date);
-            TextView tv_repayment_id = (TextView) convertView.findViewById(R.id.tv_repayment_id);
-            TextView tv_repayment_status = (TextView) convertView.findViewById(R.id.tv_repayment_status);
-            TextView tv_borrowName = (TextView) convertView.findViewById(R.id.tv_borrowName);
-            TextView tv_borrow_phone = (TextView) convertView.findViewById(R.id.tv_borrow_phone);
-            TextView tv_repayment_money = (TextView) convertView.findViewById(R.id.tv_repayment_money);
-            TextView tv_repayment_date = (TextView) convertView.findViewById(R.id.tv_repayment_date);
-            TextView tv_office_addr = (TextView) convertView.findViewById(R.id.tv_office_addr);
-            TextView tv_repayment_Detail = (TextView) convertView.findViewById(R.id.tv_repayment_Detail);
-
-            tv_come_date.setText("");
-            tv_repayment_id.setText(repaymentInfo.getInvestmentNo());
-            tv_repayment_status.setText(repaymentInfo.getDescStatus());
-            tv_borrowName.setText(repaymentInfo.getUserName());
-            tv_borrow_phone.setText(repaymentInfo.getUserMobile());
-            tv_repayment_money.setText(repaymentInfo.getMoney());
-            tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
-            tv_office_addr.setText(repaymentInfo.getUserWorkLocation());
+            if (convertView == null || convertView.getTag() == null) {
+                viewHolder=new ViewHolder();
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.message_repayment_item, null);
+                viewHolder.tv_come_date = (TextView) convertView.findViewById(R.id.tv_come_date);
+                viewHolder.tv_repayment_id = (TextView) convertView.findViewById(R.id.tv_repayment_id);
+                viewHolder.tv_repayment_status = (TextView) convertView.findViewById(R.id.tv_repayment_status);
+                viewHolder.tv_borrowName = (TextView) convertView.findViewById(R.id.tv_borrowName);
+                viewHolder.tv_borrow_phone = (TextView) convertView.findViewById(R.id.tv_borrow_phone);
+                viewHolder.tv_repayment_money = (TextView) convertView.findViewById(R.id.tv_repayment_money);
+                viewHolder.tv_repayment_date = (TextView) convertView.findViewById(R.id.tv_repayment_date);
+                viewHolder.tv_office_addr = (TextView) convertView.findViewById(R.id.tv_office_addr);
+                viewHolder.tv_repayment_Detail = (TextView) convertView.findViewById(R.id.tv_repayment_Detail);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder)convertView.getTag();
+            }
+            viewHolder.tv_come_date.setText("");
+            viewHolder.tv_repayment_id.setText(repaymentInfo.getInvestmentNo());
+            viewHolder.tv_repayment_status.setText(repaymentInfo.getDescStatus());
+            viewHolder.tv_borrowName.setText(repaymentInfo.getUserName());
+            viewHolder.tv_borrow_phone.setText(repaymentInfo.getUserMobile());
+            viewHolder.tv_repayment_money.setText(repaymentInfo.getMoney());
+            viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
+            viewHolder.tv_repayment_Detail.setOnClickListener(null);
+            //new GeoCoderUtil(viewHolder.tv_office_addr, repaymentInfo.getUserWorkLocation());
         } else {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.message_task_item, null);
             TextView tv_task_date = (TextView) convertView.findViewById(R.id.tv_task_date);
@@ -91,7 +98,7 @@ public class MessageAdapater extends BaseAdapter {
             tv_borrowMoney.setText(repaymentInfo.getBorrowMoney());
             tv_borrowDate.setText(repaymentInfo.getBorrowDate());
             tv_borrowUse.setText(repaymentInfo.getBorrowPurpose());
-            tv_task_addr.setText("");
+            //new GeoCoderUtil(tv_task_addr, repaymentInfo.getUserWorkLocation());
         }
         return convertView;
     }

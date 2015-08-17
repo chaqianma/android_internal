@@ -1,129 +1,159 @@
 package com.chaqianma.jd.activity;
 
-import android.app.ActivityGroup;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.TabHost;
-import android.widget.TextView;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.RadioButton;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.AppData;
-import com.chaqianma.jd.model.LocationInfo;
-import com.chaqianma.jd.utils.LocationUtil;
-import com.chaqianma.jd.utils.SharedPreferencesUtil;
+import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.fragment.BorrowApplyFragment;
+import com.chaqianma.jd.fragment.BottomFragment;
+import com.chaqianma.jd.fragment.MessageCenterFragment;
+import com.chaqianma.jd.fragment.RepaymentListFragment;
+import com.chaqianma.jd.fragment.SettingFragment;
+import com.chaqianma.jd.fragment.StaffStateFragment;
+import com.chaqianma.jd.widget.JDToast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import com.chaqianma.jd.common.Constants;
-
-
-/*
-* 原本用Fragment来做
-* 以后有时间再改过来。。MainActivity_bak里有做
-* */
-@SuppressWarnings("deprecation")
-public class MainActivity extends ActivityGroup {
-    @InjectView(R.id.tabhost)
-    TabHost mTabHost;
-    @InjectView(R.id.radiogroup)
-    RadioGroup mRadioGroup;
-    @InjectView(R.id.top_title)
-    TextView top_title;
-    @InjectView(R.id.top_back_btn)
-    LinearLayout top_back_btn;
-    private boolean mIsHasTask = false;
+/**
+ * Created by zhangxd on 2015/7/21.
+ */
+public class MainActivity extends FragmentActivity implements BottomFragment.ICheckedCallback {
+    @InjectView(R.id.radio_main)
+    RadioButton radio_main;
+    @InjectView(R.id.radio_repayment)
+    RadioButton radio_repayment;
+    @InjectView(R.id.radio_message)
+    RadioButton radio_message;
+    @InjectView(R.id.radio_setup)
+    RadioButton radio_setup;
+    FragmentTransaction fragmentTransaction = null;
+    private SettingFragment settingFragment = null;
+    private StaffStateFragment staffStateFragment = null;
+    private BorrowApplyFragment borrowApplyFragment = null;
+    private MessageCenterFragment messageCenterFragment = null;
+    private RepaymentListFragment repaymentListFragment = null;
+    //回退判断
+    private Timer timer = new Timer();
+    private boolean isBack = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_back);
+        setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-        mTabHost.setup(getLocalActivityManager());
-        mIsHasTask = (AppData.getInstance().getBorrowRequestInfo() != null);
-        addTabIntent();
-        mTabHost.setCurrentTab(0);
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.radio_main:
-                        top_title.setText("首页");
-                        mTabHost.setCurrentTab(0);
-                        break;
-                    case R.id.radio_urge:
-                        top_title.setText("催收");
-                        mTabHost.setCurrentTab(1);
-                        break;
-                    case R.id.radio_message:
-                        top_title.setText("消息");
-                        mTabHost.setCurrentTab(2);
-                        break;
-                    case R.id.radio_setup:
-                        top_title.setText("设置");
-                        mTabHost.setCurrentTab(3);
-                        break;
-                    default:
-                        break;
+        // initFragment();
+        onItemSelected(R.id.radio_main);
+    }
+
+    @Override
+    public void onItemSelected(int checkedId) {
+        hideFragments();
+        switch (checkedId) {
+            case R.id.radio_main:
+                if (AppData.getInstance().getBorrowRequestInfo() != null) {
+                    if (borrowApplyFragment == null) {
+                        borrowApplyFragment = BorrowApplyFragment.newInstance();
+                        fragmentTransaction.add(R.id.main_content, borrowApplyFragment, Constants.BORROWAPPLY);
+                    }
+                    fragmentTransaction.show(borrowApplyFragment);
+                } else {
+                    if (staffStateFragment == null) {
+                        staffStateFragment = StaffStateFragment.newInstance();
+                        fragmentTransaction.add(R.id.main_content, staffStateFragment, Constants.STAFFSTATE);
+                    }
+                    fragmentTransaction.show(staffStateFragment);
                 }
-            }
-        });
-        LocationUtil locationUtil = new LocationUtil(getApplicationContext(), mHandler);
-        locationUtil.run();
-        top_title.setText("首页");
-        top_back_btn.setVisibility(View.GONE);
+                break;
+            case R.id.radio_repayment:
+                if (repaymentListFragment == null) {
+                    repaymentListFragment = RepaymentListFragment.newInstance();
+                    fragmentTransaction.add(R.id.main_content, repaymentListFragment, Constants.REPAYMENT);
+                }
+                fragmentTransaction.show(repaymentListFragment);
+                break;
+            case R.id.radio_message:
+                if (messageCenterFragment == null) {
+                    messageCenterFragment = new MessageCenterFragment().newInstance();
+                    fragmentTransaction.add(R.id.main_content, messageCenterFragment, Constants.MESSAGECENTER);
+                }
+                fragmentTransaction.show(messageCenterFragment);
+                break;
+            case R.id.radio_setup:
+                if (settingFragment == null) {
+                    settingFragment = SettingFragment.newInstance();
+                    fragmentTransaction.add(R.id.main_content, settingFragment, Constants.SETTING);
+                }
+                fragmentTransaction.show(settingFragment);
+                break;
+            default:
+                break;
+        }
+        fragmentTransaction.commit();
     }
 
-    /*
-    * 添加页面
-    * */
-    private void addTabIntent() {
-        try {
-            if (mIsHasTask)
-                this.mTabHost.addTab(buildTabSpec("tab0", "0", new Intent(this, BorrowApplyActivity.class)));
-            else
-                this.mTabHost.addTab(buildTabSpec("tab0", "0", new Intent(this, StaffActivity.class)));
-            this.mTabHost.addTab(buildTabSpec("tab1", "1", new Intent(this, RepaymentListActivity.class)));
-            this.mTabHost.addTab(buildTabSpec("tab2", "2", new Intent(this, MessageCenterActivity.class)));
-            this.mTabHost.addTab(buildTabSpec("tab3", "3", new Intent(this, SettingActivity.class)));
-        } catch (Exception e) {
+
+    public void setShowFragment(int idxTag) {
+        switch (idxTag) {
+            case 0:
+                onItemSelected(R.id.radio_main);
+                radio_main.setChecked(true);
+                break;
+            case 1:
+                onItemSelected(R.id.radio_repayment);
+                radio_repayment.setChecked(true);
+                break;
+            case 2:
+                onItemSelected(R.id.radio_message);
+                radio_message.setChecked(true);
+                break;
+            case 3:
+                onItemSelected(R.id.radio_setup);
+                radio_setup.setChecked(true);
+                break;
+            default:
+                break;
         }
     }
 
-    private TabHost.TabSpec buildTabSpec(String tag, String m,
-                                         final Intent content) {
-        return this.mTabHost.newTabSpec(tag).setIndicator(m).setContent(content);
+    private void hideFragments() {
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (staffStateFragment != null)
+            fragmentTransaction.hide(staffStateFragment);
+
+        if (borrowApplyFragment != null)
+            fragmentTransaction.hide(borrowApplyFragment);
+
+        if (repaymentListFragment != null)
+            fragmentTransaction.hide(repaymentListFragment);
+
+        if (settingFragment != null)
+            fragmentTransaction.hide(settingFragment);
+
+        if (messageCenterFragment != null)
+            fragmentTransaction.hide(messageCenterFragment);
     }
 
-    /*
-    * 重新刷新View
-    * */
-    private void refreshView() {
-        if (AppData.getInstance().getBorrowRequestInfo() != null) {
-
+    @Override
+    public void onBackPressed() {
+        if (isBack) {
+            super.onBackPressed();
         } else {
-
+            isBack = true;
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isBack = false;
+                }
+            }, 5 * 1000);
+            JDToast.showShortText(MainActivity.this, "再按一次退出系统");
         }
     }
-
-    //Handler to get something
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case Constants.GETLOCATION:
-                    LocationInfo locationInfo = AppData.getInstance().getLocationInfo();
-                    SharedPreferencesUtil.setShareString(getApplicationContext(), Constants.CITYTAG, locationInfo.getCity());
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 }

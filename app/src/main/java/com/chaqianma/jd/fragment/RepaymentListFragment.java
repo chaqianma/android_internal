@@ -70,7 +70,14 @@ public class RepaymentListFragment extends BaseFragment implements PullToRefresh
     * 获取催款数据
     * */
     private void getRepaymentList() {
-        HttpClientUtil.get(HttpRequestURL.getRepaymentList, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+        if(mRepaymentInfoList!=null) {
+            mRepaymentInfoList.clear();
+            if(mRepaymentListAdapter!=null)
+                mRepaymentListAdapter.notifyDataSetChanged();
+        }
+        if(mRepaymentListAdapter!=null)
+            return;
+        HttpClientUtil.get(HttpRequestURL.getRepaymentList,null,new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
                 if (o != null) {
@@ -78,6 +85,7 @@ public class RepaymentListFragment extends BaseFragment implements PullToRefresh
                     if (mRepaymentInfoList != null) {
                         mRepaymentListAdapter = new RepaymentListAdapter(getActivity(), mRepaymentInfoList);
                         list_repayment.setAdapter(mRepaymentListAdapter);
+                        view_refresh.onHeaderRefreshComplete();
                     }
                 }
             }
@@ -91,7 +99,7 @@ public class RepaymentListFragment extends BaseFragment implements PullToRefresh
 
     @Override
     public void onHeaderRefresh(PullToRefreshView view) {
-        view_refresh.onHeaderRefreshComplete();
+        getRepaymentList();
     }
 
 

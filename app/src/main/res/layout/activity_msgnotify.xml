@@ -35,58 +35,64 @@
 
     <TextView
         style="@style/SmallTextStyle"
-        android:text="开启后,收到消息将以声音或震动方式提醒"
         android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        android:text="开启后,收到消息将以声音或震动方式提醒" />
 
     <View style="@style/ViewLineStyle" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/layout_notify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="声音" />
-
-        <com.chaqianma.jd.widget.SwitchButton
-            android:id="@+id/switch_sound"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="right"
-            app:frameDrawable="@mipmap/switch_frame"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@mipmap/switch_state_mask"
-            app:withTextInterval="16dp" />
-    </RelativeLayout>
+            android:layout_margin="5dp">
 
-    <View style="@style/ViewLineStyle" />
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="声音" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+            <com.chaqianma.jd.widget.SwitchButton
+                android:id="@+id/switch_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="right"
+                app:frameDrawable="@mipmap/switch_frame"
+                app:sliderDrawable="@drawable/selector_switch_slider"
+                app:stateDrawable="@drawable/selector_switch_state"
+                app:stateMaskDrawable="@mipmap/switch_state_mask"
+                app:withTextInterval="16dp" />
+        </RelativeLayout>
 
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="震动" />
+        <View style="@style/ViewLineStyle" />
 
-        <com.chaqianma.jd.widget.SwitchButton
-            android:id="@+id/switch_shake"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="right"
-            app:frameDrawable="@mipmap/switch_frame"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@mipmap/switch_state_mask"
-            app:withTextInterval="16dp" />
-    </RelativeLayout>
+            android:layout_margin="5dp">
 
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="震动" />
+
+            <com.chaqianma.jd.widget.SwitchButton
+                android:id="@+id/switch_shake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="right"
+                app:frameDrawable="@mipmap/switch_frame"
+                app:sliderDrawable="@drawable/selector_switch_slider"
+                app:stateDrawable="@drawable/selector_switch_state"
+                app:stateMaskDrawable="@mipmap/switch_state_mask"
+                app:withTextInterval="16dp" />
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

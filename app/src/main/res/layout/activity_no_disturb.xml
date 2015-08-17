@@ -27,13 +27,13 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:checked="false"
             android:gravity="right"
             app:frameDrawable="@mipmap/switch_frame"
             app:sliderDrawable="@drawable/selector_switch_slider"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@mipmap/switch_state_mask"
-            app:withTextInterval="16dp"
-            android:checked="false" />
+            app:withTextInterval="16dp" />
     </RelativeLayout>
 
     <View style="@style/ViewLineStyle" />
@@ -47,54 +47,61 @@
 
     <View style="@style/ViewLineStyle" />
 
-    <RelativeLayout
-        android:id="@+id/layout_begin_time"
+    <LinearLayout
+        android:id="@+id/layout_no_disturb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="开始时间" />
+        <RelativeLayout
+            android:id="@+id/layout_begin_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
 
-        <TextView
-            android:id="@+id/tv_begin_time"
-            style="@style/SmallTextStyle"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/android_list_idex"
-            android:text="9:00" />
-    </RelativeLayout>
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="开始时间" />
 
-    <View
-        style="@style/ViewLineStyle"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="3dp" />
+            <TextView
+                android:id="@+id/tv_begin_time"
+                style="@style/SmallTextStyle"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/android_list_idex"
+                android:text="9:00" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/layout_end_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        <View
+            style="@style/ViewLineStyle"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="3dp" />
 
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="结束时间" />
+        <RelativeLayout
+            android:id="@+id/layout_end_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
 
-        <TextView
-            android:id="@+id/tv_end_time"
-            style="@style/SmallTextStyle"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/android_list_idex"
-            android:text="18:00" />
-    </RelativeLayout>
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="结束时间" />
 
-    <View
-        style="@style/ViewLineStyle"
-        android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/tv_end_time"
+                style="@style/SmallTextStyle"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/android_list_idex"
+                android:text="18:00" />
+        </RelativeLayout>
+
+        <View
+            style="@style/ViewLineStyle"
+            android:layout_marginBottom="5dp" />
+    </LinearLayout>
 </LinearLayout>

@@ -1,16 +1,23 @@
 package com.chaqianma.jd.model;
 
+import android.widget.TextView;
+
+import com.chaqianma.jd.utils.GeoCoderUtil;
+
+import org.w3c.dom.Text;
+
 /**
  * Created by zhangxd on 2015/8/14.
  */
 public class RepaymentInfo extends ErrorInfo {
     private String id = null;
-    private String name=null;
-    private String phone=null;
-    private String investmentNo=null;  //标的ID
-    private String userMobile=null;
-    private String userName=null;
-    private String userWorkLocation=null;
+    private String name = null;
+    private String phone = null;
+    private String investmentNo = null;  //标的ID
+    private String userMobile = null;
+    private String userName = null;
+    private String userWorkLocation = null;
+    private String strWorkLocation = null;
     private String interestAmount = null;//应还利息
     private String overdueFee = null;//滞纳金
     private String period = null; //期数
@@ -22,10 +29,11 @@ public class RepaymentInfo extends ErrorInfo {
     private String status = null; //还款状态 1待还款 2账单日 3逾期 4已还款
     private String money = null;//应还金额
     private String descStatus = null;
-    private String borrowMoney=null;
-    private String borrowDate=null;
-    private String borrowPurpose=null;//借款用途
+    private String borrowMoney = null;
+    private String borrowDate = null;
+    private String borrowPurpose = null;//借款用途
     private int flag = 1;  //标明  0 新任务  1 催款
+
     public String getActualDateline() {
         return actualDateline;
     }
@@ -231,5 +239,22 @@ public class RepaymentInfo extends ErrorInfo {
 
     public void setUserWorkLocation(String userWorkLocation) {
         this.userWorkLocation = userWorkLocation;
+    }
+
+    public void getStrWorkLocation(final TextView tv) {
+        if (strWorkLocation != null) {
+
+        } else {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    new GeoCoderUtil(tv, getUserWorkLocation());
+                }
+            }).start();
+        }
+    }
+
+    public void setStrWorkLocation(String strWorkLocation) {
+        this.strWorkLocation = strWorkLocation;
     }
 }
