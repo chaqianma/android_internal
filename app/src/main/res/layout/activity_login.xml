@@ -62,12 +62,10 @@
 
     <Button
         android:id="@+id/btn_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        style="@style/MatchParentButtonStyle"
         android:layout_marginLeft="8dip"
         android:layout_marginRight="8dip"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="28dp"
         android:text="提交" />
 
 </LinearLayout>

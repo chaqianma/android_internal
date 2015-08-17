@@ -64,8 +64,8 @@
                 <ImageView
                     android:id="@+id/img_telephone"
                     android:layout_width="wrap_content"
-                    android:layout_marginLeft="8dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:src="@mipmap/icon_phone" />
             </LinearLayout>
         </RelativeLayout>
@@ -184,8 +184,8 @@
             <TextView
                 android:id="@+id/tv_address"
                 style="@style/SmallTextStyle"
-                android:layout_weight="1"
-                android:layout_toRightOf="@id/tv_addressTag" />
+                android:layout_toRightOf="@id/tv_addressTag"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/tv_view_map"
@@ -211,7 +211,7 @@
 
             <TextView
                 android:id="@+id/tv_apply_time"
-                style="@style/SmallTextStyle"/>
+                style="@style/SmallTextStyle" />
         </LinearLayout>
 
         <View style="@style/ViewLineStyle" />
@@ -227,13 +227,16 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@id/btn_borrow">
+
                 <TextView
                     android:id="@+id/tv_begin_task"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginRight="4dp"
                     android:layout_marginTop="4dp"
                     android:text="@string/transfer_task"
                     android:textColor="#0A57DB" />
@@ -242,7 +245,9 @@
                     android:id="@+id/tv_finish_task"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="4dp"
                     android:layout_marginTop="4dp"
                     android:text="@string/finish_task"
                     android:textColor="#0A57DB" />

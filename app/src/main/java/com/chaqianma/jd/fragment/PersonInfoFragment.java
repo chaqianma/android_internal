@@ -560,6 +560,10 @@ public class PersonInfoFragment extends BaseFragment {
             UploadFileInfo imgInfo = uploadImgInfoList.get(idx);
             fileType = UploadFileType.valueOf(imgInfo.getFileType());
             if (imgInfo.isDefault()) {
+                if (!mIsAuthSuccess) {
+                    JDToast.showLongText(getActivity(), "未实名认证，不能上传图片");
+                    return;
+                }
                 mPopup.showAtLocation(linear_container, Gravity.BOTTOM, 0, 0);
             } else {
                 mViewPagerPopup.setUploadImgList(uploadImgInfoList, idx);

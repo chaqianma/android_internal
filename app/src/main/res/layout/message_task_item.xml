@@ -2,125 +2,132 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:background="@drawable/background_corners"
-    android:orientation="vertical"
-    android:padding="1dp">
+    android:orientation="vertical">
 
     <LinearLayout
-        style="@style/LinearLayoutStyle"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:orientation="vertical"
+        android:background="@drawable/linear_bg_corner"
+        android:padding="1dp">
+
+        <LinearLayout
+            style="@style/LinearLayoutStyle"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_task_desc"
+                style="@style/SmallTextStyle"
+                android:text="来新尽调任务啦"
+                android:textSize="@dimen/more_large_text_size" />
+
+            <TextView
+                android:id="@+id/tv_task_date"
+                style="@style/SmallTextStyle"
+                android:text="2015-06-28 09:30" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="您好！您收到一条新尽调任务。" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="ID：" />
+
+            <TextView
+                android:id="@+id/tv_task_id"
+                style="@style/SmallTextStyle"
+                android:text="487372" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="姓名：" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/SmallTextStyle"
+                android:text="未知" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="手机：" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                style="@style/SmallTextStyle"
+                android:text="158505854848" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="借款金额：" />
+
+            <TextView
+                android:id="@+id/tv_borrowMoney"
+                style="@style/SmallTextStyle"
+                android:text="10万" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="借款期限：" />
+
+            <TextView
+                android:id="@+id/tv_borrowDate"
+                style="@style/SmallTextStyle"
+                android:text="6月" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="借款用途：" />
+
+            <TextView
+                android:id="@+id/tv_borrowUse"
+                style="@style/SmallTextStyle"
+                android:text="经营周转" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="办公地址：" />
+
+            <TextView
+                android:id="@+id/tv_task_addr"
+                style="@style/SmallTextStyle"
+                android:text="南京市玄武区钟山路288号" />
+        </LinearLayout>
+
+        <View style="@style/ViewLineStyle" />
 
         <TextView
-            android:id="@+id/tv_task_desc"
+            android:id="@+id/tv_taskDetail"
             style="@style/SmallTextStyle"
-            android:text="来新尽调任务啦"
-            android:textSize="@dimen/more_large_text_size" />
-
-        <TextView
-            android:id="@+id/tv_task_date"
-            style="@style/SmallTextStyle"
-            android:text="2015-06-28 09:30" />
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:layout_margin="6dp"
+            android:text="查看详情" />
     </LinearLayout>
-
-    <LinearLayout style="@style/LinearLayoutStyle">
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="您好！您收到一条新尽调任务。" />
-    </LinearLayout>
-
-    <LinearLayout style="@style/LinearLayoutStyle">
-
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="ID：" />
-
-        <TextView
-            android:id="@+id/tv_task_id"
-            style="@style/SmallTextStyle"
-            android:text="487372" />
-    </LinearLayout>
-
-    <LinearLayout style="@style/LinearLayoutStyle">
-
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="姓名：" />
-
-        <TextView
-            android:id="@+id/tv_name"
-            style="@style/SmallTextStyle"
-            android:text="未知" />
-    </LinearLayout>
-
-    <LinearLayout style="@style/LinearLayoutStyle">
-
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="手机：" />
-
-        <TextView
-            android:id="@+id/tv_phone"
-            style="@style/SmallTextStyle"
-            android:text="158505854848" />
-    </LinearLayout>
-
-    <LinearLayout style="@style/LinearLayoutStyle">
-
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="借款金额：" />
-
-        <TextView
-            android:id="@+id/tv_borrowMoney"
-            style="@style/SmallTextStyle"
-            android:text="10万" />
-    </LinearLayout>
-
-    <LinearLayout style="@style/LinearLayoutStyle">
-
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="借款期限：" />
-
-        <TextView
-            android:id="@+id/tv_borrowDate"
-            style="@style/SmallTextStyle"
-            android:text="6月" />
-    </LinearLayout>
-
-    <LinearLayout style="@style/LinearLayoutStyle">
-
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="借款用途：" />
-
-        <TextView
-            android:id="@+id/tv_borrowUse"
-            style="@style/SmallTextStyle"
-            android:text="经营周转" />
-    </LinearLayout>
-
-    <LinearLayout style="@style/LinearLayoutStyle">
-
-        <TextView
-            style="@style/SmallTextStyle"
-            android:text="办公地址：" />
-
-        <TextView
-            android:id="@+id/tv_task_addr"
-            style="@style/SmallTextStyle"
-            android:text="南京市玄武区钟山路288号" />
-    </LinearLayout>
-
-    <View style="@style/ViewLineStyle" />
-
-    <TextView
-        android:id="@+id/tv_taskDetail"
-        style="@style/SmallTextStyle"
-        android:layout_gravity="right"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="8dp"
-        android:text="查看详情" />
 </LinearLayout>
