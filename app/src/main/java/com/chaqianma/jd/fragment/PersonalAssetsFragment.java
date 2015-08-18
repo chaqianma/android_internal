@@ -1233,99 +1233,104 @@ public class PersonalAssetsFragment extends BaseFragment {
     * 刷新数据
     * */
     private void refreshData(UploadFileInfo fileInfo) {
-        UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
-        if (fType == UploadFileType.SY) {
-            switch (fileInfo.getIdxTag()) {
-                case 0:
-                    mSYAdapter_1.refreshData();
-                    break;
-                case 1:
-                    mSYAdapter_2.refreshData();
-                    break;
-                case 2:
-                    mSYAdapter_3.refreshData();
-                    break;
-                default:
-                    break;
-            }
-        } else if (fType == UploadFileType.JY) {
-            switch (fileInfo.getIdxTag()) {
-                case 0:
-                    mJYAdapter_1.refreshData();
-                    break;
-                case 1:
-                    mJYAdapter_2.refreshData();
-                    break;
-                case 2:
-                    mJYAdapter_3.refreshData();
-                    break;
-                default:
-                    break;
-            }
-        } else if (fType == UploadFileType.CP) {
-            switch (fileInfo.getIdxTag()) {
-                case 0:
-                    mCPAdpter_1.refreshData();
-                    break;
-                case 1:
-                    mCPAdpter_2.refreshData();
-                    break;
-                case 2:
-                    mCPAdpter_3.refreshData();
-                    break;
-                default:
-                    break;
-            }
+        try{
+            UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
+            if (fType == UploadFileType.SY) {
+                switch (fileInfo.getIdxTag()) {
+                    case 0:
+                        mSYAdapter_1.refreshData();
+                        break;
+                    case 1:
+                        mSYAdapter_2.refreshData();
+                        break;
+                    case 2:
+                        mSYAdapter_3.refreshData();
+                        break;
+                    default:
+                        break;
+                }
+            } else if (fType == UploadFileType.JY) {
+                switch (fileInfo.getIdxTag()) {
+                    case 0:
+                        mJYAdapter_1.refreshData();
+                        break;
+                    case 1:
+                        mJYAdapter_2.refreshData();
+                        break;
+                    case 2:
+                        mJYAdapter_3.refreshData();
+                        break;
+                    default:
+                        break;
+                }
+            } else if (fType == UploadFileType.CP) {
+                switch (fileInfo.getIdxTag()) {
+                    case 0:
+                        mCPAdpter_1.refreshData();
+                        break;
+                    case 1:
+                        mCPAdpter_2.refreshData();
+                        break;
+                    case 2:
+                        mCPAdpter_3.refreshData();
+                        break;
+                    default:
+                        break;
+                }
 
-        } else if (fType == UploadFileType.XS) {
-            switch (fileInfo.getIdxTag()) {
-                case 0:
-                    mXSAdpter_1.refreshData();
-                    break;
-                case 1:
-                    mXSAdpter_2.refreshData();
-                    break;
-                case 2:
-                    mXSAdpter_3.refreshData();
-                    break;
-                default:
-                    break;
-            }
-        } else if (fType == UploadFileType.FC) {
-            switch (fileInfo.getIdxTag()) {
-                case 0:
-                    mFCAdpter_1.refreshData();
-                    break;
-                case 1:
-                    mFCAdpter_2.refreshData();
-                    break;
-                case 2:
-                    mFCAdpter_3.refreshData();
-                    break;
-                default:
-                    break;
-            }
+            } else if (fType == UploadFileType.XS) {
+                switch (fileInfo.getIdxTag()) {
+                    case 0:
+                        mXSAdpter_1.refreshData();
+                        break;
+                    case 1:
+                        mXSAdpter_2.refreshData();
+                        break;
+                    case 2:
+                        mXSAdpter_3.refreshData();
+                        break;
+                    default:
+                        break;
+                }
+            } else if (fType == UploadFileType.FC) {
+                switch (fileInfo.getIdxTag()) {
+                    case 0:
+                        mFCAdpter_1.refreshData();
+                        break;
+                    case 1:
+                        mFCAdpter_2.refreshData();
+                        break;
+                    case 2:
+                        mFCAdpter_3.refreshData();
+                        break;
+                    default:
+                        break;
+                }
 
-        } else if (fType == UploadFileType.TD) {
-            switch (fileInfo.getIdxTag()) {
-                case 0:
-                    mTDAdpter_1.refreshData();
-                    break;
-                case 1:
-                    mTDAdpter_2.refreshData();
-                    break;
-                case 2:
-                    mTDAdpter_3.refreshData();
-                    break;
-                default:
-                    break;
-            }
-        } else if (fType == UploadFileType.REMARK) {
-            remarkImgsAdapter.refreshData();
-        } else if (fType == UploadFileType.SOUND) {
-            soundAdapter.refreshData();
-        } else {
+            } else if (fType == UploadFileType.TD) {
+                switch (fileInfo.getIdxTag()) {
+                    case 0:
+                        mTDAdpter_1.refreshData();
+                        break;
+                    case 1:
+                        mTDAdpter_2.refreshData();
+                        break;
+                    case 2:
+                        mTDAdpter_3.refreshData();
+                        break;
+                    default:
+                        break;
+                }
+            } else if (fType == UploadFileType.REMARK) {
+                remarkImgsAdapter.refreshData();
+            } else if (fType == UploadFileType.SOUND) {
+                soundAdapter.refreshData();
+            } else {
 
+            }
+        }catch (Exception e)
+        {
+            String sss="s";
         }
     }
 

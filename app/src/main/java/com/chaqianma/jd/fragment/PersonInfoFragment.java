@@ -560,10 +560,10 @@ public class PersonInfoFragment extends BaseFragment {
             UploadFileInfo imgInfo = uploadImgInfoList.get(idx);
             fileType = UploadFileType.valueOf(imgInfo.getFileType());
             if (imgInfo.isDefault()) {
-                if (!mIsAuthSuccess) {
+                /*if (!mIsAuthSuccess) {
                     JDToast.showLongText(getActivity(), "未实名认证，不能上传图片");
                     return;
-                }
+                }*/
                 mPopup.showAtLocation(linear_container, Gravity.BOTTOM, 0, 0);
             } else {
                 mViewPagerPopup.setUploadImgList(uploadImgInfoList, idx);
@@ -682,10 +682,10 @@ public class PersonInfoFragment extends BaseFragment {
     * 保持数据
     * */
     public void saveDataSubmit() {
-        /*if (!mIsAuthSuccess) {
+        if (!mIsAuthSuccess) {
             JDToast.showLongText(getActivity(), "请进行实名认证");
             return;
-        }*/
+        }
         //身份证号
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         HashMap<String, Object> argMaps = new HashMap<String, Object>();

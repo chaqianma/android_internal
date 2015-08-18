@@ -33,9 +33,9 @@ public class RepaymentListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        //if (mRepaymentInfoList != null)
-        //    return mRepaymentInfoList.size();
-        return 10;
+        if (mRepaymentInfoList != null)
+            return mRepaymentInfoList.size();
+        return 0;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class RepaymentListAdapter extends BaseAdapter {
             viewHolder.tv_phone.setText(repaymentInfo.getUserMobile());
             viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
             viewHolder.tv_address.setText("");
-            //new GeoCoderUtil(viewHolder.tv_address, repaymentInfo.getUserWorkLocation());
+            new GeoCoderUtil(viewHolder.tv_address, repaymentInfo.getUserWorkLocation());
         }
         return convertView;
     }

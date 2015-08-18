@@ -587,7 +587,7 @@ public class SocialRelationFragment extends BaseFragment {
                 fileInfo.setParentTableName(Constants.APPLY_INFO);
                 parentId = mApplyInfoId;
             } else {
-                parentId=mParentId[fileInfo.getIdxTag()];
+                parentId = mParentId[fileInfo.getIdxTag()];
             }
             HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, parentId), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
                 @Override
@@ -759,8 +759,8 @@ public class SocialRelationFragment extends BaseFragment {
         boolean isSelctedSpouse = false;
         List<ContactInfo> contactInfoList = new ArrayList<ContactInfo>();
 
-        //if (!requiredInput())
-        //     return;
+        if (!requiredInput())
+            return;
 
         if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
             isSelctedSpouse = true;

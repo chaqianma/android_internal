@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/top"/>
+    <include layout="@layout/top" />
 
     <FrameLayout
         android:id="@+id/main_content"
@@ -13,10 +13,18 @@
         android:layout_height="0dp"
         android:layout_weight="1"></FrameLayout>
 
-    <fragment
-        android:id="@+id/bottom_fragment"
-        android:name="com.chaqianma.jd.fragment.BottomFragment"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/bottom" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="test"/>
+        <fragment
+            android:id="@+id/bottom_fragment"
+            android:name="com.chaqianma.jd.fragment.BottomFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/bottom" />
+    </RelativeLayout>
 </LinearLayout>

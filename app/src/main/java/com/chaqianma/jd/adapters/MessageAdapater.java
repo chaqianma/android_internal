@@ -78,7 +78,7 @@ public class MessageAdapater extends BaseAdapter {
             viewHolder.tv_repayment_money.setText(repaymentInfo.getMoney());
             viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
             viewHolder.tv_repayment_Detail.setOnClickListener(null);
-            //new GeoCoderUtil(viewHolder.tv_office_addr, repaymentInfo.getUserWorkLocation());
+            new GeoCoderUtil(viewHolder.tv_office_addr, repaymentInfo.getUserWorkLocation());
         } else {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.message_task_item, null);
             TextView tv_task_date = (TextView) convertView.findViewById(R.id.tv_task_date);
@@ -98,7 +98,7 @@ public class MessageAdapater extends BaseAdapter {
             tv_borrowMoney.setText(repaymentInfo.getBorrowMoney());
             tv_borrowDate.setText(repaymentInfo.getBorrowDate());
             tv_borrowUse.setText(repaymentInfo.getBorrowPurpose());
-            //new GeoCoderUtil(tv_task_addr, repaymentInfo.getUserWorkLocation());
+            new GeoCoderUtil(tv_task_addr, repaymentInfo.getUserWorkLocation());
         }
         return convertView;
     }

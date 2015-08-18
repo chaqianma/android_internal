@@ -75,8 +75,6 @@ public class RepaymentListFragment extends BaseFragment implements PullToRefresh
             if(mRepaymentListAdapter!=null)
                 mRepaymentListAdapter.notifyDataSetChanged();
         }
-        if(mRepaymentListAdapter!=null)
-            return;
         HttpClientUtil.get(HttpRequestURL.getRepaymentList,null,new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
