@@ -51,8 +51,8 @@ public class RepaymentListFragment extends BaseFragment implements PullToRefresh
     private void initView() {
         view_refresh.setOnHeaderRefreshListener(this);
         view_refresh.setOnFooterRefreshListener(this);
-        //view_refresh.onHeaderRefreshComplete();
-        //view_refresh.onFooterRefreshComplete();
+        view_refresh.onHeaderRefreshComplete();
+        view_refresh.onFooterRefreshComplete();
         view_refresh.setEnablePullLoadMoreDataStatus(false);
         view_refresh.setEnablePullTorefresh(true);
         list_repayment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
