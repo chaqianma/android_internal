@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.model.RepaymentInfo;
 import com.chaqianma.jd.utils.JDAppUtil;
@@ -27,8 +28,8 @@ public class MessageAdapater extends BaseAdapter {
 
     @Override
     public int getCount() {
-        //if (mRepaymentInfoList != null)
-        //    return mRepaymentInfoList.size();
+        if (mRepaymentInfoList != null)
+            return mRepaymentInfoList.size();
         return 10;
     }
 
@@ -46,7 +47,6 @@ public class MessageAdapater extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         //先不做复用
         ViewHolder viewHolder = null;
-        position=0;
         RepaymentInfo repaymentInfo = mRepaymentInfoList.get(position);
         // 0 新任务  1 催款
         if (repaymentInfo.getFlag() == 1) {

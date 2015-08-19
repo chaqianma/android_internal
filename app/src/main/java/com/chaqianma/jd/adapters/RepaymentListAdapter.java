@@ -28,9 +28,9 @@ public class RepaymentListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        //if (mRepaymentInfoList != null)
-        //    return mRepaymentInfoList.size();
-        return 10;
+        if (mRepaymentInfoList != null)
+            return mRepaymentInfoList.size();
+        return 0;
     }
 
     @Override
@@ -61,7 +61,6 @@ public class RepaymentListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         //赋值
-        position = 0;
         if (position < mRepaymentInfoList.size()) {
             RepaymentInfo repaymentInfo = mRepaymentInfoList.get(position);
             viewHolder.tv_id.setText(repaymentInfo.getInvestmentNo());
