@@ -6,14 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.model.RepaymentInfo;
-import com.chaqianma.jd.model.UrgeInfo;
-import com.chaqianma.jd.utils.GeoCoderUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -33,9 +28,9 @@ public class RepaymentListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (mRepaymentInfoList != null)
-            return mRepaymentInfoList.size();
-        return 0;
+        //if (mRepaymentInfoList != null)
+        //    return mRepaymentInfoList.size();
+        return 10;
     }
 
     @Override
@@ -76,7 +71,7 @@ public class RepaymentListAdapter extends BaseAdapter {
             viewHolder.tv_phone.setText(repaymentInfo.getUserMobile());
             viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
             viewHolder.tv_address.setText("");
-            new GeoCoderUtil(viewHolder.tv_address, repaymentInfo.getUserWorkLocation());
+            repaymentInfo.getStrWorkLocation(viewHolder.tv_address);
         }
         return convertView;
     }

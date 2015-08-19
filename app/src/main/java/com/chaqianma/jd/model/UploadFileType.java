@@ -16,7 +16,7 @@ package com.chaqianma.jd.model;
 public enum UploadFileType {
     NONE(0), CARD(1), SINGLE(2), MARRY(3),
     YY(4), SW(5), QYDM(6), QT(7), FC(8), TD(9),
-    SY(10), JY(11), CP(12), XS(13), REMARK(16), COMMENT(17), SOUND(80);
+    SY(10), JY(11), CP(12), XS(13),JZ(14),HZ(15), REMARK(16), COMMENT(17), SOUND(80);
     private int index;
 
     private UploadFileType(int index) {

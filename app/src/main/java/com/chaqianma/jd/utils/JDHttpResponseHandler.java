@@ -44,7 +44,8 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
     @Override
     public void onStart() {
         super.onStart();
-        JDProgress.show(context);
+        if (context != null)
+            JDProgress.show(context);
     }
 
     @Override
@@ -67,8 +68,8 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
             }
         }
         if (bytes != null && bytes.length > 0) {
-            Log.i("zxd:info",new String(bytes));
-            String sss=new String(bytes);
+            Log.i("zxd:info", new String(bytes));
+            String sss = new String(bytes);
             if (dataType == null)
                 handler.onSuccess(new String(bytes));
             else
@@ -87,13 +88,23 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
                 dataType = Class.forName(ErrorInfo.class.getName());
             ErrorInfo errorInfo = (ErrorInfo) JSON.parseObject(new String(bytes), dataType);
             if (errorInfo != null) {
-                JDToast.showShortText(context, errorInfo.getMessage());
+                if (errorInfo.getPath().indexOf("login") > -1 && errorInfo.getMessage().indexOf("Failed") > -1)
+                    showToast("用户名或密码错误");
+                else
+                    showToast(errorInfo.getMessage());
             }
         } catch (Exception e) {
-            JDToast.showShortText(context, "请求出错");
+            showToast("请求出错");
         }
-        JDProgress.dismiss();
+        if (context != null)
+            JDProgress.dismiss();
         if (bytes != null && bytes.length > 0)
             handler.onFailure(new String(bytes));
+    }
+
+    private void showToast(String msg) {
+        if (context != null) {
+            JDToast.showShortText(context, msg);
+        }
     }
 }

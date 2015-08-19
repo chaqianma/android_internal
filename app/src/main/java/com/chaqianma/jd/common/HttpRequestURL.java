@@ -6,10 +6,12 @@ package com.chaqianma.jd.common;
  */
 public class HttpRequestURL {
     //请求URL 192.168.199.112
-    //public static final String BASEURL = "http://192.168.199.223:8080/";  //8088
-    public static final String BASEURL="http://rest-staging.chaqianma.com/"; //http://staging.chaqianma.com/
+    public static final String BASEURL = "http://192.168.199.223:8080/";  //8088
+    //public static final String BASEURL="http://rest-staging.chaqianma.com/"; //http://staging.chaqianma.com/
     //登录 POST
     public static final String LoginUrl = "api/user/login";
+    //上传位置信息
+    public static final String uploadLocationUrl="api/user/location/update";
     //尽调申请(贷款)
     public static final String loanApplyUrl = "api/borrow/dealing";
     //修改密码

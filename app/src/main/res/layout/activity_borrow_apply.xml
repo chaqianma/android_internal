@@ -220,34 +220,52 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/btn_borrow"
-                style="@style/MatchParentButtonStyle"
-                android:text="开始尽调" />
+            <LinearLayout
+                android:id="@+id/layout_btn"
+                android:layout_width="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_transfer"
+                    style="@style/MatchParentButtonStyle"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="转出" />
+
+                <Button
+                    android:id="@+id/btn_borrow"
+                    style="@style/MatchParentButtonStyle"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:text="接入" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/btn_borrow">
+                android:layout_below="@id/layout_btn">
 
-                <TextView
-                    android:id="@+id/tv_begin_task"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/transfer_task"
-                    android:textColor="#0A57DB" />
+                <!--   <TextView
+                       android:id="@+id/tv_begin_task"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_centerInParent="true"
+                       android:layout_alignParentLeft="true"
+                       android:layout_marginRight="4dp"
+                       android:layout_marginTop="4dp"
+                       android:text="@string/transfer_task"
+                       android:textColor="#0A57DB" />-->
 
                 <TextView
                     android:id="@+id/tv_finish_task"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="4dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="6dp"
                     android:layout_marginTop="4dp"
                     android:text="@string/finish_task"
                     android:textColor="#0A57DB" />

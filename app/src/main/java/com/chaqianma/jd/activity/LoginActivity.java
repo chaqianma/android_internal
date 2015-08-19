@@ -28,7 +28,7 @@ import butterknife.OnClick;
 
 /**
  * Created by zhangxd on 2015/7/15.
- * 登陆
+ * 登录
  */
 public class LoginActivity extends BaseActivity {
     @InjectView(R.id.tv_username)
@@ -57,6 +57,14 @@ public class LoginActivity extends BaseActivity {
         if (username == null || username.length() <= 0) {
             JDToast.showLongText(LoginActivity.this, "用户名不能为空");
             return;
+        } else {
+            //手机号验证  只验证是否为数字 开头是1 并且11 位
+            if (username.matches("^[0-9]*$") && username.length() == 11 && username.charAt(0) == '1') {
+
+            } else {
+                JDToast.showLongText(LoginActivity.this,"用户名只能是手机号");
+                return;
+            }
         }
         if (password == null || password.length() <= 0) {
             JDToast.showLongText(LoginActivity.this, "密码不能为空");
@@ -97,7 +105,7 @@ public class LoginActivity extends BaseActivity {
     //查看是否有任务
     private void getBorrowRequest() {
         try {
-            HttpClientUtil.get(HttpRequestURL.loanApplyUrl,null,new JDHttpResponseHandler(LoginActivity.this, new ResponseHandler<BorrowRequestInfo>() {
+            HttpClientUtil.get(HttpRequestURL.loanApplyUrl, null, new JDHttpResponseHandler(LoginActivity.this, new ResponseHandler<BorrowRequestInfo>() {
                 @Override
                 public void onSuccess(BorrowRequestInfo borrowRequestInfo) {
                     if (borrowRequestInfo != null) {

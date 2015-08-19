@@ -17,8 +17,11 @@ import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.BorrowRequestInfo;
 import com.chaqianma.jd.model.RepaymentInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
+import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
+import com.chaqianma.jd.utils.SharedPreferencesUtil;
+import com.chaqianma.jd.widget.PullToRefreshView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +33,9 @@ import butterknife.InjectView;
 /**
  * Created by zhangxd on 2015/8/17.
  */
-public class MessageCenterFragment extends BaseFragment {
+public class MessageCenterFragment extends BaseFragment implements PullToRefreshView.OnHeaderRefreshListener, PullToRefreshView.OnFooterRefreshListener {
+    @InjectView(R.id.refreshView)
+    PullToRefreshView view_refresh;
     @InjectView(R.id.list_msgs)
     ListView list_msgs;
     private List<RepaymentInfo> mRepaymentList = null;
@@ -52,11 +57,14 @@ public class MessageCenterFragment extends BaseFragment {
     private void initData() {
         mRepaymentList = new ArrayList<RepaymentInfo>();
         messageAdapater = new MessageAdapater(getActivity(), mRepaymentList);
+        getMsgData();
+        view_refresh.setOnHeaderRefreshListener(this);
+        view_refresh.setOnFooterRefreshListener(this);
+        view_refresh.onHeaderRefreshComplete();
+        view_refresh.onFooterRefreshComplete();
+        view_refresh.setEnablePullLoadMoreDataStatus(false);
+        view_refresh.setEnablePullTorefresh(true);
         list_msgs.setAdapter(messageAdapater);
-        //获取任务信息
-        getBorrowRequest();
-        //获取催收信息
-        getRepaymentList();
         list_msgs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -76,6 +84,21 @@ public class MessageCenterFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    /*
+    * 获取消息中心数据
+    * */
+    private void getMsgData() {
+        if (mRepaymentList != null && mRepaymentList.size() > 0) {
+            mRepaymentList.clear();
+            if (messageAdapater != null)
+                messageAdapater.notifyDataSetChanged();
+        }
+        //获取任务信息
+        getBorrowRequest();
+        //获取催收信息
+        getRepaymentList();
     }
 
     /*
@@ -110,7 +133,10 @@ public class MessageCenterFragment extends BaseFragment {
    * */
     private void getRepaymentList() {
         HashMap<String, Object> argMaps = new HashMap<String, Object>();
-        argMaps.put("idList", "1,2,3");//SharedPreferencesUtil.getRepaymentId(.this);
+        String repaymentId = SharedPreferencesUtil.getRepaymentId(getActivity());
+        if (JDAppUtil.isEmpty(repaymentId))
+            return;
+        argMaps.put("idList", repaymentId);
         HttpClientUtil.get(HttpRequestURL.getNotifyRepaymentList, argMaps, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
@@ -119,6 +145,7 @@ public class MessageCenterFragment extends BaseFragment {
                     if (repaymentInfoList != null && repaymentInfoList.size() > 0) {
                         mRepaymentList.addAll(repaymentInfoList);
                         messageAdapater.notifyDataSetChanged();
+                        view_refresh.onHeaderRefreshComplete();
                     }
                 }
             }
@@ -141,6 +168,17 @@ public class MessageCenterFragment extends BaseFragment {
         //办公地址
         mRepaymentList.add(0, repaymentInfo);
         messageAdapater.notifyDataSetChanged();
+        view_refresh.onHeaderRefreshComplete();
+    }
+
+    @Override
+    public void onFooterRefresh(PullToRefreshView view) {
+        view_refresh.onFooterRefreshComplete();
+    }
+
+    @Override
+    public void onHeaderRefresh(PullToRefreshView view) {
+        getMsgData();
     }
 
     @Override

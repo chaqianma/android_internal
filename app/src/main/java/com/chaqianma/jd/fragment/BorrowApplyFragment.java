@@ -52,8 +52,8 @@ public class BorrowApplyFragment extends BaseFragment {
     TextView tv_address;
     @InjectView(R.id.tv_apply_time)
     TextView tv_apply_time;
-    @InjectView(R.id.tv_begin_task)
-    TextView tv_begin_task;
+    @InjectView(R.id.btn_transfer)
+    Button btn_transfer;
     @InjectView(R.id.tv_finish_task)
     TextView tv_finish_task;
     @InjectView(R.id.btn_borrow)
@@ -77,7 +77,9 @@ public class BorrowApplyFragment extends BaseFragment {
     void onViewMap(View v) {
         //latitude  longitude
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.LOCATION, mLocation);
+        if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
+            bundle.putString(Constants.LOCATION, mLocation.split(",")[1] + "," + mLocation.split(",")[0]);
+        }
         bundle.putString(Constants.BORROWNAME, tv_name.getText().toString());
         startActivity(BaiduMapActivity.class, bundle);
     }
@@ -139,13 +141,16 @@ public class BorrowApplyFragment extends BaseFragment {
             tv_purpose.setText(borrowRequestInfo.getBorrowPurpose());
             mLocation = borrowRequestInfo.getLocation();
             workLocation = borrowRequestInfo.getWorkLocation();
-            new GeoCoderUtil(tv_office, mLocation);
+            if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
+                new GeoCoderUtil(tv_office, mLocation.split(",")[1] + "," + mLocation.split(",")[0]);
+            }
             new GeoCoderUtil(tv_address, workLocation);
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
             if (borrowRequestInfo.getStatus().equals("1")) {
-                tv_begin_task.setVisibility(View.VISIBLE);
-                tv_begin_task.setOnClickListener(new View.OnClickListener() {
+                tv_finish_task.setVisibility(View.GONE);
+                btn_transfer.setVisibility(View.VISIBLE);
+                btn_transfer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         JDAlertDialog.showAlertDialog(getActivity(), "确定转出尽调任务？", new DialogInterface.OnClickListener() {
@@ -153,7 +158,7 @@ public class BorrowApplyFragment extends BaseFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 transformTask();
                             }
-                        }, new DialogInterface.OnClickListener() {
+                            }, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -163,7 +168,8 @@ public class BorrowApplyFragment extends BaseFragment {
                     }
                 });
             } else {
-                tv_begin_task.setVisibility(View.GONE);
+                tv_finish_task.setVisibility(View.VISIBLE);
+                btn_transfer.setVisibility(View.GONE);
             }
 
             /*
@@ -182,7 +188,10 @@ public class BorrowApplyFragment extends BaseFragment {
                                     AppData.getInstance().clearBorrowRequestData();
                                     AppData.getInstance().getUserInfo().setIsBusy("0");
                                     btn_borrow.setEnabled(false);
+                                    //去除本地保存的removePaymentId
+                                    //SharedPreferencesUtil.removePaymentId(getActivity());
                                     ((MainActivity) getActivity()).setShowFragment(0);
+                                    //删除本地文件
                                     FileUtil.deleteTempFile();
                                 }
                             }));
@@ -214,6 +223,9 @@ public class BorrowApplyFragment extends BaseFragment {
             @Override
             public void onSuccess(Object o) {
                 JDToast.showShortText(getActivity(), "任务转出成功");
+                AppData.getInstance().clearBorrowRequestData();
+                AppData.getInstance().getUserInfo().setIsBusy("0");
+                ((MainActivity) getActivity()).setShowFragment(0);
                 btn_borrow.setEnabled(false);
             }
         }));
@@ -231,11 +243,9 @@ public class BorrowApplyFragment extends BaseFragment {
                 HttpClientUtil.put(HttpRequestURL.beginCheckUrl, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
                     @Override
                     public void onSuccess(Object o) {
-                        //删除保存的请求ID值
-                        SharedPreferencesUtil.saveBorrowRequestId(getActivity(), AppData.getInstance().getBorrowRequestInfo().getBorrowRequestId());
                         startActivity(InvestigateDetailActivity.class);
                         isCanClickOnce = false;
-                        tv_begin_task.setVisibility(View.GONE);
+                        btn_transfer.setVisibility(View.GONE);
                         btn_borrow.setText("进入尽调");
                         isShouldRequest = false;
                     }

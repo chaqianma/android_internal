@@ -1,5 +1,6 @@
 package com.chaqianma.jd.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.MsgnotifyActivity;
 import com.chaqianma.jd.activity.NodisturbActivity;
 import com.chaqianma.jd.activity.UpdatePasswordActivity;
+import com.chaqianma.jd.widget.JDAlertDialog;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -21,11 +23,11 @@ import butterknife.InjectView;
  */
 public class SettingFragment extends BaseFragment {
     @InjectView(R.id.layout_msg_notify)
-    RelativeLayout tv_msg_notify;
+    RelativeLayout layout_msg_notify;
     @InjectView(R.id.layout_no_disturb)
-    RelativeLayout tv_no_disturb;
+    RelativeLayout layout_no_disturb;
     @InjectView(R.id.layout_update_password)
-    RelativeLayout tv_update_password;
+    RelativeLayout layout_update_password;
     @InjectView(R.id.btn_signout)
     Button btn_signout;
 
@@ -34,9 +36,9 @@ public class SettingFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.activity_setting, container, false);
         ButterKnife.inject(this, view);
         setTitle("设置", false);
-        tv_msg_notify.setOnClickListener(onClickListener);
-        tv_no_disturb.setOnClickListener(onClickListener);
-        tv_update_password.setOnClickListener(onClickListener);
+        layout_msg_notify.setOnClickListener(onClickListener);
+        layout_no_disturb.setOnClickListener(onClickListener);
+        layout_update_password.setOnClickListener(onClickListener);
         btn_signout.setOnClickListener(onClickListener);
         return view;
     }
@@ -59,7 +61,19 @@ public class SettingFragment extends BaseFragment {
                     startActivity(intent);
                     break;
                 case R.id.btn_signout:
-
+                    JDAlertDialog.showAlertDialog(getActivity(), "确定退出系统吗？", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            android.os.Process.killProcess(android.os.Process.myPid());   //获取PID
+                            System.exit(0);
+                        }
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            dialog.cancel();
+                        }
+                    });
                     break;
                 default:
                     break;

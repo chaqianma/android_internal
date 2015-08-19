@@ -1,18 +1,13 @@
 package com.chaqianma.jd.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.chaqianma.jd.R;
-import com.chaqianma.jd.activity.RepaymentDetailActivity;
 import com.chaqianma.jd.model.RepaymentInfo;
-import com.chaqianma.jd.model.UrgeInfo;
-import com.chaqianma.jd.utils.GeoCoderUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 
 import java.util.List;
@@ -32,9 +27,9 @@ public class MessageAdapater extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (mRepaymentInfoList != null)
-            return mRepaymentInfoList.size();
-        return 0;
+        //if (mRepaymentInfoList != null)
+        //    return mRepaymentInfoList.size();
+        return 10;
     }
 
     @Override
@@ -51,11 +46,12 @@ public class MessageAdapater extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         //先不做复用
         ViewHolder viewHolder = null;
+        position=0;
         RepaymentInfo repaymentInfo = mRepaymentInfoList.get(position);
         // 0 新任务  1 催款
         if (repaymentInfo.getFlag() == 1) {
             if (convertView == null || convertView.getTag() == null) {
-                viewHolder=new ViewHolder();
+                viewHolder = new ViewHolder();
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.message_repayment_item, null);
                 viewHolder.tv_come_date = (TextView) convertView.findViewById(R.id.tv_come_date);
                 viewHolder.tv_repayment_id = (TextView) convertView.findViewById(R.id.tv_repayment_id);
@@ -68,7 +64,7 @@ public class MessageAdapater extends BaseAdapter {
                 viewHolder.tv_repayment_Detail = (TextView) convertView.findViewById(R.id.tv_repayment_Detail);
                 convertView.setTag(viewHolder);
             } else {
-                viewHolder = (ViewHolder)convertView.getTag();
+                viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.tv_come_date.setText("");
             viewHolder.tv_repayment_id.setText(repaymentInfo.getInvestmentNo());
@@ -78,7 +74,7 @@ public class MessageAdapater extends BaseAdapter {
             viewHolder.tv_repayment_money.setText(repaymentInfo.getMoney());
             viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
             viewHolder.tv_repayment_Detail.setOnClickListener(null);
-            new GeoCoderUtil(viewHolder.tv_office_addr, repaymentInfo.getUserWorkLocation());
+            repaymentInfo.getStrWorkLocation(viewHolder.tv_office_addr);
         } else {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.message_task_item, null);
             TextView tv_task_date = (TextView) convertView.findViewById(R.id.tv_task_date);
@@ -98,7 +94,7 @@ public class MessageAdapater extends BaseAdapter {
             tv_borrowMoney.setText(repaymentInfo.getBorrowMoney());
             tv_borrowDate.setText(repaymentInfo.getBorrowDate());
             tv_borrowUse.setText(repaymentInfo.getBorrowPurpose());
-            new GeoCoderUtil(tv_task_addr, repaymentInfo.getUserWorkLocation());
+            repaymentInfo.getStrWorkLocation(tv_task_addr);
         }
         return convertView;
     }

@@ -8,6 +8,7 @@ import android.os.Vibrator;
 
 import com.chaqianma.jd.activity.LoginActivity;
 import com.chaqianma.jd.activity.MainActivity;
+import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
 
@@ -32,26 +33,29 @@ public class JPNotificationReceiver extends BroadcastReceiver {
                 String msgType = intent.getStringExtra("messageType");
                 if (msgType.equals("1")) {
 
-                } else if (msgType.equals("5")) {
-
-                } else if (msgType.equals("6")) {
-                    SharedPreferencesUtil.addRepaymentId(mContext,intent.getStringExtra("id"));
+                } else if (msgType.equals("5") || (msgType.equals("6"))) {
+                    SharedPreferencesUtil.addRepaymentId(mContext, intent.getStringExtra("repaymentId"));
                 } else {
 
                 }
             }
-            SharedPreferencesUtil.saveBorrowRequestId(context, "");
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             if (intent.hasExtra("messageType")) {
                 String msgType = intent.getStringExtra("messageType");
-                if (msgType.equals("2")) {
-
+                if (msgType.equals("1")) {
+                    if (AppData.getInstance().getUserInfo() == null) {
+                        Intent startIntent = new Intent();
+                        startIntent.setClass(context, LoginActivity.class);
+                        startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(startIntent);
+                    } else {
+                        Intent startIntent = new Intent();
+                        startIntent.setClass(context, MainActivity.class);
+                        startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(startIntent);
+                    }
                 }
             }
-            Intent startIntent = new Intent();
-            startIntent.setClass(context, LoginActivity.class);
-            startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(startIntent);
         } else {
         }
     }

@@ -243,14 +243,9 @@ public class RepaymentInfo extends ErrorInfo {
 
     public void getStrWorkLocation(final TextView tv) {
         if (strWorkLocation != null) {
-
+            tv.setText(strWorkLocation);
         } else {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    new GeoCoderUtil(tv, getUserWorkLocation());
-                }
-            }).start();
+            new GeoCoderUtil(tv,this);
         }
     }
 

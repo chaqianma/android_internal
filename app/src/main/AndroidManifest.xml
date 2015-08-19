@@ -199,6 +199,7 @@
             </intent-filter>
         </service>
 
+        <!--上传位置Service-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="59PhG8zA0MLPeU5DBH7KrbAL" />

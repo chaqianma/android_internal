@@ -131,6 +131,10 @@ public class PersonInfoFragment extends BaseFragment {
     GridView gv_mark;
     @InjectView(R.id.btn_name_auth)
     Button btn_name_auth;
+    @InjectView(R.id.gv_driving)
+    GridView gv_driving;
+    @InjectView(R.id.gv_passport)
+    GridView gv_passport;
     //刷新GridView 身份证
     private static final int CARD = 1003;
     //刷新GridView 结婚证/离婚证
@@ -143,6 +147,10 @@ public class PersonInfoFragment extends BaseFragment {
     private static final int REMARK = 1007;
     //身份证数据源
     private ImgsGridViewAdapter cardImgsAdapter = null;
+    //驾照
+    private ImgsGridViewAdapter driveImgsAdapter = null;
+    //护照
+    private ImgsGridViewAdapter passportImgsAdapter = null;
     //结婚证
     private ImgsGridViewAdapter marryImgsAdapter = null;
     //离婚证
@@ -153,6 +161,10 @@ public class PersonInfoFragment extends BaseFragment {
     private ImgsGridViewAdapter remarkImgsAdapter = null;
     //身份证图片集合
     private List<UploadFileInfo> cardUploadImgInfoList = null;
+    //护照
+    private List<UploadFileInfo> passportUploadImgInfoList = null;
+    //驾照
+    private List<UploadFileInfo> driveUploadImgInfoList = null;
     //结婚证
     private List<UploadFileInfo> marryUploadImgInfoList = null;
     //离婚证
@@ -266,6 +278,8 @@ public class PersonInfoFragment extends BaseFragment {
         soundInfoList = new ArrayList<UploadFileInfo>();
         remarkUploadImgInfoList = new ArrayList<UploadFileInfo>();
         divorceUploadImgInfoList = new ArrayList<UploadFileInfo>();
+        driveUploadImgInfoList=new ArrayList<UploadFileInfo>();
+        passportUploadImgInfoList=new ArrayList<UploadFileInfo>();
     }
 
     /*
@@ -282,6 +296,30 @@ public class PersonInfoFragment extends BaseFragment {
             cardImgsAdapter = new ImgsGridViewAdapter(getActivity(), cardUploadImgInfoList);
             cardImgsAdapter.setOnClickImgListener(this);
             gv_card_imgs.setAdapter(cardImgsAdapter);
+        }
+
+        {
+            //护照
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setIsDefault(true);
+            imgInfo.setiServer(false);
+            imgInfo.setFileType(UploadFileType.HZ.getValue());
+            passportUploadImgInfoList.add(imgInfo);
+            passportImgsAdapter = new ImgsGridViewAdapter(getActivity(), passportUploadImgInfoList);
+            passportImgsAdapter.setOnClickImgListener(this);
+            gv_passport.setAdapter(passportImgsAdapter);
+        }
+
+        {
+            //驾照
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setIsDefault(true);
+            imgInfo.setiServer(false);
+            imgInfo.setFileType(UploadFileType.JZ.getValue());
+            driveUploadImgInfoList.add(imgInfo);
+            driveImgsAdapter = new ImgsGridViewAdapter(getActivity(), driveUploadImgInfoList);
+            driveImgsAdapter.setOnClickImgListener(this);
+            gv_driving.setAdapter(driveImgsAdapter);
         }
 
         {
@@ -427,7 +465,7 @@ public class PersonInfoFragment extends BaseFragment {
                                         }
                                     });
                                     //初始化服务端图片
-                                   // initServerFile(customerBaseInfo.getFileList());
+                                    // initServerFile(customerBaseInfo.getFileList());
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -647,6 +685,14 @@ public class PersonInfoFragment extends BaseFragment {
         } else if (fType == UploadFileType.REMARK) {
             remarkUploadImgInfoList.add(0, imgInfo);
             remarkImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.JZ) {
+            //驾照
+            driveUploadImgInfoList.add(0,imgInfo);
+            driveImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.HZ) {
+            //护照
+            passportUploadImgInfoList.add(0,imgInfo);
+            passportImgsAdapter.refreshData();
         } else {
 
         }
@@ -702,6 +748,12 @@ public class PersonInfoFragment extends BaseFragment {
             formparams.add(new BasicNameValuePair("name", name));
         } else {
             JDToast.showLongText(getActivity(), "请输入姓名");
+            return;
+        }
+        //身份证
+        if(!isUploadSuccess(cardUploadImgInfoList))
+        {
+            JDToast.showLongText(getActivity(),"请上传身份证图片");
             return;
         }
         //手机号

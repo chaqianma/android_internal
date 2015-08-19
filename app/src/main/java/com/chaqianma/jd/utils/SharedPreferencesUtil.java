@@ -64,21 +64,6 @@ public class SharedPreferencesUtil {
     }
 
     /*
-    * 保存请求ID
-    * */
-    public static void saveBorrowRequestId(Context context, String borrowRequestId) {
-        setShareString(context, Constants.BORROWREQUESTIDTAG, borrowRequestId);
-    }
-
-    /*
-    * 删除请求ID
-    * */
-    public static void removeBorrowRequestId(Context context) {
-        removeValue(context, Constants.BORROWREQUESTIDTAG);
-    }
-
-
-    /*
     * 删除对应的Key值
     * */
     public static void removeValue(Context context, String strKey) {

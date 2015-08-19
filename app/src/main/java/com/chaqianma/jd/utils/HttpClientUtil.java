@@ -64,6 +64,7 @@ public class HttpClientUtil {
     }
 
 
+
     public static void put(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
         //Content-Type: "application/x-www-form-urlencoded; charset=UTF-8"
         if (argMaps != null && argMaps.size() > 0)

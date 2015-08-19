@@ -14,6 +14,7 @@ import com.chaqianma.jd.fragment.MessageCenterFragment;
 import com.chaqianma.jd.fragment.RepaymentListFragment;
 import com.chaqianma.jd.fragment.SettingFragment;
 import com.chaqianma.jd.fragment.StaffStateFragment;
+import com.chaqianma.jd.utils.LocationUtil;
 import com.chaqianma.jd.widget.JDToast;
 
 import java.util.Timer;
@@ -50,6 +51,8 @@ public class MainActivity extends FragmentActivity implements BottomFragment.ICh
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         // initFragment();
+        new LocationUtil(MainActivity.this,null);
+        //new UploadLocationService(MainActivity.this).onStart();
         onItemSelected(R.id.radio_main);
     }
 
@@ -98,7 +101,6 @@ public class MainActivity extends FragmentActivity implements BottomFragment.ICh
         }
         fragmentTransaction.commit();
     }
-
 
     public void setShowFragment(int idxTag) {
         switch (idxTag) {

@@ -11,22 +11,34 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.chaqianma.jd.model.RepaymentInfo;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
 /**
  * Created by zhangxd on 2015/8/12.
- *
+ * <p/>
  * 通过经纬度获取具体地址
  */
 public class GeoCoderUtil {
 
     private TextView tvAddress;
-    private String mLocation=null;
-    private Context mContext=null;
-    public GeoCoderUtil(TextView tvAddress,String location) {
+    private String mLocation = null;
+    private RepaymentInfo mRepaymentInfo = null;
+    private Context mContext = null;
+
+    public GeoCoderUtil(TextView tvAddress, String location) {
         this.tvAddress = tvAddress;
-        this.mLocation=location;
+        this.mLocation = location;
+        getAddress();
+    }
+
+    public GeoCoderUtil(TextView tvAddress, RepaymentInfo repaymentInfo) {
+        this.tvAddress = tvAddress;
+        this.mLocation = repaymentInfo.getUserWorkLocation();
+        this.mRepaymentInfo = repaymentInfo;
         getAddress();
     }
 
@@ -34,7 +46,7 @@ public class GeoCoderUtil {
         if (mLocation != null && mLocation.length() > 0 && mLocation.indexOf(",") >= 0) {
             try {
                 String[] arrs = mLocation.split(",");
-                //经度 纬度
+                //纬度  经度
                 LatLng latLng = new LatLng(Double.parseDouble(arrs[1]), Double.parseDouble(arrs[0]));
                 GeoCoder geoCoder = GeoCoder.newInstance();
                 OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
@@ -45,12 +57,15 @@ public class GeoCoderUtil {
                                 || result.error != SearchResult.ERRORNO.NO_ERROR) {
                             // 没有检测到结果
                         }
+                        if (mRepaymentInfo != null)
+                            mRepaymentInfo.setStrWorkLocation(result.getAddress());
                         tvAddress.setText(result.getAddress());
                     }
+
                     // 地理编码查询结果回调函数
                     @Override
                     public void onGetGeoCodeResult(GeoCodeResult result) {
-                        if (result == null|| result.error != SearchResult.ERRORNO.NO_ERROR) {
+                        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
                             // 没有检测到结果
                         }
                     }
