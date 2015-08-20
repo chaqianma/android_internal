@@ -19,6 +19,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.chaqianma.jd.R;
@@ -54,11 +55,11 @@ public class BaiduMapActivity extends BaseActivity {
             borrowName = bundle.getString(Constants.BORROWNAME);
             if (location != null && location.length() > 0 && location.indexOf(",") >= 0) {
                 try {
-                    String[] arrs = location.split(",");
+                    String [] arrs=location.split(",");
                     //经度
-                    mLongitude = Double.parseDouble(arrs[0]);
-                    //纬度
                     mLatitude = Double.parseDouble(arrs[1]);
+                    //纬度
+                    mLongitude = Double.parseDouble(arrs[0]);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -73,6 +74,8 @@ public class BaiduMapActivity extends BaseActivity {
         mBaiduMap = mMapView.getMap();
         mBaiduMap.setMyLocationEnabled(true);
         mIconMaker = BitmapDescriptorFactory.fromResource(R.mipmap.maker);
+        //mLocationUtil = new LocationUtil(BaiduMapActivity.this, mHandler, "bd09ll");
+        //mLocationUtil.run();
     }
 
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -95,14 +98,14 @@ public class BaiduMapActivity extends BaseActivity {
     public void addOverlay() {
         mBaiduMap.clear();
         // 位置
-        LatLng latLng = new LatLng(mLatitude, mLongitude);
+        LatLng  latLng = new LatLng(mLatitude,mLongitude);
         //LatLng latLng = new LatLng(32.142425, 118.996925);
         // 图标
         OverlayOptions overlayOptions = new MarkerOptions().position(latLng)
                 .icon(mIconMaker).zIndex(5);
         Marker marker = (Marker) (mBaiduMap.addOverlay(overlayOptions));
         Bundle bundle = new Bundle();
-        bundle.putSerializable("info", borrowName);
+        bundle.putSerializable("info",borrowName);
         marker.setExtraInfo(bundle);
         // 将地图移到到最后一个经纬度位置
         MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(latLng);
@@ -120,7 +123,7 @@ public class BaiduMapActivity extends BaseActivity {
                 .icon(mIconMaker).zIndex(5);
         Marker marker = (Marker) (mBaiduMap.addOverlay(overlayOptions));
         Bundle bundle = new Bundle();
-        bundle.putSerializable("info", borrowName);
+        bundle.putSerializable("info",borrowName);
         marker.setExtraInfo(bundle);
         // 将地图移到到最后一个经纬度位置
         MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(latLng);

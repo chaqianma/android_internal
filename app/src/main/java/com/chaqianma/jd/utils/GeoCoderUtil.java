@@ -4,7 +4,6 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
@@ -13,9 +12,6 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.chaqianma.jd.model.RepaymentInfo;
 
-import org.w3c.dom.Text;
-
-import java.util.List;
 
 /**
  * Created by zhangxd on 2015/8/12.

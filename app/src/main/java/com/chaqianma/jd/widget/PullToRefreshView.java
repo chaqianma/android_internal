@@ -472,7 +472,7 @@ public class PullToRefreshView extends LinearLayout implements ScrollViewExtend.
         int newTopMargin = changingHeaderViewTopMargin(deltaY);
         // 当header view的topMargin>=0时，说明已经完全显示出来了,修改header view 的提示状态
         if (newTopMargin >= 0 && mHeaderState != RELEASE_TO_REFRESH) {
-            mHeaderTextView.setText(" ");
+            mHeaderTextView.setText("该放手了，我要刷新啦...");
             mHeaderUpdateTextView.setVisibility(View.VISIBLE);
             mHeaderImageView.clearAnimation();
             mHeaderImageView.startAnimation(mFlipAnimation);

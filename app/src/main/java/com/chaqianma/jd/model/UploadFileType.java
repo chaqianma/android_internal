@@ -71,6 +71,12 @@ public enum UploadFileType {
             case 13:
                 fileType = UploadFileType.XS;
                 break;
+            case 14:
+                fileType = UploadFileType.JZ;
+                break;
+            case 15:
+                fileType = UploadFileType.HZ;
+                break;
             case 16:
                 fileType = UploadFileType.REMARK;
                 break;

@@ -4,14 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Vibrator;
-
 import com.chaqianma.jd.activity.LoginActivity;
 import com.chaqianma.jd.activity.MainActivity;
 import com.chaqianma.jd.common.AppData;
-import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
-
 import cn.jpush.android.api.JPushInterface;
 
 /**

@@ -42,7 +42,8 @@
 
                 <TextView
                     android:id="@+id/tv_borrowName"
-                    style="@style/SmallTextStyle" />
+                    style="@style/SmallTextStyle"
+                    android:text="刘*明" />
             </LinearLayout>
 
             <LinearLayout
@@ -57,7 +58,8 @@
 
                 <TextView
                     android:id="@+id/tv_money"
-                    style="@style/SmallTextStyle" />
+                    style="@style/SmallTextStyle"
+                    android:text="刘*明" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -74,7 +76,8 @@
 
                 <TextView
                     android:id="@+id/tv_phone"
-                    style="@style/SmallTextStyle"/>
+                    style="@style/SmallTextStyle"
+                    android:text="刘*明" />
             </LinearLayout>
 
             <LinearLayout
@@ -89,7 +92,8 @@
 
                 <TextView
                     android:id="@+id/tv_repayment_date"
-                    style="@style/SmallTextStyle" />
+                    style="@style/SmallTextStyle"
+                    android:text="刘*明" />
             </LinearLayout>
         </RelativeLayout>
 

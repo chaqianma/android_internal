@@ -17,6 +17,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -278,8 +279,8 @@ public class PersonInfoFragment extends BaseFragment {
         soundInfoList = new ArrayList<UploadFileInfo>();
         remarkUploadImgInfoList = new ArrayList<UploadFileInfo>();
         divorceUploadImgInfoList = new ArrayList<UploadFileInfo>();
-        driveUploadImgInfoList=new ArrayList<UploadFileInfo>();
-        passportUploadImgInfoList=new ArrayList<UploadFileInfo>();
+        driveUploadImgInfoList = new ArrayList<UploadFileInfo>();
+        passportUploadImgInfoList = new ArrayList<UploadFileInfo>();
     }
 
     /*
@@ -405,73 +406,67 @@ public class PersonInfoFragment extends BaseFragment {
             HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler<CustomerBaseInfo>() {
                 @Override
                 public void onSuccess(final CustomerBaseInfo customerBaseInfo) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                if (customerBaseInfo != null) {
-                                    mParentId = customerBaseInfo.getId();
-                                    soundAdapter.setParentId(mParentId);
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            et_card_id.setText(customerBaseInfo.getIdCardNumber());
-                                            et_name.setText(customerBaseInfo.getName());
-                                            et_mobile.setText(customerBaseInfo.getMobile());
-                                            if (customerBaseInfo.getGender() != null) {
-                                                if (customerBaseInfo.getGender().equals("1"))
-                                                    radio_man.setChecked(true);
-                                                else
-                                                    radio_woman.setChecked(true);
-                                            }
-                                            //已婚，离异
-                                            if (customerBaseInfo.getMaritalStatus() != null) {
-                                                String marital_status = customerBaseInfo.getMaritalStatus();
-                                                if (marital_status.equals("1")) {
-                                                    radio_single.setChecked(true);
-                                                    setLayoutMarryVisible(1);
-                                                } else if (marital_status.equals("2")) {
-                                                    radio_married.setChecked(true);
-                                                    setLayoutMarryVisible(2);
-                                                    et_children_count.setText(customerBaseInfo.getCountChildren());
-                                                } else {
-                                                    radio_divorce.setChecked(true);
-                                                    setLayoutMarryVisible(3);
-                                                    et_children_count.setText(customerBaseInfo.getCountChildren());
-                                                }
-                                            }
-                                            //户口 本地  外地 household_type
-
-                                            if (customerBaseInfo.getHouseholdType() != null) {
-                                                if (customerBaseInfo.getHouseholdType().equals("1")) {
-                                                    layout_come_date.setVisibility(View.GONE);
-                                                    radio_native.setChecked(true);
-                                                } else {
-                                                    layout_come_date.setVisibility(View.VISIBLE);
-                                                    radio_nonlocal.setChecked(true);
-                                                    //来本地日期
-                                                    tv_come_date.setText(JDAppUtil.getTimeYMD(customerBaseInfo.getComeLocalTime()));
-                                                }
-                                            }
-                                            //是否是农业户口
-                                            if (customerBaseInfo.getIsAgriculturalHousehold() != null) {
-                                                if (customerBaseInfo.getIsAgriculturalHousehold().equals("1"))
-                                                    radio_yes.setChecked(true);
-                                                else
-                                                    radio_no.setChecked(true);
-                                            }
-                                            //备注
-                                            et_remark.setText(customerBaseInfo.getRemark());
-                                        }
-                                    });
-                                    //初始化服务端图片
-                                    // initServerFile(customerBaseInfo.getFileList());
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                    try {
+                        if (customerBaseInfo != null) {
+                            mParentId = customerBaseInfo.getId();
+                            soundAdapter.setParentId(mParentId);
+                            et_card_id.setText(customerBaseInfo.getIdCardNumber());
+                            et_name.setText(customerBaseInfo.getName());
+                            if(!JDAppUtil.isEmpty(customerBaseInfo.getIdCardNumber()))
+                                btn_name_auth.setEnabled(false);
+                            et_mobile.setText(customerBaseInfo.getMobile());
+                            if (customerBaseInfo.getGender() != null) {
+                                if (customerBaseInfo.getGender().equals("1"))
+                                    radio_man.setChecked(true);
+                                else
+                                    radio_woman.setChecked(true);
                             }
+                            //已婚，离异
+                            if (customerBaseInfo.getMaritalStatus() != null) {
+                                String marital_status = customerBaseInfo.getMaritalStatus();
+                                if (marital_status.equals("1")) {
+                                    radio_single.setChecked(true);
+                                    setLayoutMarryVisible(1);
+                                } else if (marital_status.equals("2")) {
+                                    radio_married.setChecked(true);
+                                    setLayoutMarryVisible(2);
+                                    et_children_count.setText(customerBaseInfo.getCountChildren());
+                                } else {
+                                    radio_divorce.setChecked(true);
+                                    setLayoutMarryVisible(3);
+                                    et_children_count.setText(customerBaseInfo.getCountChildren());
+                                }
+                            }
+                            //户口 本地  外地 household_type
+
+                            if (customerBaseInfo.getHouseholdType() != null) {
+                                if (customerBaseInfo.getHouseholdType().equals("1")) {
+                                    layout_come_date.setVisibility(View.GONE);
+                                    radio_native.setChecked(true);
+                                } else {
+                                    layout_come_date.setVisibility(View.VISIBLE);
+                                    radio_nonlocal.setChecked(true);
+                                    //来本地日期
+                                    tv_come_date.setText(JDAppUtil.getTimeYMD(customerBaseInfo.getComeLocalTime()));
+                                }
+                            }
+                            //是否是农业户口
+                            if (customerBaseInfo.getIsAgriculturalHousehold() != null) {
+                                if (customerBaseInfo.getIsAgriculturalHousehold().equals("1"))
+                                    radio_yes.setChecked(true);
+                                else
+                                    radio_no.setChecked(true);
+                            }
+                            //备注
+                            et_remark.setText(customerBaseInfo.getRemark());
+
+                            //初始化服务端图片
+                            initServerFile(customerBaseInfo.getFileList());
                         }
-                    }).start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }, Class.forName(CustomerBaseInfo.class.getName())));
         } catch (Exception e) {
@@ -518,7 +513,7 @@ public class PersonInfoFragment extends BaseFragment {
      */
     private void initServerFile(List<UploadFileInfo> fileInfoList) {
         if (fileInfoList != null && fileInfoList.size() > 0) {
-            for (final UploadFileInfo uploadFileInfo : fileInfoList) {
+            for (UploadFileInfo uploadFileInfo : fileInfoList) {
                 uploadFileInfo.setiServer(true);
                 uploadFileInfo.setIsDefault(false);
                 uploadFileInfo.setBorrowRequestId(getBorrowRequestId());
@@ -530,33 +525,28 @@ public class PersonInfoFragment extends BaseFragment {
     /*
     * 得到服务器文件
     * */
-    private void getServerFile(final UploadFileInfo fileInfo) {
+    private void getServerFile(UploadFileInfo fileInfo) {
         String filePath = getSaveFilePath(fileInfo);
         fileInfo.setBigImgPath(filePath);
-        getActivity().runOnUiThread(new Runnable() {
+        HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
             @Override
-            public void run() {
-                HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
-                    @Override
-                    public void onSuccess(UploadFileInfo uploadFileInfo) {
-                        uploadFileInfo.setiServer(true);
-                        uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
-                        String fileExt = uploadFileInfo.getFileExt();
-                        if (fileExt.equals("amr")) {
-                            uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
-                        }
-                        addGridViewData(uploadFileInfo);
-                    }
-
-                    @Override
-                    public void onFailure(UploadFileInfo uploadFileInfo) {
-                        super.onFailure(uploadFileInfo);
-                        uploadFileInfo.setiServer(false);
-                        uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
-                    }
-                }));
+            public void onSuccess(UploadFileInfo uploadFileInfo) {
+                uploadFileInfo.setiServer(true);
+                uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
+                String fileExt = uploadFileInfo.getFileExt();
+                if (fileExt.equals("amr")) {
+                    uploadFileInfo.setFileType(UploadFileType.SOUND.getValue());
+                }
+                addGridViewData(uploadFileInfo);
             }
-        });
+
+            @Override
+            public void onFailure(UploadFileInfo uploadFileInfo) {
+                super.onFailure(uploadFileInfo);
+                uploadFileInfo.setiServer(false);
+                uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+            }
+        }));
     }
 
     public static PersonInfoFragment newInstance() {
@@ -598,7 +588,7 @@ public class PersonInfoFragment extends BaseFragment {
             UploadFileInfo imgInfo = uploadImgInfoList.get(idx);
             fileType = UploadFileType.valueOf(imgInfo.getFileType());
             if (imgInfo.isDefault()) {
-                /*if (!mIsAuthSuccess) {
+               /* if (!mIsAuthSuccess) {
                     JDToast.showLongText(getActivity(), "未实名认证，不能上传图片");
                     return;
                 }*/
@@ -687,11 +677,11 @@ public class PersonInfoFragment extends BaseFragment {
             remarkImgsAdapter.refreshData();
         } else if (fType == UploadFileType.JZ) {
             //驾照
-            driveUploadImgInfoList.add(0,imgInfo);
+            driveUploadImgInfoList.add(0, imgInfo);
             driveImgsAdapter.refreshData();
         } else if (fType == UploadFileType.HZ) {
             //护照
-            passportUploadImgInfoList.add(0,imgInfo);
+            passportUploadImgInfoList.add(0, imgInfo);
             passportImgsAdapter.refreshData();
         } else {
 
@@ -751,14 +741,14 @@ public class PersonInfoFragment extends BaseFragment {
             return;
         }
         //身份证
-        if(!isUploadSuccess(cardUploadImgInfoList))
-        {
-            JDToast.showLongText(getActivity(),"请上传身份证图片");
+        if (!isUploadSuccess(cardUploadImgInfoList)) {
+            JDToast.showLongText(getActivity(), "请上传身份证图片");
             return;
         }
         //手机号
         String mobile = et_mobile.getText().toString();
         char c = mobile.charAt(0);
+        boolean ss = c == '1';
         if (!JDAppUtil.isEmpty(mobile) && mobile.length() == 11 && mobile.charAt(0) == '1') {
             formparams.add(new BasicNameValuePair("mobile", mobile));
         } else {
@@ -837,6 +827,10 @@ public class PersonInfoFragment extends BaseFragment {
             divorceImgsAdapter.refreshData();
         } else if (fType == UploadFileType.REMARK) {
             remarkImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.HZ) {
+            passportImgsAdapter.refreshData();
+        } else if (fType == UploadFileType.JZ) {
+            driveImgsAdapter.refreshData();
         } else {
 
         }

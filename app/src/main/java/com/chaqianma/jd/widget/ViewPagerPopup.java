@@ -15,7 +15,6 @@ import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
-import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 
@@ -94,16 +93,12 @@ public class ViewPagerPopup extends PopupWindow implements View.OnClickListener 
     * */
     private void deleteFile(UploadFileInfo fileInfo) {
         try {
-            if (!JDAppUtil.isEmpty(fileInfo.getBigImgPath())) {
-                File bigfile = new File(fileInfo.getBigImgPath());
-                if (bigfile.exists())
-                    bigfile.delete();
-            }
-            if (!JDAppUtil.isEmpty(fileInfo.getSmallImgPath())) {
-                File smallfile = new File(fileInfo.getSmallImgPath());
-                if (smallfile.exists())
-                    smallfile.delete();
-            }
+            File bigfile = new File(fileInfo.getBigImgPath());
+            if (bigfile.exists())
+                bigfile.delete();
+            File smallfile = new File(fileInfo.getSmallImgPath());
+            if (smallfile.exists())
+                smallfile.delete();
         } catch (Exception e) {
 
         }

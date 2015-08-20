@@ -27,9 +27,9 @@
             android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/icon_account"
             android:inputType="phone"
-            android:hint="请输入尽调帐号"
-            android:drawableLeft="@mipmap/icon_account" />
+            android:maxLength="11"/>
     </LinearLayout>
 
     <LinearLayout
@@ -49,8 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/icon_password"
-            android:hint="请输入登录密码"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:maxLength="16"/>
     </LinearLayout>
 
     <CheckBox

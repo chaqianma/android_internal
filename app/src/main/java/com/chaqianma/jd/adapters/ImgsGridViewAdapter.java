@@ -2,13 +2,10 @@ package com.chaqianma.jd.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +26,8 @@ import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -57,7 +50,7 @@ public class ImgsGridViewAdapter extends BaseAdapter {
             .showImageOnLoading(R.drawable.icon_img_add)            //加载图片时的图片
                     //.showImageForEmptyUri(R.drawable.ic_empty)         //没有图片资源时的默认图片
                     //.showImageOnFail(R.drawable.ic_error)              //加载失败时的图片
-            .cacheInMemory(false)                               //启用内存缓存
+            .cacheInMemory(false)                                        //启用内存缓存
             .cacheOnDisk(false)                                 //启用外存缓存
             .considerExifParams(true)                          //启用EXIF和JPEG图像格式
                     //.displayer(new RoundedBitmapDisplayer(20))         //设置显示风格这里是圆角矩形
@@ -69,11 +62,6 @@ public class ImgsGridViewAdapter extends BaseAdapter {
 
     public ImgsGridViewAdapter(Context context, List<UploadFileInfo> uploadImgInfoList) {
         this.mContext = context;
-        this.mUploadImgInfoList = uploadImgInfoList;
-    }
-
-    //设置数据源
-    public void setUploadImgInfoList(List<UploadFileInfo> uploadImgInfoList) {
         this.mUploadImgInfoList = uploadImgInfoList;
     }
 
@@ -142,18 +130,12 @@ public class ImgsGridViewAdapter extends BaseAdapter {
             } else {
                 holderView = (HolderView) convertView.getTag();
             }
-            //暂时不复用View
-            //holderView = new HolderView();
-            //convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_img_item, null);
-            //holderView.imageView = (ImageView) convertView.findViewById(R.id.img_main);
-            //holderView.img_fail = (ImageView) convertView.findViewById(R.id.img_fail);
-            //holderView.img_success = (ImageView) convertView.findViewById(R.id.img_success);
-            try{
-                final UploadFileInfo imgInfo = mUploadImgInfoList.get(position);
+            try {
+                UploadFileInfo uploadFileInfo = mUploadImgInfoList.get(position);
                 holderView.img_fail.setVisibility(View.GONE);
                 holderView.img_success.setVisibility(View.GONE);
-                if (!imgInfo.isDefault()) {
-                    if (imgInfo.getStatus() == UploadStatus.SUCCESS.getValue()) {
+                if (!uploadFileInfo.isDefault()) {
+                    if (uploadFileInfo.getStatus() == UploadStatus.SUCCESS.getValue()) {
                         holderView.img_fail.setVisibility(View.GONE);
                         holderView.img_success.setVisibility(View.VISIBLE);
                     } else {
@@ -161,24 +143,32 @@ public class ImgsGridViewAdapter extends BaseAdapter {
                         holderView.img_success.setVisibility(View.GONE);
                     }
                 }
+                holderView.imageView.setTag(R.id.tag_position, position);
+                holderView.imageView.setTag(R.id.tag_imgInfo, uploadFileInfo);
                 holderView.imageView.setOnClickListener(null);
                 holderView.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mIonClickImgListener != null)
-                            mIonClickImgListener.onImgClick(mUploadImgInfoList, position);
+                        if (mUploadImgInfoList.size() >= 9) {
+                            JDToast.showLongText(mContext, "每种类型图片最多只能上传8张");
+                            return;
+                        }
+                        if (mIonClickImgListener != null) {
+                            mIonClickImgListener.onImgClick(mUploadImgInfoList, Integer.parseInt(v.getTag(R.id.tag_position).toString()));
+                        }
                     }
                 });
+                mImageLoader.displayImage("file:///" + uploadFileInfo.getBigImgPath(), holderView.imageView, options);
                 holderView.imageView.setLongClickable(true);
                 holderView.imageView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public boolean onLongClick(View v) {
+                    public boolean onLongClick(final View v) {
                         JDAlertDialog.showAlertDialog(mContext, "确定删除该张图片吗？", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if(imgInfo.isDefault())
-                                {
-                                    JDToast.showLongText(mContext,"默认图片不能删除");
+                                final UploadFileInfo imgInfo = (UploadFileInfo) v.getTag(R.id.tag_imgInfo);
+                                if (imgInfo.isDefault()) {
+                                    JDToast.showLongText(mContext, "默认图片不能删除");
                                     return;
                                 }
                                 if (imgInfo.iServer()) {
@@ -191,6 +181,7 @@ public class ImgsGridViewAdapter extends BaseAdapter {
                                             refreshData();
                                             JDToast.showLongText(mContext, "图片删除成功");
                                         }
+
                                         @Override
                                         public void onFailure(String data) {
                                             super.onFailure(data);
@@ -215,12 +206,8 @@ public class ImgsGridViewAdapter extends BaseAdapter {
                         return true;
                     }
                 });
-                holderView.imageView.setImageDrawable(null);
-                holderView.imageView.setImageBitmap(null);
-                mImageLoader.displayImage("file:///" + imgInfo.getBigImgPath(), holderView.imageView, options);
-            }catch (Exception e)
-            {
-                String ss="s";
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             //ShowImgAsyncTask task=new ShowImgAsyncTask(holderView.imageView);

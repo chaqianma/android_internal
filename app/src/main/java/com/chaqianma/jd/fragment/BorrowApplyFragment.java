@@ -158,7 +158,7 @@ public class BorrowApplyFragment extends BaseFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 transformTask();
                             }
-                            }, new DialogInterface.OnClickListener() {
+                        }, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -214,7 +214,6 @@ public class BorrowApplyFragment extends BaseFragment {
             AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
         }
     }
-
     /*
     * 转出任务
     * */

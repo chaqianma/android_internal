@@ -31,6 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
+                    android:digits="0123456789xyzXYZ"
                     android:inputType="number" />
             </LinearLayout>
 
@@ -67,7 +68,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="身份证件(必填)：" />
+                    android:text="身份证件(必填)："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
 
@@ -99,7 +101,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="护照(必填)：" />
+                    android:text="护照(选填)：" />
 
                 <LinearLayout
 
@@ -131,7 +133,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="驾照(必填)：" />
+                    android:text="驾照(选填)：" />
 
                 <LinearLayout
 
@@ -460,3 +462,4 @@
     </ScrollView>
 </LinearLayout>
 
+    <!-- From: file:/D:/projects/android_internal/app/src/main/res/layout/fragment_person_info.xml -->

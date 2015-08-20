@@ -10,8 +10,6 @@ public class HttpRequestURL {
     //public static final String BASEURL="http://rest-staging.chaqianma.com/"; //http://staging.chaqianma.com/
     //登录 POST
     public static final String LoginUrl = "api/user/login";
-    //上传位置信息
-    public static final String uploadLocationUrl="api/user/location/update";
     //尽调申请(贷款)
     public static final String loanApplyUrl = "api/borrow/dealing";
     //修改密码

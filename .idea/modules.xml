@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/android_internal.iml" filepath="$PROJECT_DIR$/android_internal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android_jd.iml" filepath="$PROJECT_DIR$/android_jd.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library_pullToRefresh/library_pullToRefresh.iml" filepath="$PROJECT_DIR$/library_pullToRefresh/library_pullToRefresh.iml" />
     </modules>
   </component>
 </project>
