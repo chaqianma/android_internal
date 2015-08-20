@@ -106,11 +106,13 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="催款次数：" />
+                android:text="催款次数："
+                android:layout_gravity="center"/>
 
             <TextView
                 android:id="@+id/tv_repayment_count"
-                style="@style/SmallTextStyle" />
+                style="@style/SmallTextStyle"
+                android:layout_gravity="center"/>
 
             <ImageView
                 android:id="@+id/img_repayment_count"

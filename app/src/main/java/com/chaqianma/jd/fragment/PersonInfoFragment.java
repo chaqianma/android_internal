@@ -411,9 +411,14 @@ public class PersonInfoFragment extends BaseFragment {
                             mParentId = customerBaseInfo.getId();
                             soundAdapter.setParentId(mParentId);
                             et_card_id.setText(customerBaseInfo.getIdCardNumber());
+                            et_card_id.clearFocus();
                             et_name.setText(customerBaseInfo.getName());
-                            if(!JDAppUtil.isEmpty(customerBaseInfo.getIdCardNumber()))
+                            if (!JDAppUtil.isEmpty(customerBaseInfo.getIdCardNumber())) {
+                                mIsAuthSuccess = true;
+                                et_card_id.setEnabled(false);
+                                et_name.setEnabled(false);
                                 btn_name_auth.setEnabled(false);
+                            }
                             et_mobile.setText(customerBaseInfo.getMobile());
                             if (customerBaseInfo.getGender() != null) {
                                 if (customerBaseInfo.getGender().equals("1"))
@@ -494,6 +499,8 @@ public class PersonInfoFragment extends BaseFragment {
             @Override
             public void onSuccess(Object o) {
                 mIsAuthSuccess = true;
+                et_card_id.setEnabled(false);
+                et_name.setEnabled(false);
                 btn_name_auth.setEnabled(false);
                 btn_name_auth.setText("认证成功");
                 JDToast.showLongText(getActivity(), "实名认证成功");
@@ -787,6 +794,10 @@ public class PersonInfoFragment extends BaseFragment {
         if (radio_nonlocal.isChecked()) {
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String come_date = tv_come_date.getText().toString();
+            if (!JDAppUtil.isEmpty(come_date)) {
+                JDToast.showLongText(getActivity(), "请选择来本地日期");
+                return;
+            }
             if (come_date != null && come_date.length() > 0) {
                 try {
                     Date date = sdf.parse("" + year + "-" + (month + 1) + "-" + day + " 00:00:00");

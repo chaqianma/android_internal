@@ -32,14 +32,8 @@ public class Constants {
     public static final String DIRPATH = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR;//+ "/"
     //极光设置别名
     public static final int MSG_SET_ALIAS = 1000;
-    //位置标签
-    public static final int GETLOCATION = 1001;
-    //城市保存标签
-    public static final String CITYTAG = "CITY";
-    //请求ID标签
-    public static final String BORROWREQUESTIDTAG="BORROWREQUESTIDTAG";
-    //底部按钮选中标识
-    public static final String CHECKEDID = "CHECKEDID";
+    //是否需要刷新
+    public static final String REFRESH="REFRESH";
     //消息通知提醒
     public static final String MSGNOTIFY = "MSGNOTIFY";
     //何种提示方式

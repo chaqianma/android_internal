@@ -83,18 +83,24 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
     @Override
     public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
         try {
-            String errMsg = new String(bytes);
-            if (dataType == null)
-                dataType = Class.forName(ErrorInfo.class.getName());
-            ErrorInfo errorInfo = (ErrorInfo) JSON.parseObject(new String(bytes), dataType);
-            if (errorInfo != null) {
-                if (errorInfo.getPath().indexOf("login") > -1 && errorInfo.getMessage().indexOf("Failed") > -1)
-                    showToast("用户名或密码错误");
-                else
-                    showToast(errorInfo.getMessage());
+            if (bytes == null || new String(bytes).indexOf("refused") > -1) {
+                showToast("服务器连接不上，请稍候再试");
+            } else {
+                if (dataType == null)
+                    dataType = Class.forName(ErrorInfo.class.getName());
+                ErrorInfo errorInfo = (ErrorInfo) JSON.parseObject(new String(bytes), dataType);
+                if (errorInfo != null) {
+                    String msg = errorInfo.getMessage().toLowerCase();
+                    if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("failed") > -1)
+                        showToast("用户名或密码错误");
+                    else if (msg.indexOf("available") > -1 || msg.indexOf("mybatis") > -1 || msg.indexOf("ibatis") > -1)
+                        showToast("服务器请求错误，请稍候再试");
+                    else
+                        showToast(errorInfo.getMessage());
+                }
             }
         } catch (Exception e) {
-            showToast("请求出错");
+            showToast("服务器请求错误，请稍候再试");
         }
         if (context != null)
             JDProgress.dismiss();

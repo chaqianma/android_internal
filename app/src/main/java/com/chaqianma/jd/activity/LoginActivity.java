@@ -15,6 +15,7 @@ import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
+import com.chaqianma.jd.utils.LocationUtil;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDAlertDialog;
@@ -86,6 +87,8 @@ public class LoginActivity extends BaseActivity {
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.USERNAME, username);
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.PASSWORD, password);
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.UUID, mUUID);
+                            //上传位置
+                            new LocationUtil(LoginActivity.this,null).start();
                             //设置别名
                             ((JDApplication) getApplication()).setAlias(userInfo.getMobile());
                             //再调用查看任务接口。。。不知为何要这么设计

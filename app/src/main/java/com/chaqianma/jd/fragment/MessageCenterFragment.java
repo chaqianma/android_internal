@@ -117,9 +117,16 @@ public class MessageCenterFragment extends BaseFragment implements PullToRefresh
                                 transform(borrowRequestInfo);
                             else {
                                 isGotoMainPage = false;
+                                view_refresh.onHeaderRefreshComplete();
                                 ((MainActivity) (getActivity())).setShowFragment(0);
                             }
                         }
+                    }
+
+                    @Override
+                    public void onFailure(String data) {
+                        super.onFailure(data);
+                        view_refresh.onHeaderRefreshComplete();
                     }
                 }, Class.forName(BorrowRequestInfo.class.getName())));
             }
@@ -132,10 +139,10 @@ public class MessageCenterFragment extends BaseFragment implements PullToRefresh
    * 获取催款数据
    * */
     private void getRepaymentList() {
-        HashMap<String, Object> argMaps = new HashMap<String, Object>();
         String repaymentId = SharedPreferencesUtil.getRepaymentId(getActivity());
         if (JDAppUtil.isEmpty(repaymentId))
             return;
+        HashMap<String, Object> argMaps = new HashMap<String, Object>();
         argMaps.put("idList", repaymentId);
         HttpClientUtil.get(HttpRequestURL.getNotifyRepaymentList, argMaps, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
@@ -148,6 +155,11 @@ public class MessageCenterFragment extends BaseFragment implements PullToRefresh
                         view_refresh.onHeaderRefreshComplete();
                     }
                 }
+            }
+            @Override
+            public void onFailure(String data) {
+                super.onFailure(data);
+                view_refresh.onHeaderRefreshComplete();
             }
         }));
     }

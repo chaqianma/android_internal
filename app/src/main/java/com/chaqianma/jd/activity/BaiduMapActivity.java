@@ -81,16 +81,10 @@ public class BaiduMapActivity extends BaseActivity {
     private android.os.Handler mHandler = new android.os.Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.GETLOCATION:
-                    LocationInfo locationInfo = AppData.getInstance().getLocationInfo();
-                    if (locationInfo != null && isFirstLoc) {
-                        isFirstLoc = false;
-                        addOverlay(locationInfo);
-                    }
-                    break;
-                default:
-                    break;
+            LocationInfo locationInfo = AppData.getInstance().getLocationInfo();
+            if (locationInfo != null && isFirstLoc) {
+                isFirstLoc = false;
+                addOverlay(locationInfo);
             }
         }
     };

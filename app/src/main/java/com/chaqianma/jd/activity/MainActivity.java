@@ -1,5 +1,6 @@
 package com.chaqianma.jd.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -8,12 +9,17 @@ import android.widget.RadioButton;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
+import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.fragment.BorrowApplyFragment;
 import com.chaqianma.jd.fragment.BottomFragment;
 import com.chaqianma.jd.fragment.MessageCenterFragment;
 import com.chaqianma.jd.fragment.RepaymentListFragment;
 import com.chaqianma.jd.fragment.SettingFragment;
 import com.chaqianma.jd.fragment.StaffStateFragment;
+import com.chaqianma.jd.model.BorrowRequestInfo;
+import com.chaqianma.jd.utils.HttpClientUtil;
+import com.chaqianma.jd.utils.JDHttpResponseHandler;
+import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
 
 import java.util.Timer;
@@ -50,7 +56,30 @@ public class MainActivity extends FragmentActivity implements BottomFragment.ICh
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         // initFragment();
-        onItemSelected(R.id.radio_main);
+        if (getIntent().hasExtra(Constants.REFRESH)) {
+            getBorrowRequest();
+        } else
+            onItemSelected(R.id.radio_main);
+    }
+
+    //查看是否有任务
+    private void getBorrowRequest() {
+        try {
+            HttpClientUtil.get(HttpRequestURL.loanApplyUrl, null, new JDHttpResponseHandler(MainActivity.this, new ResponseHandler<BorrowRequestInfo>() {
+                @Override
+                public void onSuccess(BorrowRequestInfo borrowRequestInfo) {
+                    if (borrowRequestInfo != null) {
+                        String borrowRequestId = borrowRequestInfo.getBorrowRequestId();
+                        if (borrowRequestId != null && borrowRequestId.length() > 0) {
+                            AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
+                        }
+                        onItemSelected(R.id.radio_main);
+                    }
+                }
+            }, Class.forName(BorrowRequestInfo.class.getName())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
