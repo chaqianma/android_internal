@@ -83,6 +83,23 @@ public class SharedPreferencesUtil {
     }
 
     /*
+       * 添加催收ID值
+       * */
+    public static void addRepaymentIdAndDateLine(Context context, String bVal) {
+        String key = "REPAYMENTDATELINE";
+        SharedPreferences settings = context.getSharedPreferences(SHAREPREFERENCE_NAME, context.MODE_PRIVATE);
+        String pId = settings.getString(key, "");
+        if (!JDAppUtil.isEmpty(pId)) {
+            pId += "," + bVal;
+        } else {
+            pId += bVal;
+        }
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, pId);
+        editor.commit();
+    }
+
+    /*
     * 添加催收ID值
     * */
     public static void addRepaymentId(Context context, String bVal) {

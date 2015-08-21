@@ -25,17 +25,6 @@ public class DBBaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     /**
-     * 存储业务详细信息表
-     */
-    public static final String TABLE_OSS = "table_oss";
-
-    /**
-     * 登陆账号信息表
-     */
-    public static final String TABLE_LOGIN = "logininfo";
-
-
-    /**
      * 用来操作数据库的实例
      */
     SQLiteDatabase db = null;
@@ -52,7 +41,8 @@ public class DBBaseHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.beginTransaction();
         try {
-            db.execSQL(DBTableSQL.SQL_CREATE_UPLOADIMG);
+            //db.execSQL(DBTableSQL.SQL_CREATE_UPLOADIMG);
+            db.execSQL(DBTableSQL.SQL_CREATE_REPAYMENT);
             Log.e(TAG, "db create success");
             db.setTransactionSuccessful();
         } catch (Exception e) {

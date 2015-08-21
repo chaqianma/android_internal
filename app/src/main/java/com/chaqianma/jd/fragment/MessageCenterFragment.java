@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
+import com.chaqianma.jd.DBHelper.RepaymentDBHelper;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.MainActivity;
 import com.chaqianma.jd.activity.RepaymentDetailActivity;
@@ -139,23 +140,56 @@ public class MessageCenterFragment extends BaseFragment implements PullToRefresh
    * 获取催款数据
    * */
     private void getRepaymentList() {
-        String repaymentId = SharedPreferencesUtil.getRepaymentId(getActivity());
-        if (JDAppUtil.isEmpty(repaymentId))
+        final RepaymentDBHelper dbHelper = new RepaymentDBHelper();
+        final List<RepaymentInfo> repaymentInfoList = dbHelper.getRepaymentList(getActivity());
+        if (repaymentInfoList == null || repaymentInfoList.size() <= 0)
             return;
+        String rIds = "";
+        RepaymentInfo repaymentInfo = null;
+        int size = repaymentInfoList.size() - 1;
+        for (int i = size; i >= 0; i--) {
+            repaymentInfo = repaymentInfoList.get(i);
+            if (!JDAppUtil.isEmpty(rIds)) {
+                rIds += "," + repaymentInfo.getId();
+            } else {
+                rIds += repaymentInfo.getId();
+            }
+        }
         HashMap<String, Object> argMaps = new HashMap<String, Object>();
-        argMaps.put("idList", repaymentId);
+        argMaps.put("idList", rIds);
         HttpClientUtil.get(HttpRequestURL.getNotifyRepaymentList, argMaps, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(Object o) {
                 if (o != null) {
-                    List<RepaymentInfo> repaymentInfoList = JSON.parseArray(o.toString(), RepaymentInfo.class);
-                    if (repaymentInfoList != null && repaymentInfoList.size() > 0) {
-                        mRepaymentList.addAll(repaymentInfoList);
+                    List<RepaymentInfo> serverRepayInfos = JSON.parseArray(o.toString(), RepaymentInfo.class);
+                    if (serverRepayInfos != null && serverRepayInfos.size() > 0) {
+                        RepaymentInfo repayInfo=null;
+                        for (int i =  repaymentInfoList.size()-1; i >= 0; i--) {
+                            repayInfo=repaymentInfoList.get(i);
+                            RepaymentInfo serverInfo=null;
+                            for(int j=0;j<serverRepayInfos.size();j++)
+                            {
+                                serverInfo=serverRepayInfos.get(j);
+                                if(repayInfo.getId().equals(serverInfo.getId())) {
+                                    repayInfo.setDateLine(JDAppUtil.getStrDateTime(repayInfo.getDateLine()));
+                                    repayInfo.setInvestmentNo(serverInfo.getInvestmentNo());
+                                    repayInfo.setStatus(serverInfo.getStatus());
+                                    repayInfo.setUserName(serverInfo.getUserName());
+                                    repayInfo.setUserMobile(serverInfo.getUserMobile());
+                                    repayInfo.setPrincipalAmount(serverInfo.getPrincipalAmount());
+                                    repayInfo.setOverdueFee(serverInfo.getOverdueFee());
+                                    repayInfo.setInterestAmount(serverInfo.getInterestAmount());
+                                    mRepaymentList.add(repayInfo);
+                                    break;
+                                }
+                            }
+                        }
                         messageAdapater.notifyDataSetChanged();
                         view_refresh.onHeaderRefreshComplete();
                     }
                 }
             }
+
             @Override
             public void onFailure(String data) {
                 super.onFailure(data);

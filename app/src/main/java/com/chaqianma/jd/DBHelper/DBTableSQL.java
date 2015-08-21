@@ -23,5 +23,10 @@ public class DBTableSQL {
             + ImageTable.PARENT_TABLE_NAME + TEXT_TYPE + ")";
 
 
+    public static String SQL_CREATE_REPAYMENT="create table if not exists "
+            +RepaymentTable.TABLE_NAME
+            + " (" + RepaymentTable._ID + " INTEGER PRIMARY KEY,"
+            + RepaymentTable.REPAYMENT_ID + TEXT_TYPE + COMMA_SEP
+            + RepaymentTable.DATELINE + TEXT_TYPE + ")";
 
 }

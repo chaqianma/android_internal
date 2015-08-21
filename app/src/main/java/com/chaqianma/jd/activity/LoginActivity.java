@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.chaqianma.jd.DBHelper.RepaymentDBHelper;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.app.JDApplication;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.model.BorrowRequestInfo;
+import com.chaqianma.jd.model.RepaymentInfo;
 import com.chaqianma.jd.model.UserInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.common.HttpRequestURL;
@@ -22,6 +24,7 @@ import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -63,7 +66,7 @@ public class LoginActivity extends BaseActivity {
             if (username.matches("^[0-9]*$") && username.length() == 11 && username.charAt(0) == '1') {
 
             } else {
-                JDToast.showLongText(LoginActivity.this,"用户名只能是手机号");
+                JDToast.showLongText(LoginActivity.this, "用户名只能是手机号");
                 return;
             }
         }
@@ -88,7 +91,7 @@ public class LoginActivity extends BaseActivity {
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.PASSWORD, password);
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.UUID, mUUID);
                             //上传位置
-                            new LocationUtil(LoginActivity.this,null).start();
+                            new LocationUtil(LoginActivity.this, null).start();
                             //设置别名
                             ((JDApplication) getApplication()).setAlias(userInfo.getMobile());
                             //再调用查看任务接口。。。不知为何要这么设计

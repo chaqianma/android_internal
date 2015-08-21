@@ -3,6 +3,7 @@ package com.chaqianma.jd.model;
 import android.widget.TextView;
 
 import com.chaqianma.jd.utils.GeoCoderUtil;
+import com.chaqianma.jd.utils.JDAppUtil;
 
 import org.w3c.dom.Text;
 
@@ -11,6 +12,7 @@ import org.w3c.dom.Text;
  */
 public class RepaymentInfo extends ErrorInfo {
     private String id = null;
+    private String columnId = null;
     private String name = null;
     private String phone = null;
     private String investmentNo = null;  //标的ID
@@ -32,6 +34,7 @@ public class RepaymentInfo extends ErrorInfo {
     private String borrowMoney = null;
     private String borrowDate = null;
     private String borrowPurpose = null;//借款用途
+    private String dateLine = null;
     private int flag = 1;  //标明  0 新任务  1 催款
 
     public String getActualDateline() {
@@ -123,23 +126,28 @@ public class RepaymentInfo extends ErrorInfo {
     }
 
     public String getDescStatus() {
-
-        //还款状态 1待还款 2账单日 3逾期 4已还款
-        switch (Integer.parseInt(getStatus())) {
-            case 1:
-                descStatus = "待还款";
-                break;
-            case 2:
-                descStatus = "账单日";
-                break;
-            case 3:
-                descStatus = "逾期";
-                break;
-            case 4:
-                descStatus = "已还款";
-                break;
-            default:
-                break;
+        if(JDAppUtil.isEmpty(getStatus()))
+            return "";
+        try {
+            //还款状态 1待还款 2账单日 3逾期 4已还款
+            switch (Integer.parseInt(getStatus())) {
+                case 1:
+                    descStatus = "待还款";
+                    break;
+                case 2:
+                    descStatus = "账单日";
+                    break;
+                case 3:
+                    descStatus = "逾期";
+                    break;
+                case 4:
+                    descStatus = "已还款";
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return descStatus;
     }
@@ -245,11 +253,27 @@ public class RepaymentInfo extends ErrorInfo {
         if (strWorkLocation != null) {
             tv.setText(strWorkLocation);
         } else {
-            new GeoCoderUtil(tv,this);
+            new GeoCoderUtil(tv, this);
         }
     }
 
     public void setStrWorkLocation(String strWorkLocation) {
         this.strWorkLocation = strWorkLocation;
+    }
+
+    public String getDateLine() {
+        return dateLine;
+    }
+
+    public void setDateLine(String dateLine) {
+        this.dateLine = dateLine;
+    }
+
+    public String getColumnId() {
+        return columnId;
+    }
+
+    public void setColumnId(String columnId) {
+        this.columnId = columnId;
     }
 }

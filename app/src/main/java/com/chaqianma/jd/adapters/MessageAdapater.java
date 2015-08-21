@@ -66,7 +66,7 @@ public class MessageAdapater extends BaseAdapter {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            viewHolder.tv_come_date.setText("");
+            viewHolder.tv_come_date.setText(repaymentInfo.getDateLine());
             viewHolder.tv_repayment_id.setText(repaymentInfo.getInvestmentNo());
             viewHolder.tv_repayment_status.setText(repaymentInfo.getDescStatus());
             viewHolder.tv_borrowName.setText(repaymentInfo.getUserName());

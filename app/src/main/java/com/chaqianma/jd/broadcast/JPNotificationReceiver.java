@@ -6,22 +6,26 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.alibaba.fastjson.JSONObject;
+import com.chaqianma.jd.DBHelper.RepaymentDBHelper;
 import com.chaqianma.jd.activity.LoginActivity;
 import com.chaqianma.jd.activity.MainActivity;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.BorrowRequestInfo;
+import com.chaqianma.jd.model.RepaymentInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
 
+import java.util.List;
+
 import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by zhangxd on 2015/7/20.
- * <p>
+ * <p/>
  * 1、新的借款请求 2、借款请求已分配 3、借款请求开始尽调 4、进入审核 5、账单日 6、还款逾期 7、还款完成
  */
 public class JPNotificationReceiver extends BroadcastReceiver {
@@ -64,7 +68,7 @@ public class JPNotificationReceiver extends BroadcastReceiver {
                 startIntent.setClass(context, MainActivity.class);
                 startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 if (msgType.equals("2")) {
-                    startIntent.putExtra(Constants.REFRESH,true);
+                    startIntent.putExtra(Constants.REFRESH, true);
                     context.startActivity(startIntent);
                 } else {
                     context.startActivity(startIntent);
@@ -93,7 +97,11 @@ public class JPNotificationReceiver extends BroadcastReceiver {
     private void SaveRepaymentId(Bundle bundle) {
         try {
             JSONObject jsonObject = JSONObject.parseObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-            SharedPreferencesUtil.addRepaymentId(mContext, jsonObject.getString("repaymentId") + "|" + jsonObject.getString("dateline"));
+            RepaymentDBHelper dbHelper = new RepaymentDBHelper();
+            RepaymentInfo repaymentInfo = new RepaymentInfo();
+            repaymentInfo.setId(jsonObject.getString("repaymentId"));
+            repaymentInfo.setDateLine(jsonObject.getString("dateline"));
+            dbHelper.insert(mContext, repaymentInfo);
         } catch (Exception e) {
             e.printStackTrace();
         }
