@@ -303,6 +303,11 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
 
     }
 
+    @Override
+    public void onRefreshSpinner(UploadFileInfo fileInfo) {
+
+    }
+
     //开始录音
     @Override
     public void onStartRecord() {

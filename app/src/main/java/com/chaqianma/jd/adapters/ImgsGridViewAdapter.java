@@ -58,6 +58,8 @@ public class ImgsGridViewAdapter extends BaseAdapter {
 
     public interface iOnClickImgListener {
         void onImgClick(List<UploadFileInfo> uploadImgInfoList, int idx);
+
+        void onRefreshSpinner(UploadFileInfo fileInfo);
     }
 
     public ImgsGridViewAdapter(Context context, List<UploadFileInfo> uploadImgInfoList) {
@@ -179,6 +181,8 @@ public class ImgsGridViewAdapter extends BaseAdapter {
                                             mUploadImgInfoList.remove(imgInfo);
                                             deleteFile(imgInfo);
                                             refreshData();
+                                            if (mIonClickImgListener != null)
+                                                mIonClickImgListener.onRefreshSpinner(imgInfo);
                                             JDToast.showLongText(mContext, "图片删除成功");
                                         }
 
@@ -265,7 +269,6 @@ public class ImgsGridViewAdapter extends BaseAdapter {
                     mImageView.post(new Runnable() {
                         @Override
                         public void run() {
-                            String s = "1";
                             mImageView.setImageResource(R.drawable.icon_img_add);
                         }
                     });

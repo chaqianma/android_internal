@@ -19,36 +19,32 @@
             android:orientation="vertical">
 
 
-            <include layout="@layout/layout_asset_company_1" />
+            <include layout="@layout/layout_asset_company_1"/>
 
             <ViewStub
                 android:id="@+id/stub_company_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inflatedId="@+id/company_2"
                 android:layout="@layout/layout_asset_company_2" />
 
             <ViewStub
                 android:id="@+id/stub_company_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inflatedId="@+id/company_3"
                 android:layout="@layout/layout_asset_company_3" />
 
-            <include layout="@layout/layout_asset_car_1" />
+            <include layout="@layout/layout_asset_car_1"/>
 
             <ViewStub
                 android:id="@+id/stub_car_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inflatedId="@+id/company_2"
                 android:layout="@layout/layout_asset_car_2" />
 
             <ViewStub
                 android:id="@+id/stub_car_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inflatedId="@+id/company_3"
                 android:layout="@layout/layout_asset_car_3" />
 
             <include layout="@layout/layout_asset_house_1" />
@@ -58,7 +54,6 @@
                 android:id="@+id/stub_house_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inflatedId="@+id/company_2"
                 android:layout="@layout/layout_asset_house_2" />
 
 
@@ -66,7 +61,6 @@
                 android:id="@+id/stub_house_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inflatedId="@+id/company_3"
                 android:layout="@layout/layout_asset_house_3" />
 
             <LinearLayout

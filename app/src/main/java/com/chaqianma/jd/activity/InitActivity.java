@@ -43,7 +43,7 @@ public class InitActivity extends Activity {
                             if (userInfo.getUserType().equals("1")) {
                                 AppData.getInstance().setUserInfo(userInfo);
                                 //设置别名
-                                ((JDApplication) getApplication()).setAlias(userInfo.getMobile());
+                                ((JDApplication) getApplication()).setAlias();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

@@ -91,6 +91,13 @@ public class PersonalAssetsFragment extends BaseFragment {
     GridView gv_sound;
     @InjectView(R.id.gv_mark)
     GridView gv_mark;
+    @InjectView(R.id.layout_asset_company_1)
+    LinearLayout layout_asset_company_1;
+    @InjectView(R.id.layout_asset_car_1)
+    LinearLayout layout_asset_car_1;
+    @InjectView(R.id.layout_asset_house_1)
+    LinearLayout layout_asset_house_1;
+
     GridView gv_income_2;
     GridView gv_bill_2;
     Spinner sp_company_2;
@@ -256,11 +263,13 @@ public class PersonalAssetsFragment extends BaseFragment {
                 isIncome2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
                 initCompanyView(true);
+                sp_company_2.setSelection(1);
                 break;
             case 2:
                 isIncome3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
                 initCompanyView(false);
+                sp_company_3.setSelection(2);
                 break;
             default:
                 break;
@@ -315,11 +324,13 @@ public class PersonalAssetsFragment extends BaseFragment {
                 isCar2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
                 initCarView(true);
+                sp_car_2.setSelection(1);
                 break;
             case 2:
                 isCar3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
                 initCarView(false);
+                sp_car_3.setSelection(2);
                 break;
             default:
                 break;
@@ -374,11 +385,13 @@ public class PersonalAssetsFragment extends BaseFragment {
                 isHouse2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
                 initHouseView(true);
+                sp_house_2.setSelection(1);
                 break;
             case 2:
                 isHouse3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
                 initHouseView(false);
+                sp_house_3.setSelection(2);
                 break;
             default:
                 break;
@@ -623,7 +636,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         this.mView = view;
         mBorrowRequestId = getBorrowRequestId();
         initOneView();
-        getPersonalAssetInfo();
+        //getPersonalAssetInfo();
         return view;
     }
 
@@ -632,7 +645,6 @@ public class PersonalAssetsFragment extends BaseFragment {
     */
     private void getPersonalAssetInfo() {
         String requestPath = HttpRequestURL.personalInfoUrl + "/" + Constants.PERSONALASSETSINFO + "/" + getBorrowRequestId();
-
         HttpClientUtil.get(requestPath, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override
             public void onSuccess(final Object o) {
@@ -678,6 +690,7 @@ public class PersonalAssetsFragment extends BaseFragment {
     private void getCompanyList(List<CompanyInfo> companyInfoList) {
         if (companyInfoList != null) {
             int size = companyInfoList.size();
+            boolean isHasCompany = false;
             for (int i = 0; i < size; i++) {
                 final int idx = i;
                 final CompanyInfo companyInfo = companyInfoList.get(idx);
@@ -686,12 +699,14 @@ public class PersonalAssetsFragment extends BaseFragment {
                 if (companyInfo.getFileList() != null)
                     companySize = companyInfo.getFileList().size();
                 //判断是否是有效企业 企业名称
-                if (companySize > 0 || !JDAppUtil.isEmpty(companyInfo.getCompanyName())) {
+                if (companySize > 0) {
+                    isHasCompany = true;
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             switch (idx) {
                                 case 0:
+                                    layout_asset_company_1.setVisibility(View.VISIBLE);
                                     initServerFile(companyInfo.getFileList(), idx);
                                     break;
                                 case 1:
@@ -709,6 +724,15 @@ public class PersonalAssetsFragment extends BaseFragment {
                     });
                 }
             }
+            //若都没有企业
+            if (!isHasCompany) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        layout_asset_company_1.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
         }
     }
 
@@ -719,6 +743,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         if (carInfoList != null) {
             //车
             int size = carInfoList.size();
+            boolean isHasCar = false;
             for (int i = 0; i < size; i++) {
                 final int idx = i;
                 final CarInfo carInfo = carInfoList.get(idx);
@@ -728,12 +753,14 @@ public class PersonalAssetsFragment extends BaseFragment {
                     if (carInfo.getFileList() != null)
                         carSize = carInfo.getFileList().size();
                     //根据 车 是否有图片   车牌号码  总价 来判断是否是真实的车
-                    if (carSize > 0 || !JDAppUtil.isEmpty(carInfo.getSumPrice()) || !JDAppUtil.isEmpty(carInfo.getPlateNum())) {
+                    if (carSize > 0) { //|| !JDAppUtil.isEmpty(carInfo.getSumPrice()) || !JDAppUtil.isEmpty(carInfo.getPlateNum())) {
+                        isHasCar = true;
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 switch (idx) {
                                     case 0:
+                                        layout_asset_car_1.setVisibility(View.VISIBLE);
                                         initServerFile(carInfo.getFileList(), idx);
                                         break;
                                     case 1:
@@ -752,6 +779,15 @@ public class PersonalAssetsFragment extends BaseFragment {
                     }
                 }
             }
+            //若都没有汽车
+            if (!isHasCar) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        layout_asset_car_1.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
         }
     }
 
@@ -762,6 +798,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         if (houseInfoList != null) {
             //房
             int size = houseInfoList.size();
+            boolean isHasHouse = false;
             for (int i = 0; i < size; i++) {
                 final int idx = i;
                 final HouseInfo houseInfo = houseInfoList.get(idx);
@@ -771,12 +808,14 @@ public class PersonalAssetsFragment extends BaseFragment {
                     if (houseInfo.getFileList() != null)
                         houseSize = houseInfo.getFileList().size();
                     //根据 房 是否有图片   地址  面积  房产价号 来判断是否是真实的房子
-                    if (houseSize > 0 || !JDAppUtil.isEmpty(houseInfo.getArea()) || !JDAppUtil.isEmpty(houseInfo.getAddress()) || !JDAppUtil.isEmpty(houseInfo.getDeed_num())) {
+                    if (houseSize > 0) { //|| !JDAppUtil.isEmpty(houseInfo.getArea()) || !JDAppUtil.isEmpty(houseInfo.getAddress()) || !JDAppUtil.isEmpty(houseInfo.getDeed_num())) {
+                        isHasHouse = true;
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 switch (idx) {
                                     case 0:
+                                        layout_asset_house_1.setVisibility(View.VISIBLE);
                                         initServerFile(houseInfo.getFileList(), idx);
                                         break;
                                     case 1:
@@ -794,6 +833,15 @@ public class PersonalAssetsFragment extends BaseFragment {
                         });
                     }
                 }
+            }
+            //若都没有汽车
+            if (!isHasHouse) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        layout_asset_house_1.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         }
     }
@@ -1126,16 +1174,52 @@ public class PersonalAssetsFragment extends BaseFragment {
         UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
         //SY(10),JY(11),CP(12),XS(13),REMARK(16),SOUND(80)
         if (fType == UploadFileType.SY || fType == UploadFileType.JY) {
-            parentId = mCompanyId[fileInfo.getIdxTag()];
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    parentId = mCompanyId[sp_company_1.getSelectedItemPosition()];
+                    break;
+                case 1:
+                    parentId = mCompanyId[sp_company_2.getSelectedItemPosition()];
+                    break;
+                case 2:
+                    parentId = mCompanyId[sp_company_3.getSelectedItemPosition()];
+                    break;
+                default:
+                    break;
+            }
             fileInfo.setParentTableName(Constants.BUSINESS_INFO);
         } else if (fType == UploadFileType.CP || fType == UploadFileType.XS) {
-            parentId = mCardId[fileInfo.getIdxTag()];
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    parentId = mCardId[sp_car_1.getSelectedItemPosition()];
+                    break;
+                case 1:
+                    parentId = mCardId[sp_car_2.getSelectedItemPosition()];
+                    break;
+                case 2:
+                    parentId = mCardId[sp_car_3.getSelectedItemPosition()];
+                    break;
+                default:
+                    break;
+            }
             fileInfo.setParentTableName(Constants.PERSONAL_ASSERTS_CAR_INFO);
         } else if (fType == UploadFileType.REMARK || fType == UploadFileType.SOUND) {
             fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_INFO);
             parentId = mRemarkId;
         } else if (fType == UploadFileType.FC || fType == UploadFileType.TD) {
-            parentId = mHouseId[fileInfo.getIdxTag()];
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    parentId = mHouseId[sp_house_1.getSelectedItemPosition()];
+                    break;
+                case 1:
+                    parentId = mHouseId[sp_house_2.getSelectedItemPosition()];
+                    break;
+                case 2:
+                    parentId = mHouseId[sp_house_3.getSelectedItemPosition()];
+                    break;
+                default:
+                    break;
+            }
             fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_HOUSE_INFO);
         } else {
 
@@ -1167,6 +1251,60 @@ public class PersonalAssetsFragment extends BaseFragment {
             }, Class.forName(UploadFileInfo.class.getName())));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /*
+    * 设置下拉框可用性
+    * */
+    private void setSpinnerEnabled(UploadFileInfo fileInfo) {
+        UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
+        if (fType == UploadFileType.SY || fType == UploadFileType.JY) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    sp_company_1.setEnabled(!(isUploadSuccess(mSYList_1) || isUploadSuccess(mJYList_1)));
+                    break;
+                case 1:
+                    sp_company_2.setEnabled(!(isUploadSuccess(mSYList_2) || isUploadSuccess(mJYList_2)));
+                    break;
+                case 2:
+                    sp_company_3.setEnabled(!(isUploadSuccess(mSYList_3) || isUploadSuccess(mJYList_3)));
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.CP || fType == UploadFileType.XS) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    sp_car_1.setEnabled(!(isUploadSuccess(mCPList_1) || isUploadSuccess(mXSList_1)));
+                    break;
+                case 1:
+                    sp_car_2.setEnabled(!(isUploadSuccess(mCPList_2) || isUploadSuccess(mXSList_2)));
+                    break;
+                case 2:
+                    sp_car_3.setEnabled(!(isUploadSuccess(mCPList_3) || isUploadSuccess(mXSList_3)));
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.REMARK || fType == UploadFileType.SOUND) {
+
+        } else if (fType == UploadFileType.FC || fType == UploadFileType.TD) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    sp_house_1.setEnabled(!(isUploadSuccess(mFCList_1) || isUploadSuccess(mTDList_1)));
+                    break;
+                case 1:
+                    sp_house_2.setEnabled(!(isUploadSuccess(mFCList_2) || isUploadSuccess(mTDList_2)));
+                    break;
+                case 2:
+                    sp_house_3.setEnabled(!(isUploadSuccess(mFCList_3) || isUploadSuccess(mTDList_3)));
+                    break;
+                default:
+                    break;
+            }
+        } else {
+
         }
     }
 
@@ -1327,6 +1465,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else {
 
         }
+        setSpinnerEnabled(fileInfo);
     }
 
 

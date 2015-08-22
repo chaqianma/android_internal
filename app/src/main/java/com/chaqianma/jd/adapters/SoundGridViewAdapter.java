@@ -148,6 +148,10 @@ public class SoundGridViewAdapter extends BaseAdapter {
                     if (v.getTag() instanceof UploadFileInfo) {
                         UploadFileInfo uploadFileInfo = (UploadFileInfo) v.getTag();
                         if (uploadFileInfo.isDefault()) {
+                            if (mSoundInfoList.size() >= 11) {
+                                JDToast.showLongText(mContext,"最多只能上传10段录音");
+                                return;
+                            }
                             startRecord();
                         } else {
                             playRecord(uploadFileInfo);
@@ -174,7 +178,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                                         HttpClientUtil.delete(HttpRequestURL.deleteFileUrl + soundInfo.getFileId(), null, new JDHttpResponseHandler(mContext, new ResponseHandler() {
                                             @Override
                                             public void onSuccess(Object o) {
-                                                JDToast.showLongText(mContext,"录音删除成功");
+                                                JDToast.showLongText(mContext, "录音删除成功");
                                                 mSoundInfoList.remove(soundInfo);
                                                 notifyDataSetChanged();
                                             }

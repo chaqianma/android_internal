@@ -23,6 +23,9 @@ import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,6 +45,13 @@ public class LoginActivity extends BaseActivity {
     @InjectView(R.id.cb_remember)
     CheckBox cb_remember;
     private String mUUID = null;
+    private ArrayList<String> companyList2 = new ArrayList<String>() {
+        {
+            add("企业a");
+            add("企业b");
+            add("企业c");
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +103,7 @@ public class LoginActivity extends BaseActivity {
                             //上传位置
                             new LocationUtil(LoginActivity.this, null).start();
                             //设置别名
-                            ((JDApplication) getApplication()).setAlias(userInfo.getMobile());
+                            ((JDApplication) getApplication()).setAlias();
                             //再调用查看任务接口。。。不知为何要这么设计
                             getBorrowRequest();
                         } else {

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioButton;
 
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.app.JDApplication;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
@@ -173,6 +174,7 @@ public class MainActivity extends FragmentActivity implements BottomFragment.ICh
     @Override
     public void onBackPressed() {
         if (isBack) {
+            ((JDApplication) getApplication()).cancelAlias();
             super.onBackPressed();
         } else {
             isBack = true;

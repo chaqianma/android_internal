@@ -16,10 +16,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="test"/>
+            android:text="test" />
+
         <fragment
             android:id="@+id/bottom_fragment"
             android:name="com.chaqianma.jd.fragment.BottomFragment"

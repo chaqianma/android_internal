@@ -5,7 +5,8 @@
         android:id="@+id/layout_asset_house_1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <RelativeLayout style="@style/RelativeLayoutStyle">
 

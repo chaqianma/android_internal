@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.utils.FileUtil;
 import com.chaqianma.jd.utils.JPushUtil;
@@ -47,9 +48,15 @@ public class JDApplication extends Application {
     }
 
     //设置别名
-    public void setAlias(String userMobile) {
+    public void setAlias() {
         //设置别名
-        mHandler.sendMessage(mHandler.obtainMessage(Constants.MSG_SET_ALIAS, userMobile));
+        JPushInterface.setAliasAndTags(getApplicationContext(), AppData.getInstance().getUserInfo().getMobile(), null, mAliasCallback);
+    }
+
+    //取消别名 "" （空字符串）表示取消之前的设置。
+    public void cancelAlias()
+    {
+        JPushInterface.setAliasAndTags(getApplicationContext(), "", null, mAliasCallback);
     }
 
     /*
@@ -76,19 +83,6 @@ public class JDApplication extends Application {
                 .build();//开始构建
         ImageLoader.getInstance().init(config);
     }
-
-    //Handler to setAlias
-    private final android.os.Handler mHandler = new android.os.Handler() {
-        @Override
-        public void handleMessage(android.os.Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case Constants.MSG_SET_ALIAS:
-                    JPushInterface.setAliasAndTags(getApplicationContext(), (String) msg.obj, null, mAliasCallback);
-                    break;
-            }
-        }
-    };
 
     // AliasCallback
     private final TagAliasCallback mAliasCallback = new TagAliasCallback() {

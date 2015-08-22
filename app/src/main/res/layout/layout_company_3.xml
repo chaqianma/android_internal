@@ -12,8 +12,14 @@
 
         <TextView
             style="@style/SmallTextStyle"
-            android:text="企业3："
+            android:text="企业："
             android:textSize="@dimen/large_text_size" />
+
+        <ImageView
+            android:id="@+id/img_company_add_3"
+            style="@style/SettingRightIconStyle"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/icon_add" />
 
     </RelativeLayout>
 
@@ -133,7 +139,7 @@
                     android:listSelector="#ffffff"
                     android:numColumns="auto_fit"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
+                    android:verticalSpacing="10dp" />
             </LinearLayout>
         </LinearLayout>
 

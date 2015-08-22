@@ -14,12 +14,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private Thread.UncaughtExceptionHandler mDefaultHandler;
     private static CrashHandler mInstance = new CrashHandler();
     private Context mContext;
-    private CrashHandler()
-    {
+
+    private CrashHandler() {
 
     }
 
-    /** 获取CrashHandler实例 ,单例模式 */
+    /**
+     * 获取CrashHandler实例 ,单例模式
+     */
     public static CrashHandler getInstance() {
         if (mInstance == null) {
             synchronized (CrashHandler.class) {
@@ -45,11 +47,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-            String sss="111";
-        sss="111";
-        sss="111";
-        sss="111";
-        sss="111";
-        System.out.print("zxdLog:"+":"+ex.getMessage());
+        ((JDApplication)mContext).setAlias();
+        String sss = "111";
+        sss = "111";
+        sss = "111";
+        sss = "111";
+        sss = "111";
+        System.out.print("zxdLog:" + ":" + ex.getMessage());
     }
 }
