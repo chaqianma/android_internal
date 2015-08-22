@@ -244,8 +244,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     private void addCompany() {
         //第一家企业
         if (!isCompany1Show) {
-          /*  if (!requiredInput())
-                return;*/
+            if (!requiredInput())
+                return;
             isCompany1Show = true;
             layout_company_1.setVisibility(View.VISIBLE);
             //下拉框
@@ -255,15 +255,14 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             }
             if (isCompany3Show) {
                 sp_some_company_3.setEnabled(false);
-                sp_some_company_3.setTag(sp_some_company_3.getSelectedItem());
                 companyList1.remove(sp_some_company_3.getSelectedItem());
             }
             initSpinner(sp_some_company_1, companyList1);
             sp_some_company_1.setSelection(0);
         } else if (!isCompany2Show) {
             //第二家企业
-           /* if (!requiredInput())
-                return;*/
+            if (!requiredInput())
+                return;
             isCompany2Show = true;
             ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
             initControlView(true);
@@ -282,8 +281,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         } else {
             //添加第三家企业
             if (!isCompany3Show) {
-              /*  if (!requiredInput())
-                    return;*/
+                if (!requiredInput())
+                    return;
                 isCompany3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
                 initControlView(false);
@@ -312,7 +311,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 isCompany1Show = true;
                 layout_company_1.setVisibility(View.VISIBLE);
                 sp_some_company_1.setSelection(0);
-                sp_some_company_1.setTag(sp_some_company_1.getSelectedItem());
                 sp_some_company_1.setEnabled(false);
                 break;
             case 1:
@@ -324,7 +322,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 //下拉框
                 initSpinner(sp_some_company_2, Constants.COMPANYLIST);
                 sp_some_company_2.setSelection(1);
-                sp_some_company_2.setTag(sp_some_company_2.getSelectedItem());
                 break;
             case 2:
                 isCompany3Show = true;
@@ -334,7 +331,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 sp_some_company_3.setEnabled(false);
                 initSpinner(sp_some_company_3, Constants.COMPANYLIST);
                 sp_some_company_3.setSelection(2);
-                sp_some_company_3.setTag(sp_some_company_3.getSelectedItem());
                 break;
             default:
                 break;
@@ -1288,8 +1284,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         //经营场所 1自由 2租赁 3其他
         List<CompanyInfo> companyInfoList = new ArrayList<CompanyInfo>();
         //必填验证
-        //if (!requiredInput())
-        //    return;
+        if (!requiredInput())
+            return;
         CompanyInfo companyInfo = null;
         if (isCompany1Show) {
             companyInfo = new CompanyInfo();

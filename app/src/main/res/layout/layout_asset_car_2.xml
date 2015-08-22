@@ -13,7 +13,11 @@
             style="@style/SmallTextStyle"
             android:text="车："
             android:textSize="@dimen/large_text_size" />
-
+        <ImageView
+            android:id="@+id/img_car_add_2"
+            style="@style/SettingRightIconStyle"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/icon_add" />
     </RelativeLayout>
 
     <View style="@style/ViewLineStyle" />

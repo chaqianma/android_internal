@@ -16,7 +16,7 @@
                 android:textSize="@dimen/large_text_size" />
 
             <ImageView
-                android:id="@+id/img_car_add"
+                android:id="@+id/img_car_add_1"
                 style="@style/SettingRightIconStyle"
                 android:layout_marginRight="20dp"
                 android:src="@mipmap/icon_add" />

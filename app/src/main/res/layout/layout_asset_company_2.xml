@@ -11,7 +11,11 @@
             style="@style/SmallTextStyle"
             android:text="企业营收："
             android:textSize="@dimen/large_text_size" />
-
+        <ImageView
+            android:id="@+id/img_company_asset_add_2"
+            style="@style/SettingRightIconStyle"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/icon_add" />
     </RelativeLayout>
 
     <View style="@style/ViewLineStyle" />

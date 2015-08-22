@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -61,24 +62,30 @@ public class PersonalAssetsFragment extends BaseFragment {
 
     @InjectView(R.id.linear_container)
     LinearLayout linear_container;
-    @InjectView(R.id.img_company_asset_add)
-    ImageView img_company_asset_add;
+    @InjectView(R.id.img_company_asset_add_1)
+    ImageView img_company_asset_add_1;
+    ImageView img_company_asset_add_2;
+    ImageView img_company_asset_add_3;
     @InjectView(R.id.gv_income_1)
     GridView gv_income_1;
     @InjectView(R.id.gv_bill_1)
     GridView gv_bill_1;
     @InjectView(R.id.sp_company_1)
     Spinner sp_company_1;
-    @InjectView(R.id.img_car_add)
-    ImageView img_car_add;
+    @InjectView(R.id.img_car_add_1)
+    ImageView img_car_add_1;
+    ImageView img_car_add_2;
+    ImageView img_car_add_3;
     @InjectView(R.id.gv_license_plate_1)
     GridView gv_license_plate_1;
     @InjectView(R.id.gv_driving_license_1)
     GridView gv_driving_license_1;
     @InjectView(R.id.sp_car_1)
     Spinner sp_car_1;
-    @InjectView(R.id.img_house_add)
-    ImageView img_house_add;
+    @InjectView(R.id.img_house_add_1)
+    ImageView img_house_add_1;
+    ImageView img_house_add_2;
+    ImageView img_house_add_3;
     @InjectView(R.id.gv_house_contract_1)
     GridView gv_house_contract_1;
     @InjectView(R.id.gv_land_1)
@@ -183,14 +190,50 @@ public class PersonalAssetsFragment extends BaseFragment {
     private ImgsGridViewAdapter mTDAdpter_3 = null;
     private List<UploadFileInfo> mTDList_3 = null;
 
+    private boolean isIncome1Show = false;
     private boolean isIncome2Show = false;
     private boolean isIncome3Show = false;
 
+    private boolean isCar1Show = false;
     private boolean isCar2Show = false;
     private boolean isCar3Show = false;
 
+    private boolean isHouse1Show = false;
     private boolean isHouse2Show = false;
     private boolean isHouse3Show = false;
+
+    //企业集合  无聊的代码
+    private ArrayList<String> companyList1 = new ArrayList<String>() {
+        {
+            add("企业a");
+            add("企业b");
+            add("企业c");
+        }
+    };
+    private ArrayList<String> companyList2 = (ArrayList) companyList1.clone();
+    private ArrayList<String> companyList3 = (ArrayList) companyList1.clone();
+
+    //车辆集合
+    private ArrayList<String> carList1 = new ArrayList<String>() {
+        {
+            add("车辆a");
+            add("车辆b");
+            add("车辆c");
+        }
+    };
+    private ArrayList<String> carList2 = (ArrayList) carList1.clone();
+    private ArrayList<String> carList3 = (ArrayList) carList1.clone();
+
+    //房集合
+    private ArrayList<String> houseList1 = new ArrayList<String>() {
+        {
+            add("房产a");
+            add("房产b");
+            add("房产c");
+        }
+    };
+    private ArrayList<String> houseList2 = (ArrayList) houseList1.clone();
+    private ArrayList<String> houseList3 = (ArrayList) houseList1.clone();
 
     private String mBorrowRequestId = null;
     //用于标识选择的是哪个类型
@@ -216,40 +259,106 @@ public class PersonalAssetsFragment extends BaseFragment {
     private List<UploadFileInfo> soundInfoList = null;
 
     /*
-    * 添加企业营收
+    * 是否可以添加企业
     * */
-    private void addCompanyIncome() {
-        if (!isIncome2Show) {
+    private boolean isCanAddCompany() {
+        if (isIncome1Show) {
             //收入
             if (!isUploadSuccess(mSYList_1)) {
                 JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
-                return;
+                return false;
             }
             //经营
             if (!isUploadSuccess(mJYList_1)) {
                 JDToast.showLongText(getActivity(), "请上传经营性单据图片");
-                return;
+                return false;
             }
+        }
+        if (isIncome2Show) {
+            //收入
+            if (!isUploadSuccess(mSYList_2)) {
+                JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
+                return false;
+            }
+            //经营
+            if (!isUploadSuccess(mJYList_2)) {
+                JDToast.showLongText(getActivity(), "请上传经营性单据图片");
+                return false;
+            }
+        }
+        if (isIncome3Show) {
+            //收入
+            if (!isUploadSuccess(mSYList_3)) {
+                JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
+                return false;
+            }
+
+            //经营
+            if (!isUploadSuccess(mJYList_3)) {
+                JDToast.showLongText(getActivity(), "请上传经营性单据图片");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /*
+    * 添加企业营收
+    * */
+    private void addCompanyIncome() {
+        if (!isIncome1Show) {
+            if (!isCanAddCompany())
+                return;
+            isIncome1Show = true;
+            layout_asset_company_1.setVisibility(View.VISIBLE);
+            //下拉框
+            if (isIncome2Show) {
+                sp_company_2.setEnabled(false);
+                companyList1.remove(sp_company_2.getSelectedItem());
+            }
+            if (isIncome3Show) {
+                sp_company_3.setEnabled(false);
+                companyList1.remove(sp_company_3.getSelectedItem());
+            }
+            initSpinner(sp_company_1, companyList1);
+            sp_company_1.setSelection(0);
+        } else if (!isIncome2Show) {
+            if (!isCanAddCompany())
+                return;
             isIncome2Show = true;
-            ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
+            View view =  ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
+            JDAppUtil.addShowAction(view);
             initCompanyView(true);
+            //下拉框
+            if (isIncome1Show) {
+                sp_company_1.setEnabled(false);
+                companyList2.remove(sp_company_1.getSelectedItem());
+            }
+            if (isIncome3Show) {
+                sp_company_3.setEnabled(false);
+                companyList2.remove(sp_company_3.getSelectedItem());
+            }
+            initSpinner(sp_company_2, companyList2);
+            sp_company_2.setSelection(0);
         } else {
             if (!isIncome3Show) {
-                //收入
-                if (!isUploadSuccess(mSYList_2)) {
-                    JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
+                if (!isCanAddCompany())
                     return;
-                }
-
-                //经营
-                if (!isUploadSuccess(mJYList_2)) {
-                    JDToast.showLongText(getActivity(), "请上传经营性单据图片");
-                    return;
-                }
                 isIncome3Show = true;
                 View view = ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
                 initCompanyView(false);
                 JDAppUtil.addShowAction(view);
+                //下拉框
+                if (isIncome1Show) {
+                    sp_company_1.setEnabled(false);
+                    companyList3.remove(sp_company_1.getSelectedItem());
+                }
+                if (isIncome2Show) {
+                    sp_company_2.setEnabled(false);
+                    companyList3.remove(sp_company_2.getSelectedItem());
+                }
+                initSpinner(sp_company_3, companyList3);
+                sp_company_3.setSelection(0);
             }
         }
     }
@@ -259,17 +368,30 @@ public class PersonalAssetsFragment extends BaseFragment {
    * */
     private void addCompanyIncome(int incomeIdx) {
         switch (incomeIdx) {
+            case 0:
+                layout_asset_company_1.setVisibility(View.VISIBLE);
+                isIncome1Show = true;
+                sp_company_1.setSelection(0);
+                sp_company_1.setEnabled(false);
+                break;
             case 1:
                 isIncome2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
                 initCompanyView(true);
+                //下拉框
+                initSpinner(sp_company_2, Constants.COMPANYLIST);
                 sp_company_2.setSelection(1);
+                sp_company_2.setEnabled(false);
                 break;
             case 2:
                 isIncome3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
                 initCompanyView(false);
+                //下拉框
+                sp_company_3.setEnabled(false);
+                initSpinner(sp_company_3, Constants.COMPANYLIST);
                 sp_company_3.setSelection(2);
+                sp_company_3.setEnabled(false);
                 break;
             default:
                 break;
@@ -277,40 +399,108 @@ public class PersonalAssetsFragment extends BaseFragment {
     }
 
     /*
-    * 添加车
+    * 验证是否可以添加车辆
     * */
-    private void addCar() {
-        if (!isCar2Show) {
+    private boolean isCanAddCar() {
+        if (isCar1Show) {
             //车牌
             if (!isUploadSuccess(mCPList_1)) {
                 JDToast.showLongText(getActivity(), "请上传车牌车型图片");
-                return;
+                return false;
             }
 
             //行驶证
             if (!isUploadSuccess(mXSList_1)) {
                 JDToast.showLongText(getActivity(), "请上传行驶证图片");
-                return;
+                return false;
             }
+        }
+        if (isCar2Show) {
+            //车牌
+            if (!isUploadSuccess(mCPList_2)) {
+                JDToast.showLongText(getActivity(), "请上传车牌车型图片");
+                return false;
+            }
+
+            //行驶证
+            if (!isUploadSuccess(mXSList_2)) {
+                JDToast.showLongText(getActivity(), "请上传行驶证图片");
+                return false;
+            }
+        }
+        if (isCar3Show) {
+            //车牌
+            if (!isUploadSuccess(mCPList_3)) {
+                JDToast.showLongText(getActivity(), "请上传车牌车型图片");
+                return false;
+            }
+
+            //行驶证
+            if (!isUploadSuccess(mXSList_3)) {
+                JDToast.showLongText(getActivity(), "请上传行驶证图片");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /*
+    * 添加车
+    * */
+    private void addCar() {
+        if (!isCar1Show) {
+            if (!isCanAddCar())
+                return;
+            isCar1Show = true;
+            layout_asset_car_1.setVisibility(View.VISIBLE);
+            //下拉框
+            if (isCar2Show) {
+                sp_car_2.setEnabled(false);
+                carList1.remove(sp_car_2.getSelectedItem());
+            }
+            if (isCar3Show) {
+                sp_car_3.setEnabled(false);
+                carList1.remove(sp_car_3.getSelectedItem());
+            }
+            initSpinner(sp_car_1, carList1);
+            sp_car_1.setSelection(0);
+        } else if (!isCar2Show) {
+            if (!isCanAddCar())
+                return;
             isCar2Show = true;
-            ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
+            View view=((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
+            JDAppUtil.addShowAction(view);
             initCarView(true);
+            //下拉框
+            if (isCar1Show) {
+                sp_car_1.setEnabled(false);
+                carList2.remove(sp_car_1.getSelectedItem());
+            }
+            if (isCar3Show) {
+                sp_car_3.setEnabled(false);
+                carList2.remove(sp_car_3.getSelectedItem());
+            }
+            initSpinner(sp_car_2, carList2);
+            sp_car_2.setSelection(0);
         } else {
             if (!isCar3Show) {
-                //车牌
-                if (!isUploadSuccess(mCPList_2)) {
-                    JDToast.showLongText(getActivity(), "请上传车牌车型图片");
+                if (!isCanAddCar())
                     return;
-                }
-
-                //行驶证
-                if (!isUploadSuccess(mXSList_2)) {
-                    JDToast.showLongText(getActivity(), "请上传行驶证图片");
-                    return;
-                }
                 isCar3Show = true;
-                ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
+                View view=((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
+                JDAppUtil.addShowAction(view);
                 initCarView(false);
+                //下拉框
+                if (isCar1Show) {
+                    sp_car_1.setEnabled(false);
+                    carList3.remove(sp_car_1.getSelectedItem());
+                }
+                if (isCar2Show) {
+                    sp_car_2.setEnabled(false);
+                    carList3.remove(sp_car_2.getSelectedItem());
+                }
+                initSpinner(sp_car_3, carList3);
+                sp_car_3.setSelection(0);
             }
         }
     }
@@ -320,17 +510,27 @@ public class PersonalAssetsFragment extends BaseFragment {
    * */
     private void addCar(int carIdx) {
         switch (carIdx) {
+            case 0:
+                isCar1Show = true;
+                layout_asset_car_1.setVisibility(View.VISIBLE);
+                sp_car_1.setSelection(0);
+                sp_car_1.setEnabled(false);
+                break;
             case 1:
                 isCar2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
                 initCarView(true);
+                initSpinner(sp_car_2, Constants.CARLIST);
                 sp_car_2.setSelection(1);
+                sp_car_2.setEnabled(false);
                 break;
             case 2:
                 isCar3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
                 initCarView(false);
+                initSpinner(sp_car_3, Constants.CARLIST);
                 sp_car_3.setSelection(2);
+                sp_car_3.setEnabled(false);
                 break;
             default:
                 break;
@@ -338,40 +538,106 @@ public class PersonalAssetsFragment extends BaseFragment {
     }
 
     /*
-    * 房
+    * 是否可以添加房产
     * */
-    private void addHouse() {
-        if (!isHouse2Show) {
+    private boolean isCanAddHouse() {
+        if (isHouse1Show) {
             //房产证/合同
             if (!isUploadSuccess(mFCList_1)) {
                 JDToast.showLongText(getActivity(), "请上传房产证合同图片");
-                return;
+                return false;
             }
 
             //土地证
             if (!isUploadSuccess(mTDList_1)) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
-                return;
+                return false;
             }
+        }
+        if (isHouse2Show) {
+            //房产证/合同
+            if (!isUploadSuccess(mFCList_2)) {
+                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
+                return false;
+            }
+
+            //土地证
+            if (!isUploadSuccess(mTDList_2)) {
+                JDToast.showLongText(getActivity(), "请上传土地证图片");
+                return false;
+            }
+        }
+        if (isHouse3Show) {
+            //房产证/合同
+            if (!isUploadSuccess(mFCList_3)) {
+                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
+                return false;
+            }
+
+            //土地证
+            if (!isUploadSuccess(mTDList_3)) {
+                JDToast.showLongText(getActivity(), "请上传土地证图片");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /*
+    * 房
+    * */
+    private void addHouse() {
+        if (!isHouse1Show) {
+            if (!isCanAddHouse())
+                return;
+            isHouse1Show = true;
+            layout_asset_house_1.setVisibility(View.VISIBLE);
+            //下拉框
+            if (isHouse2Show) {
+                sp_house_2.setEnabled(false);
+                houseList1.remove(sp_house_2.getSelectedItem());
+            }
+            if (isHouse3Show) {
+                sp_house_3.setEnabled(false);
+                houseList1.remove(sp_house_3.getSelectedItem());
+            }
+            initSpinner(sp_house_1, houseList1);
+            sp_house_1.setSelection(0);
+        } else if (!isHouse2Show) {
+            if (!isCanAddHouse())
+                return;
             isHouse2Show = true;
             ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
             initHouseView(true);
+            //下拉框
+            if (isHouse1Show) {
+                sp_house_1.setEnabled(false);
+                houseList2.remove(sp_house_1.getSelectedItem());
+            }
+            if (isHouse3Show) {
+                sp_house_3.setEnabled(false);
+                houseList2.remove(sp_house_3.getSelectedItem());
+            }
+            initSpinner(sp_house_2, houseList2);
+            sp_house_2.setSelection(0);
         } else {
             if (!isHouse3Show) {
-                //房产证/合同
-                if (!isUploadSuccess(mFCList_2)) {
-                    JDToast.showLongText(getActivity(), "请上传房产证合同图片");
+                if (!isCanAddHouse())
                     return;
-                }
-
-                //土地证
-                if (!isUploadSuccess(mTDList_2)) {
-                    JDToast.showLongText(getActivity(), "请上传土地证图片");
-                    return;
-                }
                 isHouse3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
                 initHouseView(false);
+                //下拉框
+                if (isHouse1Show) {
+                    sp_house_1.setEnabled(false);
+                    houseList3.remove(sp_house_1.getSelectedItem());
+                }
+                if (isHouse2Show) {
+                    sp_house_2.setEnabled(false);
+                    houseList3.remove(sp_house_2.getSelectedItem());
+                }
+                initSpinner(sp_house_3, houseList3);
+                sp_house_3.setSelection(0);
             }
         }
     }
@@ -381,44 +647,73 @@ public class PersonalAssetsFragment extends BaseFragment {
    * */
     private void addHouse(int houseIdx) {
         switch (houseIdx) {
+            case 0:
+                isHouse1Show = true;
+                layout_asset_house_1.setVisibility(View.VISIBLE);
+                sp_house_1.setEnabled(false);
+                sp_house_1.setSelection(0);
+                break;
             case 1:
                 isHouse2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
                 initHouseView(true);
+                initSpinner(sp_house_2, Constants.HOUSELIST);
                 sp_house_2.setSelection(1);
+                sp_house_2.setEnabled(false);
                 break;
             case 2:
                 isHouse3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
                 initHouseView(false);
+                initSpinner(sp_house_3, Constants.HOUSELIST);
                 sp_house_3.setSelection(2);
+                sp_house_3.setEnabled(false);
                 break;
             default:
                 break;
         }
     }
 
-    @OnClick(R.id.img_company_asset_add)
+    @OnClick(R.id.img_company_asset_add_1)
     void addComanyAssetClick() {
         addCompanyIncome();
     }
 
-    @OnClick(R.id.img_car_add)
+    @OnClick(R.id.img_car_add_1)
     void addCarClick() {
         addCar();
     }
 
-    @OnClick(R.id.img_house_add)
+    @OnClick(R.id.img_house_add_1)
     void addHouseClick() {
         addHouse();
     }
 
 
     /*
+   *  初始化下拉框
+   * */
+    private void initSpinner(Spinner spinner, List<String> data) {
+        //将可选内容与ArrayAdapter连接起来
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, data);
+        //设置下拉列表的风格
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //将adapter 添加到spinner中
+        spinner.setAdapter(adapter);
+    }
+
+    /*
    * 初始企业化组件
    * */
     private void initCompanyView(boolean is2) {
         if (is2) {
+            img_company_asset_add_2 = (ImageView) mView.findViewById(R.id.img_company_asset_add_2);
+            img_company_asset_add_2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addCompanyIncome();
+                }
+            });
             //收入证明
             gv_income_2 = (GridView) mView.findViewById(R.id.gv_income_2);
             //经营性单据
@@ -450,6 +745,13 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
 
         } else {
+            img_company_asset_add_3 = (ImageView) mView.findViewById(R.id.img_company_asset_add_3);
+            img_company_asset_add_3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addCompanyIncome();
+                }
+            });
             //收入证明
             gv_income_3 = (GridView) mView.findViewById(R.id.gv_income_3);
             //经营性单据
@@ -488,6 +790,13 @@ public class PersonalAssetsFragment extends BaseFragment {
    * */
     private void initCarView(boolean is2) {
         if (is2) {
+            img_car_add_2 = (ImageView) mView.findViewById(R.id.img_car_add_2);
+            img_car_add_2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addCar();
+                }
+            });
             //车牌车型
             gv_license_plate_2 = (GridView) mView.findViewById(R.id.gv_license_plate_2);
             //行驶证
@@ -520,6 +829,13 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
 
         } else {
+            img_car_add_3 = (ImageView) mView.findViewById(R.id.img_car_add_3);
+            img_car_add_3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addCar();
+                }
+            });
             //车牌车型
             gv_license_plate_3 = (GridView) mView.findViewById(R.id.gv_license_plate_3);
             //行驶证
@@ -558,6 +874,13 @@ public class PersonalAssetsFragment extends BaseFragment {
    * */
     private void initHouseView(boolean is2) {
         if (is2) {
+            img_house_add_2 = (ImageView) mView.findViewById(R.id.img_house_add_2);
+            img_house_add_2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addHouse();
+                }
+            });
             //房产证/合同
             gv_house_contract_2 = (GridView) mView.findViewById(R.id.gv_house_contract_2);
             //土地证
@@ -590,6 +913,13 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
 
         } else {
+            img_house_add_3 = (ImageView) mView.findViewById(R.id.img_house_add_3);
+            img_house_add_3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addHouse();
+                }
+            });
             //房产证/合同
             gv_house_contract_3 = (GridView) mView.findViewById(R.id.gv_house_contract_3);
             //土地证
@@ -636,7 +966,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         this.mView = view;
         mBorrowRequestId = getBorrowRequestId();
         initOneView();
-        //getPersonalAssetInfo();
+        getPersonalAssetInfo();
         return view;
     }
 
@@ -704,22 +1034,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            switch (idx) {
-                                case 0:
-                                    layout_asset_company_1.setVisibility(View.VISIBLE);
-                                    initServerFile(companyInfo.getFileList(), idx);
-                                    break;
-                                case 1:
-                                    addCompanyIncome(1);
-                                    initServerFile(companyInfo.getFileList(), idx);
-                                    break;
-                                case 2:
-                                    addCompanyIncome(2);
-                                    initServerFile(companyInfo.getFileList(), idx);
-                                    break;
-                                default:
-                                    break;
-                            }
+                            addCompanyIncome(idx);
+                            initServerFile(companyInfo.getFileList(), idx);
                         }
                     });
                 }
@@ -758,22 +1074,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                switch (idx) {
-                                    case 0:
-                                        layout_asset_car_1.setVisibility(View.VISIBLE);
-                                        initServerFile(carInfo.getFileList(), idx);
-                                        break;
-                                    case 1:
-                                        addCar(1);
-                                        initServerFile(carInfo.getFileList(), idx);
-                                        break;
-                                    case 2:
-                                        addCar(2);
-                                        initServerFile(carInfo.getFileList(), idx);
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                addCar(idx);
+                                initServerFile(carInfo.getFileList(), idx);
                             }
                         });
                     }
@@ -813,22 +1115,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                switch (idx) {
-                                    case 0:
-                                        layout_asset_house_1.setVisibility(View.VISIBLE);
-                                        initServerFile(houseInfo.getFileList(), idx);
-                                        break;
-                                    case 1:
-                                        addHouse(1);
-                                        initServerFile(houseInfo.getFileList(), idx);
-                                        break;
-                                    case 2:
-                                        addHouse(2);
-                                        initServerFile(houseInfo.getFileList(), idx);
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                addHouse(idx);
+                                initServerFile(houseInfo.getFileList(), idx);
                             }
                         });
                     }
@@ -1166,9 +1454,15 @@ public class PersonalAssetsFragment extends BaseFragment {
         refreshData(uploadFileInfo);
     }
 
+    @Override
+    public void onRefreshSpinner(UploadFileInfo fileInfo) {
+        super.onRefreshSpinner(fileInfo);
+        setSpinnerEnabled(fileInfo);
+    }
+
     /*
-    * 得到上传文件的父id 并设置ParentTableName
-    * */
+        * 得到上传文件的父id 并设置ParentTableName
+        * */
     private String getParentIdAndSetParentTableName(UploadFileInfo fileInfo) {
         String parentId = null;
         UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
@@ -1176,13 +1470,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         if (fType == UploadFileType.SY || fType == UploadFileType.JY) {
             switch (fileInfo.getIdxTag()) {
                 case 0:
-                    parentId = mCompanyId[sp_company_1.getSelectedItemPosition()];
+                    parentId = mCompanyId[Constants.COMPANYLIST.indexOf(sp_company_1.getSelectedItem().toString())];
                     break;
                 case 1:
-                    parentId = mCompanyId[sp_company_2.getSelectedItemPosition()];
+                    parentId = mCompanyId[Constants.COMPANYLIST.indexOf(sp_company_2.getSelectedItem().toString())];
                     break;
                 case 2:
-                    parentId = mCompanyId[sp_company_3.getSelectedItemPosition()];
+                    parentId = mCompanyId[Constants.COMPANYLIST.indexOf(sp_company_3.getSelectedItem().toString())];
                     break;
                 default:
                     break;
@@ -1191,13 +1485,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else if (fType == UploadFileType.CP || fType == UploadFileType.XS) {
             switch (fileInfo.getIdxTag()) {
                 case 0:
-                    parentId = mCardId[sp_car_1.getSelectedItemPosition()];
+                    parentId = mCardId[Constants.CARLIST.indexOf(sp_car_1.getSelectedItem().toString())];
                     break;
                 case 1:
-                    parentId = mCardId[sp_car_2.getSelectedItemPosition()];
+                    parentId = mCardId[Constants.CARLIST.indexOf(sp_car_2.getSelectedItem().toString())];
                     break;
                 case 2:
-                    parentId = mCardId[sp_car_3.getSelectedItemPosition()];
+                    parentId = mCardId[Constants.CARLIST.indexOf(sp_car_3.getSelectedItem().toString())];
                     break;
                 default:
                     break;
@@ -1209,13 +1503,13 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else if (fType == UploadFileType.FC || fType == UploadFileType.TD) {
             switch (fileInfo.getIdxTag()) {
                 case 0:
-                    parentId = mHouseId[sp_house_1.getSelectedItemPosition()];
+                    parentId = mCardId[Constants.HOUSELIST.indexOf(sp_house_1.getSelectedItem().toString())];
                     break;
                 case 1:
-                    parentId = mHouseId[sp_house_2.getSelectedItemPosition()];
+                    parentId = mCardId[Constants.HOUSELIST.indexOf(sp_house_2.getSelectedItem().toString())];
                     break;
                 case 2:
-                    parentId = mHouseId[sp_house_3.getSelectedItemPosition()];
+                    parentId = mCardId[Constants.HOUSELIST.indexOf(sp_house_3.getSelectedItem().toString())];
                     break;
                 default:
                     break;
@@ -1474,47 +1768,23 @@ public class PersonalAssetsFragment extends BaseFragment {
    * */
     private boolean requiredInput() {
 
-        //第一家
-        // 收入证明
-        if (!isUploadSuccess(mSYList_1)) {
-            JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
-            return false;
+        if (isIncome1Show) {
+            //第一家
+            // 收入证明
+            if (!isUploadSuccess(mSYList_1)) {
+                JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
+                return false;
+            }
+
+            //经营
+            if (!isUploadSuccess(mJYList_1)) {
+                JDToast.showLongText(getActivity(), "请上传经营性单据图片");
+                return false;
+            }
         }
 
-        //经营
-        if (!isUploadSuccess(mJYList_1)) {
-            JDToast.showLongText(getActivity(), "请上传经营性单据图片");
-            return false;
-        }
-
-
-        //车牌
-        if (!isUploadSuccess(mCPList_1)) {
-            JDToast.showLongText(getActivity(), "请上传车牌车型图片");
-            return false;
-        }
-
-        //行驶证
-        if (!isUploadSuccess(mXSList_1)) {
-            JDToast.showLongText(getActivity(), "请上传行驶证图片");
-            return false;
-        }
-
-        //房产证/合同
-        if (!isUploadSuccess(mFCList_1)) {
-            JDToast.showLongText(getActivity(), "请上传房产证合同图片");
-            return false;
-        }
-
-        //土地证
-        if (!isUploadSuccess(mTDList_1)) {
-            JDToast.showLongText(getActivity(), "请上传土地证图片");
-            return false;
-        }
-
-        //第二家
-        // 收入证明
         if (isIncome2Show) {
+            // 收入证明
             if (!isUploadSuccess(mSYList_2)) {
                 JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
                 return false;
@@ -1523,6 +1793,34 @@ public class PersonalAssetsFragment extends BaseFragment {
             //经营
             if (!isUploadSuccess(mJYList_2)) {
                 JDToast.showLongText(getActivity(), "请上传经营性单据图片");
+                return false;
+            }
+        }
+
+        if (isIncome3Show) {
+            // 收入证明
+            if (!isUploadSuccess(mSYList_3)) {
+                JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
+                return false;
+            }
+
+            //经营
+            if (!isUploadSuccess(mJYList_3)) {
+                JDToast.showLongText(getActivity(), "请上传经营性单据图片");
+                return false;
+            }
+        }
+
+        if (isCar1Show) {
+            //车牌
+            if (!isUploadSuccess(mCPList_1)) {
+                JDToast.showLongText(getActivity(), "请上传车牌车型图片");
+                return false;
+            }
+
+            //行驶证
+            if (!isUploadSuccess(mXSList_1)) {
+                JDToast.showLongText(getActivity(), "请上传行驶证图片");
                 return false;
             }
         }
@@ -1541,35 +1839,6 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
         }
 
-        if (isHouse2Show) {
-            //房产证/合同
-            if (!isUploadSuccess(mFCList_2)) {
-                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
-                return false;
-            }
-
-            //土地证
-            if (!isUploadSuccess(mTDList_2)) {
-                JDToast.showLongText(getActivity(), "请上传土地证图片");
-                return false;
-            }
-        }
-
-        //第三家
-        // 收入证明
-        if (isIncome3Show) {
-            if (!isUploadSuccess(mSYList_3)) {
-                JDToast.showLongText(getActivity(), "请上传企业收入证明图片");
-                return false;
-            }
-
-            //经营
-            if (!isUploadSuccess(mJYList_3)) {
-                JDToast.showLongText(getActivity(), "请上传经营性单据图片");
-                return false;
-            }
-        }
-
         if (isCar3Show) {
             //车牌
             if (!isUploadSuccess(mCPList_3)) {
@@ -1580,6 +1849,34 @@ public class PersonalAssetsFragment extends BaseFragment {
             //行驶证
             if (!isUploadSuccess(mXSList_3)) {
                 JDToast.showLongText(getActivity(), "请上传行驶证图片");
+                return false;
+            }
+        }
+
+        if (isHouse1Show) {
+            //房产证/合同
+            if (!isUploadSuccess(mFCList_1)) {
+                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
+                return false;
+            }
+
+            //土地证
+            if (!isUploadSuccess(mTDList_1)) {
+                JDToast.showLongText(getActivity(), "请上传土地证图片");
+                return false;
+            }
+        }
+
+        if (isHouse2Show) {
+            //房产证/合同
+            if (!isUploadSuccess(mFCList_2)) {
+                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
+                return false;
+            }
+
+            //土地证
+            if (!isUploadSuccess(mTDList_2)) {
+                JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
             }
         }
@@ -1604,8 +1901,8 @@ public class PersonalAssetsFragment extends BaseFragment {
     * 保存数据
     * */
     public void saveDataSubmit() {
-        if (!requiredInput())
-            return;
+       /* if (!requiredInput())
+            return;*/
         //备注
         String remark = et_remark.getText().toString();
         if (JDAppUtil.isEmpty(remark)) {
