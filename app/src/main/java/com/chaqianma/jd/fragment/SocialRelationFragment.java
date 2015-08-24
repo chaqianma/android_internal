@@ -743,37 +743,37 @@ public class SocialRelationFragment extends BaseFragment {
     private boolean requiredInput() {
         //关系类型  与关系人身份证件 备注 必填
         if (isShow1) {
-            if (!isUploadSuccess(mRCList_1)) {
+            /*if (!isUploadSuccess(mRCList_1)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }
+            }*/
         }
         if (isShow2) {
-            if (!isUploadSuccess(mRCList_2)) {
+           /* if (!isUploadSuccess(mRCList_2)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }
+            }*/
         }
 
         if (isShow3) {
-            if (!isUploadSuccess(mRCList_3)) {
+            /*if (!isUploadSuccess(mRCList_3)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }
+            }*/
         }
 
         if (isShow4) {
-            if (!isUploadSuccess(mRCList_4)) {
+           /* if (!isUploadSuccess(mRCList_4)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }
+            }*/
         }
 
         if (isShow5) {
-            if (!isUploadSuccess(mRCList_5)) {
+           /* if (!isUploadSuccess(mRCList_5)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }
+            }*/
         }
         return true;
     }
@@ -790,10 +790,10 @@ public class SocialRelationFragment extends BaseFragment {
         }
         if (!requiredInput())
              return;
-        if (JDAppUtil.isEmpty(et_remark.getText().toString())) {
+        /*if (JDAppUtil.isEmpty(et_remark.getText().toString())) {
             JDToast.showLongText(getActivity(), "请输入备注信息");
             return;
-        }
+        }*/
         ContactInfo contactInfo = null;
         if (isShow1) {
             if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))

@@ -52,8 +52,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="房产证/合同："
-                android:textColor="@color/red" />
+                android:text="房产证/合同：" />
 
             <LinearLayout
 
@@ -84,8 +83,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="土地证："
-                android:textColor="@color/red" />
+                android:text="土地证：" />
 
             <LinearLayout
 

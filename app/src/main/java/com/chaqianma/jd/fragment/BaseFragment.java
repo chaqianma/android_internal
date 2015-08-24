@@ -203,17 +203,17 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
             String smallImgPath = getFilePath(random, fileType.getValue(), false);
             String bigImgPath = getFilePath(random, fileType.getValue(), true);
             //存放大图
-            Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
+           /* Bitmap proportionBM = ImageUtil.proportionZoom(imgPath, 1024);
             if (proportionBM != null) {
                 ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
                 proportionBM.recycle();
-            }
-            //存放小图
-           /* Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 80, 80, "jpg");
-            if (bitmap != null) {
-                ImageUtil.saveBitmapFile(smallImgPath, bitmap);
-                bitmap.recycle();
             }*/
+            //存放小图
+            Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 500, 500, "jpg");
+            if (bitmap != null) {
+                ImageUtil.saveBitmapFile(bigImgPath, bitmap);
+                bitmap.recycle();
+            }
             UploadFileInfo imgInfo = new UploadFileInfo();
             imgInfo.setiServer(false);
             imgInfo.setBigImgPath(bigImgPath);

@@ -44,7 +44,8 @@
                 <TextView
                     android:id="@+id/tv_name_tag"
                     style="@style/SmallTextStyle"
-                    android:text="姓名：" />
+                    android:text="姓名："
+                    android:textColor="@color/red"/>
 
                 <EditText
                     android:id="@+id/et_name"
@@ -163,7 +164,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="手机：" />
+                    android:text="手机："
+                    android:textColor="@color/red"/>
 
                 <EditText
                     android:id="@+id/et_mobile"
@@ -180,7 +182,8 @@
                 <TextView
                     style="@style/SmallTextStyle"
                     android:layout_gravity="center"
-                    android:text="性别：" />
+                    android:text="性别："
+                    android:textColor="@color/red"/>
 
                 <RadioGroup
                     android:id="@+id/rg_sex"
@@ -206,7 +209,8 @@
                 <TextView
                     style="@style/SmallTextStyle"
                     android:layout_gravity="center"
-                    android:text="婚姻状况：" />
+                    android:text="婚姻状况："
+                    android:textColor="@color/red"/>
 
                 <RadioGroup
                     android:id="@+id/rg_marry"
@@ -397,8 +401,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="备注"
-                    android:textColor="@color/red" />
+                    android:text="备注" />
 
                 <EditText
                     android:id="@+id/et_remark"

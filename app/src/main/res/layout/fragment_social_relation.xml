@@ -54,8 +54,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="备注"
-                    android:textColor="@color/red" />
+                    android:text="备注" />
 
                 <EditText
                     android:id="@+id/et_remark"
@@ -124,7 +123,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="尽职说明" />
+                    android:text="尽职说明"
+                    android:textColor="@color/red"/>
 
                 <EditText
                     android:id="@+id/et_comment"

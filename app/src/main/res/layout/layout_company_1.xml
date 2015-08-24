@@ -52,7 +52,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="企业类型：" />
+                    android:text="企业类型："
+                    android:textColor="@color/red" />
 
                 <Spinner
                     android:id="@+id/sp_company_type_1"
@@ -103,8 +104,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="税务登记证："
-                    android:textColor="@color/red" />
+                    android:text="税务登记证：" />
 
                 <LinearLayout
 
@@ -136,8 +136,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="企业代码证："
-                    android:textColor="@color/red" />
+                    android:text="企业代码证：" />
 
                 <LinearLayout
 
@@ -168,8 +167,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="其它证件："
-                    android:textColor="@color/red" />
+                    android:text="其它证件：" />
 
                 <LinearLayout
 
@@ -198,7 +196,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="经营场所：" />
+                    android:text="经营场所："
+                    android:textColor="@color/red" />
 
                 <Spinner
                     android:id="@+id/sp_business_premises_1"
@@ -218,8 +217,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="房产证/合同："
-                    android:textColor="@color/red" />
+                    android:text="房产证/合同：" />
 
                 <LinearLayout
 
@@ -250,8 +248,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="土地证："
-                    android:textColor="@color/red" />
+                    android:text="土地证：" />
 
                 <LinearLayout
 
@@ -275,7 +272,6 @@
             </LinearLayout>
 
             <View style="@style/ViewLineStyle" />
-
         </LinearLayout>
     </LinearLayout>
 </merge>

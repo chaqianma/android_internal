@@ -91,6 +91,8 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
                 ErrorInfo errorInfo = (ErrorInfo) JSON.parseObject(new String(bytes), dataType);
                 if (errorInfo != null) {
                     String msg = errorInfo.getMessage().toLowerCase();
+                    if(errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("uuid") > -1)
+                        showToast("UUID不匹配");
                     if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("failed") > -1)
                         showToast("用户名或密码错误");
                     else if (msg.indexOf("available") > -1 || msg.indexOf("mybatis") > -1 || msg.indexOf("ibatis") > -1)

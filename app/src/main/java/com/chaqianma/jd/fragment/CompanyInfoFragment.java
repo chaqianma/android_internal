@@ -1211,7 +1211,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     * */
     private boolean requiredInput() {
         if (isCompany1Show) {
-            if (!isUploadSuccess(mTRList_1)) {
+            /*if (!isUploadSuccess(mTRList_1)) {
                 JDToast.showLongText(getActivity(), "请上传税务登记图片");
                 return false;
             }
@@ -1230,10 +1230,10 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             if (!isUploadSuccess(mLCList_1)) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
-            }
+            }*/
         }
         if (isCompany2Show) {
-            if (!isUploadSuccess(mTRList_2)) {
+            /*if (!isUploadSuccess(mTRList_2)) {
                 JDToast.showLongText(getActivity(), "请上传税务登记图片");
                 return false;
             }
@@ -1252,11 +1252,11 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             if (!isUploadSuccess(mLCList_2)) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
-            }
+            }*/
         }
 
         if (isCompany3Show) {
-            if (!isUploadSuccess(mTRList_3)) {
+           /* if (!isUploadSuccess(mTRList_3)) {
                 JDToast.showLongText(getActivity(), "请上传税务登记图片");
                 return false;
             }
@@ -1275,7 +1275,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             if (!isUploadSuccess(mLCList_3)) {
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
-            }
+            }*/
         }
         return true;
     }

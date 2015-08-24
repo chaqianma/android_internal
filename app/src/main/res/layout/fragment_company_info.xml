@@ -47,7 +47,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="备注" android:textColor="@color/red"/>
+                    android:text="备注"/>
 
                 <EditText
                     android:id="@+id/et_remark"

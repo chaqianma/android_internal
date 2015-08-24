@@ -144,7 +144,7 @@ public class BorrowApplyFragment extends BaseFragment {
                 }
             }
             tv_date.setText(borrowRequestInfo.getLength());
-            tv_purpose.setText(borrowRequestInfo.getBorrowPurpose());
+            tv_purpose.setText(borrowRequestInfo.getBorrowPurposeStr());
             mLocation = borrowRequestInfo.getLocation();
             workLocation = borrowRequestInfo.getWorkLocation();
             if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
@@ -239,6 +239,14 @@ public class BorrowApplyFragment extends BaseFragment {
 
     @OnClick(R.id.btn_borrow)
     void onBeginCheck() {
+        if (!JDAppUtil.existSDCard()) {
+            JDToast.showLongText(getActivity(), "请安装SD卡");
+            return;
+        }
+        if (JDAppUtil.getSDFreeSize() <= 100l) {
+            JDToast.showLongText(getActivity(), "SD容量小于100MB，请清理");
+            return;
+        }
         JDToast.showLongText(getActivity(), "借款页面加载布局有点慢，请等待！！！");
         if (!isCanClickOnce) {
             isCanClickOnce = true;

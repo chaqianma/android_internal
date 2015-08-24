@@ -34,6 +34,7 @@ public class RepaymentInfo extends ErrorInfo {
     private String borrowMoney = null;
     private String borrowDate = null;
     private String borrowPurpose = null;//借款用途
+    private String borrowPurposeStr=null;//借款用途
     private String dateLine = null;
     private int flag = 1;  //标明  0 新任务  1 催款
 
@@ -281,5 +282,13 @@ public class RepaymentInfo extends ErrorInfo {
 
     public void setColumnId(String columnId) {
         this.columnId = columnId;
+    }
+
+    public String getBorrowPurposeStr() {
+        return borrowPurposeStr;
+    }
+
+    public void setBorrowPurposeStr(String borrowPurposeStr) {
+        this.borrowPurposeStr = borrowPurposeStr;
     }
 }

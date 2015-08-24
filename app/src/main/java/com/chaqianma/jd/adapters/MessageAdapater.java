@@ -93,7 +93,7 @@ public class MessageAdapater extends BaseAdapter {
             tv_phone.setText(repaymentInfo.getPhone());
             tv_borrowMoney.setText(JDAppUtil.money2Format(repaymentInfo.getBorrowMoney()));
             tv_borrowDate.setText(repaymentInfo.getBorrowDate());
-            tv_borrowUse.setText(repaymentInfo.getBorrowPurpose());
+            tv_borrowUse.setText(repaymentInfo.getBorrowPurposeStr());
             repaymentInfo.getStrWorkLocation(tv_task_addr);
         }
         return convertView;

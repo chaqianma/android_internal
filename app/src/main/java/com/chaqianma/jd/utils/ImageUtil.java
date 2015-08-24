@@ -3,6 +3,7 @@ package com.chaqianma.jd.utils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -293,8 +294,8 @@ public class ImageUtil {
     /**
      * 保存图片Bitmap到本地
      *
-     * @param    tbFilePath    缩略图地址
-     * @param    bitmap    位图
+     * @param tbFilePath 缩略图地址
+     * @param bitmap     位图
      */
     public static void saveBitmapFile(String imgPath, Bitmap bitmap) {
         File file = new File(imgPath);
@@ -340,19 +341,112 @@ public class ImageUtil {
         Matrix matrix = new Matrix();
         matrix.postScale(scaleValue, scaleValue);
         options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(imgPath, options);
-        // 得到新的图片
-        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
-                true);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        newbm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
-        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-        newbm = BitmapFactory.decodeStream(bais);
-//		bm.recycle();
-        bm = null;
-        System.gc();
-
-        return newbm;
+        File file = new File(imgPath);
+        FileInputStream fs = null;
+        try {
+            fs = new FileInputStream(file);
+            bm = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
+            // 得到新的图片
+            Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
+                    true);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            newbm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            newbm = BitmapFactory.decodeStream(bais);
+            //bm.recycle();
+            bm = null;
+            System.gc();
+            return newbm;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fs != null) {
+                try {
+                    fs.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 
+    private static int computeInitialSampleSize(BitmapFactory.Options options,
+                                                int minSideLength, int maxNumOfPixels) {
+        double w = options.outWidth;
+        double h = options.outHeight;
+
+        int lowerBound = (maxNumOfPixels == -1) ? 1 :
+                (int) Math.ceil(Math.sqrt(w * h / maxNumOfPixels));
+        int upperBound = (minSideLength == -1) ? 128 :
+                (int) Math.min(Math.floor(w / minSideLength),
+                        Math.floor(h / minSideLength));
+
+        if (upperBound < lowerBound) {
+            return lowerBound;
+        }
+
+        if ((maxNumOfPixels == -1) &&
+                (minSideLength == -1)) {
+            return 1;
+        } else if (minSideLength == -1) {
+            return lowerBound;
+        } else {
+            return upperBound;
+        }
+    }
+
+    public static int computeSampleSize(BitmapFactory.Options options,
+                                        int minSideLength, int maxNumOfPixels) {
+        int initialSize = computeInitialSampleSize(options, minSideLength,
+                maxNumOfPixels);
+
+        int roundedSize;
+        if (initialSize <= 8) {
+            roundedSize = 1;
+            while (roundedSize < initialSize) {
+                roundedSize <<= 1;
+            }
+        } else {
+            roundedSize = (initialSize + 7) / 8 * 8;
+        }
+
+        return roundedSize;
+    }
+
+    public static Bitmap getBitmapForBigPath(String imgPath) {
+        BitmapFactory.Options bfOptions = new BitmapFactory.Options();
+        bfOptions.inDither = false;
+        bfOptions.inPurgeable = true;
+        bfOptions.inTempStorage = new byte[12 * 1024];
+        // bfOptions.inJustDecodeBounds = true;
+        File file = new File(imgPath);
+        FileInputStream fs = null;
+        try {
+            fs = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Bitmap bmp = null;
+        if (fs != null)
+            try {
+                bmp = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, bfOptions);
+                return bmp;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (fs != null) {
+                    try {
+                        fs.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        return null;
+    }
 }

@@ -14,6 +14,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -73,6 +74,7 @@ public class BaiduMapActivity extends BaseActivity {
     private void initMap() {
         mBaiduMap = mMapView.getMap();
         mBaiduMap.setMyLocationEnabled(true);
+        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));//设置缩放级别
         mIconMaker = BitmapDescriptorFactory.fromResource(R.mipmap.maker);
         //mLocationUtil = new LocationUtil(BaiduMapActivity.this, mHandler, "bd09ll");
         //mLocationUtil.run();

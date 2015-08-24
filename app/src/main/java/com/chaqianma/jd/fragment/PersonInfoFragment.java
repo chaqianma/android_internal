@@ -808,12 +808,14 @@ public class PersonInfoFragment extends BaseFragment {
         //是否农业户口 1是 0否
         formparams.add(new BasicNameValuePair("isAgriculturalHousehold", radio_yes.isChecked() ? "1" : "0"));
         //备注
-        String remark = et_remark.getText().toString().trim();
+        /*String remark = et_remark.getText().toString().trim();
         if (!JDAppUtil.isEmpty(remark) || soundInfoList.size() > 0 || remarkUploadImgInfoList.size() > 0) {
             formparams.add(new BasicNameValuePair("remark", remark));
         } else {
             JDToast.showLongText(getActivity(), "备注不能为空");
-        }
+        }*/
+
+        formparams.add(new BasicNameValuePair("remark", et_remark.getText().toString().trim()));
 
         HttpClientUtil.put(getActivity(), HttpRequestURL.updatePersonUrl + mParentId, formparams, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
             @Override

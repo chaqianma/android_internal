@@ -48,7 +48,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="收入证明：" android:textColor="@color/red"/>
+                android:text="收入证明："/>
 
             <LinearLayout
 
@@ -79,7 +79,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="经营性单据：" android:textColor="@color/red"/>
+                android:text="经营性单据："/>
 
             <LinearLayout
 

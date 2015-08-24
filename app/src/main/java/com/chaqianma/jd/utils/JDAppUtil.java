@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.StatFs;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.widget.JDToast;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -185,6 +187,40 @@ public class JDAppUtil {
             }
         }
     }
+
+    /*
+    * 是否有SD卡
+    * */
+    public static boolean existSDCard() {
+        if (android.os.Environment.getExternalStorageState().equals(
+                android.os.Environment.MEDIA_MOUNTED)) {
+            return true;
+        } else
+            return false;
+    }
+
+    /*
+    * SD卡节余MB
+    * */
+    public static long getSDFreeSize() {
+        try {
+            //取得SD卡文件路径
+            File path = Environment.getExternalStorageDirectory();
+            StatFs sf = new StatFs(path.getPath());
+            //获取单个数据块的大小(Byte)
+            long blockSize = sf.getBlockSize();
+            //空闲的数据块的数量
+            long freeBlocks = sf.getAvailableBlocks();
+            //返回SD卡空闲大小
+            //return freeBlocks * blockSize;  //单位Byte
+            //return (freeBlocks * blockSize)/1024;   //单位KB
+            return (freeBlocks * blockSize) / 1024 / 1024; //单位MB
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0l;
+    }
+
 
     //判断值是否为空
     public static boolean isEmpty(String value) {

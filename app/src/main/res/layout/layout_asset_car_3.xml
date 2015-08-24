@@ -50,8 +50,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="车牌车型："
-                android:textColor="@color/red" />
+                android:text="车牌车型：" />
 
             <LinearLayout
 
@@ -82,8 +81,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="行驶证："
-                android:textColor="@color/red" />
+                android:text="行驶证：" />
 
             <LinearLayout
 
