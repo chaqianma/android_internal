@@ -2,10 +2,11 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:id="@+id/layout_company_1"
+        android:id="@+id/layout_relation_1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <RelativeLayout style="@style/RelativeLayoutStyle">
 
@@ -15,7 +16,7 @@
                 android:textSize="@dimen/large_text_size" />
 
             <ImageView
-                android:id="@+id/img_social_add"
+                android:id="@+id/img_social_add_1"
                 style="@style/SettingRightIconStyle"
                 android:layout_marginRight="20dp"
                 android:src="@mipmap/icon_add" />

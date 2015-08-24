@@ -19,6 +19,7 @@ import com.chaqianma.jd.widget.JDToast;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
@@ -27,6 +28,8 @@ import java.util.UUID;
  * 工程辅助类
  */
 public class JDAppUtil {
+    private static boolean isAuthSuccess = false;
+
     /*
     * 获取UUID
     * */
@@ -100,6 +103,21 @@ public class JDAppUtil {
     }
 
     /*
+    * 金额转成 000,000 ,
+    * */
+    public static String money2Format(String money) {
+        try {
+            if (!JDAppUtil.isEmpty(money)) {
+                NumberFormat nf1 = NumberFormat.getInstance();
+                return nf1.format(Integer.parseInt(money));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /*
     * 转换时间 yyyy-MM-dd
     * */
     public static String getTimeYMD(String timestamp) {
@@ -138,6 +156,20 @@ public class JDAppUtil {
         mHiddenAction.setDuration(500);
         mHiddenAction.setAnimationListener(new MyAnimationListener(view, false));
         view.startAnimation(mHiddenAction);
+    }
+
+    /*
+    * 设置是否实名成功过
+    * */
+    public static void setIsAuthSuccess(boolean isSuccess) {
+        isAuthSuccess = isSuccess;
+    }
+
+    /*
+    * 获取实名验证标签
+    * */
+    public static boolean getIsAuthSuccess() {
+        return isAuthSuccess;
     }
 
     /**

@@ -209,6 +209,10 @@ public class MessageCenterFragment extends BaseFragment implements PullToRefresh
         repaymentInfo.setBorrowMoney(borrowRequestInfo.getAmount());
         repaymentInfo.setBorrowDate(borrowRequestInfo.getLength());
         repaymentInfo.setBorrowPurpose(borrowRequestInfo.getBorrowPurpose());
+        repaymentInfo.setUserWorkLocation(borrowRequestInfo.getWorkLocation());
+        repaymentInfo.setDateLine(borrowRequestInfo.getDateline());
+        repaymentInfo.setUserWorkLocation(borrowRequestInfo.getWorkLocation());
+
         //0 新任务  1 催款
         repaymentInfo.setFlag(0);
         //办公地址

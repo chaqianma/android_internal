@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
 
-            <include layout="@layout/layout_company_1" />
+            <include layout="@layout/layout_company_1"/>
 
             <ViewStub
                 android:id="@+id/stub_company_2"

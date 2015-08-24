@@ -66,12 +66,12 @@ public class MessageAdapater extends BaseAdapter {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            viewHolder.tv_come_date.setText(repaymentInfo.getDateLine());
+            viewHolder.tv_come_date.setText(JDAppUtil.getTimeToStr(repaymentInfo.getDateLine()));
             viewHolder.tv_repayment_id.setText(repaymentInfo.getInvestmentNo());
             viewHolder.tv_repayment_status.setText(repaymentInfo.getDescStatus());
             viewHolder.tv_borrowName.setText(repaymentInfo.getUserName());
             viewHolder.tv_borrow_phone.setText(repaymentInfo.getUserMobile());
-            viewHolder.tv_repayment_money.setText(repaymentInfo.getMoney());
+            viewHolder.tv_repayment_money.setText(JDAppUtil.money2Format(repaymentInfo.getMoney()));
             viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
             viewHolder.tv_repayment_Detail.setOnClickListener(null);
             repaymentInfo.getStrWorkLocation(viewHolder.tv_office_addr);
@@ -87,11 +87,11 @@ public class MessageAdapater extends BaseAdapter {
             TextView tv_task_addr = (TextView) convertView.findViewById(R.id.tv_task_addr);
             TextView tv_taskDetail = (TextView) convertView.findViewById(R.id.tv_taskDetail);
 
-            tv_task_date.setText("");
+            tv_task_date.setText(JDAppUtil.getTimeToStr(repaymentInfo.getDateLine()));
             tv_task_id.setText(repaymentInfo.getId());
             tv_name.setText(repaymentInfo.getName());
             tv_phone.setText(repaymentInfo.getPhone());
-            tv_borrowMoney.setText(repaymentInfo.getBorrowMoney());
+            tv_borrowMoney.setText(JDAppUtil.money2Format(repaymentInfo.getBorrowMoney()));
             tv_borrowDate.setText(repaymentInfo.getBorrowDate());
             tv_borrowUse.setText(repaymentInfo.getBorrowPurpose());
             repaymentInfo.getStrWorkLocation(tv_task_addr);

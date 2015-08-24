@@ -136,7 +136,13 @@ public class BorrowApplyFragment extends BaseFragment {
             tv_id.setText(borrowRequestInfo.getBorrowRequestId());
             tv_name.setText(borrowRequestInfo.getName());
             tv_telephone.setText(borrowRequestInfo.getMobile());
-            tv_money.setText(borrowRequestInfo.getAmount());
+            if (!JDAppUtil.isEmpty(borrowRequestInfo.getAmount())) {
+                try {
+                    tv_money.setText(JDAppUtil.money2Format(borrowRequestInfo.getAmount()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             tv_date.setText(borrowRequestInfo.getLength());
             tv_purpose.setText(borrowRequestInfo.getBorrowPurpose());
             mLocation = borrowRequestInfo.getLocation();
@@ -214,6 +220,7 @@ public class BorrowApplyFragment extends BaseFragment {
             AppData.getInstance().setBorrowRequestInfo(borrowRequestInfo);
         }
     }
+
     /*
     * 转出任务
     * */

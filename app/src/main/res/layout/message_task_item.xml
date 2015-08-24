@@ -8,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
-        android:orientation="vertical"
         android:background="@drawable/linear_bg_corner"
+        android:orientation="vertical"
         android:padding="1dp">
 
         <LinearLayout
@@ -55,7 +55,7 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                style="@style/SmallTextStyle"/>
+                style="@style/SmallTextStyle" />
         </LinearLayout>
 
         <LinearLayout style="@style/LinearLayoutStyle">
@@ -79,6 +79,11 @@
             <TextView
                 android:id="@+id/tv_borrowMoney"
                 style="@style/SmallTextStyle" />
+
+          <TextView
+                style="@style/SmallTextStyle"
+                android:text="元" />
+
         </LinearLayout>
 
         <LinearLayout style="@style/LinearLayoutStyle">
@@ -90,6 +95,10 @@
             <TextView
                 android:id="@+id/tv_borrowDate"
                 style="@style/SmallTextStyle" />
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="月"/>
         </LinearLayout>
 
         <LinearLayout style="@style/LinearLayoutStyle">
@@ -100,8 +109,7 @@
 
             <TextView
                 android:id="@+id/tv_borrowUse"
-                style="@style/SmallTextStyle"
-                android:text="经营周转" />
+                style="@style/SmallTextStyle" />
         </LinearLayout>
 
         <LinearLayout style="@style/LinearLayoutStyle">
@@ -121,8 +129,8 @@
             android:id="@+id/tv_taskDetail"
             style="@style/SmallTextStyle"
             android:layout_gravity="right"
-            android:layout_marginRight="20dp"
             android:layout_margin="6dp"
+            android:layout_marginRight="20dp"
             android:text="查看详情" />
     </LinearLayout>
 </LinearLayout>

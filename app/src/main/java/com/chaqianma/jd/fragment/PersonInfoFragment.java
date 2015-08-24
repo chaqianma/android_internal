@@ -413,11 +413,13 @@ public class PersonInfoFragment extends BaseFragment {
                             et_card_id.setText(customerBaseInfo.getIdCardNumber());
                             et_card_id.clearFocus();
                             et_name.setText(customerBaseInfo.getName());
+                            JDAppUtil.setIsAuthSuccess(false);
                             if (!JDAppUtil.isEmpty(customerBaseInfo.getIdCardNumber())) {
                                 mIsAuthSuccess = true;
                                 et_card_id.setEnabled(false);
                                 et_name.setEnabled(false);
                                 btn_name_auth.setEnabled(false);
+                                JDAppUtil.setIsAuthSuccess(true);
                             }
                             et_mobile.setText(customerBaseInfo.getMobile());
                             if (customerBaseInfo.getGender() != null) {
@@ -731,7 +733,6 @@ public class PersonInfoFragment extends BaseFragment {
         }
         //身份证号
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        HashMap<String, Object> argMaps = new HashMap<String, Object>();
         String card_id = et_card_id.getText().toString().trim();
         if (card_id != null && card_id.length() > 0) {
             formparams.add(new BasicNameValuePair("idCardNumber", card_id));
@@ -754,8 +755,6 @@ public class PersonInfoFragment extends BaseFragment {
         }
         //手机号
         String mobile = et_mobile.getText().toString();
-        char c = mobile.charAt(0);
-        boolean ss = c == '1';
         if (!JDAppUtil.isEmpty(mobile) && mobile.length() == 11 && mobile.charAt(0) == '1') {
             formparams.add(new BasicNameValuePair("mobile", mobile));
         } else {
@@ -794,16 +793,15 @@ public class PersonInfoFragment extends BaseFragment {
         if (radio_nonlocal.isChecked()) {
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String come_date = tv_come_date.getText().toString();
-            if (!JDAppUtil.isEmpty(come_date)) {
+            if (JDAppUtil.isEmpty(come_date)) {
                 JDToast.showLongText(getActivity(), "请选择来本地日期");
                 return;
-            }
-            if (come_date != null && come_date.length() > 0) {
+            } else {
                 try {
                     Date date = sdf.parse("" + year + "-" + (month + 1) + "-" + day + " 00:00:00");
                     formparams.add(new BasicNameValuePair("comeLocalTime", date.getTime() + ""));
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         }

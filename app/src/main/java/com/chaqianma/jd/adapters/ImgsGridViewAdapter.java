@@ -151,9 +151,12 @@ public class ImgsGridViewAdapter extends BaseAdapter {
                 holderView.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mUploadImgInfoList.size() >= 9) {
-                            JDToast.showLongText(mContext, "每种类型图片最多只能上传8张");
-                            return;
+                        UploadFileInfo imgInfo = (UploadFileInfo) v.getTag(R.id.tag_imgInfo);
+                        if (imgInfo.isDefault()) {
+                            if (mUploadImgInfoList.size() >= 9) {
+                                JDToast.showLongText(mContext, "每种类型图片最多只能上传8张");
+                                return;
+                            }
                         }
                         if (mIonClickImgListener != null) {
                             mIonClickImgListener.onImgClick(mUploadImgInfoList, Integer.parseInt(v.getTag(R.id.tag_position).toString()));

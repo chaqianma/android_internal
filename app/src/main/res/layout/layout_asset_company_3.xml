@@ -22,6 +22,25 @@
 
     <View style="@style/ViewLineStyle" />
 
+    <RelativeLayout style="@style/RelativeLayoutStyle">
+
+        <TextView
+            style="@style/SmallTextStyle"
+            android:text="对应企业："
+            android:textColor="@color/red" />
+
+        <Spinner
+            android:id="@+id/sp_company_3"
+            style="@style/SettingRightIconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/some_company"
+            android:spinnerMode="dialog"></Spinner>
+
+    </RelativeLayout>
+
+    <View style="@style/ViewLineStyle" />
+
     <LinearLayout
         style="@style/LinearLayoutStyle"
         android:layout_marginLeft="8dp"
@@ -92,23 +111,6 @@
 
         <View style="@style/ViewLineStyle" />
 
-        <RelativeLayout style="@style/RelativeLayoutStyle">
 
-            <TextView
-                style="@style/SmallTextStyle"
-                android:text="对应企业："
-                android:textColor="@color/red" />
-
-            <Spinner
-                android:id="@+id/sp_company_3"
-                style="@style/SettingRightIconStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/some_company"
-                android:spinnerMode="dialog"></Spinner>
-
-        </RelativeLayout>
-
-        <View style="@style/ViewLineStyle" />
     </LinearLayout>
 </LinearLayout>

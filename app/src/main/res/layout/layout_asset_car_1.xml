@@ -22,7 +22,26 @@
                 android:src="@mipmap/icon_add" />
         </RelativeLayout>
 
-        <View style="@style/ViewLineStyle"/>
+        <View style="@style/ViewLineStyle" />
+
+        <RelativeLayout style="@style/RelativeLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="对应车辆："
+                android:textColor="@color/red" />
+
+            <Spinner
+                android:id="@+id/sp_car_1"
+                style="@style/SettingRightIconStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/some_car"
+                android:spinnerMode="dialog"></Spinner>
+        </RelativeLayout>
+
+        <View style="@style/ViewLineStyle" />
+
         <LinearLayout
             style="@style/LinearLayoutStyle"
             android:layout_marginLeft="8dp"
@@ -35,7 +54,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="车牌车型：" android:textColor="@color/red"/>
+                    android:text="车牌车型："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
 
@@ -58,14 +78,16 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <View style="@style/ViewLineStyle"/>
+            <View style="@style/ViewLineStyle" />
+
             <LinearLayout
                 style="@style/LinearLayoutStyle"
                 android:orientation="vertical">
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="行驶证：" android:textColor="@color/red"/>
+                    android:text="行驶证："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
 
@@ -87,23 +109,9 @@
                         android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
                 </LinearLayout>
             </LinearLayout>
-            <View style="@style/ViewLineStyle"/>
 
-            <RelativeLayout style="@style/RelativeLayoutStyle">
+            <View style="@style/ViewLineStyle" />
 
-                <TextView
-                    style="@style/SmallTextStyle"
-                    android:text="对应车辆：" android:textColor="@color/red"/>
-
-                <Spinner
-                    android:id="@+id/sp_car_1"
-                    style="@style/SettingRightIconStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/some_car"
-                    android:spinnerMode="dialog"></Spinner>
-            </RelativeLayout>
-            <View style="@style/ViewLineStyle"/>
         </LinearLayout>
     </LinearLayout>
 </merge>

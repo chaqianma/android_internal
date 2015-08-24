@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chaqianma.jd.R;
+import com.chaqianma.jd.activity.InvestigateDetailActivity;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
 import com.chaqianma.jd.adapters.SoundGridViewAdapter;
 import com.chaqianma.jd.common.Constants;
@@ -326,7 +327,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             if (!isCanAddCompany())
                 return;
             isIncome2Show = true;
-            View view =  ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
+            View view = ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
             JDAppUtil.addShowAction(view);
             initCompanyView(true);
             //下拉框
@@ -468,7 +469,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             if (!isCanAddCar())
                 return;
             isCar2Show = true;
-            View view=((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
+            View view = ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
             JDAppUtil.addShowAction(view);
             initCarView(true);
             //下拉框
@@ -487,7 +488,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 if (!isCanAddCar())
                     return;
                 isCar3Show = true;
-                View view=((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
+                View view = ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
                 JDAppUtil.addShowAction(view);
                 initCarView(false);
                 //下拉框
@@ -1417,6 +1418,10 @@ public class PersonalAssetsFragment extends BaseFragment {
             fileType = UploadFileType.valueOf(imgInfo.getFileType());
             selIdxTag = imgInfo.getIdxTag();
             if (imgInfo.isDefault()) {
+                if (!JDAppUtil.getIsAuthSuccess()) {
+                    JDToast.showLongText(getActivity(), "未实名认证，不能上传图片");
+                    return;
+                }
                 mPopup.showAtLocation(linear_container, Gravity.BOTTOM, 0, 0);
             } else {
                 mViewPagerPopup.setUploadImgList(uploadImgInfoList, idx);
@@ -1672,10 +1677,12 @@ public class PersonalAssetsFragment extends BaseFragment {
                     mSYAdapter_1.refreshData();
                     break;
                 case 1:
-                    mSYAdapter_2.refreshData();
+                    if (mSYAdapter_2 != null)
+                        mSYAdapter_2.refreshData();
                     break;
                 case 2:
-                    mSYAdapter_3.refreshData();
+                    if (mSYAdapter_3 != null)
+                        mSYAdapter_3.refreshData();
                     break;
                 default:
                     break;
@@ -1686,10 +1693,12 @@ public class PersonalAssetsFragment extends BaseFragment {
                     mJYAdapter_1.refreshData();
                     break;
                 case 1:
-                    mJYAdapter_2.refreshData();
+                    if (mJYAdapter_2 != null)
+                        mJYAdapter_2.refreshData();
                     break;
                 case 2:
-                    mJYAdapter_3.refreshData();
+                    if (mJYAdapter_3 != null)
+                        mJYAdapter_3.refreshData();
                     break;
                 default:
                     break;
@@ -1700,10 +1709,12 @@ public class PersonalAssetsFragment extends BaseFragment {
                     mCPAdpter_1.refreshData();
                     break;
                 case 1:
-                    mCPAdpter_2.refreshData();
+                    if (mCPAdpter_2 != null)
+                        mCPAdpter_2.refreshData();
                     break;
                 case 2:
-                    mCPAdpter_3.refreshData();
+                    if (mCPAdpter_3 != null)
+                        mCPAdpter_3.refreshData();
                     break;
                 default:
                     break;
@@ -1715,10 +1726,12 @@ public class PersonalAssetsFragment extends BaseFragment {
                     mXSAdpter_1.refreshData();
                     break;
                 case 1:
-                    mXSAdpter_2.refreshData();
+                    if (mXSAdpter_2 != null)
+                        mXSAdpter_2.refreshData();
                     break;
                 case 2:
-                    mXSAdpter_3.refreshData();
+                    if (mXSAdpter_3 != null)
+                        mXSAdpter_3.refreshData();
                     break;
                 default:
                     break;
@@ -1729,10 +1742,12 @@ public class PersonalAssetsFragment extends BaseFragment {
                     mFCAdpter_1.refreshData();
                     break;
                 case 1:
-                    mFCAdpter_2.refreshData();
+                    if (mFCAdpter_2 != null)
+                        mFCAdpter_2.refreshData();
                     break;
                 case 2:
-                    mFCAdpter_3.refreshData();
+                    if (mFCAdpter_3 != null)
+                        mFCAdpter_3.refreshData();
                     break;
                 default:
                     break;
@@ -1744,10 +1759,12 @@ public class PersonalAssetsFragment extends BaseFragment {
                     mTDAdpter_1.refreshData();
                     break;
                 case 1:
-                    mTDAdpter_2.refreshData();
+                    if (mTDAdpter_2 != null)
+                        mTDAdpter_2.refreshData();
                     break;
                 case 2:
-                    mTDAdpter_3.refreshData();
+                    if (mTDAdpter_3 != null)
+                        mTDAdpter_3.refreshData();
                     break;
                 default:
                     break;
@@ -1901,8 +1918,12 @@ public class PersonalAssetsFragment extends BaseFragment {
     * 保存数据
     * */
     public void saveDataSubmit() {
-       /* if (!requiredInput())
-            return;*/
+        if (!JDAppUtil.getIsAuthSuccess()) {
+            JDToast.showLongText(getActivity(), "未实名认证，不能保存数据");
+            return;
+        }
+       if (!requiredInput())
+            return;
         //备注
         String remark = et_remark.getText().toString();
         if (JDAppUtil.isEmpty(remark)) {
@@ -1916,6 +1937,8 @@ public class PersonalAssetsFragment extends BaseFragment {
             @Override
             public void onSuccess(Object o) {
                 JDToast.showLongText(getActivity(), "保存个人资产信息成功");
+                if (getActivity() instanceof InvestigateDetailActivity)
+                    ((InvestigateDetailActivity) getActivity()).gotoNext();
             }
         }));
     }

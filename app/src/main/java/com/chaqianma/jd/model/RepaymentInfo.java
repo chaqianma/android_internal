@@ -117,8 +117,13 @@ public class RepaymentInfo extends ErrorInfo {
         this.status = status;
     }
 
+    private String tempmoney = null;
+
     public String getMoney() {
-        return getRepaymentMoney() + "";
+        if (tempmoney != null)
+            return tempmoney;
+        else
+            return getRepaymentMoney() + "";
     }
 
     public void setMoney(String money) {
@@ -126,7 +131,7 @@ public class RepaymentInfo extends ErrorInfo {
     }
 
     public String getDescStatus() {
-        if(JDAppUtil.isEmpty(getStatus()))
+        if (JDAppUtil.isEmpty(getStatus()))
             return "";
         try {
             //还款状态 1待还款 2账单日 3逾期 4已还款
@@ -159,10 +164,11 @@ public class RepaymentInfo extends ErrorInfo {
     /*
     * 获取应还金额
     * */
-    private int getRepaymentMoney() {
-        int money = 0;
+    private String getRepaymentMoney() {
+        String money = "";
         try {
-            money += Integer.parseInt(getPrincipalAmount()) + Integer.parseInt(getInterestAmount()) + Integer.parseInt(getOverdueFee());
+            money = JDAppUtil.money2Format(Integer.parseInt(getPrincipalAmount()) + Integer.parseInt(getInterestAmount()) + Integer.parseInt(getOverdueFee()) + "");
+            tempmoney=money;
         } catch (Exception e) {
             e.printStackTrace();
         }

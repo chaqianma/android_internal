@@ -13,13 +13,31 @@
             <TextView
                 style="@style/SmallTextStyle"
                 android:text="企业："
-                android:textSize="@dimen/large_text_size"/>
+                android:textSize="@dimen/large_text_size" />
 
             <ImageView
                 android:id="@+id/img_company_add_1"
                 style="@style/SettingRightIconStyle"
                 android:layout_marginRight="20dp"
                 android:src="@mipmap/icon_add" />
+        </RelativeLayout>
+
+        <View style="@style/ViewLineStyle" />
+
+        <RelativeLayout style="@style/RelativeLayoutStyle">
+
+            <TextView
+                style="@style/SmallTextStyle"
+                android:text="对应企业："
+                android:textColor="@color/red" />
+
+            <Spinner
+                android:id="@+id/sp_some_company_1"
+                style="@style/SettingRightIconStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/some_company" />
+
         </RelativeLayout>
 
         <View style="@style/ViewLineStyle" />
@@ -85,7 +103,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="税务登记证：" android:textColor="@color/red"/>
+                    android:text="税务登记证："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
 
@@ -117,7 +136,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="企业代码证：" android:textColor="@color/red"/>
+                    android:text="企业代码证："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
 
@@ -148,7 +168,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="其它证件：" android:textColor="@color/red" />
+                    android:text="其它证件："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
 
@@ -197,7 +218,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="房产证/合同：" android:textColor="@color/red"/>
+                    android:text="房产证/合同："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
 
@@ -228,7 +250,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="土地证：" android:textColor="@color/red"/>
+                    android:text="土地证："
+                    android:textColor="@color/red" />
 
                 <LinearLayout
 
@@ -247,26 +270,11 @@
                         android:listSelector="#ffffff"
                         android:numColumns="auto_fit"
                         android:stretchMode="columnWidth"
-                        android:verticalSpacing="10dp"></com.chaqianma.jd.widget.ImageGridView>
+                        android:verticalSpacing="10dp" />
                 </LinearLayout>
             </LinearLayout>
 
             <View style="@style/ViewLineStyle" />
-
-            <RelativeLayout style="@style/RelativeLayoutStyle">
-
-                <TextView
-                    style="@style/SmallTextStyle"
-                    android:text="对应企业：" android:textColor="@color/red"/>
-
-                <Spinner
-                    android:id="@+id/sp_some_company_1"
-                    style="@style/SettingRightIconStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/some_company" />
-
-            </RelativeLayout>
 
         </LinearLayout>
     </LinearLayout>

@@ -22,9 +22,17 @@
         android:layout_marginTop="8dp"
         android:text="录音中..." />
 
+    <Chronometer
+        android:id="@+id/timerClock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:gravity="center" />
 
     <RelativeLayout
-        style="@style/LinearLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
         <ImageView
@@ -35,7 +43,6 @@
             android:layout_marginLeft="6dp"
             android:scaleType="fitXY"
             android:src="@mipmap/icon_img_success"
-
             android:visibility="gone" />
 
         <ImageView

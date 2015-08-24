@@ -91,7 +91,7 @@
 
             <TextView
                 style="@style/SmallTextStyle"
-                android:text="万"
+                android:text="元"
                 android:textColor="@color/red" />
         </LinearLayout>
 
@@ -223,15 +223,15 @@
             <LinearLayout
                 android:id="@+id/layout_btn"
                 android:layout_width="match_parent"
-                android:layout_centerInParent="true"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
 
                 <Button
                     android:id="@+id/btn_transfer"
                     style="@style/MatchParentButtonStyle"
-                    android:layout_weight="1"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:layout_weight="1"
                     android:text="转出" />
 
                 <Button

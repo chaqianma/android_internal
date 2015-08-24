@@ -8,25 +8,25 @@ import android.media.MediaPlayer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
-import com.chaqianma.jd.model.DownImgInfo;
 import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.utils.AudioRecorder;
 import com.chaqianma.jd.utils.HttpClientUtil;
-import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDAlertDialog;
@@ -37,7 +37,6 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,11 +64,12 @@ public class SoundGridViewAdapter extends BaseAdapter {
     private ImageView img_ok = null;
     private ImageView img_cancel = null;
     private ImageView img_delete = null;
-    //private UploadFileInfo soundInfo = null;
     private String mParentId = "1";
     private String mParentTableName = null;
     private String mSoundPath = null;
     private TextView tv_record_status = null;
+    private Chronometer timerClock = null;
+    private static final int totalTime = 51 * 1000;
 
     public interface iOnClickSoundListener {
         void onStartRecord();
@@ -149,7 +149,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                         UploadFileInfo uploadFileInfo = (UploadFileInfo) v.getTag();
                         if (uploadFileInfo.isDefault()) {
                             if (mSoundInfoList.size() >= 11) {
-                                JDToast.showLongText(mContext,"最多只能上传10段录音");
+                                JDToast.showLongText(mContext, "最多只能上传10段录音");
                                 return;
                             }
                             startRecord();
@@ -250,25 +250,6 @@ public class SoundGridViewAdapter extends BaseAdapter {
         return convertView;
     }
 
-
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-        }
-    };
-
-    Runnable mRunable = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                mAudioRecorder.start();
-            } catch (Exception e) {
-
-            }
-        }
-    };
-
     //录音时显示Dialog
     public void showVoiceDialog() {
         if (soundDialog == null) {
@@ -282,6 +263,17 @@ public class SoundGridViewAdapter extends BaseAdapter {
             img_delete = (ImageView) soundDialog.findViewById(R.id.img_delete);
             img_cancel = (ImageView) soundDialog.findViewById(R.id.img_cancel);
             tv_record_status = (TextView) soundDialog.findViewById(R.id.tv_record_status);
+            timerClock = (Chronometer) soundDialog.findViewById(R.id.timerClock);
+            timerClock.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+                @Override
+                public void onChronometerTick(Chronometer chronometer) {
+                    if (SystemClock.elapsedRealtime()
+                            - chronometer.getBase() > totalTime) {
+                        stopRecord();
+                        timerClock.stop();
+                    }
+                }
+            });
             //设置监听
             soundDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
@@ -291,9 +283,18 @@ public class SoundGridViewAdapter extends BaseAdapter {
                         //显示 说明 收听状态   关闭收听
                         if (mediaPlayer == null)
                             return;
+                        if (mediaPlayer.isPlaying()) {
+                            mediaPlayer.stop();
+                        }
                         mediaPlayer.release();
                         mediaPlayer = null;
                     } else {
+                        if (mediaPlayer != null) {
+                            if (mediaPlayer.isPlaying()) {
+                                mediaPlayer.stop();
+                            }
+                            mediaPlayer.release();
+                        }
                     }
                 }
             });
@@ -301,6 +302,8 @@ public class SoundGridViewAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     try {
+                        if (timerClock != null)
+                            timerClock.stop();
                         stopRecord();
                     } catch (Exception e) {
                     }
@@ -311,6 +314,8 @@ public class SoundGridViewAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     try {
                         //mAudioRecorder.stop();
+                        if (timerClock != null)
+                            timerClock.stop();
                         mAudioRecorder.cancel();
                         soundDialog.dismiss();
                         //if (soundInfo == null) {
@@ -325,13 +330,13 @@ public class SoundGridViewAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     try {
-
+                        soundDialog.dismiss();
                     } catch (Exception e) {
                     }
                 }
             });
-            sound_img.setBackgroundResource(R.drawable.sound_animation);
-            soundAnimation = (AnimationDrawable) sound_img.getBackground();
+            //sound_img.setBackgroundResource(R.drawable.sound_animation);
+            //soundAnimation = (AnimationDrawable) sound_img.getBackground();
         }
     }
 
@@ -345,14 +350,15 @@ public class SoundGridViewAdapter extends BaseAdapter {
     private void startRecord() {
         mSoundPath = Environment.getExternalStorageDirectory() + "/" + Constants.FILEDIR + "/" + System.currentTimeMillis() + "" + ".amr";
         mAudioRecorder = new AudioRecorder(mSoundPath);
-        try {
-            mAudioRecorder.start();
-        } catch (Exception e) {
-        }
-        //mHandler.post(mRunable);
         showVoiceDialog();
         setVisible(true);
         soundDialog.setCancelable(false);
+        try {
+            mAudioRecorder.start();
+            timerClock.setBase(SystemClock.elapsedRealtime());
+            timerClock.start();
+        } catch (Exception e) {
+        }
         soundDialog.show();
         //soundAnimation.start();
     }
@@ -443,12 +449,14 @@ public class SoundGridViewAdapter extends BaseAdapter {
             img_cancel.setVisibility(View.VISIBLE);
             img_delete.setVisibility(View.GONE);
             tv_record_status.setText("录音中...");
+            timerClock.setVisibility(View.VISIBLE);
         } else {
             //收听中。。。
             img_ok.setVisibility(View.GONE);
             img_cancel.setVisibility(View.GONE);
-            img_delete.setVisibility(View.GONE);
+            img_delete.setVisibility(View.VISIBLE);
             tv_record_status.setText("收听中...");
+            timerClock.setVisibility(View.GONE);
         }
     }
 

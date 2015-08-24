@@ -112,6 +112,17 @@ public class Constants {
         }
     };
 
+    //下拉框集合 社会关系
+    public static final ArrayList<String> RELATIONLIST = new ArrayList<String>() {
+        {
+            add("配偶");
+            add("直系亲属");
+            add("合伙人");
+            add("财务");
+            add("其他");
+        }
+    };
+
     //拼音code
     public static int[] characterValue = new int[]{-20319, -20317, -20304, -20295, -20292, -20283, -20265, -20257, -20242, -20230, -20051, -20036, -20032,
             -20026, -20002, -19990, -19986, -19982, -19976, -19805, -19784, -19775, -19774, -19763, -19756, -19751, -19746, -19741, -19739, -19728,

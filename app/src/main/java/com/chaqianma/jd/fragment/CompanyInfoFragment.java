@@ -837,6 +837,10 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             fileType = UploadFileType.valueOf(imgInfo.getFileType());
             selCompanyIdxTag = imgInfo.getIdxTag();
             if (imgInfo.isDefault()) {
+                if (!JDAppUtil.getIsAuthSuccess()) {
+                    JDToast.showLongText(getActivity(), "未实名认证，不能上传图片");
+                    return;
+                }
                 mPopup.showAtLocation(linear_container, Gravity.BOTTOM, 0, 0);
             } else {
                 mViewPagerPopup.setUploadImgList(uploadImgInfoList, idx);
@@ -1283,6 +1287,10 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         //组织类型 1有限责任公司  2个体商户 3其他
         //经营场所 1自由 2租赁 3其他
         List<CompanyInfo> companyInfoList = new ArrayList<CompanyInfo>();
+        if (!JDAppUtil.getIsAuthSuccess()) {
+            JDToast.showLongText(getActivity(), "未实名认证，不能保存数据");
+            return;
+        }
         //必填验证
         if (!requiredInput())
             return;

@@ -21,7 +21,22 @@
     </RelativeLayout>
 
     <View style="@style/ViewLineStyle" />
+    <RelativeLayout style="@style/RelativeLayoutStyle">
 
+        <TextView
+            style="@style/SmallTextStyle"
+            android:text="对应车辆：" android:textColor="@color/red"/>
+
+        <Spinner
+            android:id="@+id/sp_car_2"
+            style="@style/SettingRightIconStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/some_car"
+            android:spinnerMode="dialog"></Spinner>
+    </RelativeLayout>
+
+    <View style="@style/ViewLineStyle" />
     <LinearLayout
         style="@style/LinearLayoutStyle"
         android:layout_marginLeft="8dp"
@@ -90,21 +105,6 @@
 
         <View style="@style/ViewLineStyle" />
 
-        <RelativeLayout style="@style/RelativeLayoutStyle">
 
-            <TextView
-                style="@style/SmallTextStyle"
-                android:text="对应车辆：" android:textColor="@color/red"/>
-
-            <Spinner
-                android:id="@+id/sp_car_2"
-                style="@style/SettingRightIconStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/some_car"
-                android:spinnerMode="dialog"></Spinner>
-        </RelativeLayout>
-
-        <View style="@style/ViewLineStyle" />
     </LinearLayout>
 </LinearLayout>

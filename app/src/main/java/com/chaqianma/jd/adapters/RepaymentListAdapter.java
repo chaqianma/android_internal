@@ -68,7 +68,7 @@ public class RepaymentListAdapter extends BaseAdapter {
             viewHolder.tv_status.setText(repaymentInfo.getDescStatus());
             viewHolder.tv_money.setText(repaymentInfo.getMoney());
             viewHolder.tv_phone.setText(repaymentInfo.getUserMobile());
-            viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
+            viewHolder.tv_repayment_date.setText(JDAppUtil.getTimeToStr(repaymentInfo.getRepaymentDateline()));
             viewHolder.tv_address.setText("");
             repaymentInfo.getStrWorkLocation(viewHolder.tv_address);
         }
