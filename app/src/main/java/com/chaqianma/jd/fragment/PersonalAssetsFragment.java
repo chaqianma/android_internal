@@ -373,9 +373,9 @@ public class PersonalAssetsFragment extends BaseFragment {
             case 0:
                 isCar1Show = true;
                 layout_asset_car_1.setVisibility(View.VISIBLE);
-                sp_car_1.setSelection(getSelectedIdx(carInfo.getCode()));
-                //sp_car_1.setSelection(0);
-                //sp_car_1.setEnabled(false);
+                //sp_car_1.setSelection(getSelectedIdx(carInfo.getCode()));
+                sp_car_1.setSelection(0);
+                sp_car_1.setEnabled(false);
                 break;
             case 1:
                 isCar2Show = true;
@@ -387,9 +387,9 @@ public class PersonalAssetsFragment extends BaseFragment {
                 }
                 initCarView(true);
                 initSpinner(sp_car_2, Constants.CARLIST);
-                sp_car_2.setSelection(getSelectedIdx(carInfo.getCode()));
-                //sp_car_2.setSelection(1);
-                //sp_car_2.setEnabled(false);
+                //sp_car_2.setSelection(getSelectedIdx(carInfo.getCode()));
+                sp_car_2.setSelection(1);
+                sp_car_2.setEnabled(false);
                 break;
             case 2:
                 isCar3Show = true;
@@ -401,9 +401,9 @@ public class PersonalAssetsFragment extends BaseFragment {
                 }
                 initCarView(false);
                 initSpinner(sp_car_3, Constants.CARLIST);
-                sp_car_3.setSelection(getSelectedIdx(carInfo.getCode()));
-                //sp_car_3.setSelection(2);
-                //sp_car_3.setEnabled(false);
+                //sp_car_3.setSelection(getSelectedIdx(carInfo.getCode()));
+                sp_car_3.setSelection(2);
+                sp_car_3.setEnabled(false);
                 break;
             default:
                 break;
@@ -533,7 +533,10 @@ public class PersonalAssetsFragment extends BaseFragment {
             case 0:
                 isHouse1Show = true;
                 layout_asset_house_1.setVisibility(View.VISIBLE);
-                sp_house_1.setSelection(getSelectedIdx(houseInfo.getCode()));
+                //sp_house_1.setSelection(getSelectedIdx(houseInfo.getCode()));
+                sp_house_1.setEnabled(false);
+                sp_house_1.setSelection(0);
+
                 break;
             case 1:
                 isHouse2Show = true;
@@ -541,7 +544,9 @@ public class PersonalAssetsFragment extends BaseFragment {
                 layout_asset_house_2 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_2);
                 initHouseView(true);
                 initSpinner(sp_house_2, Constants.HOUSELIST);
-                sp_house_2.setSelection(getSelectedIdx(houseInfo.getCode()));
+                //sp_house_2.setSelection(getSelectedIdx(houseInfo.getCode()));
+                sp_house_2.setSelection(1);
+                sp_house_2.setEnabled(false);
                 break;
             case 2:
                 isHouse3Show = true;
@@ -549,7 +554,9 @@ public class PersonalAssetsFragment extends BaseFragment {
                 layout_asset_house_3 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_3);
                 initHouseView(false);
                 initSpinner(sp_house_3, Constants.HOUSELIST);
-                sp_house_3.setSelection(getSelectedIdx(houseInfo.getCode()));
+                //sp_house_3.setSelection(getSelectedIdx(houseInfo.getCode()));
+                sp_house_3.setSelection(2);
+                sp_house_3.setEnabled(false);
                 break;
             default:
                 break;
@@ -574,7 +581,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         if (!isHouse2Show && !isHouse3Show) {
             JDToast.showLongText(getActivity(), "房产不能全部删除，必须保留一家房产");
         } else {
-            deleteHouse(mHouseId[0], v);
+            deleteHouse(getHouseParentId(0), v);
         }
     }
 
@@ -587,7 +594,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         if (!isCar2Show && !isCar3Show) {
             JDToast.showLongText(getActivity(), "企业不能全部删除，必须保留一家企业");
         } else {
-            deleteCar(mCardId[0], v);
+            deleteCar(getCarParentId(0), v);
         }
     }
 
@@ -616,7 +623,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     if (!isCar1Show && !isCar3Show) {
                         JDToast.showLongText(getActivity(), "车辆不能全部删除，必须保留一个车辆");
                     } else {
-                        deleteCar(mCardId[1], v);
+                        deleteCar(getCarParentId(1), v);
                     }
                 }
             });
@@ -659,7 +666,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     if (!isCar1Show && !isCar2Show) {
                         JDToast.showLongText(getActivity(), "车辆不能全部删除，必须保留一个车辆");
                     } else {
-                        deleteCar(mCardId[2], v);
+                        deleteCar(getCarParentId(2), v);
                     }
                 }
             });
@@ -709,7 +716,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     if (!isHouse1Show && !isHouse3Show) {
                         JDToast.showLongText(getActivity(), "房产不能全部删除，必须保留一家房产");
                     } else {
-                        deleteHouse(mHouseId[1], v);
+                        deleteHouse(getHouseParentId(1), v);
                     }
                 }
             });
@@ -752,7 +759,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     if (!isHouse1Show && !isHouse2Show) {
                         JDToast.showLongText(getActivity(), "房产不能全部删除，必须保留一家房产");
                     } else {
-                        deleteHouse(mHouseId[2], v);
+                        deleteHouse(getHouseParentId(2), v);
                     }
                 }
             });
@@ -1285,6 +1292,48 @@ public class PersonalAssetsFragment extends BaseFragment {
     }
 
     /*
+    * 得到汽车父ID
+    * */
+    private String getCarParentId(int idxTag) {
+        String parentId = "0";
+        switch (idxTag) {
+            case 0:
+                parentId = mCardId[Constants.CARLIST.indexOf(sp_car_1.getSelectedItem().toString())];
+                break;
+            case 1:
+                parentId = mCardId[Constants.CARLIST.indexOf(sp_car_2.getSelectedItem().toString())];
+                break;
+            case 2:
+                parentId = mCardId[Constants.CARLIST.indexOf(sp_car_3.getSelectedItem().toString())];
+                break;
+            default:
+                break;
+        }
+        return parentId;
+    }
+
+    /*
+    * 得到房产父ID
+    * */
+    private String getHouseParentId(int idxTag) {
+        String parentId = "0";
+        switch (idxTag) {
+            case 0:
+                parentId = mHouseId[Constants.HOUSELIST.indexOf(sp_house_1.getSelectedItem().toString())];
+                break;
+            case 1:
+                parentId = mHouseId[Constants.HOUSELIST.indexOf(sp_house_2.getSelectedItem().toString())];
+                break;
+            case 2:
+                parentId = mHouseId[Constants.HOUSELIST.indexOf(sp_house_3.getSelectedItem().toString())];
+                break;
+            default:
+                break;
+        }
+        return parentId;
+    }
+
+    /*
         * 得到上传文件的父id 并设置ParentTableName
         * */
     private String getParentIdAndSetParentTableName(UploadFileInfo fileInfo) {
@@ -1292,7 +1341,7 @@ public class PersonalAssetsFragment extends BaseFragment {
         UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
         //SY(10),JY(11),CP(12),XS(13),REMARK(16),SOUND(80)
         if (fType == UploadFileType.CP || fType == UploadFileType.XS) {
-            /*switch (fileInfo.getIdxTag()) {
+            switch (fileInfo.getIdxTag()) {
                 case 0:
                     parentId = mCardId[Constants.CARLIST.indexOf(sp_car_1.getSelectedItem().toString())];
                     break;
@@ -1304,14 +1353,13 @@ public class PersonalAssetsFragment extends BaseFragment {
                     break;
                 default:
                     break;
-            }*/
-            parentId = mCardId[fileInfo.getIdxTag()];
+            }
             fileInfo.setParentTableName(Constants.PERSONAL_ASSERTS_CAR_INFO);
         } else if (fType == UploadFileType.REMARK || fType == UploadFileType.SOUND) {
             fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_INFO);
             parentId = mRemarkId;
         } else if (fType == UploadFileType.FC || fType == UploadFileType.TD) {
-           /* switch (fileInfo.getIdxTag()) {
+            switch (fileInfo.getIdxTag()) {
                 case 0:
                     parentId = mHouseId[Constants.HOUSELIST.indexOf(sp_house_1.getSelectedItem().toString())];
                     break;
@@ -1323,8 +1371,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     break;
                 default:
                     break;
-            }*/
-            parentId = mHouseId[fileInfo.getIdxTag()];
+            }
             fileInfo.setParentTableName(Constants.PERSONAL_ASSETS_HOUSE_INFO);
         } else {
 
@@ -1652,19 +1699,19 @@ public class PersonalAssetsFragment extends BaseFragment {
         HouseInfo houseInfo = null;
         if (isHouse1Show) {
             houseInfo = new HouseInfo();
-            houseInfo.setId(mHouseId[0]);
+            houseInfo.setId(getHouseParentId(0));
             houseInfo.setCode(getSelectedCode(sp_house_1.getSelectedItem().toString()));
             houseInfoList.add(houseInfo);
         }
         if (isHouse2Show) {
             houseInfo = new HouseInfo();
-            houseInfo.setId(mHouseId[1]);
+            houseInfo.setId(getHouseParentId(1));
             houseInfo.setCode(getSelectedCode(sp_house_2.getSelectedItem().toString()));
             houseInfoList.add(houseInfo);
         }
         if (isHouse3Show) {
             houseInfo = new HouseInfo();
-            houseInfo.setId(mHouseId[2]);
+            houseInfo.setId(getHouseParentId(2));
             houseInfo.setCode(getSelectedCode(sp_house_3.getSelectedItem().toString()));
             houseInfoList.add(houseInfo);
         }
@@ -1674,24 +1721,24 @@ public class PersonalAssetsFragment extends BaseFragment {
         CarInfo carInfo = null;
         if (isCar1Show) {
             carInfo = new CarInfo();
-            carInfo.setId(mCardId[0]);
+            carInfo.setId(getCarParentId(0));
             carInfo.setCode(getSelectedCode(sp_car_1.getSelectedItem().toString()));
             carInfoList.add(carInfo);
         }
         if (isCar2Show) {
             carInfo = new CarInfo();
-            carInfo.setId(mCardId[1]);
+            carInfo.setId(getCarParentId(1));
             carInfo.setCode(getSelectedCode(sp_car_2.getSelectedItem().toString()));
             carInfoList.add(carInfo);
         }
         if (isCar3Show) {
             carInfo = new CarInfo();
-            carInfo.setId(mCardId[2]);
+            carInfo.setId(getCarParentId(2));
             carInfo.setCode(getSelectedCode(sp_car_3.getSelectedItem().toString()));
             carInfoList.add(carInfo);
         }
-        String ss=JSON.toJSONString(carInfoList);
-        String b=JSON.toJSONString(houseInfoList);
+        String ss = JSON.toJSONString(carInfoList);
+        String b = JSON.toJSONString(houseInfoList);
         formparams.add(new BasicNameValuePair("car", JSON.toJSONString(carInfoList)));
         formparams.add(new BasicNameValuePair("remark", et_remark.getText().toString()));
 
