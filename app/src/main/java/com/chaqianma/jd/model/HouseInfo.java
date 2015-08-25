@@ -14,6 +14,7 @@ public class HouseInfo implements Serializable {
     private String owner_desc=null;
     private String area=null;
     private String deed_num=null;
+    private String code=null;
     public String getId() {
         return id;
     }
@@ -68,5 +69,13 @@ public class HouseInfo implements Serializable {
 
     public void setDeed_num(String deed_num) {
         this.deed_num = deed_num;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

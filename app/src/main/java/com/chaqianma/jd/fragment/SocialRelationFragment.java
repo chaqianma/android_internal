@@ -789,7 +789,7 @@ public class SocialRelationFragment extends BaseFragment {
             return;
         }
         if (!requiredInput())
-             return;
+            return;
         /*if (JDAppUtil.isEmpty(et_remark.getText().toString())) {
             JDToast.showLongText(getActivity(), "请输入备注信息");
             return;

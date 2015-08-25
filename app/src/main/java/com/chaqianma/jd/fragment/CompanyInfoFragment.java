@@ -2,6 +2,7 @@ package com.chaqianma.jd.fragment;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -38,6 +39,7 @@ import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
+import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
 import org.apache.http.NameValuePair;
@@ -60,6 +62,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     //第一家企业
     @InjectView(R.id.img_company_add_1)
     ImageView img_company_add_1;
+    @InjectView(R.id.img_company_delete_1)
+    ImageView img_company_delete_1;
     @InjectView(R.id.sp_company_type_1)
     Spinner sp_company_type_1;
     //营业执照
@@ -89,16 +93,18 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     //备注
     @InjectView(R.id.et_remark)
     EditText et_remark;
-
     @InjectView(R.id.gv_sound)
     GridView gv_sound;
     @InjectView(R.id.gv_mark)
     GridView gv_mark;
-
     @InjectView(R.id.layout_company_1)
     LinearLayout layout_company_1;
+    @InjectView(R.id.gv_income_1)
+    GridView gv_income_1;
+    @InjectView(R.id.gv_bill_1)
+    GridView gv_bill_1;
     //第二家企业
-    ImageView img_company_add_2 = null;
+    ImageView img_company_delete_2 = null;
     Spinner sp_company_type_2 = null;
     //营业执照
     GridView gv_business_license_2 = null;
@@ -116,8 +122,12 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     GridView gv_land_card_2 = null;
     //对应企业
     Spinner sp_some_company_2 = null;
+    //收入证明
+    GridView gv_income_2 = null;
+    //经营性单据
+    GridView gv_bill_2 = null;
     //第三家企业
-    ImageView img_company_add_3 = null;
+    ImageView img_company_delete_3 = null;
     Spinner sp_company_type_3 = null;
     //营业执照
     GridView gv_business_license_3 = null;
@@ -135,6 +145,10 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     GridView gv_land_card_3 = null;
     //对应企业
     Spinner sp_some_company_3 = null;
+    //收入证明
+    GridView gv_income_3 = null;
+    //经营性单据
+    GridView gv_bill_3 = null;
     //营业
     private ImgsGridViewAdapter mBLAdapter_1 = null;
     private List<UploadFileInfo> mBLList_1 = null;
@@ -172,7 +186,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     //土地
     private ImgsGridViewAdapter mLCAdapter_2 = null;
     private List<UploadFileInfo> mLCList_2 = null;
-
 
     //营业
     private ImgsGridViewAdapter mBLAdapter_3 = null;
@@ -229,6 +242,27 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     private List<UploadFileInfo> soundInfoList = null;
     //用于只加载一次
     private boolean hasLoadedOnce = false;
+    //收入证明
+    private ImgsGridViewAdapter mSYAdapter_1 = null;
+    private List<UploadFileInfo> mSYList_1 = null;
+    //经营性单据
+    private ImgsGridViewAdapter mJYAdapter_1 = null;
+    private List<UploadFileInfo> mJYList_1 = null;
+    //收入证明
+    private ImgsGridViewAdapter mSYAdapter_2 = null;
+    private List<UploadFileInfo> mSYList_2 = null;
+    //经营性单据
+    private ImgsGridViewAdapter mJYAdapter_2 = null;
+    private List<UploadFileInfo> mJYList_2 = null;
+    //收入证明
+    private ImgsGridViewAdapter mSYAdapter_3 = null;
+    private List<UploadFileInfo> mSYList_3 = null;
+    //经营性单据
+    private ImgsGridViewAdapter mJYAdapter_3 = null;
+    private List<UploadFileInfo> mJYList_3 = null;
+
+    LinearLayout layout_company_2;
+    LinearLayout layout_company_3;
 
     /*
     * 添加企业
@@ -236,6 +270,19 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     @OnClick(R.id.img_company_add_1)
     void onImgAddClick(View v) {
         addCompany();
+    }
+
+    /*
+    * 删除企业
+    * */
+    @OnClick(R.id.img_company_delete_1)
+    void onDeleteCompany(View v) {
+        //删除企业
+        if (!isCompany2Show && !isCompany3Show) {
+            JDToast.showLongText(getActivity(), "企业不能全部删除，必须保留一家企业");
+        } else {
+            deleteCompany(mParentId[0], v);
+        }
     }
 
     /*
@@ -264,9 +311,14 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             if (!requiredInput())
                 return;
             isCompany2Show = true;
-            ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
-            initControlView(true);
-            initGridViewData(true);
+            if (layout_company_2 != null) {
+                layout_company_2.setVisibility(View.VISIBLE);
+            } else {
+                ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
+
+                initControlView(true);
+                initGridViewData(true);
+            }
             //下拉框
             if (isCompany1Show) {
                 sp_some_company_1.setEnabled(false);
@@ -284,9 +336,14 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 if (!requiredInput())
                     return;
                 isCompany3Show = true;
-                ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
-                initControlView(false);
-                initGridViewData(false);
+                if (layout_company_3 != null) {
+                    layout_company_3.setVisibility(View.VISIBLE);
+                } else {
+                    ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
+                    layout_company_3 = (LinearLayout) mView.findViewById(R.id.layout_company_3);
+                    initControlView(false);
+                    initGridViewData(false);
+                }
                 //下拉框
                 if (isCompany1Show) {
                     sp_some_company_1.setEnabled(false);
@@ -310,27 +367,23 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             case 0:
                 isCompany1Show = true;
                 layout_company_1.setVisibility(View.VISIBLE);
-                sp_some_company_1.setSelection(0);
-                sp_some_company_1.setEnabled(false);
                 break;
             case 1:
                 isCompany2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_2)).inflate();
+                layout_company_2 = (LinearLayout) mView.findViewById(R.id.layout_company_2);
                 initControlView(true);
                 initGridViewData(true);
-                sp_some_company_2.setEnabled(false);
                 //下拉框
                 initSpinner(sp_some_company_2, Constants.COMPANYLIST);
-                sp_some_company_2.setSelection(1);
                 break;
             case 2:
                 isCompany3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
+                layout_company_3 = (LinearLayout) mView.findViewById(R.id.layout_company_3);
                 initControlView(false);
                 initGridViewData(false);
-                sp_some_company_3.setEnabled(false);
                 initSpinner(sp_some_company_3, Constants.COMPANYLIST);
-                sp_some_company_3.setSelection(2);
                 break;
             default:
                 break;
@@ -354,14 +407,24 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     * */
     private void initControlView(boolean is2) {
         if (is2) {
-            img_company_add_2 = (ImageView) mView.findViewById(R.id.img_company_add_2);
-            img_company_add_2.setOnClickListener(new View.OnClickListener() {
+            layout_company_2 = (LinearLayout) mView.findViewById(R.id.layout_company_2);
+            img_company_delete_2 = (ImageView) mView.findViewById(R.id.img_company_delete_2);
+            img_company_delete_2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addCompany();
+                    //删除企业
+                    if (!isCompany1Show && !isCompany3Show) {
+                        JDToast.showLongText(getActivity(), "企业不能全部删除，必须保留一家企业");
+                    } else {
+                        deleteCompany(mParentId[1], v);
+                    }
                 }
             });
             sp_company_type_2 = (Spinner) mView.findViewById(R.id.sp_company_type_2);
+            //收入证明
+            gv_income_2 = (GridView) mView.findViewById(R.id.gv_income_2);
+            //经营性单据
+            gv_bill_2 = (GridView) mView.findViewById(R.id.gv_bill_2);
             //营业执照
             gv_business_license_2 = (GridView) mView.findViewById(R.id.gv_business_license_2);
             //税务登记
@@ -379,14 +442,22 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             //对应企业
             sp_some_company_2 = (Spinner) mView.findViewById(R.id.sp_some_company_2);
         } else {
-            img_company_add_3 = (ImageView) mView.findViewById(R.id.img_company_add_3);
-            img_company_add_3.setOnClickListener(new View.OnClickListener() {
+            img_company_delete_3 = (ImageView) mView.findViewById(R.id.img_company_delete_3);
+            img_company_delete_3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addCompany();
+                    //删除企业
+                    if (!isCompany1Show && !isCompany2Show) {
+                        JDToast.showLongText(getActivity(), "企业不能全部删除，必须保留一家企业");
+                    } else {
+                        deleteCompany(mParentId[2], v);
+                    }
                 }
             });
             sp_company_type_3 = (Spinner) mView.findViewById(R.id.sp_company_type_3);
+            gv_income_3 = (GridView) mView.findViewById(R.id.gv_income_3);
+            //经营性单据
+            gv_bill_3 = (GridView) mView.findViewById(R.id.gv_bill_3);
             //营业执照
             gv_business_license_3 = (GridView) mView.findViewById(R.id.gv_business_license_3);
             //税务登记
@@ -435,6 +506,29 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 mTRAdapter_2 = new ImgsGridViewAdapter(getActivity(), mTRList_2);
                 mTRAdapter_2.setOnClickImgListener(this);
                 gv_tax_registration_2.setAdapter(mTRAdapter_2);
+            }
+            {
+                UploadFileInfo imgInfo = new UploadFileInfo();
+                imgInfo.setIdxTag(1);
+                imgInfo.setIsDefault(true);
+                imgInfo.setiServer(false);
+                imgInfo.setFileType(UploadFileType.SY.getValue());
+                mSYList_2.add(imgInfo);
+                mSYAdapter_2 = new ImgsGridViewAdapter(getActivity(), mSYList_2);
+                mSYAdapter_2.setOnClickImgListener(this);
+                gv_income_2.setAdapter(mSYAdapter_2);
+            }
+
+            {
+                UploadFileInfo imgInfo = new UploadFileInfo();
+                imgInfo.setIdxTag(1);
+                imgInfo.setIsDefault(true);
+                imgInfo.setiServer(false);
+                imgInfo.setFileType(UploadFileType.JY.getValue());
+                mJYList_2.add(imgInfo);
+                mJYAdapter_2 = new ImgsGridViewAdapter(getActivity(), mJYList_2);
+                mJYAdapter_2.setOnClickImgListener(this);
+                gv_bill_2.setAdapter(mJYAdapter_2);
             }
             {
                 //企业代码
@@ -523,6 +617,29 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 gv_company_code_3.setAdapter(mCCAdapter_3);
             }
             {
+                UploadFileInfo imgInfo = new UploadFileInfo();
+                imgInfo.setIdxTag(2);
+                imgInfo.setIsDefault(true);
+                imgInfo.setiServer(false);
+                imgInfo.setFileType(UploadFileType.SY.getValue());
+                mSYList_3.add(imgInfo);
+                mSYAdapter_3 = new ImgsGridViewAdapter(getActivity(), mSYList_3);
+                mSYAdapter_3.setOnClickImgListener(this);
+                gv_income_3.setAdapter(mSYAdapter_3);
+            }
+
+            {
+                UploadFileInfo imgInfo = new UploadFileInfo();
+                imgInfo.setIdxTag(2);
+                imgInfo.setIsDefault(true);
+                imgInfo.setiServer(false);
+                imgInfo.setFileType(UploadFileType.JY.getValue());
+                mJYList_3.add(imgInfo);
+                mJYAdapter_3 = new ImgsGridViewAdapter(getActivity(), mJYList_3);
+                mJYAdapter_3.setOnClickImgListener(this);
+                gv_bill_3.setAdapter(mJYAdapter_3);
+            }
+            {
                 //其它
                 UploadFileInfo imgInfo = new UploadFileInfo();
                 imgInfo.setIdxTag(2);
@@ -587,7 +704,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         mOCList_1 = new ArrayList<UploadFileInfo>();
         mHCList_1 = new ArrayList<UploadFileInfo>();
         mLCList_1 = new ArrayList<UploadFileInfo>();
-
+        mSYList_1 = new ArrayList<UploadFileInfo>();
+        mJYList_1 = new ArrayList<UploadFileInfo>();
         //第二家企业
         mBLList_2 = new ArrayList<UploadFileInfo>();
         mTRList_2 = new ArrayList<UploadFileInfo>();
@@ -595,7 +713,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         mOCList_2 = new ArrayList<UploadFileInfo>();
         mHCList_2 = new ArrayList<UploadFileInfo>();
         mLCList_2 = new ArrayList<UploadFileInfo>();
-
+        mSYList_2 = new ArrayList<UploadFileInfo>();
+        mJYList_2 = new ArrayList<UploadFileInfo>();
         //第三家企业
         mBLList_3 = new ArrayList<UploadFileInfo>();
         mTRList_3 = new ArrayList<UploadFileInfo>();
@@ -603,7 +722,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         mOCList_3 = new ArrayList<UploadFileInfo>();
         mHCList_3 = new ArrayList<UploadFileInfo>();
         mLCList_3 = new ArrayList<UploadFileInfo>();
-
+        mSYList_3 = new ArrayList<UploadFileInfo>();
+        mJYList_3 = new ArrayList<UploadFileInfo>();
         //备注
         remarkUploadImgInfoList = new ArrayList<UploadFileInfo>();
         soundInfoList = new ArrayList<UploadFileInfo>();
@@ -613,6 +733,30 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     private void initOneView() {
 
         //第一家企业
+        {
+            //收入证明
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setIdxTag(0);
+            imgInfo.setIsDefault(true);
+            imgInfo.setiServer(false);
+            imgInfo.setFileType(UploadFileType.SY.getValue());
+            mSYList_1.add(imgInfo);
+            mSYAdapter_1 = new ImgsGridViewAdapter(getActivity(), mSYList_1);
+            mSYAdapter_1.setOnClickImgListener(this);
+            gv_income_1.setAdapter(mSYAdapter_1);
+        }
+        {
+            //经营性单据
+            UploadFileInfo imgInfo = new UploadFileInfo();
+            imgInfo.setIdxTag(0);
+            imgInfo.setIsDefault(true);
+            imgInfo.setiServer(false);
+            imgInfo.setFileType(UploadFileType.JY.getValue());
+            mJYList_1.add(imgInfo);
+            mJYAdapter_1 = new ImgsGridViewAdapter(getActivity(), mJYList_1);
+            mJYAdapter_1.setOnClickImgListener(this);
+            gv_bill_1.setAdapter(mJYAdapter_1);
+        }
         {
             //营业
             UploadFileInfo imgInfo = new UploadFileInfo();
@@ -729,8 +873,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                     if (companyInfo == null)
                                         continue;
                                     mParentId[i] = companyInfo.getId();
-                                    if ((!JDAppUtil.isEmpty(companyInfo.getOrganizationType()) && !JDAppUtil.isEmpty(companyInfo.getBusinessPremises()))
-                                            || (companyInfo.getFileList() != null && companyInfo.getFileList().size() > 0)) {
+                                    if ((!JDAppUtil.isEmpty(companyInfo.getOrganizationType()) && !JDAppUtil.isEmpty(companyInfo.getBusinessPremises()))) {
+                                        // (companyInfo.getFileList() != null && companyInfo.getFileList().size() > 0)
                                         companyInfo.setIsValid(true);
                                         isHasCompany = true;
                                         int orgType = 0;
@@ -747,12 +891,14 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                                 sp_business_premises_1.setSelection(busPremises);
                                                 if (!JDAppUtil.isEmpty(companyInfo.getRemark()))
                                                     et_remark.setText(companyInfo.getRemark());
+                                                sp_some_company_1.setSelection(getSelectedIdx(companyInfo.getCode()));
                                                 initServerFile(companyInfo.getFileList(), i);
                                                 break;
                                             case 1:
                                                 addCompany(1);
                                                 sp_company_type_2.setSelection(orgType);
                                                 sp_business_premises_2.setSelection(busPremises);
+                                                sp_some_company_2.setSelection(getSelectedIdx(companyInfo.getCode()));
                                                 if (!JDAppUtil.isEmpty(companyInfo.getRemark()))
                                                     et_remark.setText(companyInfo.getRemark());
                                                 //下载图片
@@ -762,6 +908,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                                                 addCompany(2);
                                                 sp_company_type_3.setSelection(orgType);
                                                 sp_business_premises_3.setSelection(busPremises);
+                                                sp_some_company_3.setSelection(getSelectedIdx(companyInfo.getCode()));
                                                 if (!JDAppUtil.isEmpty(companyInfo.getRemark()))
                                                     et_remark.setText(companyInfo.getRemark());
                                                 //下载图片
@@ -786,6 +933,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 }
             }));
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -828,6 +976,44 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
             }
         }));
+    }
+
+    /*
+    * 删除企业
+    * */
+    private void deleteCompany(final String parentId, final View v) {
+        JDAlertDialog.showAlertDialog(getActivity(), "确认删除该企业吗？", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                HttpClientUtil.put(HttpRequestURL.deleteCompany + parentId, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        switch (v.getId()) {
+                            case R.id.img_company_delete_1:
+                                isCompany1Show = false;
+                                JDAppUtil.addHiddenAction(layout_company_1);
+                                break;
+                            case R.id.img_company_delete_2:
+                                isCompany2Show = false;
+                                JDAppUtil.addHiddenAction(layout_company_2);
+                                break;
+                            case R.id.img_company_delete_3:
+                                isCompany3Show = false;
+                                JDAppUtil.addHiddenAction(layout_company_3);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }));
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                dialog.cancel();
+            }
+        });
     }
 
     @Override
@@ -947,7 +1133,35 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     * */
     private void addGridViewData(UploadFileInfo imgInfo) {
         UploadFileType fType = UploadFileType.valueOf(imgInfo.getFileType());
-        if (fType == UploadFileType.YY) {
+        if (fType == UploadFileType.SY) {
+            switch (imgInfo.getIdxTag()) {
+                case 0:
+                    mSYList_1.add(0, imgInfo);
+                    break;
+                case 1:
+                    mSYList_2.add(0, imgInfo);
+                    break;
+                case 2:
+                    mSYList_3.add(0, imgInfo);
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.JY) {
+            switch (imgInfo.getIdxTag()) {
+                case 0:
+                    mJYList_1.add(0, imgInfo);
+                    break;
+                case 1:
+                    mJYList_2.add(0, imgInfo);
+                    break;
+                case 2:
+                    mJYList_3.add(0, imgInfo);
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.YY) {
             switch (imgInfo.getIdxTag()) {
                 case 0:
                     mBLList_1.add(0, imgInfo);
@@ -1064,7 +1278,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     //上传图片
     private void uploadImg(final UploadFileInfo fileInfo) {
         try {
-            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, getParentId(fileInfo)), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
+            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, mParentId[fileInfo.getIdxTag()]), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
                 @Override
                 public void onSuccess(UploadFileInfo downImgInfo) {
                     fileInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功
@@ -1093,7 +1307,39 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     * */
     private void refreshData(UploadFileInfo fileInfo) {
         UploadFileType fType = UploadFileType.valueOf(fileInfo.getFileType());
-        if (fType == UploadFileType.YY) {
+        if (fType == UploadFileType.SY) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    mSYAdapter_1.refreshData();
+                    break;
+                case 1:
+                    if (mSYAdapter_2 != null)
+                        mSYAdapter_2.refreshData();
+                    break;
+                case 2:
+                    if (mSYAdapter_3 != null)
+                        mSYAdapter_3.refreshData();
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.JY) {
+            switch (fileInfo.getIdxTag()) {
+                case 0:
+                    mJYAdapter_1.refreshData();
+                    break;
+                case 1:
+                    if (mJYAdapter_2 != null)
+                        mJYAdapter_2.refreshData();
+                    break;
+                case 2:
+                    if (mJYAdapter_3 != null)
+                        mJYAdapter_3.refreshData();
+                    break;
+                default:
+                    break;
+            }
+        } else if (fType == UploadFileType.YY) {
             switch (fileInfo.getIdxTag()) {
                 case 0:
                     mBLAdapter_1.refreshData();
@@ -1195,13 +1441,13 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     private void setSpinnerEnabled(int fileIdxTag) {
         switch (fileIdxTag) {
             case 0:
-                sp_some_company_1.setEnabled(!(isUploadSuccess(mTRList_1) || isUploadSuccess(mCCList_1) || isUploadSuccess(mOCList_1) || isUploadSuccess(mHCList_1) || isUploadSuccess(mLCList_1)));
+                sp_some_company_1.setEnabled(!(isUploadSuccess(mSYList_1) || isUploadSuccess(mJYList_1) || isUploadSuccess(mTRList_1) || isUploadSuccess(mCCList_1) || isUploadSuccess(mOCList_1) || isUploadSuccess(mHCList_1) || isUploadSuccess(mLCList_1)));
                 break;
             case 1:
-                sp_some_company_2.setEnabled(!(isUploadSuccess(mTRList_2) || isUploadSuccess(mCCList_2) || isUploadSuccess(mOCList_2) || isUploadSuccess(mHCList_2) || isUploadSuccess(mLCList_2)));
+                sp_some_company_2.setEnabled(!(isUploadSuccess(mSYList_2) || isUploadSuccess(mJYList_2) || isUploadSuccess(mTRList_2) || isUploadSuccess(mCCList_2) || isUploadSuccess(mOCList_2) || isUploadSuccess(mHCList_2) || isUploadSuccess(mLCList_2)));
                 break;
             case 2:
-                sp_some_company_3.setEnabled(!(isUploadSuccess(mTRList_3) || isUploadSuccess(mCCList_3) || isUploadSuccess(mOCList_3) || isUploadSuccess(mHCList_3) || isUploadSuccess(mLCList_3)));
+                sp_some_company_3.setEnabled(!(isUploadSuccess(mSYList_3) || isUploadSuccess(mJYList_3) || isUploadSuccess(mTRList_3) || isUploadSuccess(mCCList_3) || isUploadSuccess(mOCList_3) || isUploadSuccess(mHCList_3) || isUploadSuccess(mLCList_3)));
                 break;
         }
     }
@@ -1281,6 +1527,38 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     }
 
     /*
+    * 设置企业索引值
+    * */
+    private int getSelectedIdx(String code) {
+        int selIdx = 0;
+        if(!JDAppUtil.isEmpty(code)) {
+            if (code.equals("a")) {
+                selIdx = 0;
+            } else if (code.equals("b")) {
+                selIdx = 1;
+            } else if (code.equals("c")) {
+                selIdx = 2;
+            } else {
+
+            }
+        }
+        return selIdx;
+    }
+
+    /*
+    * 获取企业对应编码
+    * */
+    private String getSelectedCompanyCode(String selectedItem) {
+        if (selectedItem.equals("企业a"))
+            return "a";
+        else if (selectedItem.equals("企业b"))
+            return "b";
+        else if (selectedItem.equals("企业c"))
+            return "c";
+        return "";
+    }
+
+    /*
     * 保存数据
     * */
     public void saveDataSubmit() {
@@ -1299,7 +1577,9 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             companyInfo = new CompanyInfo();
             companyInfo.setOrganizationType(sp_company_type_1.getSelectedItemPosition() + 1 + "");
             companyInfo.setBusinessPremises(sp_business_premises_1.getSelectedItemPosition() + 1 + "");
-            companyInfo.setId(mParentId[Constants.COMPANYLIST.indexOf(sp_some_company_1.getSelectedItem().toString())]);
+            companyInfo.setCode(getSelectedCompanyCode(sp_some_company_1.getSelectedItem().toString()));
+            //companyInfo.setId(mParentId[Constants.COMPANYLIST.indexOf(sp_some_company_1.getSelectedItem().toString())]);
+            companyInfo.setId(mParentId[0]);
             companyInfo.setRemark(this.et_remark.getText().toString());
             companyInfoList.add(companyInfo);
         }
@@ -1307,16 +1587,18 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             companyInfo = new CompanyInfo();
             companyInfo.setOrganizationType(sp_company_type_2.getSelectedItemPosition() + 1 + "");
             companyInfo.setBusinessPremises(sp_business_premises_2.getSelectedItemPosition() + 1 + "");
-            companyInfo.setId(mParentId[Constants.COMPANYLIST.indexOf(sp_some_company_2.getSelectedItem().toString())]);
+            companyInfo.setCode(getSelectedCompanyCode(sp_some_company_2.getSelectedItem().toString()));
+            //companyInfo.setId(mParentId[Constants.COMPANYLIST.indexOf(sp_some_company_2.getSelectedItem().toString())]);
+            companyInfo.setId(mParentId[1]);
             companyInfoList.add(companyInfo);
         }
         if (isCompany3Show) {
             companyInfo = new CompanyInfo();
             companyInfo.setOrganizationType(sp_company_type_3.getSelectedItemPosition() + 1 + "");
             companyInfo.setBusinessPremises(sp_business_premises_3.getSelectedItemPosition() + 1 + "");
-            String ss = sp_some_company_3.getSelectedItem().toString();
-            int s = Constants.COMPANYLIST.indexOf(ss);
-            companyInfo.setId(mParentId[Constants.COMPANYLIST.indexOf(sp_some_company_3.getSelectedItem().toString())]);
+            companyInfo.setCode(getSelectedCompanyCode(sp_some_company_3.getSelectedItem().toString()));
+            //companyInfo.setId(mParentId[Constants.COMPANYLIST.indexOf(sp_some_company_3.getSelectedItem().toString())]);
+            companyInfo.setId(mParentId[2]);
             companyInfoList.add(companyInfo);
         }
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();

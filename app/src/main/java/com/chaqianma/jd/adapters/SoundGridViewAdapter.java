@@ -27,6 +27,7 @@ import com.chaqianma.jd.model.UploadFileInfo;
 import com.chaqianma.jd.model.UploadFileType;
 import com.chaqianma.jd.utils.AudioRecorder;
 import com.chaqianma.jd.utils.HttpClientUtil;
+import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDAlertDialog;
@@ -148,6 +149,11 @@ public class SoundGridViewAdapter extends BaseAdapter {
                     if (v.getTag() instanceof UploadFileInfo) {
                         UploadFileInfo uploadFileInfo = (UploadFileInfo) v.getTag();
                         if (uploadFileInfo.isDefault()) {
+                            if(!JDAppUtil.getIsAuthSuccess())
+                            {
+                                JDToast.showLongText(mContext, "未实名认证，不能上传录音");
+                                return;
+                            }
                             if (mSoundInfoList.size() >= 11) {
                                 JDToast.showLongText(mContext, "最多只能上传10段录音");
                                 return;

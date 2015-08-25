@@ -26,7 +26,9 @@ import cn.jpush.android.api.JPushInterface;
 /**
  * Created by zhangxd on 2015/7/20.
  * <p/>
- * 1、新的借款请求 2、借款请求已分配 3、借款请求开始尽调 4、进入审核 5、账单日 6、还款逾期 7、还款完成
+ * 借款申请状态： -3弃标 -2驳回补充资料 -1用户取消 0待预审 1待分配 2已分配 3尽调中 4录入中
+ * 5初审中 6复审中 7会审中 8主管审核中 9合同签订中 10生成标的中 11已生成标的
+ * 20、账单日 21、还款逾期
  */
 public class JPNotificationReceiver extends BroadcastReceiver {
     private Context mContext;
@@ -44,7 +46,7 @@ public class JPNotificationReceiver extends BroadcastReceiver {
             String msgType = getMsgType(intent.getExtras());
             if (msgType.equals("2")) {
 
-            } else if (msgType.equals("5") || (msgType.equals("6"))) {
+            } else if (msgType.equals("20") || (msgType.equals("21"))) {
                 SaveRepaymentId(intent.getExtras());
             } else {
 
@@ -57,7 +59,7 @@ public class JPNotificationReceiver extends BroadcastReceiver {
             //打开了推送通知
             String msgType = getMsgType(intent.getExtras());
             if (AppData.getInstance().getUserInfo() == null) {
-                if (msgType.equals("2") || msgType.equals("5") || msgType.equals("6")) {
+                if (msgType.equals("2") || msgType.equals("20") || msgType.equals("21")) {
                     Intent startIntent = new Intent();
                     startIntent.setClass(context, LoginActivity.class);
                     startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

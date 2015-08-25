@@ -148,9 +148,9 @@ public class BorrowApplyFragment extends BaseFragment {
             mLocation = borrowRequestInfo.getLocation();
             workLocation = borrowRequestInfo.getWorkLocation();
             if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
-                new GeoCoderUtil(tv_office, mLocation.split(",")[1] + "," + mLocation.split(",")[0]);
+                new GeoCoderUtil(tv_address, mLocation.split(",")[1] + "," + mLocation.split(",")[0]);
             }
-            new GeoCoderUtil(tv_address, workLocation);
+            new GeoCoderUtil(tv_office, workLocation);
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
             if (borrowRequestInfo.getStatus().equals("1")) {
@@ -213,7 +213,7 @@ public class BorrowApplyFragment extends BaseFragment {
                 }
             });
             btn_borrow.setText("开始尽调");
-            if (borrowRequestInfo.getStatus().equals("2")) {
+            if (borrowRequestInfo.getStatus().equals("3")) {
                 isShouldRequest = false;
                 btn_borrow.setText("进入尽调");
             }

@@ -5,8 +5,8 @@ package com.chaqianma.jd.common;
  * 网络请求链接常量
  */
 public class HttpRequestURL {
-    //请求URL 192.168.199.112
-    public static final String BASEURL = "http://192.168.199.223:8088/";  //8080
+    //请求URL 192.168.199.112 192.168.199.126
+    public static final String BASEURL = "http://192.168.199.126:8080/";  //8080
     //public static final String BASEURL="http://rest-staging.chaqianma.com/"; //http://staging.chaqianma.com/
     //登录 POST
     public static final String LoginUrl = "api/user/login";
@@ -42,8 +42,18 @@ public class HttpRequestURL {
     public static final String updatePersonAssetUrl = "/api/borrow/dd/personalassetsinfo/update/";
     //批量修改企业信息
     public static final String updateBusinessInfoUrl = "api/borrow/dd/businessinfo/update/batch/";
+    //修改车辆信息
+    public static final String updateCar="api/borrow/dd/personalassetsinfo/car/update/";
+    //修改房产信息
+    public static final String updateHouse="api/borrow/dd/personalassetsinfo/house/update/";
     //修改社会关系信息
     public static final String updateSocialRelationURL = "api/borrow/dd/socialrelation/update/";
+    //删除个人资产--车辆
+    public static final String deleteCar="api/borrow/dd/personalassetsinfo/car/delete/";
+    //删除个人资产---房产
+    public static final String deleteHouse="api/borrow/dd/personalassetsinfo/house/delete/";
+    //删除企业信息
+    public static final String deleteCompany="api/borrow/dd/businessinfo/delete/";
     //获取催收记录
     public static final String getRepaymentList = "api/repayment/dunning/list";
     //获取推送催收记录

@@ -16,10 +16,10 @@
                 android:textSize="@dimen/large_text_size" />
 
             <ImageView
-                android:id="@+id/img_car_add_1"
+                android:id="@+id/img_car_delete_1"
                 style="@style/SettingRightIconStyle"
                 android:layout_marginRight="20dp"
-                android:src="@mipmap/icon_add" />
+                android:src="@mipmap/icon_delete" />
         </RelativeLayout>
 
         <View style="@style/ViewLineStyle" />

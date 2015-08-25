@@ -71,7 +71,7 @@ public class Constants {
     //个人资产---企业收入---备注
     public static final String PERSONAL_ASSETS_INFO = "personal_assets_info";
     //个人资产---汽车
-    public static final String PERSONAL_ASSERTS_CAR_INFO = "personal_asserts_car_info";
+    public static final String PERSONAL_ASSERTS_CAR_INFO = "personal_assets_car_info";
     //个人资产---房子
     public static final String PERSONAL_ASSETS_HOUSE_INFO = "personal_assets_house_info";
     //尽职上传文件

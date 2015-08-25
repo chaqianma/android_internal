@@ -6,6 +6,32 @@
     android:background="@mipmap/android_layout_bg"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right">
+
+        <ImageView
+            android:id="@+id/img_company_add_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/icon_add" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_company_add_1"
+            android:text="添加企业"
+            android:textColor="@color/black"
+            android:textSize="@dimen/small_text_size" />
+    </RelativeLayout>
+
+    <View style="@style/ViewLineStyle" />
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -18,22 +44,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <include layout="@layout/layout_company_1"/>
+            <include layout="@layout/layout_company_1" />
 
             <ViewStub
                 android:id="@+id/stub_company_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inflatedId="@+id/company_2"
-                android:layout="@layout/layout_company_2"/>
+                android:layout="@layout/layout_company_2" />
 
             <ViewStub
                 android:id="@+id/stub_company_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inflatedId="@+id/company_3"
-                android:layout="@layout/layout_company_3"/>
+                android:layout="@layout/layout_company_3" />
 
             <!-- <include layout="@layout/layout_company_2" />
 
@@ -47,7 +72,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="备注"/>
+                    android:text="备注" />
 
                 <EditText
                     android:id="@+id/et_remark"

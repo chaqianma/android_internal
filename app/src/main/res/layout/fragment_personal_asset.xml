@@ -6,6 +6,63 @@
     android:background="@mipmap/android_layout_bg"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/img_car_add_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="8dp"
+                android:src="@mipmap/icon_add" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_car_add_1"
+                android:text="添加车辆"
+                android:textColor="@color/black"
+                android:textSize="@dimen/small_text_size" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/img_house_add_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="8dp"
+                android:src="@mipmap/icon_add" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_house_add_1"
+                android:text="添加房产"
+                android:textColor="@color/black"
+                android:textSize="@dimen/small_text_size" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View style="@style/ViewLineStyle" />
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -18,22 +75,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <include layout="@layout/layout_asset_company_1"/>
-
-            <ViewStub
-                android:id="@+id/stub_company_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout="@layout/layout_asset_company_2" />
-
-            <ViewStub
-                android:id="@+id/stub_company_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout="@layout/layout_asset_company_3" />
-
-            <include layout="@layout/layout_asset_car_1"/>
+            <include layout="@layout/layout_asset_car_1" />
 
             <ViewStub
                 android:id="@+id/stub_car_2"
@@ -49,13 +91,11 @@
 
             <include layout="@layout/layout_asset_house_1" />
 
-
             <ViewStub
                 android:id="@+id/stub_house_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout="@layout/layout_asset_house_2" />
-
 
             <ViewStub
                 android:id="@+id/stub_house_3"
@@ -130,4 +170,5 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

@@ -20,7 +20,7 @@ public class CompanyInfo  implements Serializable {
     private String phone=null;
     private String businessPremises=null;// 经营场所 1自由 2租赁 3其他
     private boolean isValid=false;  //是否有效
-
+    private String code=null;
     public String getId() {
         return id;
     }
@@ -123,5 +123,13 @@ public class CompanyInfo  implements Serializable {
 
     public void setBusinessPremises(String businessPremises) {
         this.businessPremises = businessPremises;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
