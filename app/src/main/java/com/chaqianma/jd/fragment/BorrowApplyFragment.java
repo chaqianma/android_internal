@@ -153,7 +153,11 @@ public class BorrowApplyFragment extends BaseFragment {
             new GeoCoderUtil(tv_office, workLocation);
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
-            if (borrowRequestInfo.getStatus().equals("1")) {
+
+            /*借款申请状态： -3弃标 -2驳回补充资料 -1用户取消 0待预审 1待分配 2已分配 3尽调中 4录入中
+                    * 5初审中 6复审中 7会审中 8主管审核中 9合同签订中 10生成标的中 11已生成标的
+                    * 20、账单日 21、还款逾期*/
+            if (borrowRequestInfo.getStatus().equals("2")) {
                 tv_finish_task.setVisibility(View.GONE);
                 btn_transfer.setVisibility(View.VISIBLE);
                 btn_transfer.setOnClickListener(new View.OnClickListener() {
