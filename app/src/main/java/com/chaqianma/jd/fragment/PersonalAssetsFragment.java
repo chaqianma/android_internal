@@ -267,6 +267,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             //    return;
             isCar1Show = true;
             layout_asset_car_1.setVisibility(View.VISIBLE);
+            carList1=(ArrayList)Constants.CARLIST.clone();
             //下拉框
             if (isCar2Show) {
                 sp_car_2.setEnabled(false);
@@ -278,6 +279,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
             initSpinner(sp_car_1, carList1);
             sp_car_1.setSelection(0);
+            sp_car_1.setEnabled(true);
         } else if (!isCar2Show) {
             //if (!isCanAddCar())
             //    return;
@@ -286,6 +288,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             layout_asset_car_2 = (LinearLayout) mView.findViewById(R.id.layout_asset_car_2);
             JDAppUtil.addShowAction(view);
             initCarView(true);
+            carList2=(ArrayList)Constants.CARLIST.clone();
             //下拉框
             if (isCar1Show) {
                 sp_car_1.setEnabled(false);
@@ -297,6 +300,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
             initSpinner(sp_car_2, carList2);
             sp_car_2.setSelection(0);
+            sp_car_2.setEnabled(true);
         } else {
             if (!isCar3Show) {
                 //if (!isCanAddCar())
@@ -306,6 +310,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 layout_asset_car_3 = (LinearLayout) mView.findViewById(R.id.layout_asset_car_3);
                 JDAppUtil.addShowAction(view);
                 initCarView(false);
+                carList3=(ArrayList)Constants.CARLIST.clone();
                 //下拉框
                 if (isCar1Show) {
                     sp_car_1.setEnabled(false);
@@ -317,6 +322,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 }
                 initSpinner(sp_car_3, carList3);
                 sp_car_3.setSelection(0);
+                sp_car_3.setEnabled(true);
             }
         }
     }
@@ -459,6 +465,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             //    return;
             isHouse1Show = true;
             layout_asset_house_1.setVisibility(View.VISIBLE);
+            houseList1=(ArrayList)Constants.HOUSELIST.clone();
             //下拉框
             if (isHouse2Show) {
                 sp_house_2.setEnabled(false);
@@ -470,6 +477,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
             initSpinner(sp_house_1, houseList1);
             sp_house_1.setSelection(0);
+            sp_house_1.setEnabled(true);
         } else if (!isHouse2Show) {
             // if (!isCanAddHouse())
             //     return;
@@ -481,6 +489,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 layout_asset_house_2 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_2);
                 initHouseView(true);
             }
+            houseList2=(ArrayList)Constants.HOUSELIST.clone();
             //下拉框
             if (isHouse1Show) {
                 sp_house_1.setEnabled(false);
@@ -492,6 +501,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
             initSpinner(sp_house_2, houseList2);
             sp_house_2.setSelection(0);
+            sp_house_2.setEnabled(true);
         } else {
             if (!isHouse3Show) {
                 // if (!isCanAddHouse())
@@ -504,6 +514,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     layout_asset_house_3 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_3);
                     initHouseView(false);
                 }
+                houseList3=(ArrayList)Constants.HOUSELIST.clone();
                 //下拉框
                 if (isHouse1Show) {
                     sp_house_1.setEnabled(false);
@@ -515,6 +526,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 }
                 initSpinner(sp_house_3, houseList3);
                 sp_house_3.setSelection(0);
+                sp_house_3.setEnabled(true);
             }
         }
     }

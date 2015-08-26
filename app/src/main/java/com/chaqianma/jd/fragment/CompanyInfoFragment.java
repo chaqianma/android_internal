@@ -228,8 +228,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             add("企业c");
         }
     };
-    private ArrayList<String> companyList2 = (ArrayList) companyList1.clone();
-    private ArrayList<String> companyList3 = (ArrayList) companyList1.clone();
+    private ArrayList<String> companyList2 = null;
+    private ArrayList<String> companyList3 = null;
     //备注数据源
     private ImgsGridViewAdapter remarkImgsAdapter = null;
     //备注集合
@@ -293,6 +293,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 return;
             isCompany1Show = true;
             layout_company_1.setVisibility(View.VISIBLE);
+            companyList1=  (ArrayList)Constants.COMPANYLIST.clone();
             //下拉框
             if (isCompany2Show) {
                 sp_some_company_2.setEnabled(false);
@@ -304,6 +305,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             }
             initSpinner(sp_some_company_1, companyList1);
             sp_some_company_1.setSelection(0);
+            sp_some_company_1.setEnabled(true);
         } else if (!isCompany2Show) {
             //第二家企业
             if (!requiredInput())
@@ -316,6 +318,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 initControlView(true);
                 initGridViewData(true);
             }
+            companyList2=  (ArrayList)Constants.COMPANYLIST .clone();
             //下拉框
             if (isCompany1Show) {
                 sp_some_company_1.setEnabled(false);
@@ -327,6 +330,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             }
             initSpinner(sp_some_company_2, companyList2);
             sp_some_company_2.setSelection(0);
+            sp_some_company_2.setEnabled(true);
         } else {
             //添加第三家企业
             if (!isCompany3Show) {
@@ -341,6 +345,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                     initControlView(false);
                     initGridViewData(false);
                 }
+                companyList3=  (ArrayList)Constants.COMPANYLIST .clone();
                 //下拉框
                 if (isCompany1Show) {
                     sp_some_company_1.setEnabled(false);
@@ -352,6 +357,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 }
                 initSpinner(sp_some_company_3, companyList3);
                 sp_some_company_3.setSelection(0);
+                sp_some_company_3.setEnabled(true);
             }
         }
     }
@@ -1003,6 +1009,11 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                             case R.id.img_company_delete_1:
                                 isCompany1Show = false;
                                 JDAppUtil.addHiddenAction(layout_company_1);
+
+                                //初始化
+                                if (isCompany2Show) {
+                                    //companyList2.add();
+                                }
                                 break;
                             case R.id.img_company_delete_2:
                                 isCompany2Show = false;
