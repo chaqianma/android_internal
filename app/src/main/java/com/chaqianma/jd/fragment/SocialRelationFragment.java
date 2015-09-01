@@ -131,7 +131,8 @@ public class SocialRelationFragment extends BaseFragment {
     private ImgsGridViewAdapter commentImgsAdapter = null;
     //尽职集合
     private List<UploadFileInfo> commentUploadImgInfoList = null;
-
+    //用于只加载一次
+    private boolean hasLoadedOnce = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -881,6 +882,16 @@ public class SocialRelationFragment extends BaseFragment {
                 default:
                     break;
             }
+        }
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (this.isVisible() && isVisibleToUser && !hasLoadedOnce) {
+            hasLoadedOnce = true;
+            getSocialRelationInfo();
         }
     }
 

@@ -157,7 +157,8 @@ public class PersonalAssetsFragment extends BaseFragment {
     //土地证
     private ImgsGridViewAdapter mTDAdpter_3 = null;
     private List<UploadFileInfo> mTDList_3 = null;
-
+    //用于只加载一次
+    private boolean hasLoadedOnce = false;
 
     private boolean isCar1Show = false;
     private boolean isCar2Show = false;
@@ -1757,6 +1758,15 @@ public class PersonalAssetsFragment extends BaseFragment {
                     ((InvestigateDetailActivity) getActivity()).gotoNext();
             }
         }));
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (this.isVisible() && isVisibleToUser && !hasLoadedOnce) {
+            hasLoadedOnce = true;
+            getPersonalAssetInfo();
+        }
     }
 
     public static PersonalAssetsFragment newInstance() {

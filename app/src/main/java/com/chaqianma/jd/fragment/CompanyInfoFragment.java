@@ -700,7 +700,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         mBorrowRequestId = getBorrowRequestId();
         //初始化第一家企业
         initOneView();
-        getCompanyInfo();
+        //getCompanyInfo();
         return mView;
     }
 
@@ -1641,6 +1641,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
         super.setUserVisibleHint(isVisibleToUser);
         if (this.isVisible() && isVisibleToUser && !hasLoadedOnce) {
             hasLoadedOnce = true;
+            getCompanyInfo();
         }
     }
 

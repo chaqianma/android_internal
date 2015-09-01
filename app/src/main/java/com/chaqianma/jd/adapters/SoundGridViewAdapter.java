@@ -328,6 +328,7 @@ public class SoundGridViewAdapter extends BaseAdapter {
                         //    return;
                         //}
                     } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             });

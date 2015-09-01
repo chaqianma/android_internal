@@ -52,11 +52,19 @@ public class AudioRecorder {
     }
 
     public void stop() throws IOException {
+        //设置后不会崩
+        recorder.setOnErrorListener(null);
+        recorder.setOnInfoListener(null);
+        recorder.setPreviewDisplay(null);
         recorder.stop();
         recorder.release();
     }
 
     public void cancel() throws IOException {
+        //设置后不会崩
+        recorder.setOnErrorListener(null);
+        recorder.setOnInfoListener(null);
+        recorder.setPreviewDisplay(null);
         recorder.stop();
         recorder.release();
         recorder = null;

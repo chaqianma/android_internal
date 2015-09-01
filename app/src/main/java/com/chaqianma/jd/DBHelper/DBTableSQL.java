@@ -1,7 +1,5 @@
 package com.chaqianma.jd.DBHelper;
 
-import android.provider.BaseColumns;
-
 /**
  * Created by zhangxd on 2015/7/29.
  */

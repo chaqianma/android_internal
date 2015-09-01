@@ -36,15 +36,15 @@ public class RepaymentDBHelper {
             db = new DBBaseHelper(context);
         }
     }
-
-    /**
+/*
+    *//**
      * 关闭数据库
-     */
+     *//*
     public void closeDB() {
         if (db != null) {
             db.closeDatabase();
         }
-    }
+    }*/
 
     /**
      * 插入数据
@@ -56,7 +56,6 @@ public class RepaymentDBHelper {
             values.put(RepaymentTable.REPAYMENT_ID, repaymentInfo.getId());
             values.put(RepaymentTable.DATELINE, repaymentInfo.getDateLine());
             db.insert(RepaymentTable.TABLE_NAME, values);
-            closeDB();
         }
     }
 
@@ -85,11 +84,12 @@ public class RepaymentDBHelper {
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
-                closeDB();
                 return ids;
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+
         }
         return ids;
     }
@@ -117,7 +117,6 @@ public class RepaymentDBHelper {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-            closeDB();
             return repaymentInfoList;
         }
     }

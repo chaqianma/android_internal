@@ -68,8 +68,6 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
             }
         }
         if (bytes != null && bytes.length > 0) {
-            Log.i("zxd:info", new String(bytes));
-            String sss = new String(bytes);
             if (dataType == null)
                 handler.onSuccess(new String(bytes));
             else

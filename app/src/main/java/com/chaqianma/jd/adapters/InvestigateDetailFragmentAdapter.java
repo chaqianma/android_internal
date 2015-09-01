@@ -3,6 +3,7 @@ package com.chaqianma.jd.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.chaqianma.jd.fragment.CompanyInfoFragment;
 import com.chaqianma.jd.fragment.PersonInfoFragment;
@@ -14,7 +15,7 @@ import com.chaqianma.jd.fragment.SocialRelationFragment;
  * <p>
  * 尽调详情Adapter
  */
-public class InvestigateDetailFragmentAdapter extends FragmentPagerAdapter {
+public class InvestigateDetailFragmentAdapter extends FragmentStatePagerAdapter {
 
     private int mPageCount = 4;
     private PersonInfoFragment personInfoFragment = null;

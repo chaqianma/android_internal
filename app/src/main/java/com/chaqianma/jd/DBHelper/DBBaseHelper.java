@@ -50,8 +50,8 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "db create fail" + e.getMessage());
         } finally {
             db.endTransaction();
+            closeDatabase();
         }
-
     }
 
     @Override
@@ -77,6 +77,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, ":insert fail" + e.getMessage());
         } finally {
             db.endTransaction();
+            closeDatabase();
         }
         return id;
     }
@@ -130,6 +131,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "::delete: " + tableName + "Delete Error!");
         } finally {
             db.endTransaction();
+            closeDatabase();
         }
     }
 
@@ -240,6 +242,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "::query: " + tableName + "query error --->>>" + e.getMessage());
         } finally {
             db.endTransaction();
+            closeDatabase();
         }
         return cursor;
     }
@@ -283,6 +286,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "::update: " + tableName + "update error-->>" + e.getMessage());
         } finally {
             db.endTransaction();
+            closeDatabase();
         }
     }
 
@@ -317,6 +321,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "::update: " + tableName + "update error-->>" + e.getMessage());
         } finally {
             db.endTransaction();
+            closeDatabase();
         }
     }
 
@@ -333,6 +338,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "query error --->>>" + e.getMessage());
         } finally {
             db.endTransaction();
+            closeDatabase();
         }
 
         return cursor;
@@ -350,6 +356,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "exec error --->>>" + e.getMessage());
         } finally {
             db.endTransaction();
+            closeDatabase();
         }
     }
 
@@ -375,6 +382,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "selectById error --->>>" + e.getMessage());
         } finally {
             db.endTransaction();
+            closeDatabase();
         }
         return cursor;
     }

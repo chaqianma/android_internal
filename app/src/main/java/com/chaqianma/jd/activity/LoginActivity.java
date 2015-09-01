@@ -44,14 +44,7 @@ public class LoginActivity extends BaseActivity {
     TextView tv_password;
     @InjectView(R.id.cb_remember)
     CheckBox cb_remember;
-    private String mUUID = null;
-    private ArrayList<String> companyList2 = new ArrayList<String>() {
-        {
-            add("企业a");
-            add("企业b");
-            add("企业c");
-        }
-    };
+    private String mUUID = null;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
