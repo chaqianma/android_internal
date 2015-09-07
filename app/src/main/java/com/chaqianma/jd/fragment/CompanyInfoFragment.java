@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.alibaba.fastjson.JSON;
+import com.chaqianma.jd.DBHelper.ImageTable;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.InvestigateDetailActivity;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
@@ -46,7 +47,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -293,7 +296,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 return;
             isCompany1Show = true;
             layout_company_1.setVisibility(View.VISIBLE);
-            companyList1=  (ArrayList)Constants.COMPANYLIST.clone();
+            companyList1 = (ArrayList) Constants.COMPANYLIST.clone();
             //下拉框
             if (isCompany2Show) {
                 sp_some_company_2.setEnabled(false);
@@ -318,7 +321,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 initControlView(true);
                 initGridViewData(true);
             }
-            companyList2=  (ArrayList)Constants.COMPANYLIST .clone();
+            companyList2 = (ArrayList) Constants.COMPANYLIST.clone();
             //下拉框
             if (isCompany1Show) {
                 sp_some_company_1.setEnabled(false);
@@ -345,7 +348,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                     initControlView(false);
                     initGridViewData(false);
                 }
-                companyList3=  (ArrayList)Constants.COMPANYLIST .clone();
+                companyList3 = (ArrayList) Constants.COMPANYLIST.clone();
                 //下拉框
                 if (isCompany1Show) {
                     sp_some_company_1.setEnabled(false);
@@ -1009,19 +1012,17 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                             case R.id.img_company_delete_1:
                                 isCompany1Show = false;
                                 JDAppUtil.addHiddenAction(layout_company_1);
-
-                                //初始化
-                                if (isCompany2Show) {
-                                    //companyList2.add();
-                                }
+                                initCompanyData(0, sp_some_company_1.getSelectedItem().toString());
                                 break;
                             case R.id.img_company_delete_2:
                                 isCompany2Show = false;
                                 JDAppUtil.addHiddenAction(layout_company_2);
+                                initCompanyData(1, sp_some_company_2.getSelectedItem().toString());
                                 break;
                             case R.id.img_company_delete_3:
                                 isCompany3Show = false;
                                 JDAppUtil.addHiddenAction(layout_company_3);
+                                initCompanyData(2, sp_some_company_3.getSelectedItem().toString());
                                 break;
                             default:
                                 break;
@@ -1036,6 +1037,124 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 dialog.cancel();
             }
         });
+    }
+
+
+    /**
+     * 补齐下拉框
+     */
+    private void initCompanyData(int idx, String itemName) {
+        switch (idx) {
+            case 0:
+                if (isCompany2Show) {
+                    companyList2.add(itemName);
+                    String selItemd = sp_some_company_2.getSelectedItem().toString();
+                    sortList(companyList2);
+                    initSpinner(sp_some_company_2, companyList2);
+                    if (!sp_some_company_2.isEnabled())
+                        sp_some_company_2.setSelection(companyList2.indexOf(selItemd));
+                }
+                if (isCompany3Show) {
+                    companyList3.add(itemName);
+                    String selItemd = sp_some_company_3.getSelectedItem().toString();
+                    sortList(companyList3);
+                    initSpinner(sp_some_company_3, companyList3);
+                    if (!sp_some_company_3.isEnabled())
+                        sp_some_company_3.setSelection(companyList3.indexOf(selItemd));
+                }
+                removeImgList(mSYList_1, mSYAdapter_1);
+                removeImgList(mJYList_1, mJYAdapter_1);
+                removeImgList(mBLList_1, mBLAdapter_1);
+                removeImgList(mTRList_1, mTRAdapter_1);
+                removeImgList(mCCList_1, mCCAdapter_1);
+                removeImgList(mOCList_1, mOCAdapter_1);
+                removeImgList(mHCList_1, mHCAdapter_1);
+                removeImgList(mLCList_1, mLCAdapter_1);
+                break;
+            case 1:
+                if (isCompany1Show) {
+                    companyList1.add(itemName);
+                    String selItemd = sp_some_company_1.getSelectedItem().toString();
+                    sortList(companyList1);
+                    initSpinner(sp_some_company_1, companyList1);
+                    if (!sp_some_company_1.isEnabled())
+                        sp_some_company_1.setSelection(companyList1.indexOf(selItemd));
+                }
+                if (isCompany3Show) {
+                    companyList3.add(itemName);
+                    String selItemd = sp_some_company_3.getSelectedItem().toString();
+                    sortList(companyList3);
+                    initSpinner(sp_some_company_3, companyList3);
+                    if (!sp_some_company_3.isEnabled())
+                        sp_some_company_3.setSelection(companyList3.indexOf(selItemd));
+                }
+                removeImgList(mSYList_2, mSYAdapter_2);
+                removeImgList(mJYList_2, mJYAdapter_2);
+                removeImgList(mBLList_2, mBLAdapter_2);
+                removeImgList(mTRList_2, mTRAdapter_2);
+                removeImgList(mCCList_2, mCCAdapter_2);
+                removeImgList(mOCList_2, mOCAdapter_2);
+                removeImgList(mHCList_2, mHCAdapter_2);
+                removeImgList(mLCList_2, mLCAdapter_2);
+                break;
+            case 2:
+                if (isCompany1Show) {
+                    companyList1.add(itemName);
+                    String selItemd = sp_some_company_1.getSelectedItem().toString();
+                    sortList(companyList1);
+                    initSpinner(sp_some_company_1, companyList1);
+                    if (!sp_some_company_1.isEnabled())
+                        sp_some_company_1.setSelection(companyList1.indexOf(selItemd));
+                }
+                if (isCompany2Show) {
+                    companyList2.add(itemName);
+                    String selItemd = sp_some_company_2.getSelectedItem().toString();
+                    sortList(companyList2);
+                    initSpinner(sp_some_company_2, companyList2);
+                    if (!sp_some_company_2.isEnabled())
+                        sp_some_company_2.setSelection(companyList2.indexOf(selItemd));
+                }
+                removeImgList(mSYList_3, mSYAdapter_3);
+                removeImgList(mJYList_3, mJYAdapter_3);
+                removeImgList(mBLList_3, mBLAdapter_3);
+                removeImgList(mTRList_3, mTRAdapter_3);
+                removeImgList(mCCList_3, mCCAdapter_3);
+                removeImgList(mOCList_3, mOCAdapter_3);
+                removeImgList(mHCList_3, mHCAdapter_3);
+                removeImgList(mLCList_3, mLCAdapter_3);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 对集合排序
+     *
+     * @param arrs
+     */
+    private void sortList(List<String> arrs) {
+        Collections.sort(arrs, Collator.getInstance(java.util.Locale.CHINA));
+    }
+
+    /**
+     * 删除时把图片列表中的除默认图片的其它图片 删除
+     */
+    private void removeImgList(List<UploadFileInfo> uploadFileInfos, ImgsGridViewAdapter imgAdapter) {
+        if (uploadFileInfos != null) {
+            int size = uploadFileInfos.size();
+            if (size == 1 && uploadFileInfos.get(0).isDefault()) {
+                return;
+            }
+            UploadFileInfo uploadFileInfo = null;
+            for (int i = size - 1; i >= 0; i--) {
+                uploadFileInfo = uploadFileInfos.get(i);
+                if (!uploadFileInfo.isDefault())
+                    uploadFileInfos.remove(uploadFileInfo);
+            }
+            if (imgAdapter != null)
+                imgAdapter.refreshData();
+        }
     }
 
     @Override
@@ -1300,7 +1419,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     //上传图片
     private void uploadImg(final UploadFileInfo fileInfo) {
         try {
-            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo,getParentId(fileInfo.getIdxTag())), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
+            HttpClientUtil.post(getActivity(), HttpRequestURL.uploadImgUrl, getUploadEntity(fileInfo, getParentId(fileInfo.getIdxTag())), new JDHttpResponseHandler(getActivity(), new ResponseHandler<UploadFileInfo>() {
                 @Override
                 public void onSuccess(UploadFileInfo downImgInfo) {
                     fileInfo.setStatus(UploadStatus.SUCCESS.getValue());//成功
@@ -1499,6 +1618,13 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
             }*/
+
+            if (!isUploadSuccess(mSYList_1) && !isUploadSuccess(mJYList_1) && !isUploadSuccess(mBLList_1) && !isUploadSuccess(mTRList_1) && !isUploadSuccess(mCCList_1)
+                    && !isUploadSuccess(mOCList_1) && !isUploadSuccess(mHCList_1) &&
+                    !isUploadSuccess(mLCList_1)) {
+                JDToast.showLongText(getActivity(), "请上传图片");
+                return false;
+            }
         }
         if (isCompany2Show) {
             /*if (!isUploadSuccess(mTRList_2)) {
@@ -1521,6 +1647,13 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
             }*/
+
+            if (!isUploadSuccess(mSYList_2) && !isUploadSuccess(mJYList_2) && !isUploadSuccess(mBLList_2) && !isUploadSuccess(mTRList_2) && !isUploadSuccess(mCCList_2)
+                    && !isUploadSuccess(mOCList_2) && !isUploadSuccess(mHCList_2) &&
+                    !isUploadSuccess(mLCList_2)) {
+                JDToast.showLongText(getActivity(), "请上传图片");
+                return false;
+            }
         }
 
         if (isCompany3Show) {
@@ -1544,6 +1677,13 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 JDToast.showLongText(getActivity(), "请上传土地证图片");
                 return false;
             }*/
+
+            if (!isUploadSuccess(mSYList_3) && !isUploadSuccess(mJYList_3) && !isUploadSuccess(mBLList_3) && !isUploadSuccess(mTRList_3) && !isUploadSuccess(mCCList_3)
+                    && !isUploadSuccess(mOCList_3) && !isUploadSuccess(mHCList_3) &&
+                    !isUploadSuccess(mLCList_3)) {
+                JDToast.showLongText(getActivity(), "请上传图片");
+                return false;
+            }
         }
         return true;
     }
