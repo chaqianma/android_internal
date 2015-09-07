@@ -227,21 +227,21 @@ public class PersonalAssetsFragment extends BaseFragment {
     private boolean isCanAddCar() {
         if (isCar1Show) {
             //车牌  行驶证
-            if (!isUploadSuccess(mCPList_1) || !isUploadSuccess(mXSList_1)) {
+            if (!isUploadSuccess(mCPList_1) && !isUploadSuccess(mXSList_1)) {
                 JDToast.showLongText(getActivity(), "请上传车牌车型图片或行驶证图片");
                 return false;
             }
         }
         if (isCar2Show) {
             //车牌  行驶证
-            if (!isUploadSuccess(mCPList_2) || !isUploadSuccess(mXSList_2)) {
+            if (!isUploadSuccess(mCPList_2) && !isUploadSuccess(mXSList_2)) {
                 JDToast.showLongText(getActivity(), "请上传车牌车型图片或行驶证图片");
                 return false;
             }
         }
         if (isCar3Show) {
             //车牌  行驶证
-            if (!isUploadSuccess(mCPList_3) || !isUploadSuccess(mXSList_3)) {
+            if (!isUploadSuccess(mCPList_3) && !isUploadSuccess(mXSList_3)) {
                 JDToast.showLongText(getActivity(), "请上传车牌车型图片或行驶证图片");
                 return false;
             }
@@ -411,21 +411,21 @@ public class PersonalAssetsFragment extends BaseFragment {
     private boolean isCanAddHouse() {
         if (isHouse1Show) {
             //房产证/合同 土地证
-            if (!isUploadSuccess(mFCList_1) || !isUploadSuccess(mTDList_1)) {
+            if (!isUploadSuccess(mFCList_1) && !isUploadSuccess(mTDList_1)) {
                 JDToast.showLongText(getActivity(), "请上传房产证合同图片或土地证图片");
                 return false;
             }
         }
         if (isHouse2Show) {
             //房产证/合同  土地证
-            if (!isUploadSuccess(mFCList_2) || !isUploadSuccess(mTDList_2)) {
+            if (!isUploadSuccess(mFCList_2) && !isUploadSuccess(mTDList_2)) {
                 JDToast.showLongText(getActivity(), "请上传房产证合同图片或土地证图片");
                 return false;
             }
         }
         if (isHouse3Show) {
             //房产证/合同  土地证
-            if (!isUploadSuccess(mFCList_3) || !isUploadSuccess(mTDList_3)) {
+            if (!isUploadSuccess(mFCList_3) && !isUploadSuccess(mTDList_3)) {
                 JDToast.showLongText(getActivity(), "请上传房产证合同图片或土地证图片");
                 return false;
             }

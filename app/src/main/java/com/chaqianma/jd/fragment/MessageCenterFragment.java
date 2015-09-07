@@ -90,7 +90,7 @@ public class MessageCenterFragment extends BaseFragment implements PullToRefresh
     /*
     * 获取消息中心数据
     * */
-    private void getMsgData() {
+    private  void getMsgData() {
         if (mRepaymentList != null && mRepaymentList.size() > 0) {
             mRepaymentList.clear();
             if (messageAdapater != null)
@@ -100,6 +100,18 @@ public class MessageCenterFragment extends BaseFragment implements PullToRefresh
         getBorrowRequest();
         //获取催收信息
         getRepaymentList();
+    }
+
+    /**
+     * 刷新数据
+     * */
+    public void refreshData()
+    {
+        if (mRepaymentList != null && mRepaymentList.size() > 0) {
+            mRepaymentList.remove(0);
+            if (messageAdapater != null)
+                messageAdapater.notifyDataSetChanged();
+        }
     }
 
     /*
