@@ -94,19 +94,18 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
                 ErrorInfo errorInfo = (ErrorInfo) JSON.parseObject(new String(bytes), dataType);
                 if (errorInfo != null) {
                     String msg = errorInfo.getMessage().toLowerCase();
-                    if (!JDAppUtil.isEmpty(msg)) {
-                        if (!JDAppUtil.isEmpty(errorInfo.getPath())) {
-                            if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("uuid") > -1)
-                                showToast("账号仅支持初始设备登录，如需切换设备请申请新账号");
-                            else if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("failed") > -1)
-                                showToast("用户名或密码错误");
-                            else if (msg.indexOf("available") > -1 || msg.indexOf("mybatis") > -1 || msg.indexOf("ibatis") > -1)
-                                showToast("服务器请求错误，请稍候再试");
-                            else
-                                showToast(errorInfo.getMessage());
-                        }
+                    if (!JDAppUtil.isEmpty(msg) && !JDAppUtil.isEmpty(errorInfo.getPath())) {
+                        if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("uuid") > -1)
+                            showToast("账号仅支持初始设备登录，如需切换设备请申请新账号");
+                        else if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("failed") > -1)
+                            showToast("用户名或密码错误");
+                        else if (msg.indexOf("available") > -1 || msg.indexOf("mybatis") > -1 || msg.indexOf("ibatis") > -1)
+                            showToast("服务器请求错误，请稍候再试");
+                        else
+                            showToast(errorInfo.getMessage());
                     } else {
-                        showToast(errorInfo.getMessage());
+                        if (!JDAppUtil.isEmpty(msg))
+                            showToast(errorInfo.getMessage());
                     }
                 }
             }
