@@ -21,6 +21,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chaqianma.jd.R;
@@ -42,14 +43,21 @@ import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
 import java.io.File;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+
 /**
  * Created by zhangxd on 2015/7/28.
  */
@@ -218,41 +226,23 @@ public class PersonalAssetsFragment extends BaseFragment {
     * */
     private boolean isCanAddCar() {
         if (isCar1Show) {
-            //车牌
-            if (!isUploadSuccess(mCPList_1)) {
-                JDToast.showLongText(getActivity(), "请上传车牌车型图片");
-                return false;
-            }
-
-            //行驶证
-            if (!isUploadSuccess(mXSList_1)) {
-                JDToast.showLongText(getActivity(), "请上传行驶证图片");
+            //车牌  行驶证
+            if (!isUploadSuccess(mCPList_1) || !isUploadSuccess(mXSList_1)) {
+                JDToast.showLongText(getActivity(), "请上传车牌车型图片或行驶证图片");
                 return false;
             }
         }
         if (isCar2Show) {
-            //车牌
-            if (!isUploadSuccess(mCPList_2)) {
-                JDToast.showLongText(getActivity(), "请上传车牌车型图片");
-                return false;
-            }
-
-            //行驶证
-            if (!isUploadSuccess(mXSList_2)) {
-                JDToast.showLongText(getActivity(), "请上传行驶证图片");
+            //车牌  行驶证
+            if (!isUploadSuccess(mCPList_2) || !isUploadSuccess(mXSList_2)) {
+                JDToast.showLongText(getActivity(), "请上传车牌车型图片或行驶证图片");
                 return false;
             }
         }
         if (isCar3Show) {
-            //车牌
-            if (!isUploadSuccess(mCPList_3)) {
-                JDToast.showLongText(getActivity(), "请上传车牌车型图片");
-                return false;
-            }
-
-            //行驶证
-            if (!isUploadSuccess(mXSList_3)) {
-                JDToast.showLongText(getActivity(), "请上传行驶证图片");
+            //车牌  行驶证
+            if (!isUploadSuccess(mCPList_3) || !isUploadSuccess(mXSList_3)) {
+                JDToast.showLongText(getActivity(), "请上传车牌车型图片或行驶证图片");
                 return false;
             }
         }
@@ -264,11 +254,11 @@ public class PersonalAssetsFragment extends BaseFragment {
     * */
     private void addCar() {
         if (!isCar1Show) {
-            //if (!isCanAddCar())
-            //    return;
+            if (!isCanAddCar())
+                return;
             isCar1Show = true;
             layout_asset_car_1.setVisibility(View.VISIBLE);
-            carList1=(ArrayList)Constants.CARLIST.clone();
+            carList1 = (ArrayList) Constants.CARLIST.clone();
             //下拉框
             if (isCar2Show) {
                 sp_car_2.setEnabled(false);
@@ -282,14 +272,17 @@ public class PersonalAssetsFragment extends BaseFragment {
             sp_car_1.setSelection(0);
             sp_car_1.setEnabled(true);
         } else if (!isCar2Show) {
-            //if (!isCanAddCar())
-            //    return;
+            if (!isCanAddCar())
+                return;
             isCar2Show = true;
-            View view = ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
-            layout_asset_car_2 = (LinearLayout) mView.findViewById(R.id.layout_asset_car_2);
-            JDAppUtil.addShowAction(view);
-            initCarView(true);
-            carList2=(ArrayList)Constants.CARLIST.clone();
+            if (layout_asset_car_2 != null) {
+                layout_asset_car_2.setVisibility(View.VISIBLE);
+            } else {
+                View view = ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
+                JDAppUtil.addShowAction(view);
+                initCarView(true);
+            }
+            carList2 = (ArrayList) Constants.CARLIST.clone();
             //下拉框
             if (isCar1Show) {
                 sp_car_1.setEnabled(false);
@@ -304,14 +297,17 @@ public class PersonalAssetsFragment extends BaseFragment {
             sp_car_2.setEnabled(true);
         } else {
             if (!isCar3Show) {
-                //if (!isCanAddCar())
-                //    return;
+                if (!isCanAddCar())
+                    return;
                 isCar3Show = true;
-                View view = ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
-                layout_asset_car_3 = (LinearLayout) mView.findViewById(R.id.layout_asset_car_3);
-                JDAppUtil.addShowAction(view);
-                initCarView(false);
-                carList3=(ArrayList)Constants.CARLIST.clone();
+                if (layout_asset_car_3 != null) {
+                    layout_asset_car_3.setVisibility(View.VISIBLE);
+                } else {
+                    View view = ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
+                    JDAppUtil.addShowAction(view);
+                    initCarView(false);
+                }
+                carList3 = (ArrayList) Constants.CARLIST.clone();
                 //下拉框
                 if (isCar1Show) {
                     sp_car_1.setEnabled(false);
@@ -384,9 +380,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                     layout_asset_car_2.setVisibility(View.VISIBLE);
                 } else {
                     ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
-                    layout_asset_car_2 = (LinearLayout) mView.findViewById(R.id.layout_asset_car_2);
+                    initCarView(true);
                 }
-                initCarView(true);
                 initSpinner(sp_car_2, Constants.CARLIST);
                 //sp_car_2.setSelection(getSelectedIdx(carInfo.getCode()));
                 sp_car_2.setSelection(1);
@@ -398,9 +393,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                     layout_asset_car_3.setVisibility(View.VISIBLE);
                 } else {
                     ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
-                    layout_asset_car_3 = (LinearLayout) mView.findViewById(R.id.layout_asset_car_3);
+                    initCarView(false);
                 }
-                initCarView(false);
                 initSpinner(sp_car_3, Constants.CARLIST);
                 //sp_car_3.setSelection(getSelectedIdx(carInfo.getCode()));
                 sp_car_3.setSelection(2);
@@ -416,41 +410,23 @@ public class PersonalAssetsFragment extends BaseFragment {
     * */
     private boolean isCanAddHouse() {
         if (isHouse1Show) {
-            //房产证/合同
-            if (!isUploadSuccess(mFCList_1)) {
-                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
-                return false;
-            }
-
-            //土地证
-            if (!isUploadSuccess(mTDList_1)) {
-                JDToast.showLongText(getActivity(), "请上传土地证图片");
+            //房产证/合同 土地证
+            if (!isUploadSuccess(mFCList_1) || !isUploadSuccess(mTDList_1)) {
+                JDToast.showLongText(getActivity(), "请上传房产证合同图片或土地证图片");
                 return false;
             }
         }
         if (isHouse2Show) {
-            //房产证/合同
-            if (!isUploadSuccess(mFCList_2)) {
-                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
-                return false;
-            }
-
-            //土地证
-            if (!isUploadSuccess(mTDList_2)) {
-                JDToast.showLongText(getActivity(), "请上传土地证图片");
+            //房产证/合同  土地证
+            if (!isUploadSuccess(mFCList_2) || !isUploadSuccess(mTDList_2)) {
+                JDToast.showLongText(getActivity(), "请上传房产证合同图片或土地证图片");
                 return false;
             }
         }
         if (isHouse3Show) {
-            //房产证/合同
-            if (!isUploadSuccess(mFCList_3)) {
-                JDToast.showLongText(getActivity(), "请上传房产证合同图片");
-                return false;
-            }
-
-            //土地证
-            if (!isUploadSuccess(mTDList_3)) {
-                JDToast.showLongText(getActivity(), "请上传土地证图片");
+            //房产证/合同  土地证
+            if (!isUploadSuccess(mFCList_3) || !isUploadSuccess(mTDList_3)) {
+                JDToast.showLongText(getActivity(), "请上传房产证合同图片或土地证图片");
                 return false;
             }
         }
@@ -462,11 +438,11 @@ public class PersonalAssetsFragment extends BaseFragment {
     * */
     private void addHouse() {
         if (!isHouse1Show) {
-            //if (!isCanAddHouse())
-            //    return;
+            if (!isCanAddHouse())
+                return;
             isHouse1Show = true;
             layout_asset_house_1.setVisibility(View.VISIBLE);
-            houseList1=(ArrayList)Constants.HOUSELIST.clone();
+            houseList1 = (ArrayList) Constants.HOUSELIST.clone();
             //下拉框
             if (isHouse2Show) {
                 sp_house_2.setEnabled(false);
@@ -480,17 +456,17 @@ public class PersonalAssetsFragment extends BaseFragment {
             sp_house_1.setSelection(0);
             sp_house_1.setEnabled(true);
         } else if (!isHouse2Show) {
-            // if (!isCanAddHouse())
-            //     return;
+            if (!isCanAddHouse())
+                return;
             isHouse2Show = true;
             if (layout_asset_house_2 != null) {
                 layout_asset_house_2.setVisibility(View.VISIBLE);
             } else {
                 ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
-                layout_asset_house_2 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_2);
+
                 initHouseView(true);
             }
-            houseList2=(ArrayList)Constants.HOUSELIST.clone();
+            houseList2 = (ArrayList) Constants.HOUSELIST.clone();
             //下拉框
             if (isHouse1Show) {
                 sp_house_1.setEnabled(false);
@@ -505,17 +481,16 @@ public class PersonalAssetsFragment extends BaseFragment {
             sp_house_2.setEnabled(true);
         } else {
             if (!isHouse3Show) {
-                // if (!isCanAddHouse())
-                //     return;
+                if (!isCanAddHouse())
+                    return;
                 isHouse3Show = true;
                 if (layout_asset_house_3 != null) {
                     layout_asset_house_3.setVisibility(View.VISIBLE);
                 } else {
                     ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
-                    layout_asset_house_3 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_3);
                     initHouseView(false);
                 }
-                houseList3=(ArrayList)Constants.HOUSELIST.clone();
+                houseList3 = (ArrayList) Constants.HOUSELIST.clone();
                 //下拉框
                 if (isHouse1Show) {
                     sp_house_1.setEnabled(false);
@@ -548,7 +523,6 @@ public class PersonalAssetsFragment extends BaseFragment {
             case 1:
                 isHouse2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
-                layout_asset_house_2 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_2);
                 initHouseView(true);
                 initSpinner(sp_house_2, Constants.HOUSELIST);
                 //sp_house_2.setSelection(getSelectedIdx(houseInfo.getCode()));
@@ -558,7 +532,6 @@ public class PersonalAssetsFragment extends BaseFragment {
             case 2:
                 isHouse3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
-                layout_asset_house_3 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_3);
                 initHouseView(false);
                 initSpinner(sp_house_3, Constants.HOUSELIST);
                 //sp_house_3.setSelection(getSelectedIdx(houseInfo.getCode()));
@@ -622,6 +595,7 @@ public class PersonalAssetsFragment extends BaseFragment {
    * */
     private void initCarView(boolean is2) {
         if (is2) {
+            layout_asset_car_2 = (LinearLayout) mView.findViewById(R.id.layout_asset_car_2);
             img_car_delete_2 = (ImageView) mView.findViewById(R.id.img_car_delete_2);
             img_car_delete_2.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -666,6 +640,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
 
         } else {
+            layout_asset_car_3 = (LinearLayout) mView.findViewById(R.id.layout_asset_car_3);
             img_car_delete_3 = (ImageView) mView.findViewById(R.id.img_car_delete_3);
             img_car_delete_3.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -715,6 +690,7 @@ public class PersonalAssetsFragment extends BaseFragment {
    * */
     private void initHouseView(boolean is2) {
         if (is2) {
+            layout_asset_house_2 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_2);
             img_house_delete_2 = (ImageView) mView.findViewById(R.id.img_house_delete_2);
             img_house_delete_2.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -759,6 +735,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             }
 
         } else {
+            layout_asset_house_3 = (LinearLayout) mView.findViewById(R.id.layout_asset_house_3);
             img_house_delete_3 = (ImageView) mView.findViewById(R.id.img_house_delete_3);
             img_house_delete_3.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -958,15 +935,19 @@ public class PersonalAssetsFragment extends BaseFragment {
                         switch (v.getId()) {
                             case R.id.img_house_delete_1:
                                 isHouse1Show = false;
+                                //补全下拉框内容
                                 JDAppUtil.addHiddenAction(layout_asset_house_1);
+                                initHouseData(0, sp_house_1.getSelectedItem().toString());
                                 break;
                             case R.id.img_house_delete_2:
                                 isHouse2Show = false;
                                 JDAppUtil.addHiddenAction(layout_asset_house_2);
+                                initHouseData(1, sp_house_2.getSelectedItem().toString());
                                 break;
                             case R.id.img_house_delete_3:
                                 isHouse3Show = false;
                                 JDAppUtil.addHiddenAction(layout_asset_house_3);
+                                initHouseData(2, sp_house_3.getSelectedItem().toString());
                                 break;
                             default:
                                 break;
@@ -983,6 +964,75 @@ public class PersonalAssetsFragment extends BaseFragment {
         });
     }
 
+    /**
+     * 补奇下拉框
+     */
+    private void initHouseData(int idx, String itemName) {
+        switch (idx) {
+            case 0:
+                if (isHouse2Show) {
+                    houseList2.add(itemName);
+                    String selItemd = sp_house_2.getSelectedItem().toString();
+                    sortList(houseList2);
+                    initSpinner(sp_house_2, houseList2);
+                    if (!sp_house_2.isEnabled())
+                        sp_house_2.setSelection(houseList2.indexOf(selItemd));
+                }
+                if (isHouse3Show) {
+                    houseList3.add(itemName);
+                    String selItemd = sp_house_3.getSelectedItem().toString();
+                    sortList(houseList3);
+                    initSpinner(sp_house_3, houseList3);
+                    if (!sp_house_3.isEnabled())
+                        sp_house_3.setSelection(houseList3.indexOf(selItemd));
+                }
+                removeImgList(mFCList_1, mFCAdpter_1);
+                removeImgList(mTDList_1, mTDAdpter_1);
+                break;
+            case 1:
+                if (isHouse1Show) {
+                    houseList1.add(itemName);
+                    String selItemd = sp_house_1.getSelectedItem().toString();
+                    sortList(houseList1);
+                    initSpinner(sp_house_1, houseList1);
+                    if (!sp_house_1.isEnabled())
+                        sp_house_1.setSelection(houseList1.indexOf(selItemd));
+                }
+                if (isHouse3Show) {
+                    houseList3.add(itemName);
+                    String selItemd = sp_house_3.getSelectedItem().toString();
+                    sortList(houseList3);
+                    initSpinner(sp_house_3, houseList3);
+                    if (!sp_house_3.isEnabled())
+                        sp_house_3.setSelection(houseList3.indexOf(selItemd));
+                }
+                removeImgList(mFCList_2, mFCAdpter_2);
+                removeImgList(mTDList_2, mTDAdpter_2);
+                break;
+            case 2:
+                if (isHouse1Show) {
+                    houseList1.add(itemName);
+                    String selItemd = sp_house_1.getSelectedItem().toString();
+                    sortList(houseList1);
+                    initSpinner(sp_house_1, houseList1);
+                    if (!sp_house_1.isEnabled())
+                        sp_house_1.setSelection(houseList1.indexOf(selItemd));
+                }
+                if (isHouse2Show) {
+                    houseList2.add(itemName);
+                    String selItemd = sp_house_2.getSelectedItem().toString();
+                    sortList(houseList2);
+                    initSpinner(sp_house_2, houseList2);
+                    if (!sp_house_2.isEnabled())
+                        sp_house_2.setSelection(houseList2.indexOf(selItemd));
+                }
+                removeImgList(mFCList_3, mFCAdpter_3);
+                removeImgList(mTDList_3, mTDAdpter_3);
+                break;
+            default:
+                break;
+        }
+    }
 
     /*
    * 删除车辆
@@ -998,14 +1048,17 @@ public class PersonalAssetsFragment extends BaseFragment {
                             case R.id.img_car_delete_1:
                                 isCar1Show = false;
                                 JDAppUtil.addHiddenAction(layout_asset_car_1);
+                                initCarData(0, sp_car_1.getSelectedItem().toString());
                                 break;
                             case R.id.img_car_delete_2:
                                 isCar2Show = false;
                                 JDAppUtil.addHiddenAction(layout_asset_car_2);
+                                initCarData(1, sp_car_2.getSelectedItem().toString());
                                 break;
                             case R.id.img_car_delete_3:
                                 isCar3Show = false;
                                 JDAppUtil.addHiddenAction(layout_asset_car_3);
+                                initCarData(2, sp_car_3.getSelectedItem().toString());
                                 break;
                             default:
                                 break;
@@ -1020,6 +1073,101 @@ public class PersonalAssetsFragment extends BaseFragment {
                 dialog.cancel();
             }
         });
+    }
+
+    /**
+     * 补齐车下拉框
+     */
+    private void initCarData(int idx, String itemName) {
+        switch (idx) {
+            case 0:
+                if (isCar2Show) {
+                    carList2.add(itemName);
+                    String selItemd = sp_car_2.getSelectedItem().toString();
+                    sortList(carList2);
+                    initSpinner(sp_car_2, carList2);
+                    if (!sp_car_2.isEnabled())
+                        sp_car_2.setSelection(carList2.indexOf(selItemd));
+                }
+                if (isCar3Show) {
+                    carList3.add(itemName);
+                    String selItemd = sp_car_3.getSelectedItem().toString();
+                    sortList(carList3);
+                    initSpinner(sp_car_3, carList3);
+                    if (!sp_car_3.isEnabled())
+                        sp_car_3.setSelection(carList3.indexOf(selItemd));
+                }
+                removeImgList(mCPList_1, mCPAdpter_1);
+                removeImgList(mXSList_1, mXSAdpter_1);
+                break;
+            case 1:
+                if (isCar1Show) {
+                    carList1.add(itemName);
+                    String selItemd = sp_car_1.getSelectedItem().toString();
+                    sortList(carList1);
+                    initSpinner(sp_car_1, carList1);
+                    if (!sp_car_1.isEnabled())
+                        sp_car_1.setSelection(carList1.indexOf(selItemd));
+                }
+                if (isCar3Show) {
+                    carList3.add(itemName);
+                    String selItemd = sp_car_3.getSelectedItem().toString();
+                    sortList(carList3);
+                    initSpinner(sp_car_3, carList3);
+                    if (!sp_car_3.isEnabled())
+                        sp_car_3.setSelection(carList3.indexOf(selItemd));
+                }
+                removeImgList(mCPList_2, mCPAdpter_2);
+                removeImgList(mXSList_2, mXSAdpter_2);
+                break;
+            case 2:
+                if (isCar1Show) {
+                    carList1.add(itemName);
+                    String selItemd = sp_car_1.getSelectedItem().toString();
+                    sortList(carList1);
+                    initSpinner(sp_car_1, carList1);
+                    if (!sp_car_1.isEnabled())
+                        sp_car_1.setSelection(carList1.indexOf(selItemd));
+                }
+                if (isCar2Show) {
+                    carList2.add(itemName);
+                    String selItemd = sp_car_2.getSelectedItem().toString();
+                    sortList(carList2);
+                    initSpinner(sp_car_2, carList2);
+                    if (!sp_car_2.isEnabled())
+                        sp_car_2.setSelection(carList2.indexOf(selItemd));
+                }
+                removeImgList(mCPList_3, mCPAdpter_3);
+                removeImgList(mXSList_3, mXSAdpter_3);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 删除时把图片列表中的除默认图片的其它图片 删除
+     */
+    private void removeImgList(List<UploadFileInfo> uploadFileInfos, ImgsGridViewAdapter imgAdapter) {
+        if (uploadFileInfos != null) {
+            int size = uploadFileInfos.size();
+            if (size == 1 && uploadFileInfos.get(0).isDefault()) {
+                return;
+            }
+            UploadFileInfo uploadFileInfo = null;
+            for (int i = size - 1; i >= 0; i--) {
+                uploadFileInfo = uploadFileInfos.get(i);
+                if (!uploadFileInfo.isDefault())
+                    uploadFileInfos.remove(uploadFileInfo);
+            }
+            if (imgAdapter != null)
+                imgAdapter.refreshData();
+        }
+    }
+
+    //对集合排序
+    private void sortList(List<String> arrs) {
+        Collections.sort(arrs, Collator.getInstance(java.util.Locale.CHINA));
     }
 
     //初始化集合
@@ -1122,7 +1270,6 @@ public class PersonalAssetsFragment extends BaseFragment {
             gv_mark.setAdapter(remarkImgsAdapter);
         }
     }
-
 
     /*
   *获取服务器文件信息
