@@ -5,7 +5,6 @@ import java.util.List;
 
 /**
  * Created by zhangxd on 2015/8/1
- *
  * 资产
  */
 public class AssetInfo extends ErrorInfo{

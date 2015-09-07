@@ -56,7 +56,7 @@ public class JDApplication extends Application {
     //取消别名 "" （空字符串）表示取消之前的设置。
     public void cancelAlias()
     {
-        JPushInterface.setAliasAndTags(getApplicationContext(), "", null, mAliasCallback);
+        //JPushInterface.setAliasAndTags(getApplicationContext(), "", null, mAliasCallback);
     }
 
     /*

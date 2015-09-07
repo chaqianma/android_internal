@@ -52,7 +52,7 @@ public class AudioRecorder {
     }
 
     public void stop() throws IOException {
-        //设置后不会崩
+        //璁剧疆鍚庝笉浼氬穿
         recorder.setOnErrorListener(null);
         recorder.setOnInfoListener(null);
         recorder.setPreviewDisplay(null);
@@ -61,7 +61,7 @@ public class AudioRecorder {
     }
 
     public void cancel() throws IOException {
-        //设置后不会崩
+        //璁剧疆鍚庝笉浼氬穿
         recorder.setOnErrorListener(null);
         recorder.setOnInfoListener(null);
         recorder.setPreviewDisplay(null);

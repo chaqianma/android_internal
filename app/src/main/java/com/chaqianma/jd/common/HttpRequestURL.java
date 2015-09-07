@@ -11,7 +11,7 @@ public class HttpRequestURL {
     //登录 POST
     public static final String LoginUrl = "api/user/login";
     //上传位置信息
-    public static final String uploadLocationUrl="api/user/location/update";
+    public static final String uploadLocationUrl = "api/user/location/update";
     //尽调申请(贷款)
     public static final String loanApplyUrl = "api/borrow/dealing";
     //修改密码
@@ -43,17 +43,19 @@ public class HttpRequestURL {
     //批量修改企业信息
     public static final String updateBusinessInfoUrl = "api/borrow/dd/businessinfo/update/batch/";
     //修改车辆信息
-    public static final String updateCar="api/borrow/dd/personalassetsinfo/car/update/";
+    public static final String updateCar = "api/borrow/dd/personalassetsinfo/car/update/";
     //修改房产信息
-    public static final String updateHouse="api/borrow/dd/personalassetsinfo/house/update/";
+    public static final String updateHouse = "api/borrow/dd/personalassetsinfo/house/update/";
     //修改社会关系信息
     public static final String updateSocialRelationURL = "api/borrow/dd/socialrelation/update/";
     //删除个人资产--车辆
-    public static final String deleteCar="api/borrow/dd/personalassetsinfo/car/delete/";
+    public static final String deleteCar = "api/borrow/dd/personalassetsinfo/car/delete/";
     //删除个人资产---房产
-    public static final String deleteHouse="api/borrow/dd/personalassetsinfo/house/delete/";
+    public static final String deleteHouse = "api/borrow/dd/personalassetsinfo/house/delete/";
     //删除企业信息
-    public static final String deleteCompany="api/borrow/dd/businessinfo/delete/";
+    public static final String deleteCompany = "api/borrow/dd/businessinfo/delete/";
+    //删除社会关系
+    public static final String deleteSocialRelation = "api/borrow/dd/contactinfo/delete/";
     //获取催收记录
     public static final String getRepaymentList = "api/repayment/dunning/list";
     //获取推送催收记录

@@ -67,6 +67,7 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
                 }
             }
         }
+        String ss = new String(bytes);
         if (bytes != null && bytes.length > 0) {
             if (dataType == null)
                 handler.onSuccess(new String(bytes));
@@ -81,10 +82,9 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
     @Override
     public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
         try {
-            if(bytes!=null)
-            {
-                String sss=new String(bytes);
-                sss="sss";
+            String errMsg = "";
+            if (bytes != null) {
+                errMsg = new String(bytes);
             }
             if (bytes == null || new String(bytes).indexOf(".") > -1) {
                 showToast("服务器连接不上，请稍候再试");

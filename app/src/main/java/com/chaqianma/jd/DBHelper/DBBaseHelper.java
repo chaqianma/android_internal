@@ -50,7 +50,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "db create fail" + e.getMessage());
         } finally {
             db.endTransaction();
-            closeDatabase();
+            //closeDatabase();
         }
     }
 
@@ -242,7 +242,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
             Log.e(TAG, "::query: " + tableName + "query error --->>>" + e.getMessage());
         } finally {
             db.endTransaction();
-            closeDatabase();
+            //closeDatabase();
         }
         return cursor;
     }

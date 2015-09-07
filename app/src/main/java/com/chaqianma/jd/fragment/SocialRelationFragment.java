@@ -2,6 +2,7 @@ package com.chaqianma.jd.fragment;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -37,6 +38,7 @@ import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDFileResponseHandler;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
+import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
 import org.apache.http.NameValuePair;
@@ -58,12 +60,12 @@ public class SocialRelationFragment extends BaseFragment {
     LinearLayout linear_container;
     @InjectView(R.id.layout_relation_1)
     LinearLayout layout_relation_1;
-    @InjectView(R.id.img_social_add_1)
-    ImageView img_social_add_1;
-    ImageView img_social_add_2;
-    ImageView img_social_add_3;
-    ImageView img_social_add_4;
-    ImageView img_social_add_5;
+    @InjectView(R.id.img_social_delete_1)
+    ImageView img_social_delete_1;
+    ImageView img_social_delete_2;
+    ImageView img_social_delete_3;
+    ImageView img_social_delete_4;
+    ImageView img_social_delete_5;
     @InjectView(R.id.sp_relation_type_1)
     Spinner sp_relation_type_1;
     @InjectView(R.id.gv_relation_card_1)
@@ -133,6 +135,11 @@ public class SocialRelationFragment extends BaseFragment {
     private List<UploadFileInfo> commentUploadImgInfoList = null;
     //用于只加载一次
     private boolean hasLoadedOnce = false;
+    LinearLayout layout_relation_2;
+    LinearLayout layout_relation_3;
+    LinearLayout layout_relation_4;
+    LinearLayout layout_relation_5;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,7 +152,6 @@ public class SocialRelationFragment extends BaseFragment {
         ButterKnife.inject(this, view);
         mView = view;
         initOneView();
-        getSocialRelationInfo();
         return view;
     }
 
@@ -202,7 +208,7 @@ public class SocialRelationFragment extends BaseFragment {
         }
     }
 
-    @OnClick(R.id.img_social_add_1)
+    @OnClick(R.id.img_social_add)
     void onAddRcClick() {
         addRCPerson();
     }
@@ -249,70 +255,138 @@ public class SocialRelationFragment extends BaseFragment {
             break;
             case 1: {
                 isShow2 = true;
-                View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_2)).inflate();
-                JDAppUtil.addShowAction(view);
-                gv_relation_card_2 = (GridView) mView.findViewById(R.id.gv_relation_card_2);
-                sp_relation_type_2 = (Spinner) mView.findViewById(R.id.sp_relation_type_2);
-                UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(1);
-                imgInfo.setIsDefault(true);
-                imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.CARD.getValue());
-                mRCList_2.add(imgInfo);
-                mRCAdapter_2 = new ImgsGridViewAdapter(getActivity(), mRCList_2);
-                mRCAdapter_2.setOnClickImgListener(this);
-                gv_relation_card_2.setAdapter(mRCAdapter_2);
+                if (layout_relation_2 != null) {
+                    layout_relation_2.setVisibility(View.VISIBLE);
+                } else {
+                    View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_2)).inflate();
+                    JDAppUtil.addShowAction(view);
+                    layout_relation_2 = (LinearLayout) mView.findViewById(R.id.layout_relation_2);
+                    img_social_delete_2 = (ImageView) mView.findViewById(R.id.img_social_delete_2);
+                    img_social_delete_2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //删除企业
+                            if (!isShow1 && !isShow3 && !isShow4 && !isShow5) {
+                                JDToast.showLongText(getActivity(), "企业不能全部删除，必须保留一家企业");
+                            } else {
+                                deleteSocialRelation(mParentId[1], v);
+                            }
+                        }
+                    });
+                    gv_relation_card_2 = (GridView) mView.findViewById(R.id.gv_relation_card_2);
+                    sp_relation_type_2 = (Spinner) mView.findViewById(R.id.sp_relation_type_2);
+                    UploadFileInfo imgInfo = new UploadFileInfo();
+                    imgInfo.setIdxTag(1);
+                    imgInfo.setIsDefault(true);
+                    imgInfo.setiServer(false);
+                    imgInfo.setFileType(UploadFileType.CARD.getValue());
+                    mRCList_2.add(imgInfo);
+                    mRCAdapter_2 = new ImgsGridViewAdapter(getActivity(), mRCList_2);
+                    mRCAdapter_2.setOnClickImgListener(this);
+                    gv_relation_card_2.setAdapter(mRCAdapter_2);
+                }
             }
             break;
             case 2: {
                 isShow3 = true;
-                View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_3)).inflate();
-                JDAppUtil.addShowAction(view);
-                gv_relation_card_3 = (GridView) mView.findViewById(R.id.gv_relation_card_3);
-                sp_relation_type_3 = (Spinner) mView.findViewById(R.id.sp_relation_type_3);
-                UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(2);
-                imgInfo.setIsDefault(true);
-                imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.CARD.getValue());
-                mRCList_3.add(imgInfo);
-                mRCAdapter_3 = new ImgsGridViewAdapter(getActivity(), mRCList_3);
-                mRCAdapter_3.setOnClickImgListener(this);
-                gv_relation_card_3.setAdapter(mRCAdapter_3);
+                if (layout_relation_3 != null) {
+                    layout_relation_3.setVisibility(View.VISIBLE);
+                } else {
+                    View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_3)).inflate();
+                    JDAppUtil.addShowAction(view);
+                    layout_relation_3 = (LinearLayout) mView.findViewById(R.id.layout_relation_3);
+                    img_social_delete_3 = (ImageView) mView.findViewById(R.id.img_social_delete_3);
+                    img_social_delete_3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //删除企业
+                            if (!isShow1 && !isShow2 && !isShow4 && !isShow5) {
+                                JDToast.showLongText(getActivity(), "企业不能全部删除，必须保留一家企业");
+                            } else {
+                                deleteSocialRelation(mParentId[2], v);
+                            }
+                        }
+                    });
+                    gv_relation_card_3 = (GridView) mView.findViewById(R.id.gv_relation_card_3);
+                    sp_relation_type_3 = (Spinner) mView.findViewById(R.id.sp_relation_type_3);
+                    UploadFileInfo imgInfo = new UploadFileInfo();
+                    imgInfo.setIdxTag(2);
+                    imgInfo.setIsDefault(true);
+                    imgInfo.setiServer(false);
+                    imgInfo.setFileType(UploadFileType.CARD.getValue());
+                    mRCList_3.add(imgInfo);
+                    mRCAdapter_3 = new ImgsGridViewAdapter(getActivity(), mRCList_3);
+                    mRCAdapter_3.setOnClickImgListener(this);
+                    gv_relation_card_3.setAdapter(mRCAdapter_3);
+                }
             }
             break;
             case 3: {
                 isShow4 = true;
-                View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_4)).inflate();
-                JDAppUtil.addShowAction(view);
-                gv_relation_card_4 = (GridView) mView.findViewById(R.id.gv_relation_card_4);
-                sp_relation_type_4 = (Spinner) mView.findViewById(R.id.sp_relation_type_4);
-                UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(3);
-                imgInfo.setIsDefault(true);
-                imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.CARD.getValue());
-                mRCList_4.add(imgInfo);
-                mRCAdapter_4 = new ImgsGridViewAdapter(getActivity(), mRCList_4);
-                mRCAdapter_4.setOnClickImgListener(this);
-                gv_relation_card_4.setAdapter(mRCAdapter_4);
+                if (layout_relation_4 != null) {
+                    layout_relation_4.setVisibility(View.VISIBLE);
+                } else {
+                    View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_4)).inflate();
+                    JDAppUtil.addShowAction(view);
+                    layout_relation_4 = (LinearLayout) mView.findViewById(R.id.layout_relation_4);
+                    img_social_delete_4 = (ImageView) mView.findViewById(R.id.img_social_delete_4);
+                    img_social_delete_4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //删除企业
+                            if (!isShow1 && !isShow2 && !isShow3 && !isShow5) {
+                                JDToast.showLongText(getActivity(), "企业不能全部删除，必须保留一家企业");
+                            } else {
+                                deleteSocialRelation(mParentId[3], v);
+                            }
+                        }
+                    });
+                    gv_relation_card_4 = (GridView) mView.findViewById(R.id.gv_relation_card_4);
+                    sp_relation_type_4 = (Spinner) mView.findViewById(R.id.sp_relation_type_4);
+                    UploadFileInfo imgInfo = new UploadFileInfo();
+                    imgInfo.setIdxTag(3);
+                    imgInfo.setIsDefault(true);
+                    imgInfo.setiServer(false);
+                    imgInfo.setFileType(UploadFileType.CARD.getValue());
+                    mRCList_4.add(imgInfo);
+                    mRCAdapter_4 = new ImgsGridViewAdapter(getActivity(), mRCList_4);
+                    mRCAdapter_4.setOnClickImgListener(this);
+                    gv_relation_card_4.setAdapter(mRCAdapter_4);
+                }
             }
             break;
             case 4: {
                 isShow5 = true;
-                View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_5)).inflate();
-                JDAppUtil.addShowAction(view);
-                gv_relation_card_5 = (GridView) mView.findViewById(R.id.gv_relation_card_5);
-                sp_relation_type_5 = (Spinner) mView.findViewById(R.id.sp_relation_type_5);
-                UploadFileInfo imgInfo = new UploadFileInfo();
-                imgInfo.setIdxTag(4);
-                imgInfo.setIsDefault(true);
-                imgInfo.setiServer(false);
-                imgInfo.setFileType(UploadFileType.CARD.getValue());
-                mRCList_5.add(imgInfo);
-                mRCAdapter_5 = new ImgsGridViewAdapter(getActivity(), mRCList_5);
-                mRCAdapter_5.setOnClickImgListener(this);
-                gv_relation_card_5.setAdapter(mRCAdapter_5);
+                if (layout_relation_5 != null) {
+                    layout_relation_5.setVisibility(View.VISIBLE);
+                } else {
+                    View view = ((ViewStub) mView.findViewById(R.id.stub_social_relation_5)).inflate();
+                    JDAppUtil.addShowAction(view);
+                    layout_relation_5 = (LinearLayout) mView.findViewById(R.id.layout_relation_5);
+                    img_social_delete_5 = (ImageView) mView.findViewById(R.id.img_social_delete_5);
+                    img_social_delete_5.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //删除企业
+                            if (!isShow1 && !isShow2 && !isShow3 && !isShow4) {
+                                JDToast.showLongText(getActivity(), "企业不能全部删除，必须保留一家企业");
+                            } else {
+                                deleteSocialRelation(mParentId[4], v);
+                            }
+                        }
+                    });
+                    gv_relation_card_5 = (GridView) mView.findViewById(R.id.gv_relation_card_5);
+                    sp_relation_type_5 = (Spinner) mView.findViewById(R.id.sp_relation_type_5);
+                    UploadFileInfo imgInfo = new UploadFileInfo();
+                    imgInfo.setIdxTag(4);
+                    imgInfo.setIsDefault(true);
+                    imgInfo.setiServer(false);
+                    imgInfo.setFileType(UploadFileType.CARD.getValue());
+                    mRCList_5.add(imgInfo);
+                    mRCAdapter_5 = new ImgsGridViewAdapter(getActivity(), mRCList_5);
+                    mRCAdapter_5.setOnClickImgListener(this);
+                    gv_relation_card_5.setAdapter(mRCAdapter_5);
+                }
             }
             break;
             default:
@@ -777,6 +851,65 @@ public class SocialRelationFragment extends BaseFragment {
             }*/
         }
         return true;
+    }
+
+    /*
+      * 删除企业
+      * */
+    @OnClick(R.id.img_social_delete_1)
+    void onDeleteSocial(View v) {
+        //删除企业
+        if (!isShow2 && !isShow3 && !isShow4 && !isShow5) {
+            JDToast.showLongText(getActivity(), "企业不能全部删除，必须保留一家企业");
+        } else {
+            deleteSocialRelation(mParentId[0], v);
+        }
+    }
+
+    /*
+   * 删除社会关系
+   * */
+    private void deleteSocialRelation(final String parentId, final View v) {
+        JDAlertDialog.showAlertDialog(getActivity(), "确认删除该社会关系吗？", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                HttpClientUtil.put(HttpRequestURL.deleteSocialRelation + parentId, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        switch (v.getId()) {
+                            case R.id.img_social_delete_1:
+                                isShow1 = false;
+                                JDAppUtil.addHiddenAction(layout_relation_1);
+                                break;
+                            case R.id.img_social_delete_2:
+                                isShow2 = false;
+                                JDAppUtil.addHiddenAction(layout_relation_2);
+                                break;
+                            case R.id.img_social_delete_3:
+                                isShow3 = false;
+                                JDAppUtil.addHiddenAction(layout_relation_3);
+                                break;
+                            case R.id.img_social_delete_4:
+                                isShow4 = false;
+                                JDAppUtil.addHiddenAction(layout_relation_4);
+                                break;
+                            case R.id.img_social_delete_5:
+                                isShow5 = false;
+                                JDAppUtil.addHiddenAction(layout_relation_5);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }));
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                dialog.cancel();
+            }
+        });
     }
 
     /*

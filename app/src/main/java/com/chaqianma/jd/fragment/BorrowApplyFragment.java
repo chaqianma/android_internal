@@ -77,9 +77,10 @@ public class BorrowApplyFragment extends BaseFragment {
     void onViewMap(View v) {
         //latitude  longitude
         Bundle bundle = new Bundle();
-        if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
+        /*if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
             bundle.putString(Constants.LOCATION, mLocation.split(",")[1] + "," + mLocation.split(",")[0]);
-        }
+        }*/
+        bundle.putString(Constants.LOCATION, mLocation);
         bundle.putString(Constants.BORROWNAME, tv_name.getText().toString());
         startActivity(BaiduMapActivity.class, bundle);
     }
@@ -147,9 +148,10 @@ public class BorrowApplyFragment extends BaseFragment {
             tv_purpose.setText(borrowRequestInfo.getBorrowPurposeStr());
             mLocation = borrowRequestInfo.getLocation();
             workLocation = borrowRequestInfo.getWorkLocation();
-            if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
+            /*if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
                 new GeoCoderUtil(tv_address, mLocation.split(",")[1] + "," + mLocation.split(",")[0]);
-            }
+            }*/
+            new GeoCoderUtil(tv_address, mLocation);
             new GeoCoderUtil(tv_office, workLocation);
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过

@@ -816,7 +816,6 @@ public class PersonalAssetsFragment extends BaseFragment {
         mBorrowRequestId = getBorrowRequestId();
         this.mView = view;
         initOneView();
-        getPersonalAssetInfo();
         return this.mView;
     }
 

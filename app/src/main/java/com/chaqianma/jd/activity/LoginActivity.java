@@ -44,7 +44,7 @@ public class LoginActivity extends BaseActivity {
     TextView tv_password;
     @InjectView(R.id.cb_remember)
     CheckBox cb_remember;
-    private String mUUID = null;;
+    private String mUUID = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,8 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.inject(this);
         tv_username.setText("15651782303");
         tv_password.setText("password");
+        //tv_username.setText("18114803034");
+        //tv_password.setText("1234567a");
         mUUID = JDAppUtil.getUniqueId(LoginActivity.this);
         setTopBarState("登录", false);
     }
