@@ -96,6 +96,8 @@ public class MainActivity extends FragmentActivity implements BottomFragment.ICh
                     fragmentTransaction.show(borrowApplyFragment);
                 } else {
                     if (staffStateFragment == null) {
+                        if(messageCenterFragment!=null)
+                            messageCenterFragment.refreshData();
                         staffStateFragment = StaffStateFragment.newInstance();
                         fragmentTransaction.add(R.id.main_content, staffStateFragment, Constants.STAFFSTATE);
                     }

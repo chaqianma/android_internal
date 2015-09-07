@@ -76,6 +76,7 @@ public class UpdatePasswordActivity extends BaseActivity {
                     JDToast.showLongText(UpdatePasswordActivity.this, "修改密码成功");
                     //保存用户名与密码
                     SharedPreferencesUtil.saveUserAndPassword(UpdatePasswordActivity.this, AppData.getInstance().getUserInfo().getMobile(),new_password);
+                    finish();
                 }
             },Class.forName(ErrorInfo.class.getName())));
         } catch (Exception e) {
