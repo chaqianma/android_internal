@@ -9,56 +9,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center">
-
+            android:orientation="vertical">
             <ImageView
                 android:id="@+id/img_car_add_1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginBottom="3dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="8dp"
                 android:src="@mipmap/icon_add" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/img_car_add_1"
                 android:text="添加车辆"
+                android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/small_text_size" />
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/img_house_add_1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginBottom="3dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="8dp"
                 android:src="@mipmap/icon_add" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/img_house_add_1"
                 android:text="添加房产"
+                android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/small_text_size" />
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <View style="@style/ViewLineStyle" />

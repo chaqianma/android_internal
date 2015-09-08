@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/layout_company_4"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_relation_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <RelativeLayout style="@style/RelativeLayoutStyle">
 
@@ -12,6 +18,11 @@
                 android:text="社会关系："
                 android:textSize="@dimen/large_text_size" />
 
+            <ImageView
+                android:id="@+id/img_social_delete_4"
+                style="@style/SettingRightIconStyle"
+                android:layout_marginRight="20dp"
+                android:src="@mipmap/icon_delete" />
         </RelativeLayout>
 
         <View style="@style/ViewLineStyle" />
@@ -26,7 +37,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="关系类型：" android:textColor="@color/red"/>
+                    android:text="关系类型："
+                    android:textColor="@color/red" />
 
                 <Spinner
                     android:id="@+id/sp_relation_type_4"
@@ -46,7 +58,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="关系人身份证件：" android:textColor="@color/red"/>
+                    android:text="关系人身份证件：" />
 
                 <LinearLayout
 
@@ -72,3 +84,4 @@
             <View style="@style/ViewLineStyle" />
         </LinearLayout>
     </LinearLayout>
+</LinearLayout>
