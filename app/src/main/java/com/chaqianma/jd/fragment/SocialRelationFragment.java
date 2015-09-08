@@ -818,37 +818,37 @@ public class SocialRelationFragment extends BaseFragment {
     private boolean requiredInput() {
         //关系类型  与关系人身份证件 备注 必填
         if (isShow1) {
-            /*if (!isUploadSuccess(mRCList_1)) {
+            if (!isUploadSuccess(mRCList_1)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }*/
+            }
         }
         if (isShow2) {
-           /* if (!isUploadSuccess(mRCList_2)) {
+            if (!isUploadSuccess(mRCList_2)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }*/
+            }
         }
 
         if (isShow3) {
-            /*if (!isUploadSuccess(mRCList_3)) {
+            if (!isUploadSuccess(mRCList_3)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }*/
+            }
         }
 
         if (isShow4) {
-           /* if (!isUploadSuccess(mRCList_4)) {
+            if (!isUploadSuccess(mRCList_4)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }*/
+            }
         }
 
         if (isShow5) {
-           /* if (!isUploadSuccess(mRCList_5)) {
+            if (!isUploadSuccess(mRCList_5)) {
                 JDToast.showLongText(getActivity(), "请上传关系人身份证件图片");
                 return false;
-            }*/
+            }
         }
         return true;
     }
@@ -880,22 +880,27 @@ public class SocialRelationFragment extends BaseFragment {
                             case R.id.img_social_delete_1:
                                 isShow1 = false;
                                 JDAppUtil.addHiddenAction(layout_relation_1);
+                                removeImgList(mRCList_1 ,mRCAdapter_1 );
                                 break;
                             case R.id.img_social_delete_2:
                                 isShow2 = false;
                                 JDAppUtil.addHiddenAction(layout_relation_2);
+                                removeImgList(mRCList_2, mRCAdapter_2);
                                 break;
                             case R.id.img_social_delete_3:
                                 isShow3 = false;
                                 JDAppUtil.addHiddenAction(layout_relation_3);
+                                removeImgList(mRCList_3, mRCAdapter_3);
                                 break;
                             case R.id.img_social_delete_4:
                                 isShow4 = false;
                                 JDAppUtil.addHiddenAction(layout_relation_4);
+                                removeImgList(mRCList_4, mRCAdapter_4);
                                 break;
                             case R.id.img_social_delete_5:
                                 isShow5 = false;
                                 JDAppUtil.addHiddenAction(layout_relation_5);
+                                removeImgList(mRCList_5 ,mRCAdapter_5 );
                                 break;
                             default:
                                 break;
@@ -910,6 +915,26 @@ public class SocialRelationFragment extends BaseFragment {
                 dialog.cancel();
             }
         });
+    }
+
+    /**
+     * 删除时把图片列表中的除默认图片的其它图片 删除
+     */
+    private void removeImgList(List<UploadFileInfo> uploadFileInfos, ImgsGridViewAdapter imgAdapter) {
+        if (uploadFileInfos != null) {
+            int size = uploadFileInfos.size();
+            if (size == 1 && uploadFileInfos.get(0).isDefault()) {
+                return;
+            }
+            UploadFileInfo uploadFileInfo = null;
+            for (int i = size - 1; i >= 0; i--) {
+                uploadFileInfo = uploadFileInfos.get(i);
+                if (!uploadFileInfo.isDefault())
+                    uploadFileInfos.remove(uploadFileInfo);
+            }
+            if (imgAdapter != null)
+                imgAdapter.refreshData();
+        }
     }
 
     /*
@@ -928,6 +953,11 @@ public class SocialRelationFragment extends BaseFragment {
             JDToast.showLongText(getActivity(), "请输入备注信息");
             return;
         }*/
+        if(!isUploadSuccess(commentUploadImgInfoList))
+        {
+            JDToast.showLongText(getActivity(),"请上传尽职说明图片");
+            return;
+        }
         ContactInfo contactInfo = null;
         if (isShow1) {
             if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
@@ -974,10 +1004,10 @@ public class SocialRelationFragment extends BaseFragment {
             contactInfoList.add(contactInfo);
         }
         //必须要有一个是配偶
-        if (!isSelctedSpouse) {
+       /* if (!isSelctedSpouse) {
             JDToast.showLongText(getActivity(), "必须有一个关系类型为配偶");
             return;
-        }
+        }*/
         // relation; // 1 配偶 2直系亲属 3合伙人 4财务 5其他
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 
