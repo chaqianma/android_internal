@@ -120,7 +120,6 @@ public class SocialRelationFragment extends BaseFragment {
     private String mApplyInfoId = null;
     //配偶说明
     private String mSpouse = "配偶";
-
     //备注数据源
     private ImgsGridViewAdapter remarkImgsAdapter = null;
     //备注集合
@@ -880,7 +879,7 @@ public class SocialRelationFragment extends BaseFragment {
                             case R.id.img_social_delete_1:
                                 isShow1 = false;
                                 JDAppUtil.addHiddenAction(layout_relation_1);
-                                removeImgList(mRCList_1 ,mRCAdapter_1 );
+                                removeImgList(mRCList_1, mRCAdapter_1);
                                 break;
                             case R.id.img_social_delete_2:
                                 isShow2 = false;
@@ -900,7 +899,7 @@ public class SocialRelationFragment extends BaseFragment {
                             case R.id.img_social_delete_5:
                                 isShow5 = false;
                                 JDAppUtil.addHiddenAction(layout_relation_5);
-                                removeImgList(mRCList_5 ,mRCAdapter_5 );
+                                removeImgList(mRCList_5, mRCAdapter_5);
                                 break;
                             default:
                                 break;
@@ -941,7 +940,6 @@ public class SocialRelationFragment extends BaseFragment {
      * 保存数据
      * */
     public void saveDataSubmit() {
-        boolean isSelctedSpouse = false;
         List<ContactInfo> contactInfoList = new ArrayList<ContactInfo>();
         if (!JDAppUtil.getIsAuthSuccess()) {
             JDToast.showLongText(getActivity(), "未实名认证，不能保存数据");
@@ -949,19 +947,19 @@ public class SocialRelationFragment extends BaseFragment {
         }
         if (!requiredInput())
             return;
+        int selSpouseCnt = 0;
         /*if (JDAppUtil.isEmpty(et_remark.getText().toString())) {
             JDToast.showLongText(getActivity(), "请输入备注信息");
             return;
         }*/
-        if(!isUploadSuccess(commentUploadImgInfoList))
-        {
-            JDToast.showLongText(getActivity(),"请上传尽职说明图片");
+        if (!isUploadSuccess(commentUploadImgInfoList)) {
+            JDToast.showLongText(getActivity(), "请上传尽职说明图片");
             return;
         }
         ContactInfo contactInfo = null;
         if (isShow1) {
             if (sp_relation_type_1.getSelectedItem().toString().equals(mSpouse))
-                isSelctedSpouse = true;
+                selSpouseCnt++;
 
             contactInfo = new ContactInfo();
             contactInfo.setRemark(et_remark.getText().toString());
@@ -971,7 +969,7 @@ public class SocialRelationFragment extends BaseFragment {
         }
         if (isShow2) {
             if (sp_relation_type_2.getSelectedItem().toString().equals(mSpouse))
-                isSelctedSpouse = true;
+                selSpouseCnt++;
             contactInfo = new ContactInfo();
             contactInfo.setRelation(sp_relation_type_2.getSelectedItemPosition() + 1);
             contactInfo.setId(mParentId[1]);
@@ -979,7 +977,7 @@ public class SocialRelationFragment extends BaseFragment {
         }
         if (isShow3) {
             if (sp_relation_type_3.getSelectedItem().toString().equals(mSpouse))
-                isSelctedSpouse = true;
+                selSpouseCnt++;
             contactInfo = new ContactInfo();
             contactInfo.setId(mParentId[2]);
             contactInfo.setRelation(sp_relation_type_3.getSelectedItemPosition() + 1);
@@ -987,7 +985,7 @@ public class SocialRelationFragment extends BaseFragment {
         }
         if (isShow4) {
             if (sp_relation_type_4.getSelectedItem().toString().equals(mSpouse))
-                isSelctedSpouse = true;
+                selSpouseCnt++;
 
             contactInfo = new ContactInfo();
             contactInfo.setId(mParentId[3]);
@@ -996,18 +994,18 @@ public class SocialRelationFragment extends BaseFragment {
         }
         if (isShow5) {
             if (sp_relation_type_5.getSelectedItem().toString().equals(mSpouse))
-                isSelctedSpouse = true;
+                selSpouseCnt++;
 
             contactInfo = new ContactInfo();
             contactInfo.setId(mParentId[4]);
             contactInfo.setRelation(sp_relation_type_5.getSelectedItemPosition() + 1);
             contactInfoList.add(contactInfo);
         }
-        //必须要有一个是配偶
-       /* if (!isSelctedSpouse) {
-            JDToast.showLongText(getActivity(), "必须有一个关系类型为配偶");
+        //必须只能选择一个配偶
+        if (selSpouseCnt > 1) {
+            JDToast.showLongText(getActivity(), "只能选择一个关系类型为配偶");
             return;
-        }*/
+        }
         // relation; // 1 配偶 2直系亲属 3合伙人 4财务 5其他
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 
@@ -1025,7 +1023,7 @@ public class SocialRelationFragment extends BaseFragment {
     * 设置下拉框是否可用
     * */
     private void setSpinnerEnabled(UploadFileInfo fileInfo) {
-        if (fileInfo.getFileType() == UploadFileType.CARD.getValue()) {
+        /*if (fileInfo.getFileType() == UploadFileType.CARD.getValue()) {
             switch (fileInfo.getIdxTag()) {
                 case 0:
                     sp_relation_type_1.setEnabled(!isUploadSuccess(mRCList_1));
@@ -1045,7 +1043,7 @@ public class SocialRelationFragment extends BaseFragment {
                 default:
                     break;
             }
-        }
+        }*/
     }
 
 
