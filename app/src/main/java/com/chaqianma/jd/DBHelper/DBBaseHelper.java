@@ -41,7 +41,7 @@ public class DBBaseHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.beginTransaction();
         try {
-            //db.execSQL(DBTableSQL.SQL_CREATE_UPLOADIMG);
+            db.execSQL(DBTableSQL.SQL_CREATE_UPLOADIMG);
             db.execSQL(DBTableSQL.SQL_CREATE_REPAYMENT);
             Log.e(TAG, "db create success");
             db.setTransactionSuccessful();

@@ -12,17 +12,20 @@ public class DBTableSQL {
             + ImageTable.TABLE_NAME
             + " (" + ImageTable._ID + " INTEGER PRIMARY KEY,"
             + ImageTable.BORROW_REQUESTID + TEXT_TYPE + COMMA_SEP
-            + ImageTable.PARENT_ID + TEXT_TYPE + COMMA_SEP
-            + ImageTable.IMGTYPE + TEXT_TYPE + COMMA_SEP
+            + ImageTable.FILEID + INTEGER_TYPE + COMMA_SEP
             + ImageTable.IMGNAME + TEXT_TYPE + COMMA_SEP
             + ImageTable.SMALLIMGPATH + TEXT_TYPE + COMMA_SEP
             + ImageTable.BIGIMGPATH + TEXT_TYPE + COMMA_SEP
             + ImageTable.FILETYPE + TEXT_TYPE + COMMA_SEP
-            + ImageTable.PARENT_TABLE_NAME + TEXT_TYPE + ")";
+            + ImageTable.PARENT_TABLE_NAME + TEXT_TYPE + COMMA_SEP
+            + ImageTable.PARENT_ID + TEXT_TYPE + COMMA_SEP
+            + ImageTable.STATUS + INTEGER_TYPE + COMMA_SEP
+            + ImageTable.DATELINE + TEXT_TYPE + COMMA_SEP
+            + ImageTable.IDXTAG + INTEGER_TYPE + ")";
 
 
-    public static String SQL_CREATE_REPAYMENT="create table if not exists "
-            +RepaymentTable.TABLE_NAME
+    public static String SQL_CREATE_REPAYMENT = "create table if not exists "
+            + RepaymentTable.TABLE_NAME
             + " (" + RepaymentTable._ID + " INTEGER PRIMARY KEY,"
             + RepaymentTable.REPAYMENT_ID + TEXT_TYPE + COMMA_SEP
             + RepaymentTable.DATELINE + TEXT_TYPE + ")";
