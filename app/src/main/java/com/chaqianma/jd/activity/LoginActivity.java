@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.chaqianma.jd.DBHelper.RepaymentDBHelper;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.app.JDApplication;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.model.BorrowRequestInfo;
-import com.chaqianma.jd.model.RepaymentInfo;
 import com.chaqianma.jd.model.UserInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.common.HttpRequestURL;
@@ -23,11 +21,7 @@ import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

@@ -1,11 +1,9 @@
 package com.chaqianma.jd.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.utils.JDAppUtil;
@@ -17,10 +15,10 @@ import com.chaqianma.jd.widget.SwitchButton;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by zhangxd on 2015/7/24.
+ * 推送消息提醒
  */
 public class MsgnotifyActivity extends BaseActivity {
     @InjectView(R.id.switch_notify)
@@ -79,7 +77,8 @@ public class MsgnotifyActivity extends BaseActivity {
             //SharedPreferencesUtil.setShareBoolean(MsgnotifyActivity.this, Constants.MSGSHAKE, switch_shake.isChecked());
         } else {
             //设置无任务提醒
-            JPushUtil.setSilenceTime(MsgnotifyActivity.this, 0, 59, 23, 59);
+           // JPushUtil.setSilenceTime(MsgnotifyActivity.this, 0, 59, 23, 59);
+            JPushUtil.clearPushNotificationBuilder(MsgnotifyActivity.this);
         }
         JDToast.showLongText(MsgnotifyActivity.this, "消息提醒设置成功");
         finish();

@@ -25,6 +25,7 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by zhangxd on 2015/7/24.
+ * 勿扰模式
  */
 public class NodisturbActivity extends BaseActivity {
     @InjectView(R.id.tv_begin_time)
@@ -49,7 +50,7 @@ public class NodisturbActivity extends BaseActivity {
 
     //初始化数据
     private void initData() {
-        switch_disturb.setChecked(SharedPreferencesUtil.getShareBoolean(NodisturbActivity.this, Constants.NODISTURB, true));
+        switch_disturb.setChecked(SharedPreferencesUtil.getShareBoolean(NodisturbActivity.this, Constants.NODISTURB, false));
         switch_disturb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
