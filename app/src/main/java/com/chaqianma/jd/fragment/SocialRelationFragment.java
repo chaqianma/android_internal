@@ -237,7 +237,7 @@ public class SocialRelationFragment extends BaseFragment {
                 return;
             initView(4);
         } else {
-
+            JDToast.showLongText(getActivity(),"最多只能添加5个社会关系");
         }
     }
 
@@ -577,6 +577,11 @@ public class SocialRelationFragment extends BaseFragment {
                         super.onFailure(uploadFileInfo);
                         uploadFileInfo.setiServer(false);
                         uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                        int downloadCnt = uploadFileInfo.getDownloadCnt();
+                        if (downloadCnt <= Constants.MAXDOWNLOADCOUNT) {
+                            uploadFileInfo.setDownloadCnt(++downloadCnt);
+                            getServerFile(uploadFileInfo);
+                        }
                     }
                 }));
             }

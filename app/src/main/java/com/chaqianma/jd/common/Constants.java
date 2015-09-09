@@ -12,6 +12,8 @@ public class Constants {
     public static final boolean DEBUG = false;
     //尽调员身份类型 userType
     public static final String USERTYPE = "1";
+    //最大下载次数
+    public static final int MAXDOWNLOADCOUNT = 8;
     //Header设置
     public static final String HEADERTAG = "X-AUTH-TOKEN";
     //用户名标签

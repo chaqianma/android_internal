@@ -334,34 +334,34 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             initSpinner(sp_some_company_2, companyList2);
             sp_some_company_2.setSelection(0);
             sp_some_company_2.setEnabled(true);
-        } else {
+        } else if (!isCompany3Show) {
             //添加第三家企业
-            if (!isCompany3Show) {
-                if (!requiredInput())
-                    return;
-                isCompany3Show = true;
-                if (layout_company_3 != null) {
-                    layout_company_3.setVisibility(View.VISIBLE);
-                } else {
-                    ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
-                    layout_company_3 = (LinearLayout) mView.findViewById(R.id.layout_company_3);
-                    initControlView(false);
-                    initGridViewData(false);
-                }
-                companyList3 = (ArrayList) Constants.COMPANYLIST.clone();
-                //下拉框
-                if (isCompany1Show) {
-                    sp_some_company_1.setEnabled(false);
-                    companyList3.remove(sp_some_company_1.getSelectedItem());
-                }
-                if (isCompany2Show) {
-                    sp_some_company_2.setEnabled(false);
-                    companyList3.remove(sp_some_company_2.getSelectedItem());
-                }
-                initSpinner(sp_some_company_3, companyList3);
-                sp_some_company_3.setSelection(0);
-                sp_some_company_3.setEnabled(true);
+            if (!requiredInput())
+                return;
+            isCompany3Show = true;
+            if (layout_company_3 != null) {
+                layout_company_3.setVisibility(View.VISIBLE);
+            } else {
+                ((ViewStub) mView.findViewById(R.id.stub_company_3)).inflate();
+                layout_company_3 = (LinearLayout) mView.findViewById(R.id.layout_company_3);
+                initControlView(false);
+                initGridViewData(false);
             }
+            companyList3 = (ArrayList) Constants.COMPANYLIST.clone();
+            //下拉框
+            if (isCompany1Show) {
+                sp_some_company_1.setEnabled(false);
+                companyList3.remove(sp_some_company_1.getSelectedItem());
+            }
+            if (isCompany2Show) {
+                sp_some_company_2.setEnabled(false);
+                companyList3.remove(sp_some_company_2.getSelectedItem());
+            }
+            initSpinner(sp_some_company_3, companyList3);
+            sp_some_company_3.setSelection(0);
+            sp_some_company_3.setEnabled(true);
+        } else {
+            JDToast.showLongText(getActivity(),"最多只能添加3家企业");
         }
     }
 
@@ -994,6 +994,11 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 super.onFailure(uploadFileInfo);
                 uploadFileInfo.setiServer(false);
                 uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                int downloadCnt = uploadFileInfo.getDownloadCnt();
+                if (downloadCnt <= Constants.MAXDOWNLOADCOUNT) {
+                    uploadFileInfo.setDownloadCnt(++downloadCnt);
+                    getServerFile(uploadFileInfo);
+                }
             }
         }));
     }

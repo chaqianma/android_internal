@@ -554,6 +554,11 @@ public class PersonInfoFragment extends BaseFragment {
                 super.onFailure(uploadFileInfo);
                 uploadFileInfo.setiServer(false);
                 uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                int downloadCnt = uploadFileInfo.getDownloadCnt();
+                if (downloadCnt <= Constants.MAXDOWNLOADCOUNT) {
+                    uploadFileInfo.setDownloadCnt(++downloadCnt);
+                    getServerFile(uploadFileInfo);
+                }
             }
         }));
     }

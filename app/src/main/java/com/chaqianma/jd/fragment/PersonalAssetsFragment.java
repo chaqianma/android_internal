@@ -295,32 +295,32 @@ public class PersonalAssetsFragment extends BaseFragment {
             initSpinner(sp_car_2, carList2);
             sp_car_2.setSelection(0);
             sp_car_2.setEnabled(true);
-        } else {
-            if (!isCar3Show) {
-                if (!isCanAddCar())
-                    return;
-                isCar3Show = true;
-                if (layout_asset_car_3 != null) {
-                    layout_asset_car_3.setVisibility(View.VISIBLE);
-                } else {
-                    View view = ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
-                    JDAppUtil.addShowAction(view);
-                    initCarView(false);
-                }
-                carList3 = (ArrayList) Constants.CARLIST.clone();
-                //下拉框
-                if (isCar1Show) {
-                    sp_car_1.setEnabled(false);
-                    carList3.remove(sp_car_1.getSelectedItem());
-                }
-                if (isCar2Show) {
-                    sp_car_2.setEnabled(false);
-                    carList3.remove(sp_car_2.getSelectedItem());
-                }
-                initSpinner(sp_car_3, carList3);
-                sp_car_3.setSelection(0);
-                sp_car_3.setEnabled(true);
+        } else if (!isCar3Show) {
+            if (!isCanAddCar())
+                return;
+            isCar3Show = true;
+            if (layout_asset_car_3 != null) {
+                layout_asset_car_3.setVisibility(View.VISIBLE);
+            } else {
+                View view = ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
+                JDAppUtil.addShowAction(view);
+                initCarView(false);
             }
+            carList3 = (ArrayList) Constants.CARLIST.clone();
+            //下拉框
+            if (isCar1Show) {
+                sp_car_1.setEnabled(false);
+                carList3.remove(sp_car_1.getSelectedItem());
+            }
+            if (isCar2Show) {
+                sp_car_2.setEnabled(false);
+                carList3.remove(sp_car_2.getSelectedItem());
+            }
+            initSpinner(sp_car_3, carList3);
+            sp_car_3.setSelection(0);
+            sp_car_3.setEnabled(true);
+        } else {
+            JDToast.showLongText(getActivity(), "最多只能添加3个车辆");
         }
     }
 
@@ -479,31 +479,31 @@ public class PersonalAssetsFragment extends BaseFragment {
             initSpinner(sp_house_2, houseList2);
             sp_house_2.setSelection(0);
             sp_house_2.setEnabled(true);
-        } else {
-            if (!isHouse3Show) {
-                if (!isCanAddHouse())
-                    return;
-                isHouse3Show = true;
-                if (layout_asset_house_3 != null) {
-                    layout_asset_house_3.setVisibility(View.VISIBLE);
-                } else {
-                    ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
-                    initHouseView(false);
-                }
-                houseList3 = (ArrayList) Constants.HOUSELIST.clone();
-                //下拉框
-                if (isHouse1Show) {
-                    sp_house_1.setEnabled(false);
-                    houseList3.remove(sp_house_1.getSelectedItem());
-                }
-                if (isHouse2Show) {
-                    sp_house_2.setEnabled(false);
-                    houseList3.remove(sp_house_2.getSelectedItem());
-                }
-                initSpinner(sp_house_3, houseList3);
-                sp_house_3.setSelection(0);
-                sp_house_3.setEnabled(true);
+        } else if (!isHouse3Show) {
+            if (!isCanAddHouse())
+                return;
+            isHouse3Show = true;
+            if (layout_asset_house_3 != null) {
+                layout_asset_house_3.setVisibility(View.VISIBLE);
+            } else {
+                ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
+                initHouseView(false);
             }
+            houseList3 = (ArrayList) Constants.HOUSELIST.clone();
+            //下拉框
+            if (isHouse1Show) {
+                sp_house_1.setEnabled(false);
+                houseList3.remove(sp_house_1.getSelectedItem());
+            }
+            if (isHouse2Show) {
+                sp_house_2.setEnabled(false);
+                houseList3.remove(sp_house_2.getSelectedItem());
+            }
+            initSpinner(sp_house_3, houseList3);
+            sp_house_3.setSelection(0);
+            sp_house_3.setEnabled(true);
+        } else {
+            JDToast.showLongText(getActivity(), "最多只能添加3个房产");
         }
     }
 
@@ -822,6 +822,8 @@ public class PersonalAssetsFragment extends BaseFragment {
                                         //设置备注信息
                                         if (!JDAppUtil.isEmpty(assetInfo.getRemark()))
                                             et_remark.setText(assetInfo.getRemark());
+                                        if (assetInfo.getFileList() != null)
+                                            initServerFile(assetInfo.getFileList(), -1);
                                     }
                                 });
                                 //获取车辆
@@ -1312,6 +1314,11 @@ public class PersonalAssetsFragment extends BaseFragment {
                         super.onFailure(uploadFileInfo);
                         uploadFileInfo.setiServer(false);
                         uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
+                        int downloadCnt = uploadFileInfo.getDownloadCnt();
+                        if (downloadCnt <= Constants.MAXDOWNLOADCOUNT) {
+                            uploadFileInfo.setDownloadCnt(++downloadCnt);
+                            getServerFile(uploadFileInfo);
+                        }
                     }
                 }));
             }
