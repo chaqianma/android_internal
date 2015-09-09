@@ -74,7 +74,7 @@ public class MessageAdapater extends BaseAdapter {
             viewHolder.tv_repayment_money.setText(JDAppUtil.money2Format(repaymentInfo.getMoney()));
             viewHolder.tv_repayment_date.setText(JDAppUtil.getStrDateTime(repaymentInfo.getRepaymentDateline()));
             viewHolder.tv_repayment_Detail.setOnClickListener(null);
-            repaymentInfo.getStrWorkLocation(viewHolder.tv_office_addr);
+            repaymentInfo.getStrWorkLocation(mContext,viewHolder.tv_office_addr);
         } else {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.message_task_item, null);
             TextView tv_task_date = (TextView) convertView.findViewById(R.id.tv_task_date);
@@ -94,7 +94,7 @@ public class MessageAdapater extends BaseAdapter {
             tv_borrowMoney.setText(JDAppUtil.money2Format(repaymentInfo.getBorrowMoney()));
             tv_borrowDate.setText(repaymentInfo.getBorrowDate());
             tv_borrowUse.setText(repaymentInfo.getBorrowPurposeStr());
-            repaymentInfo.getStrWorkLocation(tv_task_addr);
+            repaymentInfo.getStrWorkLocation(mContext,tv_task_addr);
         }
         return convertView;
     }

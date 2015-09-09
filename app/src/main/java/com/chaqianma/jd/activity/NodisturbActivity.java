@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.utils.JDAppUtil;
@@ -14,10 +13,6 @@ import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDToast;
 import com.chaqianma.jd.widget.SwitchButton;
 import com.chaqianma.jd.widget.WheelViewDialog;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;

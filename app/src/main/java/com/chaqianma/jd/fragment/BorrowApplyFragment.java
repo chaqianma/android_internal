@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.BaiduMapActivity;
+import com.chaqianma.jd.activity.GaiDeMapActivity;
 import com.chaqianma.jd.activity.InvestigateDetailActivity;
 import com.chaqianma.jd.activity.MainActivity;
 import com.chaqianma.jd.common.AppData;
@@ -17,12 +18,11 @@ import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.BorrowRequestInfo;
 import com.chaqianma.jd.utils.FileUtil;
-import com.chaqianma.jd.utils.GeoCoderUtil;
+import com.chaqianma.jd.utils.GDGeoCodeUtil;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
-import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
 
@@ -82,7 +82,7 @@ public class BorrowApplyFragment extends BaseFragment {
         }*/
         bundle.putString(Constants.LOCATION, mLocation);
         bundle.putString(Constants.BORROWNAME, tv_name.getText().toString());
-        startActivity(BaiduMapActivity.class, bundle);
+        startActivity(GaiDeMapActivity.class, bundle);
     }
 
     @OnClick(R.id.tv_office_map)
@@ -90,7 +90,7 @@ public class BorrowApplyFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.LOCATION, workLocation);
         bundle.putString(Constants.BORROWNAME, tv_name.getText().toString());
-        startActivity(BaiduMapActivity.class, bundle);
+        startActivity(GaiDeMapActivity.class, bundle);
     }
 
     @OnClick(R.id.img_telephone)
@@ -151,8 +151,8 @@ public class BorrowApplyFragment extends BaseFragment {
             /*if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
                 new GeoCoderUtil(tv_address, mLocation.split(",")[1] + "," + mLocation.split(",")[0]);
             }*/
-            new GeoCoderUtil(tv_address, mLocation);
-            new GeoCoderUtil(tv_office, workLocation);
+            new GDGeoCodeUtil(getActivity(),tv_address, mLocation);
+            new GDGeoCodeUtil(getActivity(),tv_office, workLocation);
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
 

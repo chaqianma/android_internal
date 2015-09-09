@@ -5,9 +5,15 @@
 
   <!--  <include layout="@layout/top" />-->
 
-    <com.baidu.mapapi.map.MapView
+    <!--<com.baidu.mapapi.map.MapView
         android:id="@+id/view_baidu_map"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:clickable="true" />
+        android:clickable="true" />-->
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/view_gaide_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.amap.api.maps.MapView>
 </LinearLayout>

@@ -33,7 +33,7 @@ public class Constants {
     //极光设置别名
     public static final int MSG_SET_ALIAS = 1000;
     //是否需要刷新
-    public static final String REFRESH="REFRESH";
+    public static final String REFRESH = "REFRESH";
     //消息通知提醒
     public static final String MSGNOTIFY = "MSGNOTIFY";
     //何种提示方式
@@ -55,9 +55,9 @@ public class Constants {
     //尽调申请
     public static final String BORROWAPPLY = "BORROWAPPLY";
     //消息列表
-    public static final String MESSAGECENTER="MESSAGECENTER";
+    public static final String MESSAGECENTER = "MESSAGECENTER";
     //催收
-    public static final String REPAYMENT="REPAYMENT";
+    public static final String REPAYMENT = "REPAYMENT";
     //传值KEY
     public static final String TOVALUEKEY = "TOVALUEKEY";
     //借款人姓名
@@ -75,7 +75,7 @@ public class Constants {
     //个人资产---房子
     public static final String PERSONAL_ASSETS_HOUSE_INFO = "personal_assets_house_info";
     //尽职上传文件
-    public static final String APPLY_INFO="apply_info";
+    public static final String APPLY_INFO = "apply_info";
     //联系人  上传文件
     public static final String CONTACT_INFO = "contact_info";
     //个人信息标签
@@ -114,6 +114,17 @@ public class Constants {
 
     //下拉框集合 社会关系
     public static final ArrayList<String> RELATIONLIST = new ArrayList<String>() {
+        {
+            add("配偶");
+            add("直系亲属");
+            add("合伙人");
+            add("财务");
+            add("其他");
+        }
+    };
+
+    //下拉框集合 社会关系
+    public static final ArrayList<String> RELATIONLIST_EXCEPTSPOUSE = new ArrayList<String>() {
         {
             add("配偶");
             add("直系亲属");

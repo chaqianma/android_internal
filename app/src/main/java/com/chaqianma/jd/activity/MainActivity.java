@@ -20,6 +20,7 @@ import com.chaqianma.jd.fragment.StaffStateFragment;
 import com.chaqianma.jd.model.BorrowRequestInfo;
 import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
+import com.chaqianma.jd.utils.LocationUtil;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
 
@@ -50,7 +51,7 @@ public class MainActivity extends FragmentActivity implements BottomFragment.ICh
     //回退判断
     private Timer timer = new Timer();
     private boolean isBack = false;
-
+    private LocationUtil mLocationUtil=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,8 @@ public class MainActivity extends FragmentActivity implements BottomFragment.ICh
             getBorrowRequest();
         } else
             onItemSelected(R.id.radio_main);
+        //上传位置
+        mLocationUtil=new LocationUtil(MainActivity.this);
     }
 
     //查看是否有任务
@@ -131,6 +134,12 @@ public class MainActivity extends FragmentActivity implements BottomFragment.ICh
         fragmentTransaction.commit();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mLocationUtil!=null)
+            mLocationUtil.stopLocation();
+    }
 
     public void setShowFragment(int idxTag) {
         switch (idxTag) {

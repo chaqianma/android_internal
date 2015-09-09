@@ -89,8 +89,6 @@ public class LoginActivity extends BaseActivity {
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.USERNAME, username);
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.PASSWORD, password);
                             SharedPreferencesUtil.setShareString(LoginActivity.this, Constants.UUID, mUUID);
-                            //上传位置
-                            new LocationUtil(LoginActivity.this, null).start();
                             //设置别名
                             ((JDApplication) getApplication()).setAlias();
                             //再调用查看任务接口。。。不知为何要这么设计

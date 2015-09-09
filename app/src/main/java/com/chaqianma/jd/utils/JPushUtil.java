@@ -148,6 +148,18 @@ public class JPushUtil {
         JPushInterface.setDefaultPushNotificationBuilder(builder);
     }
 
+    /**
+     * 取消推送方式
+     */
+    public static void clearPushNotificationBuilder(Context context) {
+        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(context);
+        builder.statusBarDrawable = R.mipmap.ic_launcher;
+        builder.notificationFlags = Notification.FLAG_AUTO_CANCEL;  //设置为点击后自动消失
+        builder.notificationDefaults = Notification.DEFAULT_LIGHTS;
+        //JPushInterface.setPushNotificationBuilder(1, builder);
+        JPushInterface.setDefaultPushNotificationBuilder(builder);
+    }
+
     public static class CustomNotificationBuilder {
         private Context context;
         private int number;

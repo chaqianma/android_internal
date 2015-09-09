@@ -1,31 +1,33 @@
 package com.chaqianma.jd.utils;
+
 import android.content.Context;
+import android.location.Location;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
+
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
+import com.amap.api.maps.LocationSource;
 import com.chaqianma.jd.common.AppData;
-import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.LocationInfo;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by zhangxd on 2015/7/20.
+ * 高德地图
  */
 public class LocationUtil {
-    private LocationClient mLocationClient = null;
     private Context mContext = null;
-    private MyBDLocationListener myLocationListener = null;
-    private String mCoorType = "gcj02";
-    private Timer timer = null;
+    private LocationManagerProxy mLocationManagerProxy = null;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -42,87 +44,70 @@ public class LocationUtil {
         }
     };
 
-    public LocationUtil(Context context, Handler handler) {
-        this(context, handler, null);
-    }
-
-    public LocationUtil(Context context, Handler handler, String coorType) {
+    public LocationUtil(Context context) {
         this.mContext = context;
-        //this.mHandler = handler;
-        if (!JDAppUtil.isEmpty(coorType))
-            this.mCoorType = coorType;
-        initLocationClient();
+        getLocation();
     }
 
-    /*
-    * 初始化位置组件
-    * */
-    private void initLocationClient() {
-        mLocationClient = new LocationClient(mContext);
-        myLocationListener = new MyBDLocationListener();
-        mLocationClient.registerLocationListener(myLocationListener);
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//设置定位模式
-        option.setCoorType(mCoorType);//返回的定位结果是百度经纬度，默认值gcj02
-        option.setScanSpan(5 * 1000);//设置发起定位请求的间隔时间为5000ms
-        if (this.mCoorType.equals("gcj02"))
-            option.setIsNeedAddress(true);
-        mLocationClient.setLocOption(option);
-        mLocationClient.start();
+    private void getLocation() {
+        mLocationManagerProxy = LocationManagerProxy.getInstance(mContext);
+        //此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+        //注意设置合适的定位时间的间隔，并且在合适时间调用removeUpdates()方法来取消定位请求
+        //在定位结束后，在合适的生命周期调用destroy()方法
+        //其中如果间隔时间为-1，则定位只定一次   30 * 60 * 1000
+        mLocationManagerProxy.setGpsEnable(true);
+        // 2 位置变化的通知时间，单位为毫秒   3 位置变化通知距离，单位为米
+        mLocationManagerProxy.requestLocationData(
+                LocationProviderProxy.AMapNetwork, 30 * 60 * 1000, 5000, mapLocationListener);
     }
 
-    public void start() {
-        if (timer == null) {
-            timer = new Timer(true);
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    //do something
-                    if (myLocationListener != null)
-                        mLocationClient.registerLocationListener(myLocationListener);
-                    mLocationClient.start();
-                }
-            }, 0, 10 * 1000);
-        }
-    }
-
-    public void stop() {
-        if (mLocationClient != null && mLocationClient.isStarted())
-            mLocationClient.stop();
-    }
-
-    public void unRegisterLocationListener() {
-        if (mLocationClient != null && mLocationClient.isStarted())
-            mLocationClient.unRegisterLocationListener(myLocationListener);
-    }
-
-    private class MyBDLocationListener implements BDLocationListener {
+    /**
+     * 地图监听
+     */
+    private AMapLocationListener mapLocationListener = new AMapLocationListener() {
         @Override
-        public void onReceiveLocation(BDLocation location) {
-            LocationInfo locationInfo = new LocationInfo();
-            locationInfo.setLatitude(location.getLatitude());
-            locationInfo.setLongitude(location.getLongitude());
-            locationInfo.setRadius(location.getRadius());
-            if (location.getLocType() == BDLocation.TypeGpsLocation) {
-                locationInfo.setSpeed(location.getSpeed() + "");
-                locationInfo.setSatellite(location.getSatelliteNumber() + "");
-                locationInfo.setDirection(location.getDirection() + "");
-                locationInfo.setAddress(location.getAddrStr() + "");
-                locationInfo.setDirection(location.getDirection() + "");
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-                locationInfo.setAddress(location.getAddrStr());
-                locationInfo.setOperationers(location.getOperators() + "'");
-                locationInfo.setCity(location.getCity());
-                locationInfo.setProvince(location.getProvince());
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            if (aMapLocation != null && aMapLocation.getAMapException().getErrorCode() == 0) {
+                //获取位置信息
+                LocationInfo locationInfo = new LocationInfo();
+                locationInfo.setLatitude(aMapLocation.getLatitude());
+                locationInfo.setLongitude(aMapLocation.getLongitude());
+                AppData.getInstance().setLocationInfo(locationInfo);
+                mHandler.sendEmptyMessage(0);
             }
-            AppData.getInstance().setLocationInfo(locationInfo);
-            mHandler.sendEmptyMessage(0);
-            mLocationClient.stop();
-            unRegisterLocationListener();
-            start();
         }
 
-        public void onReceivePoi(BDLocation poiLocation) {
+        @Override
+        public void onLocationChanged(Location location) {
+
         }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
+    /**
+     * 停止定位
+     */
+    public void stopLocation() {
+        if (mLocationManagerProxy != null) {
+            // 移除定位请求
+            mLocationManagerProxy.removeUpdates(mapLocationListener);
+            // 销毁定位
+            mLocationManagerProxy.destroy();
+        }
+        mLocationManagerProxy = null;
     }
 }

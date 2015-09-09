@@ -1,11 +1,10 @@
 package com.chaqianma.jd.model;
 
+import android.content.Context;
 import android.widget.TextView;
 
-import com.chaqianma.jd.utils.GeoCoderUtil;
+import com.chaqianma.jd.utils.GDGeoCodeUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by zhangxd on 2015/8/14.
@@ -256,11 +255,11 @@ public class RepaymentInfo extends ErrorInfo {
         this.userWorkLocation = userWorkLocation;
     }
 
-    public void getStrWorkLocation(final TextView tv) {
+    public void getStrWorkLocation(Context context,final TextView tv) {
         if (strWorkLocation != null) {
             tv.setText(strWorkLocation);
         } else {
-            new GeoCoderUtil(tv, this);
+            new GDGeoCodeUtil(context,tv, this);
         }
     }
 

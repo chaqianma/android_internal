@@ -70,7 +70,7 @@ public class RepaymentListAdapter extends BaseAdapter {
             viewHolder.tv_phone.setText(repaymentInfo.getUserMobile());
             viewHolder.tv_repayment_date.setText(JDAppUtil.getTimeToStr(repaymentInfo.getRepaymentDateline()));
             viewHolder.tv_address.setText("");
-            repaymentInfo.getStrWorkLocation(viewHolder.tv_address);
+            repaymentInfo.getStrWorkLocation(mContext,viewHolder.tv_address);
         }
         return convertView;
     }

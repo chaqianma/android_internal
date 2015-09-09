@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chaqianma.jd.DBHelper.UploadImgDBHelper;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.activity.MainActivity;
 import com.chaqianma.jd.adapters.ImgsGridViewAdapter;
@@ -46,7 +47,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         ViewPagerPopup.OnViewPagerDialogListener, ImgsGridViewAdapter.iOnClickImgListener, SoundGridViewAdapter.iOnClickSoundListener {
 
     private String mBorrowRequestId = null;
-
+    protected UploadImgDBHelper mUploadImgDBHelper=null;
     protected PhotoPopup mPopup;
     protected ViewPagerPopup mViewPagerPopup;
     //获取SDK中的图片
@@ -64,6 +65,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         mPopup.setDialogListener(this);
         mViewPagerPopup = new ViewPagerPopup(getActivity());
         mViewPagerPopup.setViewPagerDialogListener(this);
+        mUploadImgDBHelper=UploadImgDBHelper.getInstance(getActivity());
     }
 
     @Override

@@ -97,6 +97,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/translucent_theme" />
 
+        <activity
+            android:name=".activity.GaiDeMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent_theme" />
         <!--极光Start-->
         <!-- Required SDK核心功能-->
         <activity
@@ -190,7 +194,7 @@
         <!--极光推送end-->
 
         <!---百度地图 Start-->
-        <service
+        <!--<service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote">
@@ -201,8 +205,14 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="59PhG8zA0MLPeU5DBH7KrbAL" />
+            android:value="59PhG8zA0MLPeU5DBH7KrbAL" />-->
         <!--百度地图 end-->
+
+        <!--高德地图Start-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="3f722f84ec5d2a8519715dcd7d33e0b1" />
+        <!--高德地图End-->
 
     </application>
 

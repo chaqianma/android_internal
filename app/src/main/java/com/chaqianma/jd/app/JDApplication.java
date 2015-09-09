@@ -1,29 +1,17 @@
 package com.chaqianma.jd.app;
 
 import android.app.Application;
-import android.app.Notification;
-import android.graphics.Bitmap;
-import android.provider.ContactsContract;
-import android.widget.Toast;
-
-import com.baidu.mapapi.SDKInitializer;
-import com.chaqianma.jd.R;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.utils.FileUtil;
 import com.chaqianma.jd.utils.JPushUtil;
-import com.chaqianma.jd.utils.SharedPreferencesUtil;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-
 import java.util.Set;
-
-import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
@@ -41,7 +29,7 @@ public class JDApplication extends Application {
         crashHandler.init(getApplicationContext());
         JPushInterface.setDebugMode(Constants.DEBUG); // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this); // 初始化 JPush
-        SDKInitializer.initialize(this);//初始化百度地图
+       // SDKInitializer.initialize(this);//初始化百度地图
         JPushUtil.setPushNotificationBuilder(getApplicationContext());
         //初始化ImageLoader
         initImageLoader();
