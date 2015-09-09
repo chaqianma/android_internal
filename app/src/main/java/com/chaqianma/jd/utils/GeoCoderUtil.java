@@ -3,13 +3,6 @@ package com.chaqianma.jd.utils;
 import android.content.Context;
 import android.widget.TextView;
 
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.geocode.GeoCodeResult;
-import com.baidu.mapapi.search.geocode.GeoCoder;
-import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.chaqianma.jd.model.RepaymentInfo;
 
 
@@ -25,13 +18,13 @@ public class GeoCoderUtil {
     private RepaymentInfo mRepaymentInfo = null;
     private Context mContext = null;
 
-    public GeoCoderUtil(TextView tvAddress, String location) {
+    public GeoCoderUtil(String a,TextView tvAddress, String location) {
         this.tvAddress = tvAddress;
         this.mLocation = location;
         getAddress();
     }
 
-    public GeoCoderUtil(TextView tvAddress, RepaymentInfo repaymentInfo) {
+    public GeoCoderUtil(String a,TextView tvAddress, RepaymentInfo repaymentInfo) {
         this.tvAddress = tvAddress;
         this.mLocation = repaymentInfo.getUserWorkLocation();
         this.mRepaymentInfo = repaymentInfo;
@@ -43,7 +36,7 @@ public class GeoCoderUtil {
             try {
                 String[] arrs = mLocation.split(",");
                 //纬度  经度
-                LatLng latLng = new LatLng(Double.parseDouble(arrs[1]), Double.parseDouble(arrs[0]));
+                /*LatLng latLng = new LatLng(Double.parseDouble(arrs[1]), Double.parseDouble(arrs[0]));
                 GeoCoder geoCoder = GeoCoder.newInstance();
                 OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
                     // 反地理编码查询结果回调函数
@@ -68,7 +61,7 @@ public class GeoCoderUtil {
                 };
                 // 设置地理编码检索监听者
                 geoCoder.setOnGetGeoCodeResultListener(listener);
-                geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+                geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));*/
 
             } catch (Exception e) {
                 e.printStackTrace();

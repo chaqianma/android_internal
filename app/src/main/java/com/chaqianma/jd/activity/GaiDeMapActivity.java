@@ -29,9 +29,9 @@ public class GaiDeMapActivity extends BaseActivity implements AMap.OnMapClickLis
     private AMap mAMap;
     private double mLatitude = .0d;
     private double mLongitude = .0d;
-    //½è¿îÈË
+    //å€Ÿæ¬¾äºº
     private String mBorrowName = null;
-    //¶¨Î»Î»ÖÃÏÔÊ¾
+    //å®šä½ä½ç½®æ˜¾ç¤º
     private Marker mGMarker;
 
     @Override
@@ -64,7 +64,7 @@ public class GaiDeMapActivity extends BaseActivity implements AMap.OnMapClickLis
     }
 
     /**
-     * ³õÊ¼»¯´«ÖµÊı¾İ
+     * åˆå§‹åŒ–ä¼ å€¼æ•°æ®
      */
     private void initData() {
         Bundle bundle = getIntent().getBundleExtra(Constants.TOVALUEKEY);
@@ -74,9 +74,9 @@ public class GaiDeMapActivity extends BaseActivity implements AMap.OnMapClickLis
             if (location != null && location.length() > 0 && location.indexOf(",") >= 0) {
                 try {
                     String[] arrs = location.split(",");
-                    //¾­¶È
+                    //ç»åº¦
                     mLatitude = Double.parseDouble(arrs[1]);
-                    //Î³¶È
+                    //çº¬åº¦
                     mLongitude = Double.parseDouble(arrs[0]);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -86,13 +86,13 @@ public class GaiDeMapActivity extends BaseActivity implements AMap.OnMapClickLis
     }
 
     /**
-     * ÉèÖÃÒ»Ğ©amapµÄÊôĞÔ
+     * è®¾ç½®ä¸€äº›amapçš„å±æ€§
      */
     private void setUpMap() {
-       // mAMap.setLocationSource(this);// ÉèÖÃ¶¨Î»¼àÌı
-        mAMap.getUiSettings().setMyLocationButtonEnabled(true);// ÉèÖÃÄ¬ÈÏ¶¨Î»°´Å¥ÊÇ·ñÏÔÊ¾
-        mAMap.setMyLocationEnabled(true);// ÉèÖÃÎªtrue±íÊ¾ÏÔÊ¾¶¨Î»²ã²¢¿É´¥·¢¶¨Î»£¬false±íÊ¾Òş²Ø¶¨Î»²ã²¢²»¿É´¥·¢¶¨Î»£¬Ä¬ÈÏÊÇfalse
-        // ÉèÖÃ¶¨Î»µÄÀàĞÍÎª¶¨Î»Ä£Ê½ £¬¿ÉÒÔÓÉ¶¨Î»¡¢¸úËæ»òµØÍ¼¸ù¾İÃæÏò·½ÏòĞı×ª¼¸ÖÖ
+       // mAMap.setLocationSource(this);// è®¾ç½®å®šä½ç›‘å¬
+        mAMap.getUiSettings().setMyLocationButtonEnabled(true);// è®¾ç½®é»˜è®¤å®šä½æŒ‰é’®æ˜¯å¦æ˜¾ç¤º
+        mAMap.setMyLocationEnabled(true);// è®¾ç½®ä¸ºtrueè¡¨ç¤ºæ˜¾ç¤ºå®šä½å±‚å¹¶å¯è§¦å‘å®šä½ï¼Œfalseè¡¨ç¤ºéšè—å®šä½å±‚å¹¶ä¸å¯è§¦å‘å®šä½ï¼Œé»˜è®¤æ˜¯false
+        // è®¾ç½®å®šä½çš„ç±»å‹ä¸ºå®šä½æ¨¡å¼ ï¼Œå¯ä»¥ç”±å®šä½ã€è·Ÿéšæˆ–åœ°å›¾æ ¹æ®é¢å‘æ–¹å‘æ—‹è½¬å‡ ç§
         mAMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
 
     }
@@ -116,24 +116,24 @@ public class GaiDeMapActivity extends BaseActivity implements AMap.OnMapClickLis
     }
 
     /**
-     * µØÍ¼µã»÷ÊÂ¼ş
+     * åœ°å›¾ç‚¹å‡»äº‹ä»¶
      */
     @Override
     public void onMapClick(LatLng latLng) {
        /* MarkerOptions markerOptions = new MarkerOptions();
-        // ÉèÖÃMarkerµÄÍ¼±êÑùÊ½
+        // è®¾ç½®Markerçš„å›¾æ ‡æ ·å¼
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker));
-        // ÉèÖÃMarkerµã»÷Ö®ºóÏÔÊ¾µÄ±êÌâ
-        markerOptions.title("µÚ" + (markerCounts + 1) + "¸öMarker");
-        // ÉèÖÃMarkerµÄ×ø±ê£¬ÎªÎÒÃÇµã»÷µØÍ¼µÄ¾­Î³¶È×ø±ê
+        // è®¾ç½®Markerç‚¹å‡»ä¹‹åæ˜¾ç¤ºçš„æ ‡é¢˜
+        markerOptions.title("ç¬¬" + (markerCounts + 1) + "ä¸ªMarker");
+        // è®¾ç½®Markerçš„åæ ‡ï¼Œä¸ºæˆ‘ä»¬ç‚¹å‡»åœ°å›¾çš„ç»çº¬åº¦åæ ‡
         markerOptions.position(latLng);
-        // ÉèÖÃMarkerµÄ¿É¼ûĞÔ
+        // è®¾ç½®Markerçš„å¯è§æ€§
         markerOptions.visible(true);
-        // ÉèÖÃMarkerÊÇ·ñ¿ÉÒÔ±»ÍÏ×§£¬ÕâÀïÏÈÉèÖÃÎªfalse£¬Ö®ºó»áÑİÊ¾MarkerµÄÍÏ×§¹¦ÄÜ
+        // è®¾ç½®Markeræ˜¯å¦å¯ä»¥è¢«æ‹–æ‹½ï¼Œè¿™é‡Œå…ˆè®¾ç½®ä¸ºfalseï¼Œä¹‹åä¼šæ¼”ç¤ºMarkerçš„æ‹–æ‹½åŠŸèƒ½
         markerOptions.draggable(false);
-        // ½«MarkerÌí¼Óµ½µØÍ¼ÉÏÈ¥
+        // å°†Markeræ·»åŠ åˆ°åœ°å›¾ä¸Šå»
         mAMap.addMarker(markerOptions);
-        // MarkerµÄ¼ÆÊıÆ÷×ÔÔö
+        // Markerçš„è®¡æ•°å™¨è‡ªå¢
         markerCounts++;*/
 
         if(mGMarker.isInfoWindowShown())
