@@ -47,6 +47,8 @@ public class GDGeoCodeUtil {
                 //latLonPoint鍙傛暟琛ㄧず涓�涓狶atlng锛岀浜屽弬鏁拌〃绀鸿寖鍥村灏戠背锛孏eocodeSearch.AMAP琛ㄧず鏄浗娴嬪眬鍧愭爣绯昏繕鏄疓PS鍘熺敓鍧愭爣绯�
                 RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 100, GeocodeSearch.AMAP);
                 geocoderSearch.getFromLocationAsyn(query);
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
