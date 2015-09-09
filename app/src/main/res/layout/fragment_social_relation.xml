@@ -87,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="left|top"
                     android:inputType="textMultiLine"
+                    android:maxLength="250"
                     android:minLines="6" />
 
                 <LinearLayout
@@ -156,6 +157,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="left|top"
                     android:inputType="textMultiLine"
+                    android:maxLength="250"
                     android:minLines="6" />
 
                 <LinearLayout
