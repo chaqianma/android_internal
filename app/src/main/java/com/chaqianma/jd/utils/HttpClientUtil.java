@@ -6,17 +6,21 @@ import android.os.Looper;
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
 import com.chaqianma.jd.common.HttpRequestURL;
+import com.chaqianma.jd.model.UploadFileInfo;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BinaryHttpResponseHandler;
+import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.protocol.HTTP;
 
 import java.io.File;
@@ -33,7 +37,6 @@ import java.util.Map;
  */
 public class HttpClientUtil {
     private static AsyncHttpClient mClient = new AsyncHttpClient();
-
     //设置auth_token
     public static void setAuthToken(String auth_token) {
         mClient.addHeader(Constants.HEADERTAG, auth_token);
@@ -42,6 +45,25 @@ public class HttpClientUtil {
 
     static {
         mClient.setTimeout(6 * 1000);
+        mClient.setMaxConnections(10);
+        BasicHttpParams localBasicHttpParams = new BasicHttpParams();
+        ConnManagerParams.setMaxTotalConnections(localBasicHttpParams, 5);
+       /* AsyncHttpClient client = new AsyncHttpClient();
+        int limit = 20;
+        BlockingQueue<Runnable> q = new ArrayBlockingQueue<Runnable>(limit);
+        ThreadPoolExecutor executor =
+                new ThreadPoolExecutor(limit, limit, 20, TimeUnit.SECONDS, q);
+        client.setThreadPool(executor);
+        parseSilo(url, context); // this fires client.get() ... as it encounters urls in JSON feed
+        executor.shutdown();
+        while (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
+            Log.e(TAG, executor.getTaskCount() + " tasks left");
+        }*/
+    /*    AsyncHttpClientConfigBea config = new AsyncHttpClientConfig.Builder()
+                .setMaximumConnectionsPerHost(10)
+                .setMaximumConnectionsTotal(100)
+                .build();
+        AsyncHttpClient c = new AsyncHttpClient(config);*/
     }
 
     public static void get(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
@@ -49,6 +71,10 @@ public class HttpClientUtil {
             mClient.get(getAbsoluteUrl(url), getRequestParams(argMaps), responseHandler);
         else
             mClient.get(getAbsoluteUrl(url), responseHandler);
+    }
+
+    public static void download(String url, UploadFileInfo uploadFileInfo, AsyncHttpResponseHandler responseHandler) {
+        //QueueUtil.getInstance().addDownloadQueue(uploadFileInfo, responseHandler);
     }
 
     public static void post(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {

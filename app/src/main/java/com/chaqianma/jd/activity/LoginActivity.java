@@ -20,6 +20,7 @@ import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.utils.SharedPreferencesUtil;
 import com.chaqianma.jd.widget.JDAlertDialog;
 import com.chaqianma.jd.widget.JDToast;
+import com.loopj.android.http.SyncHttpClient;
 
 import java.util.HashMap;
 
@@ -45,8 +46,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
-        //tv_username.setText("15651782303");
-        //tv_password.setText("password");
+        tv_username.setText("15651782303");
+        tv_password.setText("password");
         //tv_username.setText("18114803034");
         //tv_password.setText("1234567a");
         mUUID = JDAppUtil.getUniqueId(LoginActivity.this);
