@@ -179,4 +179,15 @@ public class UploadFileInfo extends ErrorInfo {
         this.idxTag = idxTag;
     }
 
+    public int downloadCnt=0;
+
+    public int getDownloadCnt() {
+        return downloadCnt;
+    }
+    /**
+     * 只允许下载次数
+     * */
+    public void setDownloadCnt(int downloadCnt) {
+        this.downloadCnt = downloadCnt;
+    }
 }

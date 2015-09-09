@@ -10,6 +10,7 @@ import java.util.List;
 public class AssetInfo extends ErrorInfo{
     private String borrowRequestId=null;
     private String id=null;
+    private List<UploadFileInfo> fileList=null;
     private List<CarInfo> personalAssetsCarInfoList=null;
     private List<HouseInfo>personalAssetsHouseInfoList=null;
     private String remark=null;
@@ -43,6 +44,14 @@ public class AssetInfo extends ErrorInfo{
 
     public void setPersonalAssetsHouseInfoList(List<HouseInfo> personalAssetsHouseInfoList) {
         this.personalAssetsHouseInfoList = personalAssetsHouseInfoList;
+    }
+
+    public List<UploadFileInfo> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<UploadFileInfo> fileList) {
+        this.fileList = fileList;
     }
 
     public String getRemark() {

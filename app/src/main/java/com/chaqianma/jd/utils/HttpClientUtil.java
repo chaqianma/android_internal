@@ -37,6 +37,7 @@ import java.util.Map;
  */
 public class HttpClientUtil {
     private static AsyncHttpClient mClient = new AsyncHttpClient();
+
     //设置auth_token
     public static void setAuthToken(String auth_token) {
         mClient.addHeader(Constants.HEADERTAG, auth_token);
@@ -46,24 +47,6 @@ public class HttpClientUtil {
     static {
         mClient.setTimeout(6 * 1000);
         mClient.setMaxConnections(10);
-        BasicHttpParams localBasicHttpParams = new BasicHttpParams();
-        ConnManagerParams.setMaxTotalConnections(localBasicHttpParams, 5);
-       /* AsyncHttpClient client = new AsyncHttpClient();
-        int limit = 20;
-        BlockingQueue<Runnable> q = new ArrayBlockingQueue<Runnable>(limit);
-        ThreadPoolExecutor executor =
-                new ThreadPoolExecutor(limit, limit, 20, TimeUnit.SECONDS, q);
-        client.setThreadPool(executor);
-        parseSilo(url, context); // this fires client.get() ... as it encounters urls in JSON feed
-        executor.shutdown();
-        while (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
-            Log.e(TAG, executor.getTaskCount() + " tasks left");
-        }*/
-    /*    AsyncHttpClientConfigBea config = new AsyncHttpClientConfig.Builder()
-                .setMaximumConnectionsPerHost(10)
-                .setMaximumConnectionsTotal(100)
-                .build();
-        AsyncHttpClient c = new AsyncHttpClient(config);*/
     }
 
     public static void get(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
@@ -74,7 +57,7 @@ public class HttpClientUtil {
     }
 
     public static void download(String url, UploadFileInfo uploadFileInfo, AsyncHttpResponseHandler responseHandler) {
-        //QueueUtil.getInstance().addDownloadQueue(uploadFileInfo, responseHandler);
+        QueueUtil.getInstance().addDownloadQueue(uploadFileInfo, responseHandler);
     }
 
     public static void post(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {

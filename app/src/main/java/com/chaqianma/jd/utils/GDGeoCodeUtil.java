@@ -12,7 +12,7 @@ import com.chaqianma.jd.model.RepaymentInfo;
 
 /**
  * Created by zhangxd on 2015/8/12
- *
+ * 高德
  */
 public class GDGeoCodeUtil {
 
@@ -40,15 +40,11 @@ public class GDGeoCodeUtil {
         if (mLocation != null && mLocation.length() > 0 && mLocation.indexOf(",") >= 0) {
             try {
                 String[] arrs = mLocation.split(",");
-                //绾害  缁忓害
                 LatLonPoint latLonPoint = new LatLonPoint(Double.parseDouble(arrs[1]), Double.parseDouble(arrs[0]));
                 GeocodeSearch geocoderSearch = new GeocodeSearch(mContext);
                 geocoderSearch.setOnGeocodeSearchListener(geocodeSearchListener);
-                //latLonPoint鍙傛暟琛ㄧず涓�涓狶atlng锛岀浜屽弬鏁拌〃绀鸿寖鍥村灏戠背锛孏eocodeSearch.AMAP琛ㄧず鏄浗娴嬪眬鍧愭爣绯昏繕鏄疓PS鍘熺敓鍧愭爣绯�
                 RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 100, GeocodeSearch.AMAP);
                 geocoderSearch.getFromLocationAsyn(query);
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
