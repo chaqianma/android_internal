@@ -79,7 +79,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="备注" />
+                    android:text="备注：" />
 
                 <EditText
                     android:id="@+id/et_remark"
@@ -96,7 +96,7 @@
 
                     <TextView
                         style="@style/SmallTextStyle"
-                        android:text="录音" />
+                        android:text="录音：" />
 
                     <com.chaqianma.jd.widget.SoundGridView
                         android:id="@+id/gv_sound"
@@ -121,7 +121,7 @@
 
                     <TextView
                         style="@style/SmallTextStyle"
-                        android:text="图片" />
+                        android:text="图片：" />
 
                     <com.chaqianma.jd.widget.ImageGridView
                         android:id="@+id/gv_mark"
@@ -148,8 +148,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="尽职说明"
-                    android:textColor="@color/red" />
+                    android:text="尽职说明：" />
 
                 <EditText
                     android:id="@+id/et_comment"
@@ -166,7 +165,8 @@
 
                     <TextView
                         style="@style/SmallTextStyle"
-                        android:text="图片" />
+                        android:text="图片："
+                        android:textColor="@color/red"/>
 
                     <com.chaqianma.jd.widget.ImageGridView
                         android:id="@+id/gv_comment"

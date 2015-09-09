@@ -259,7 +259,8 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="经营场所：" />
+                    android:text="经营场所："
+                    android:textColor="@color/red"/>
 
                 <Spinner
                     android:id="@+id/sp_business_premises_2"

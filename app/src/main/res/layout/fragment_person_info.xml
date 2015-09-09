@@ -69,7 +69,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="身份证件(必填)："
+                    android:text="身份证件："
                     android:textColor="@color/red" />
 
                 <LinearLayout
@@ -102,7 +102,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="护照(选填)：" />
+                    android:text="护照：" />
 
                 <LinearLayout
 
@@ -134,7 +134,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="驾照(选填)：" />
+                    android:text="驾照：" />
 
                 <LinearLayout
 
@@ -401,7 +401,7 @@
 
                 <TextView
                     style="@style/SmallTextStyle"
-                    android:text="备注" />
+                    android:text="备注：" />
 
                 <EditText
                     android:id="@+id/et_remark"
@@ -418,7 +418,7 @@
 
                     <TextView
                         style="@style/SmallTextStyle"
-                        android:text="录音" />
+                        android:text="录音：" />
 
                     <com.chaqianma.jd.widget.SoundGridView
                         android:id="@+id/gv_sound"
@@ -443,7 +443,7 @@
 
                     <TextView
                         style="@style/SmallTextStyle"
-                        android:text="图片" />
+                        android:text="图片：" />
 
                     <com.chaqianma.jd.widget.ImageGridView
                         android:id="@+id/gv_mark"
