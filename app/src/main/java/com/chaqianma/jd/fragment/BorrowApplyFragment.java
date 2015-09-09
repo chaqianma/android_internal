@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.chaqianma.jd.R;
-import com.chaqianma.jd.activity.BaiduMapActivity;
 import com.chaqianma.jd.activity.GaiDeMapActivity;
 import com.chaqianma.jd.activity.InvestigateDetailActivity;
 import com.chaqianma.jd.activity.MainActivity;
