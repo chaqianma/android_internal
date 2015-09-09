@@ -112,10 +112,10 @@ public class InvestigateDetailActivity extends FragmentActivity {
     * 跳转下一地址
     * */
     public void gotoNext() {
-        if (mViewPager.getCurrentItem() != 3)
+        /*if (mViewPager.getCurrentItem() != 3)
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
         else
-            mViewPager.setCurrentItem(0);
+            mViewPager.setCurrentItem(0);*/
     }
 
     @OnClick(R.id.top_back_btn)
