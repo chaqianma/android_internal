@@ -86,7 +86,7 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
             if (bytes != null) {
                 errMsg = new String(bytes);
             }
-            if (bytes == null || new String(bytes).indexOf(".") > -1) {
+            if (bytes == null) {
                 showToast("服务器连接不上，请稍候再试");
             } else {
                 if (dataType == null)
@@ -97,8 +97,10 @@ public class JDHttpResponseHandler extends AsyncHttpResponseHandler {
                     if (!JDAppUtil.isEmpty(msg) && !JDAppUtil.isEmpty(errorInfo.getPath())) {
                         if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("uuid") > -1)
                             showToast("账号仅支持初始设备登录，如需切换设备请申请新账号");
-                        else if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("failed") > -1)
+                        else if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("bad credentials") > -1)
                             showToast("用户名或密码错误");
+                        else if (errorInfo.getPath().toLowerCase().indexOf("login") > -1 && msg.indexOf("用户") > -1)
+                            showToast(msg);
                         else if (msg.indexOf("available") > -1 || msg.indexOf("mybatis") > -1 || msg.indexOf("ibatis") > -1)
                             showToast("服务器请求错误，请稍候再试");
                         else
