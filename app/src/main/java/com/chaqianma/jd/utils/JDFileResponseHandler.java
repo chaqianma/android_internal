@@ -28,14 +28,12 @@ public class JDFileResponseHandler extends FileAsyncHttpResponseHandler {
     }
 
     @Override
-    public void onSuccess(int i, Header[] headers, File file) {
+    public  void onSuccess(int i, Header[] headers, File file) {
         if (file != null) {
             handler.onSuccess(mUploadFileInfo);
+        } else {
         }
-        else
-        {
-            String sss="ssss";
-        }
+
     }
 
     @Override
