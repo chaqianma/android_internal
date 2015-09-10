@@ -20,13 +20,16 @@ public class JDProgress {
         if (dialog != null)
             dialog.dismiss();
         dialog = new JDProgressDialog(context, strMsg);
+        dialog.setCancelable(false);
         dialog.show();
     }
 
     public static void dismiss() {
         try {
-            if (dialog != null)
+            if (dialog != null) {
                 dialog.dismiss();
+                dialog.cancel();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
