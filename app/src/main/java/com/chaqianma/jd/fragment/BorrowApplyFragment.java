@@ -98,6 +98,12 @@ public class BorrowApplyFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        FileUtil.deleteTempFile();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_borrow_apply, container, false);
         ButterKnife.inject(this, view);
