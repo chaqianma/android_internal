@@ -13,7 +13,7 @@ public class Constants {
     //尽调员身份类型 userType
     public static final String USERTYPE = "1";
     //最大下载次数
-    public static final int MAXDOWNLOADCOUNT = 8;
+    public static final int MAXDOWNLOADCOUNT = 5;
     //Header设置
     public static final String HEADERTAG = "X-AUTH-TOKEN";
     //用户名标签
@@ -88,6 +88,10 @@ public class Constants {
     public static final String PERSONALASSETSINFO = "personalassetsinfo";
     //社会关系
     public static final String CONTACTINFO = "contactinfo";
+    //随机数
+    public static final String ALLCHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    //随机数
+    public static final String LETTERCHAR = "abcdefghijkllmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     //下拉框集合 企业
     public static final ArrayList<String> COMPANYLIST = new ArrayList<String>() {
         {
