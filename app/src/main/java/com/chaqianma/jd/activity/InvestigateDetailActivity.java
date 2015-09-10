@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.chaqianma.jd.R;
 import com.chaqianma.jd.adapters.InvestigateDetailFragmentAdapter;
 import com.chaqianma.jd.common.AppData;
+import com.chaqianma.jd.utils.FileUtil;
+import com.chaqianma.jd.utils.HttpClientUtil;
 import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.widget.JDAlertDialog;
 
@@ -123,6 +125,12 @@ public class InvestigateDetailActivity extends FragmentActivity {
         this.finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FileUtil.deleteTempFile();
+        HttpClientUtil.cancelRequest();
+    }
 
     @OnClick(R.id.top_right_btn)
     void onSubmit() {
