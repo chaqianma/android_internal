@@ -1,7 +1,6 @@
 package com.chaqianma.jd.utils;
 
 import android.content.Context;
-import android.os.Looper;
 
 import com.chaqianma.jd.common.AppData;
 import com.chaqianma.jd.common.Constants;
@@ -9,22 +8,13 @@ import com.chaqianma.jd.common.HttpRequestURL;
 import com.chaqianma.jd.model.UploadFileInfo;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.BinaryHttpResponseHandler;
-import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.conn.params.ConnManagerParams;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
 import org.apache.http.protocol.HTTP;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -57,7 +47,11 @@ public class HttpClientUtil {
     }
 
     public static void download(String url, UploadFileInfo uploadFileInfo, AsyncHttpResponseHandler responseHandler) {
-        QueueUtil.getInstance().addDownloadQueue(uploadFileInfo, responseHandler);
+        //QueueUtil.getInstance().addDownloadQueue(uploadFileInfo, responseHandler);
+        //每次请求重新创建一个对象
+        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        asyncHttpClient.addHeader(Constants.HEADERTAG, AppData.getInstance().getHeader());
+        asyncHttpClient.get(getAbsoluteUrl(url), responseHandler);
     }
 
     public static void post(String url, HashMap<String, Object> argMaps, AsyncHttpResponseHandler responseHandler) {
@@ -108,6 +102,11 @@ public class HttpClientUtil {
             params.put(entry.getKey().toString(), entry.getValue());
         }
         return params;
+    }
+
+    public static void cancelRequest()
+    {
+        mClient.cancelAllRequests(true);
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
