@@ -91,7 +91,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="httpmime-4.3.5" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
-    <orderEntry type="library" exported="" name="locSDK_5.2" level="project" />
     <orderEntry type="library" exported="" name="jpush-sdk-release1.7.5" level="project" />
     <orderEntry type="library" exported="" name="AMap_ Location_v1.4.0_20150830" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.3.2" level="project" />
@@ -104,6 +103,5 @@
     <orderEntry type="library" exported="" name="photoview" level="project" />
     <orderEntry type="library" exported="" name="Android_Map_2.5.1.20150827" level="project" />
     <orderEntry type="library" exported="" name="android-async-http-1.4.7" level="project" />
-    <orderEntry type="library" exported="" name="BaiduLBS_Android" level="project" />
   </component>
 </module>

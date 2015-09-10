@@ -6,7 +6,7 @@ package com.chaqianma.jd.common;
  */
 public class HttpRequestURL {
     //请求URL 192.168.199.112 192.168.199.126
-    public static final String BASEURL = "http://192.168.199.223:8080/";  //8080
+    public static final String BASEURL = "http://192.168.199.223:8088/";  //8080
     //public static final String BASEURL="http://rest-staging.chaqianma.com/"; //http://staging.chaqianma.com/
     //登录 POST
     public static final String LoginUrl = "api/user/login";
