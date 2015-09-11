@@ -145,17 +145,17 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
      * 随机数
      */
     private String generateMixString(int length) {
-        StringBuffer sb = new StringBuffer();
+        StringBuffer strRandom = new StringBuffer();
         Random random = new Random();
         for (int i = 0; i < length; i++) {
-            sb.append(Constants.ALLCHAR.charAt(random.nextInt(Constants.LETTERCHAR.length())));
+            strRandom.append(Constants.ALLCHAR.charAt(random.nextInt(Constants.LETTERCHAR.length())));
         }
-        return sb.toString();
+        return strRandom.toString();
     }
 
     //得到保存图片地址
     protected String getSaveFilePath(UploadFileInfo uploadFileInfo) {
-        return mImgDirPath + "/" + generateMixString(8) + "_" + uploadFileInfo.getFileId() + "_" + uploadFileInfo.getFileType() + "_" + System.currentTimeMillis() + "." + uploadFileInfo.getFileExt();
+        return mImgDirPath + "/" + generateMixString(15) + "_" + uploadFileInfo.getFileId() + "_" + uploadFileInfo.getFileType() + "_" + System.currentTimeMillis() + "." + uploadFileInfo.getFileExt();
     }
 
     //得到图片地址
@@ -239,7 +239,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
             }*/
             //存放小图 压缩
             //Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 500, 500, "jpg");
-            ImageSize imageSize = new ImageSize(250, 250);
+            ImageSize imageSize = new ImageSize(200, 200);
             Bitmap bitmap = ImageLoader.getInstance().loadImageSync("file://" + imgPath, imageSize);
             if (bitmap != null) {
                 ImageUtil.saveBitmapFile(bigImgPath, bitmap);

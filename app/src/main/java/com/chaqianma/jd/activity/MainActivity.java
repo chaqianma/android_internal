@@ -23,6 +23,7 @@ import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.LocationUtil;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDToast;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -139,6 +140,7 @@ public class MainActivity extends FragmentActivity implements BottomFragment.ICh
         super.onDestroy();
         if(mLocationUtil!=null)
             mLocationUtil.stopLocation();
+        ImageLoader.getInstance().clearDiskCache();
     }
 
     public void setShowFragment(int idxTag) {

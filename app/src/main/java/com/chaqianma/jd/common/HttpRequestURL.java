@@ -9,7 +9,7 @@ public class HttpRequestURL {
     public static final String BASEURL = "http://192.168.199.223:8088/";  //8080
     //public static final String BASEURL="http://rest-staging.chaqianma.com/"; //http://staging.chaqianma.com/
     //登录 POST
-    public static final String LoginUrl = "api/user/login";
+    public static final String loginUrl = "api/user/login";
     //上传位置信息
     public static final String uploadLocationUrl = "api/user/location/update";
     //尽调申请(贷款)

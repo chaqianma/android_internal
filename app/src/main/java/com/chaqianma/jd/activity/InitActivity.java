@@ -36,7 +36,7 @@ public class InitActivity extends Activity {
                 argMap.put("password", "password");
                 //argMap.put("userType","1");
                 argMap.put("uuid", uuid);
-                HttpClientUtil.post(HttpRequestURL.LoginUrl, argMap, new JDHttpResponseHandler(InitActivity.this, new ResponseHandler<UserInfo>() {
+                HttpClientUtil.post(HttpRequestURL.loginUrl, argMap, new JDHttpResponseHandler(InitActivity.this, new ResponseHandler<UserInfo>() {
                     @Override
                     public void onSuccess(UserInfo userInfo) {
                         if (userInfo != null) {

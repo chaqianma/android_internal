@@ -287,6 +287,7 @@ public class BorrowApplyFragment extends BaseFragment {
                         startActivity(InvestigateDetailActivity.class);
                         isCanClickOnce = false;
                         btn_transfer.setVisibility(View.GONE);
+                        tv_finish_task.setVisibility(View.VISIBLE);
                         btn_borrow.setText("进入尽调");
                         isShouldRequest = false;
                     }

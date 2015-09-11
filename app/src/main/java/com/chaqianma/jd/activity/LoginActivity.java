@@ -46,10 +46,18 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
-        //tv_username.setText("15651782303");
-        //tv_password.setText("password");
+       // tv_username.setText("15651782303");
+       // tv_password.setText("password");
+       /* tv_username.setText("15651782303");
+        tv_password.setText("password");
         //tv_username.setText("18114803034");
         //tv_password.setText("1234567a");
+        tv_username.setText("15303636001");
+        tv_password.setText("hy123456");
+        tv_username.setText("18114803034");
+        tv_password.setText("password");*/
+        //tv_username.setText("18114803034");
+        //tv_password.setText("password");
         mUUID = JDAppUtil.getUniqueId(LoginActivity.this);
         setTopBarState("登录", false);
     }
@@ -80,7 +88,7 @@ public class LoginActivity extends BaseActivity {
             argMap.put("password", password);
             //argMap.put("userType", "1");
             argMap.put("uuid", mUUID);
-            HttpClientUtil.post(HttpRequestURL.LoginUrl, argMap, new JDHttpResponseHandler(LoginActivity.this, new ResponseHandler<UserInfo>() {
+            HttpClientUtil.post(HttpRequestURL.loginUrl, argMap, new JDHttpResponseHandler(LoginActivity.this, new ResponseHandler<UserInfo>() {
                 @Override
                 public void onSuccess(UserInfo userInfo) {
                     if (userInfo != null) {
