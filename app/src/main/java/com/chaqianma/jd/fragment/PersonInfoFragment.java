@@ -534,7 +534,7 @@ public class PersonInfoFragment extends BaseFragment {
     /*
     * 得到服务器文件
     * */
-    private void getServerFile(UploadFileInfo fileInfo) {
+    private synchronized void getServerFile(UploadFileInfo fileInfo) {
         String filePath = getSaveFilePath(fileInfo);
         fileInfo.setBigImgPath(filePath);
         HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
@@ -826,6 +826,16 @@ public class PersonInfoFragment extends BaseFragment {
             @Override
             public void onSuccess(Object o) {
                 JDToast.showLongText(getActivity(), "个人信息保存成功");
+                //删除相应已婚  离异 数据
+                if (radio_married.isChecked()) {
+                    if (isUploadSuccess(divorceUploadImgInfoList)) {
+                        removeImgList(divorceUploadImgInfoList, divorceImgsAdapter);
+                    }
+                } else if (radio_divorce.isChecked()) {
+                    if (isUploadSuccess(marryUploadImgInfoList)) {
+                        removeImgList(marryUploadImgInfoList, marryImgsAdapter);
+                    }
+                }
                 if (getActivity() instanceof InvestigateDetailActivity)
                     ((InvestigateDetailActivity) getActivity()).gotoNext();
             }

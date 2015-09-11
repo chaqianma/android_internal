@@ -2,6 +2,8 @@ package com.chaqianma.jd.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.chaqianma.jd.utils.JDAppUtil;
 import com.chaqianma.jd.utils.JDHttpResponseHandler;
 import com.chaqianma.jd.utils.ResponseHandler;
 import com.chaqianma.jd.widget.JDAlertDialog;
+import com.chaqianma.jd.widget.JDProgress;
 import com.chaqianma.jd.widget.JDToast;
 
 import java.util.Timer;
@@ -71,6 +74,16 @@ public class BorrowApplyFragment extends BaseFragment {
     private boolean isShouldRequest = true;
     //用于点击判断
     private boolean isCanClickOnce = false;
+    //处理
+    private Handler mHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            JDProgress.dismiss();
+            isCanClickOnce = false;
+            startActivity(InvestigateDetailActivity.class);
+        }
+    };
 
     @OnClick(R.id.tv_view_map)
     void onViewMap(View v) {
@@ -100,7 +113,6 @@ public class BorrowApplyFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        FileUtil.deleteTempFile();
     }
 
     @Override
@@ -156,8 +168,8 @@ public class BorrowApplyFragment extends BaseFragment {
             /*if (!JDAppUtil.isEmpty(mLocation) && mLocation.indexOf(",") > -1) {
                 new GeoCoderUtil(tv_address, mLocation.split(",")[1] + "," + mLocation.split(",")[0]);
             }*/
-            new GDGeoCodeUtil(getActivity(),tv_address, mLocation);
-            new GDGeoCodeUtil(getActivity(),tv_office, workLocation);
+            new GDGeoCodeUtil(getActivity(), tv_address, mLocation);
+            new GDGeoCodeUtil(getActivity(), tv_office, workLocation);
             tv_apply_time.setText(JDAppUtil.getTimeToStr(borrowRequestInfo.getDateline()));
             //-2请求驳回，-1 用户取消 0 新请求 1已分配 2尽调中 3审核中 4补充资料 5审核通过
 
@@ -262,8 +274,12 @@ public class BorrowApplyFragment extends BaseFragment {
         if (!isCanClickOnce) {
             isCanClickOnce = true;
             if (!isShouldRequest) {
-                isCanClickOnce = false;
-                startActivity(InvestigateDetailActivity.class);
+                try {
+                    JDProgress.show(getActivity());
+                    mHanlder.sendEmptyMessageDelayed(0, 1 * 1000);
+                } catch (Exception e) {
+
+                }
             } else {
                 HttpClientUtil.put(HttpRequestURL.beginCheckUrl, null, new JDHttpResponseHandler(getActivity(), new ResponseHandler() {
                     @Override

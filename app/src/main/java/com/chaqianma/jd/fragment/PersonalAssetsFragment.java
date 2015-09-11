@@ -51,7 +51,6 @@ import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -371,6 +370,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 isCar1Show = true;
                 layout_asset_car_1.setVisibility(View.VISIBLE);
                 //sp_car_1.setSelection(getSelectedIdx(carInfo.getCode()));
+                carList1 = (ArrayList) Constants.CARLIST.clone();
                 sp_car_1.setSelection(0);
                 sp_car_1.setEnabled(false);
                 break;
@@ -382,6 +382,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     ((ViewStub) mView.findViewById(R.id.stub_car_2)).inflate();
                     initCarView(true);
                 }
+                carList2 = (ArrayList) Constants.CARLIST.clone();
                 initSpinner(sp_car_2, Constants.CARLIST);
                 //sp_car_2.setSelection(getSelectedIdx(carInfo.getCode()));
                 sp_car_2.setSelection(1);
@@ -395,6 +396,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     ((ViewStub) mView.findViewById(R.id.stub_car_3)).inflate();
                     initCarView(false);
                 }
+                carList3 = (ArrayList) Constants.CARLIST.clone();
                 initSpinner(sp_car_3, Constants.CARLIST);
                 //sp_car_3.setSelection(getSelectedIdx(carInfo.getCode()));
                 sp_car_3.setSelection(2);
@@ -516,6 +518,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 isHouse1Show = true;
                 layout_asset_house_1.setVisibility(View.VISIBLE);
                 //sp_house_1.setSelection(getSelectedIdx(houseInfo.getCode()));
+                houseList1 = (ArrayList) Constants.HOUSELIST.clone();
                 sp_house_1.setEnabled(false);
                 sp_house_1.setSelection(0);
 
@@ -524,6 +527,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 isHouse2Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_house_2)).inflate();
                 initHouseView(true);
+                houseList2 = (ArrayList) Constants.HOUSELIST.clone();
                 initSpinner(sp_house_2, Constants.HOUSELIST);
                 //sp_house_2.setSelection(getSelectedIdx(houseInfo.getCode()));
                 sp_house_2.setSelection(1);
@@ -533,6 +537,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                 isHouse3Show = true;
                 ((ViewStub) mView.findViewById(R.id.stub_house_3)).inflate();
                 initHouseView(false);
+                houseList3 = (ArrayList) Constants.HOUSELIST.clone();
                 initSpinner(sp_house_3, Constants.HOUSELIST);
                 //sp_house_3.setSelection(getSelectedIdx(houseInfo.getCode()));
                 sp_house_3.setSelection(2);
@@ -576,18 +581,6 @@ public class PersonalAssetsFragment extends BaseFragment {
         } else {
             deleteCar(getCarParentId(0), v);
         }
-    }
-
-    /*
-   *  初始化下拉框
-   * */
-    private void initSpinner(Spinner spinner, List<String> data) {
-        //将可选内容与ArrayAdapter连接起来
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, data);
-        //设置下拉列表的风格
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //将adapter 添加到spinner中
-        spinner.setAdapter(adapter);
     }
 
     /*
@@ -1147,25 +1140,6 @@ public class PersonalAssetsFragment extends BaseFragment {
         }
     }
 
-    /**
-     * 删除时把图片列表中的除默认图片的其它图片 删除
-     */
-    private void removeImgList(List<UploadFileInfo> uploadFileInfos, ImgsGridViewAdapter imgAdapter) {
-        if (uploadFileInfos != null) {
-            int size = uploadFileInfos.size();
-            if (size == 1 && uploadFileInfos.get(0).isDefault()) {
-                return;
-            }
-            UploadFileInfo uploadFileInfo = null;
-            for (int i = size - 1; i >= 0; i--) {
-                uploadFileInfo = uploadFileInfos.get(i);
-                if (!uploadFileInfo.isDefault())
-                    uploadFileInfos.remove(uploadFileInfo);
-            }
-            if (imgAdapter != null)
-                imgAdapter.refreshData();
-        }
-    }
 
     //对集合排序
     private void sortList(List<String> arrs) {
@@ -1292,7 +1266,7 @@ public class PersonalAssetsFragment extends BaseFragment {
     /*
    * 得到服务器文件
    * */
-    private void getServerFile(final UploadFileInfo fileInfo) {
+    private synchronized void getServerFile(final UploadFileInfo fileInfo) {
         String filePath = getSaveFilePath(fileInfo);
         fileInfo.setBigImgPath(filePath);
         getActivity().runOnUiThread(new Runnable() {
@@ -1300,7 +1274,7 @@ public class PersonalAssetsFragment extends BaseFragment {
             public void run() {
                 HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
                     @Override
-                    public void onSuccess(UploadFileInfo uploadFileInfo) {
+                    public  void onSuccess(UploadFileInfo uploadFileInfo) {
                         uploadFileInfo.setiServer(true);
                         uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
                         if (uploadFileInfo.getFileExt().equals("amr")) {
@@ -1310,7 +1284,7 @@ public class PersonalAssetsFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onFailure(UploadFileInfo uploadFileInfo) {
+                    public  void onFailure(UploadFileInfo uploadFileInfo) {
                         super.onFailure(uploadFileInfo);
                         uploadFileInfo.setiServer(false);
                         uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());

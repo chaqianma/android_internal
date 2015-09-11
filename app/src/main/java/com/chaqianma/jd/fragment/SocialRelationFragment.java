@@ -555,7 +555,7 @@ public class SocialRelationFragment extends BaseFragment {
     /*
    * 得到服务器文件
    * */
-    private void getServerFile(final UploadFileInfo fileInfo) {
+    private synchronized void getServerFile(final UploadFileInfo fileInfo) {
         String filePath = getSaveFilePath(fileInfo);
         fileInfo.setBigImgPath(filePath);
         getActivity().runOnUiThread(new Runnable() {
@@ -563,7 +563,7 @@ public class SocialRelationFragment extends BaseFragment {
             public void run() {
                 HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
                     @Override
-                    public void onSuccess(UploadFileInfo uploadFileInfo) {
+                    public  void onSuccess(UploadFileInfo uploadFileInfo) {
                         uploadFileInfo.setiServer(true);
                         uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
                         if (uploadFileInfo.getFileExt().equals("amr")) {
@@ -573,7 +573,7 @@ public class SocialRelationFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onFailure(UploadFileInfo uploadFileInfo) {
+                    public  void onFailure(UploadFileInfo uploadFileInfo) {
                         super.onFailure(uploadFileInfo);
                         uploadFileInfo.setiServer(false);
                         uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
@@ -921,25 +921,6 @@ public class SocialRelationFragment extends BaseFragment {
         });
     }
 
-    /**
-     * 删除时把图片列表中的除默认图片的其它图片 删除
-     */
-    private void removeImgList(List<UploadFileInfo> uploadFileInfos, ImgsGridViewAdapter imgAdapter) {
-        if (uploadFileInfos != null) {
-            int size = uploadFileInfos.size();
-            if (size == 1 && uploadFileInfos.get(0).isDefault()) {
-                return;
-            }
-            UploadFileInfo uploadFileInfo = null;
-            for (int i = size - 1; i >= 0; i--) {
-                uploadFileInfo = uploadFileInfos.get(i);
-                if (!uploadFileInfo.isDefault())
-                    uploadFileInfos.remove(uploadFileInfo);
-            }
-            if (imgAdapter != null)
-                imgAdapter.refreshData();
-        }
-    }
 
     /*
      * 保存数据

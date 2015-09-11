@@ -13,7 +13,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.chaqianma.jd.DBHelper.UploadImgDBHelper;
@@ -29,6 +31,9 @@ import com.chaqianma.jd.model.UploadStatus;
 import com.chaqianma.jd.utils.ImageUtil;
 import com.chaqianma.jd.widget.PhotoPopup;
 import com.chaqianma.jd.widget.ViewPagerPopup;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
@@ -39,6 +44,7 @@ import org.apache.http.entity.mime.content.StringBody;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by zhangxd on 2015/7/21.
@@ -47,7 +53,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         ViewPagerPopup.OnViewPagerDialogListener, ImgsGridViewAdapter.iOnClickImgListener, SoundGridViewAdapter.iOnClickSoundListener {
 
     private String mBorrowRequestId = null;
-    protected UploadImgDBHelper mUploadImgDBHelper=null;
+    protected UploadImgDBHelper mUploadImgDBHelper = null;
     protected PhotoPopup mPopup;
     protected ViewPagerPopup mViewPagerPopup;
     //获取SDK中的图片
@@ -56,6 +62,15 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
     protected static final int REQUEST_TAKE_PHOTO = 1002;
     //图片存放路径
     protected String mImgDirPath = null;
+    private DisplayImageOptions options = new DisplayImageOptions.Builder()
+            .showImageOnLoading(R.drawable.icon_img_add)            //加载图片时的图片
+                    //.showImageForEmptyUri(R.drawable.ic_empty)         //没有图片资源时的默认图片
+                    //.showImageOnFail(R.drawable.ic_error)              //加载失败时的图片
+            .cacheInMemory(false)                                        //启用内存缓存
+            .cacheOnDisk(false)                                 //启用外存缓存
+            .considerExifParams(true)                          //启用EXIF和JPEG图像格式
+                    //.displayer(new RoundedBitmapDisplayer(20))         //设置显示风格这里是圆角矩形
+            .build();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +80,7 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         mPopup.setDialogListener(this);
         mViewPagerPopup = new ViewPagerPopup(getActivity());
         mViewPagerPopup.setViewPagerDialogListener(this);
-        mUploadImgDBHelper=UploadImgDBHelper.getInstance(getActivity());
+        mUploadImgDBHelper = UploadImgDBHelper.getInstance(getActivity());
     }
 
     @Override
@@ -126,9 +141,21 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
         }
     }
 
+    /**
+     * 随机数
+     */
+    private String generateMixString(int length) {
+        StringBuffer sb = new StringBuffer();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(Constants.ALLCHAR.charAt(random.nextInt(Constants.LETTERCHAR.length())));
+        }
+        return sb.toString();
+    }
+
     //得到保存图片地址
     protected String getSaveFilePath(UploadFileInfo uploadFileInfo) {
-        return mImgDirPath + "/" + uploadFileInfo.getFileType() + "_" + System.currentTimeMillis() + "." + uploadFileInfo.getFileExt();
+        return mImgDirPath + "/" + generateMixString(8) + "_" + uploadFileInfo.getFileId() + "_" + uploadFileInfo.getFileType() + "_" + System.currentTimeMillis() + "." + uploadFileInfo.getFileExt();
     }
 
     //得到图片地址
@@ -210,8 +237,10 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
                 ImageUtil.saveBitmapFile(bigImgPath, proportionBM);
                 proportionBM.recycle();
             }*/
-            //存放小图
-            Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 500, 500, "jpg");
+            //存放小图 压缩
+            //Bitmap bitmap = ImageUtil.getLocalThumbImg(imgPath, 500, 500, "jpg");
+            ImageSize imageSize = new ImageSize(250, 250);
+            Bitmap bitmap = ImageLoader.getInstance().loadImageSync("file://" + imgPath, imageSize);
             if (bitmap != null) {
                 ImageUtil.saveBitmapFile(bigImgPath, bitmap);
                 bitmap.recycle();
@@ -276,6 +305,38 @@ public class BaseFragment extends Fragment implements PhotoPopup.OnDialogListene
             }
         }
         return isSuccess;
+    }
+
+    /*
+    *  初始化下拉框
+    * */
+    protected void initSpinner(Spinner spinner, List<String> data) {
+        //将可选内容与ArrayAdapter连接起来
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, data);
+        //设置下拉列表的风格
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //将adapter 添加到spinner中
+        spinner.setAdapter(adapter);
+    }
+
+    /**
+     * 删除时把图片列表中的除默认图片的其它图片 删除
+     */
+    protected void removeImgList(List<UploadFileInfo> uploadFileInfos, ImgsGridViewAdapter imgAdapter) {
+        if (uploadFileInfos != null) {
+            int size = uploadFileInfos.size();
+            if (size == 1 && uploadFileInfos.get(0).isDefault()) {
+                return;
+            }
+            UploadFileInfo uploadFileInfo = null;
+            for (int i = size - 1; i >= 0; i--) {
+                uploadFileInfo = uploadFileInfos.get(i);
+                if (!uploadFileInfo.isDefault())
+                    uploadFileInfos.remove(uploadFileInfo);
+            }
+            if (imgAdapter != null)
+                imgAdapter.refreshData();
+        }
     }
 
     //选择本地照片

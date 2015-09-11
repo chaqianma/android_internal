@@ -374,6 +374,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 isCompany1Show = true;
                 layout_company_1.setVisibility(View.VISIBLE);
                 sp_some_company_1.setEnabled(false);
+                companyList1 = (ArrayList) Constants.COMPANYLIST.clone();
                 sp_some_company_1.setSelection(0);
                 break;
             case 1:
@@ -383,7 +384,8 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 initControlView(true);
                 initGridViewData(true);
                 //下拉框
-                initSpinner(sp_some_company_2, Constants.COMPANYLIST);
+                companyList2 = (ArrayList) Constants.COMPANYLIST.clone();
+                initSpinner(sp_some_company_2,companyList2);
                 sp_some_company_2.setSelection(1);
                 sp_some_company_2.setEnabled(false);
                 break;
@@ -394,24 +396,13 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
                 initControlView(false);
                 initGridViewData(false);
                 sp_some_company_3.setEnabled(false);
-                initSpinner(sp_some_company_3, Constants.COMPANYLIST);
+                companyList3 = (ArrayList) Constants.COMPANYLIST.clone();
+                initSpinner(sp_some_company_3, companyList3);
                 sp_some_company_3.setSelection(2);
                 break;
             default:
                 break;
         }
-    }
-
-    /*
-    *  初始化下拉框
-    * */
-    private void initSpinner(Spinner spinner, List<String> data) {
-        //将可选内容与ArrayAdapter连接起来
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, data);
-        //设置下拉列表的风格
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //将adapter 添加到spinner中
-        spinner.setAdapter(adapter);
     }
 
     /*
@@ -975,12 +966,12 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
     /*
    * 得到服务器文件
    * */
-    private void getServerFile(final UploadFileInfo fileInfo) {
+    private synchronized void getServerFile(final UploadFileInfo fileInfo) {
         String filePath = getSaveFilePath(fileInfo);
         fileInfo.setBigImgPath(filePath);
         HttpClientUtil.get(HttpRequestURL.downLoadFileUrl + "/" + fileInfo.getFileId(), null, new JDFileResponseHandler(fileInfo, new ResponseHandler<UploadFileInfo>() {
             @Override
-            public void onSuccess(UploadFileInfo uploadFileInfo) {
+            public  void onSuccess(UploadFileInfo uploadFileInfo) {
                 uploadFileInfo.setiServer(true);
                 uploadFileInfo.setStatus(UploadStatus.SUCCESS.getValue());
                 if (uploadFileInfo.getFileExt().equals("amr")) {
@@ -990,7 +981,7 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
             }
 
             @Override
-            public void onFailure(UploadFileInfo uploadFileInfo) {
+            public   void onFailure(UploadFileInfo uploadFileInfo) {
                 super.onFailure(uploadFileInfo);
                 uploadFileInfo.setiServer(false);
                 uploadFileInfo.setStatus(UploadStatus.FAILURE.getValue());
@@ -1140,26 +1131,6 @@ public class CompanyInfoFragment extends BaseFragment implements ImgsGridViewAda
      */
     private void sortList(List<String> arrs) {
         Collections.sort(arrs, Collator.getInstance(java.util.Locale.CHINA));
-    }
-
-    /**
-     * 删除时把图片列表中的除默认图片的其它图片 删除
-     */
-    private void removeImgList(List<UploadFileInfo> uploadFileInfos, ImgsGridViewAdapter imgAdapter) {
-        if (uploadFileInfos != null) {
-            int size = uploadFileInfos.size();
-            if (size == 1 && uploadFileInfos.get(0).isDefault()) {
-                return;
-            }
-            UploadFileInfo uploadFileInfo = null;
-            for (int i = size - 1; i >= 0; i--) {
-                uploadFileInfo = uploadFileInfos.get(i);
-                if (!uploadFileInfo.isDefault())
-                    uploadFileInfos.remove(uploadFileInfo);
-            }
-            if (imgAdapter != null)
-                imgAdapter.refreshData();
-        }
     }
 
     @Override
